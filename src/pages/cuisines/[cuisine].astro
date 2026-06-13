@@ -34,37 +34,126 @@ recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
 
 <BaseLayout title={title}>
-  <p class="section-label">Cuisine</p>
-  <h1 style="font-size: 2rem; color: var(--color-ink); margin: 0 0 6px;">{title}</h1>
-  <p style="font-size: 0.9rem; color: var(--color-ink-muted); margin: 0 0 1.75rem;">
+  <p class="eyebrow" style="margin: 0 0 0.5rem;">Cuisine</p>
+  <h1 class="cuisine-title">{title}</h1>
+  <p class="cuisine-count onum">
     {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
   </p>
 
   {recipes.length > 0 ? (
-    <div class="grid">
+    <div class="recipe-grid">
       {recipes.map((r) => (
-        <a class="card" href={withBase(`/recipes/${r.slug}`)}>
-          {r.data.image && (
-            <img src={withBase(r.data.image)} alt={r.data.title} loading="lazy" />
+        <a class="recipe-card" href={withBase(`/recipes/${r.slug}`)}>
+          {r.data.image ? (
+            <div class="recipe-card-img-wrap">
+              <img
+                src={withBase(r.data.image)}
+                alt={r.data.title}
+                loading="lazy"
+                class="recipe-card-img"
+              />
+            </div>
+          ) : (
+            <div class="recipe-card-placeholder" />
           )}
-          <h2 style="margin: 0 0 6px; font-size: 1rem; font-weight: 500; color: var(--color-ink);">{r.data.title}</h2>
-          <div class="badges">
-            {r.data.totalTimeMinutes && (
-              <span class="badge badge-meta">{r.data.totalTimeMinutes} min</span>
-            )}
-            {r.data.servings && (
-              <span class="badge badge-meta">{r.data.servings} servings</span>
-            )}
-            {r.data.tags?.slice(0, 2).map((t: string) => (
-              <span class="badge badge-tag">{t}</span>
-            ))}
-          </div>
+          {r.data.tags?.[0] && (
+            <p class="eyebrow card-eyebrow">{r.data.tags[0]}</p>
+          )}
+          <h2 class="card-title">{r.data.title}</h2>
+          <hr class="hairline card-rule" />
+          <p class="card-meta onum">
+            {[
+              r.data.totalTimeMinutes && `${r.data.totalTimeMinutes} min`,
+              r.data.servings && `${r.data.servings} servings`,
+              r.data.tags?.[1],
+            ].filter(Boolean).join(' · ')}
+          </p>
         </a>
       ))}
     </div>
   ) : (
-    <p style="color: var(--color-ink-muted); font-style: italic;">
-      No recipes for this cuisine yet.
-    </p>
+    <p class="empty-note">No recipes for this cuisine yet.</p>
   )}
 </BaseLayout>
+
+<style>
+  .cuisine-title {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 500;
+    color: var(--color-ink);
+    margin: 0 0 0.25rem;
+  }
+
+  .cuisine-count {
+    font-size: 0.875rem;
+    color: var(--color-ink-muted);
+    margin: 0 0 2.5rem;
+  }
+
+  .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0 1.5rem;
+  }
+
+  .recipe-card {
+    display: block;
+    text-decoration: none;
+    color: var(--color-ink);
+    border-top: 1px solid var(--color-hairline);
+    padding: 1.25rem 0 1rem;
+    transition: opacity 0.15s;
+  }
+
+  .recipe-card:hover { opacity: 0.75; }
+
+  .recipe-card-img-wrap {
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    aspect-ratio: 4 / 3;
+    margin-bottom: 0.75rem;
+  }
+
+  .recipe-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .recipe-card:hover .recipe-card-img { transform: scale(1.04); }
+
+  .recipe-card-placeholder {
+    aspect-ratio: 4 / 3;
+    background: var(--color-stone);
+    border-radius: var(--radius-md);
+    margin-bottom: 0.75rem;
+  }
+
+  .card-eyebrow { margin: 0 0 0.35rem; }
+
+  .card-title {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-weight: 500;
+    font-size: 1.05rem;
+    line-height: 1.28;
+    color: var(--color-ink);
+    margin: 0 0 0.7rem;
+  }
+
+  .card-rule { margin-bottom: 0.5rem; }
+
+  .card-meta {
+    font-size: 0.78rem;
+    color: var(--color-ink-muted);
+    margin: 0;
+  }
+
+  .empty-note {
+    color: var(--color-ink-muted);
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+</style>

@@ -46,7 +46,6 @@ function formatFraction(decimal: number): string {
 }
 
 function parseQuantity(str: string): number {
-  // Handle slash fractions like "1/2"
   if (str.includes('/')) {
     const parts = str.split('/');
     return parseFloat(parts[0]) / parseFloat(parts[1]);
@@ -76,7 +75,6 @@ function formatQuantity(n: number): string {
 
 function scaleIngredient(raw: string, ratio: number): string {
   if (ratio === 1) return raw;
-  // Match a leading quantity: digits, fractions, slash-fractions, spaces, hyphens
   const m = raw.match(/^([\d¼½¾⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞\/\.\s]+(?:\s*-\s*[\d¼½¾⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞\/\.]+)?)\s+/);
   if (!m) return raw;
   const qStr = m[1].trim();
@@ -90,6 +88,24 @@ function scaleIngredient(raw: string, ratio: number): string {
   const scaled = parseQuantity(qStr) * ratio;
   return `${formatQuantity(scaled)} ${rest}`;
 }
+
+// ── Shared style constants ────────────────────────────────────────────────────
+
+const EYEBROW: React.CSSProperties = {
+  fontFamily: "'EB Garamond', Georgia, serif",
+  fontWeight: 600,
+  fontSize: '0.68rem',
+  textTransform: 'uppercase',
+  letterSpacing: '0.24em',
+  color: 'var(--color-oxblood)',
+  margin: 0,
+};
+
+const HAIRLINE: React.CSSProperties = {
+  border: 'none',
+  borderTop: '1px solid var(--color-hairline)',
+  margin: 0,
+};
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
@@ -143,7 +159,7 @@ export function RecipePageIsland({
 
   const timeLabel = totalTimeMinutes
     ? totalTimeMinutes >= 60
-      ? `${Math.floor(totalTimeMinutes / 60)} t ${totalTimeMinutes % 60 ? (totalTimeMinutes % 60) + ' min' : ''}`.trim()
+      ? `${Math.floor(totalTimeMinutes / 60)} h ${totalTimeMinutes % 60 ? (totalTimeMinutes % 60) + ' min' : ''}`.trim()
       : `${totalTimeMinutes} min`
     : null;
 
@@ -154,15 +170,15 @@ export function RecipePageIsland({
       <div style={{ height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column' }}>
 
         {/* Back + title */}
-        <div style={{ maxWidth: '900px', margin: '0 auto', padding: '1.5rem 1.5rem 1rem', width: '100%', flexShrink: 0 }}>
+        <div style={{ maxWidth: '900px', margin: '0 auto', padding: '1.75rem 1.5rem 1.25rem', width: '100%', flexShrink: 0 }}>
           <a
             href={`${basePath}/`}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: 'var(--color-ink-muted)', textDecoration: 'none', marginBottom: '1.25rem' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--color-ink-muted)', textDecoration: 'none', marginBottom: '1.25rem', ...EYEBROW }}
           >
-            <ArrowLeft size={16} />
-            Back to recipes
+            <ArrowLeft size={13} />
+            All recipes
           </a>
-          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.25rem)', color: 'var(--color-ink)', margin: 0, lineHeight: 1.1, fontFamily: "'EB Garamond', Georgia, serif" }}>
+          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.25rem)', color: 'var(--color-ink)', margin: 0, lineHeight: 1.1, fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 500 }}>
             {title}
           </h1>
         </div>
@@ -184,135 +200,166 @@ export function RecipePageIsland({
 
         {/* Metadata bar */}
         <div style={{ flexShrink: 0, borderBottom: '1px solid var(--color-hairline)', backgroundColor: 'var(--color-paper)' }}>
-          <div
-            style={{ maxWidth: '900px', margin: '0 auto', padding: '1.25rem 1.5rem', display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'center', alignItems: 'center' }}
-          >
-            {/* Cuisine */}
-            <MetaItem icon={<ChefHat size={18} />} label="Cuisine" value={cuisine} />
-
-            {/* Time */}
-            {timeLabel && <MetaItem icon={<Clock size={18} />} label="Total time" value={timeLabel} />}
-
-            {/* Food type */}
-            {foodType && <MetaItem icon={<ChefHat size={18} />} label="Type" value={foodType} />}
+          <div style={{ maxWidth: '900px', margin: '0 auto', padding: '1.25rem 1.5rem', display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center' }}>
+            <MetaItem label="Cuisine" value={cuisine} />
+            {timeLabel && <MetaItem label="Total time" value={timeLabel} />}
+            {foodType && <MetaItem label="Type" value={foodType} />}
 
             {/* Servings adjuster */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Users size={18} color="var(--color-oxblood)" />
-              <div>
-                <div style={{ fontSize: '11px', color: 'var(--color-ink-muted)', marginBottom: '2px' }}>Servings</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 500, color: 'var(--color-ink)' }}>
-                  <button
-                    onClick={() => setServings((s) => Math.max(1, s - 1))}
-                    aria-label="Fewer servings"
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex' }}
-                  >
-                    <Minus size={14} />
-                  </button>
-                  <span style={{ minWidth: '1.5ch', textAlign: 'center' }}>{servings}</span>
-                  <button
-                    onClick={() => setServings((s) => s + 1)}
-                    aria-label="More servings"
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex' }}
-                  >
-                    <Plus size={14} />
-                  </button>
-                </div>
+            <div>
+              <p style={{ ...EYEBROW, marginBottom: '4px' }}>Servings</p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 500, color: 'var(--color-ink)' }}>
+                <button
+                  onClick={() => setServings((s) => Math.max(1, s - 1))}
+                  aria-label="Fewer servings"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex', lineHeight: 1 }}
+                >
+                  <Minus size={14} />
+                </button>
+                <span className="onum" style={{ minWidth: '1.5ch', textAlign: 'center', fontSize: '1rem' }}>{servings}</span>
+                <button
+                  onClick={() => setServings((s) => s + 1)}
+                  aria-label="More servings"
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex', lineHeight: 1 }}
+                >
+                  <Plus size={14} />
+                </button>
               </div>
             </div>
 
             {/* Tags */}
-            {tags.filter(Boolean).slice(0, 3).map((tag) => (
-              <span
-                key={tag}
-                style={{ fontSize: '12px', padding: '3px 10px', borderRadius: '999px', backgroundColor: 'rgba(134,139,89,0.15)', color: 'var(--color-olive)' }}
-              >
-                {tag}
-              </span>
-            ))}
+            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginLeft: 'auto' }}>
+              {tags.filter(Boolean).slice(0, 3).map((tag) => (
+                <span
+                  key={tag}
+                  style={{ fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.18em', padding: '3px 8px', border: '1px solid var(--color-hairline)', color: 'var(--color-olive)', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 600 }}
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
       {/* ── Content: ingredients + steps ── */}
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: '3rem 1.5rem 6rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '3rem', alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '4rem', alignItems: 'start' }}>
 
-          {/* Ingredients (dark panel) */}
-          <div style={{ backgroundColor: 'var(--color-ink)', borderRadius: 'var(--radius-lg)', padding: '1.75rem' }}>
-            <h2 style={{ fontSize: '1.5rem', color: 'var(--color-paper)', margin: '0 0 1.25rem', fontFamily: "'EB Garamond', Georgia, serif" }}>
-              Ingredients
-            </h2>
-            {sections.map((sec, si) => (
-              <div key={si} style={{ marginBottom: sec.header ? '1.25rem' : '0' }}>
-                {sec.header && (
-                  <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(250,248,242,0.5)', margin: '0 0 8px', fontFamily: 'system-ui, sans-serif' }}>
-                    {sec.header}
-                  </p>
-                )}
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  {sec.items.map((item, ii) => (
-                    <li key={ii} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', color: 'var(--color-paper)', fontSize: '14px', lineHeight: 1.5 }}>
-                      <span style={{ marginTop: '6px', flexShrink: 0, width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'rgba(250,248,242,0.5)' }} />
-                      {scaleIngredient(item, ratio)}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          {/* Left column: ingredients + nutrition */}
+          <div>
+            {/* Ingredients */}
+            <div style={{ marginBottom: '2.5rem' }}>
+              <p style={{ ...EYEBROW, marginBottom: '0.75rem' }}>Ingredients</p>
+              <hr style={HAIRLINE} />
+              {sections.map((sec, si) => (
+                <div key={si}>
+                  {sec.header && (
+                    <p style={{ ...EYEBROW, fontSize: '0.6rem', color: 'var(--color-ink-muted)', margin: '1rem 0 0.4rem' }}>
+                      {sec.header}
+                    </p>
+                  )}
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                    {sec.items.map((item, ii) => (
+                      <li
+                        key={ii}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'baseline',
+                          gap: '0.6rem',
+                          padding: '0.55rem 0',
+                          borderBottom: '1px solid var(--color-hairline)',
+                          fontFamily: "'EB Garamond', Georgia, serif",
+                          fontSize: '0.95rem',
+                          color: 'var(--color-ink)',
+                          lineHeight: 1.45,
+                        }}
+                      >
+                        <span style={{ color: 'var(--color-oxblood)', fontSize: '0.5rem', flexShrink: 0, marginTop: '0.1rem' }}>●</span>
+                        <span>{scaleIngredient(item, ratio)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            {/* Nutrition placeholder */}
+            <div>
+              <p style={{ ...EYEBROW, marginBottom: '0.75rem' }}>Nutrition</p>
+              <hr style={HAIRLINE} />
+              {['Calories', 'Protein', 'Carbohydrates', 'Fat'].map((label) => (
+                <div
+                  key={label}
+                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '0.55rem 0', borderBottom: '1px solid var(--color-hairline)' }}
+                >
+                  <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.9rem', color: 'var(--color-ink)' }}>{label}</span>
+                  <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.9rem', color: 'var(--color-ink-muted)' }}>—</span>
+                </div>
+              ))}
+              <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.75rem', color: 'var(--color-ink-muted)', marginTop: '0.75rem', fontStyle: 'italic' }}>
+                Nutrition data coming soon.
+              </p>
+            </div>
           </div>
 
           {/* Steps */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-              <h2 style={{ fontSize: '1.5rem', color: 'var(--color-ink)', margin: 0, fontFamily: "'EB Garamond', Georgia, serif" }}>
-                Instructions
-              </h2>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.75rem' }}>
+              <p style={{ ...EYEBROW, margin: 0 }}>Instructions</p>
 
               {/* Keep awake toggle */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span style={{ fontSize: '12px', color: 'var(--color-ink-muted)' }}>Keep screen on</span>
+              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.8rem', color: 'var(--color-ink-muted)' }}>Keep screen on</span>
                 <button
                   onClick={toggleWakeLock}
                   role="switch"
                   aria-checked={keepAwake}
                   style={{
-                    position: 'relative', width: '40px', height: '22px', borderRadius: '999px',
+                    position: 'relative', width: '36px', height: '20px', borderRadius: '999px',
                     border: 'none', cursor: 'pointer', padding: 0,
-                    backgroundColor: keepAwake ? 'var(--color-oxblood)' : 'rgba(41,47,23,0.2)',
-                    transition: 'background 0.2s',
+                    backgroundColor: keepAwake ? 'var(--color-oxblood)' : 'var(--color-stone)',
+                    transition: 'background 0.2s', flexShrink: 0,
                   }}
                 >
                   <span style={{
-                    position: 'absolute', top: '3px', left: keepAwake ? '21px' : '3px',
-                    width: '16px', height: '16px', borderRadius: '50%', backgroundColor: 'white',
+                    position: 'absolute', top: '3px', left: keepAwake ? '19px' : '3px',
+                    width: '14px', height: '14px', borderRadius: '50%', backgroundColor: 'var(--color-paper)',
                     transition: 'left 0.2s',
                   }} />
                 </button>
-              </div>
+              </label>
             </div>
 
-            <ol style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            <ol style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               {steps.map((step, i) => (
-                <li key={i} style={{ display: 'flex', gap: '1rem' }}>
+                <li
+                  key={i}
+                  style={{ display: 'flex', gap: '1.25rem', paddingTop: i === 0 ? 0 : '1.5rem', borderTop: i === 0 ? 'none' : '1px solid var(--color-hairline)', marginTop: i === 0 ? 0 : '1.5rem' }}
+                >
                   <button
                     onClick={() => toggleStep(i)}
                     aria-label={`Step ${i + 1}${completed.has(i) ? ' — done' : ''}`}
                     style={{
-                      flexShrink: 0, width: '32px', height: '32px', borderRadius: '50%',
-                      border: 'none', cursor: 'pointer', fontSize: '13px', fontWeight: 500,
-                      backgroundColor: 'var(--color-oxblood)', color: 'var(--color-paper)',
+                      flexShrink: 0, width: '28px', height: '28px', borderRadius: '50%',
+                      cursor: 'pointer', fontSize: '0.75rem', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 600,
+                      backgroundColor: completed.has(i) ? 'var(--color-oxblood)' : 'transparent',
+                      border: completed.has(i) ? 'none' : '1.5px solid var(--color-hairline)',
+                      color: completed.has(i) ? 'var(--color-paper)' : 'var(--color-ink-muted)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      transition: 'opacity 0.15s',
+                      transition: 'all 0.15s', marginTop: '2px',
                     }}
                   >
-                    {completed.has(i) ? <Check size={15} /> : i + 1}
+                    {completed.has(i) ? <Check size={13} /> : i + 1}
                   </button>
                   <p style={{
-                    paddingTop: '6px', margin: 0, lineHeight: 1.65, fontSize: '15px',
-                    color: completed.has(i) ? 'rgba(41,47,23,0.35)' : 'rgba(41,47,23,0.75)',
+                    margin: 0, lineHeight: 1.7,
+                    fontFamily: "'EB Garamond', Georgia, serif",
+                    fontSize: '1rem',
+                    color: completed.has(i) ? 'var(--color-ink-muted)' : 'var(--color-ink)',
                     textDecoration: completed.has(i) ? 'line-through' : 'none',
                     transition: 'color 0.2s',
+                    opacity: completed.has(i) ? 0.5 : 1,
                   }}>
                     {step}
                   </p>
@@ -326,14 +373,29 @@ export function RecipePageIsland({
   );
 }
 
-function MetaItem({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+function MetaItem({ label, value }: { label: string; value: string }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <span style={{ color: 'var(--color-oxblood)' }}>{icon}</span>
-      <div>
-        <div style={{ fontSize: '11px', color: 'var(--color-ink-muted)', marginBottom: '2px' }}>{label}</div>
-        <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--color-ink)' }}>{value}</div>
-      </div>
+    <div>
+      <p style={{
+        fontFamily: "'EB Garamond', Georgia, serif",
+        fontWeight: 600,
+        fontSize: '0.68rem',
+        textTransform: 'uppercase',
+        letterSpacing: '0.24em',
+        color: 'var(--color-oxblood)',
+        margin: '0 0 4px',
+      }}>
+        {label}
+      </p>
+      <p style={{
+        fontFamily: "'EB Garamond', Georgia, serif",
+        fontSize: '1rem',
+        fontWeight: 500,
+        color: 'var(--color-ink)',
+        margin: 0,
+      }}>
+        {value}
+      </p>
     </div>
   );
 }
