@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --font-family-serif: 'EB Garamond', Georgia, serif;
+  --font-family-sans: system-ui, -apple-system, sans-serif;
+
+  --color-bg: #FAF9F5;
+  --color-card: #F1ECDB;
+  --color-primary: #7E2625;
+  --color-secondary: #868B59;
+  --color-text: #292F17;
+  --color-text-muted: rgba(41, 47, 23, 0.55);
+  --color-border: rgba(41, 47, 23, 0.12);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.625rem;
+  --radius-lg: 0.875rem;
+}
