@@ -1,0 +1,57 @@
+---
+// Update this list each season. Currently: early summer (June).
+const seasonalItems = ['Strawberries', 'Asparagus', 'New potatoes', 'Radishes', 'Rhubarb'];
+---
+
+<div class="seasonal-banner">
+  <span class="seasonal-label">In season now</span>
+  <div class="seasonal-divider" aria-hidden="true"></div>
+  <div class="seasonal-items">
+    {seasonalItems.map((item) => (
+      <span class="seasonal-pill">{item}</span>
+    ))}
+  </div>
+</div>
+
+<style>
+  .seasonal-banner {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 32px;
+    background: rgba(134, 139, 89, 0.08);
+    border-top: 1px solid rgba(134, 139, 89, 0.15);
+    border-bottom: 1px solid rgba(134, 139, 89, 0.15);
+    overflow: hidden;
+  }
+
+  .seasonal-label {
+    font-size: 13px;
+    white-space: nowrap;
+    color: #868B59;
+    flex-shrink: 0;
+  }
+
+  .seasonal-divider {
+    width: 1px;
+    height: 20px;
+    background: rgba(134, 139, 89, 0.3);
+    flex-shrink: 0;
+  }
+
+  .seasonal-items {
+    display: flex;
+    gap: 8px;
+    flex-wrap: nowrap;
+    overflow: hidden;
+  }
+
+  .seasonal-pill {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    white-space: nowrap;
+    background: rgba(134, 139, 89, 0.15);
+    color: #868B59;
+  }
+</style>
