@@ -73,6 +73,7 @@ const CUISINE_LABELS: Record<string, string> = {
 interface Props {
   availableCuisines: string[];
   basePath: string;
+  compact?: boolean;
 }
 
 interface Tooltip {
@@ -82,7 +83,7 @@ interface Tooltip {
   slug: string;
 }
 
-export function WorldMap({ availableCuisines, basePath }: Props) {
+export function WorldMap({ availableCuisines, basePath, compact = false }: Props) {
   const [tooltip, setTooltip] = useState<Tooltip | null>(null);
   const [hoveredCountry, setHoveredCountry] = useState<string | null>(null);
 
@@ -120,19 +121,21 @@ export function WorldMap({ availableCuisines, basePath }: Props) {
   };
 
   return (
-    <div className="relative w-full" style={{ height: '70vh', backgroundColor: 'var(--color-paper)' }}>
-      {/* Heading overlay */}
-      <div className="absolute top-6 left-0 right-0 text-center z-10 px-6 pointer-events-none">
-        <p className="text-xs uppercase tracking-widest mb-2" style={{ color: 'var(--color-ink-muted)' }}>
-          Discover
-        </p>
-        <h1 className="text-4xl md:text-5xl" style={{ color: 'var(--color-ink)', fontFamily: "'EB Garamond', Georgia, serif" }}>
-          Explore the world through food
-        </h1>
-        <p className="mt-2 text-base" style={{ color: 'var(--color-ink-muted)' }}>
-          Click a country to see recipes from that cuisine
-        </p>
-      </div>
+    <div className="relative w-full" style={{ height: compact ? 'clamp(280px, 38vh, 420px)' : '70vh', backgroundColor: 'var(--color-paper)' }}>
+      {/* Heading overlay — full mode only */}
+      {!compact && (
+        <div className="absolute top-6 left-0 right-0 text-center z-10 px-6 pointer-events-none">
+          <p className="text-xs uppercase tracking-widest mb-2" style={{ color: 'var(--color-ink-muted)' }}>
+            Discover
+          </p>
+          <h1 className="text-4xl md:text-5xl" style={{ color: 'var(--color-ink)', fontFamily: "'EB Garamond', Georgia, serif" }}>
+            Explore the world through food
+          </h1>
+          <p className="mt-2 text-base" style={{ color: 'var(--color-ink-muted)' }}>
+            Click a country to see recipes from that cuisine
+          </p>
+        </div>
+      )}
 
       {/* Map */}
       <ComposableMap

@@ -3,94 +3,188 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import { withBase } from "../utils/withBase";
 import { WorldMap } from "../components/WorldMap";
-import { DiscoverPanel } from "../components/DiscoverPanel";
-import { RecipeSliderIsland } from "../components/RecipeSliderIsland";
-import SeasonalBanner from "../components/SeasonalBanner.astro";
+import { MealPlannerIsland } from "../components/MealPlannerIsland";
+import Splash from "../components/Splash.astro";
 
 const recipes = await getCollection("recipes");
+recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 const availableCuisines = [...new Set(recipes.map((r) => r.data.cuisine.toLowerCase()))];
 
-const countByCuisine = recipes.reduce<Record<string, number>>((acc, r) => {
-  const c = r.data.cuisine.toLowerCase();
-  acc[c] = (acc[c] ?? 0) + 1;
-  return acc;
-}, {});
-
-const discoverRecipes = recipes.map((r) => ({
+const plannerRecipes = recipes.map((r) => ({
   id: r.slug,
   title: r.data.title,
   cuisine: r.data.cuisine,
   image: r.data.image ?? null,
-  tags: r.data.tags ?? [],
   totalTimeMinutes: r.data.totalTimeMinutes ?? null,
-  servings: r.data.servings ?? null,
+  ingredients: r.data.ingredients ?? [],
 }));
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <BaseLayout title="Hjem" fullWidth={true}>
-  <!-- World Map -->
-  <WorldMap
-    availableCuisines={availableCuisines}
-    basePath={basePath}
-    client:load
-  />
+  <!-- Splash -->
+  <Splash />
 
-  <!-- Seasonal Banner -->
-  <SeasonalBanner />
-
-  <!-- Discover Panel -->
-  <DiscoverPanel
-    recipes={discoverRecipes}
-    basePath={basePath}
-    client:load
-  />
-
-  <!-- Cuisine browse grid -->
-  <section style="background: var(--color-paper); padding: 3rem 0 4rem; border-top: 1px solid var(--color-hairline);">
+  <!-- Recipe collection -->
+  <section class="collection-section">
     <div class="container">
-      <p class="section-label">All cuisines</p>
-      <h2 style="font-size: 1.75rem; color: var(--color-ink); margin: 0 0 1.5rem;">
-        Browse by cuisine
-      </h2>
-      <div class="grid">
-        {availableCuisines.sort().map((cuisine) => (
-          <a class="card cuisine-card" href={withBase(`/cuisines/${cuisine}`)}>
-            <span class="cuisine-name">{cuisine}</span>
-            <span class="cuisine-count">
-              {countByCuisine[cuisine]} {countByCuisine[cuisine] === 1 ? "recipe" : "recipes"}
-            </span>
+      <p class="section-label">The collection</p>
+      <h2 class="section-heading">All recipes</h2>
+      <div class="recipe-grid">
+        {recipes.map((r) => (
+          <a class="recipe-card" href={withBase(`/recipes/${r.slug}`)}>
+            {r.data.image ? (
+              <div class="recipe-card-img-wrap">
+                <img
+                  src={withBase(r.data.image)}
+                  alt={r.data.title}
+                  loading="lazy"
+                  class="recipe-card-img"
+                />
+              </div>
+            ) : (
+              <div class="recipe-card-img-placeholder" />
+            )}
+            <p class="eyebrow recipe-card-eyebrow">{r.data.cuisine}</p>
+            <h3 class="recipe-card-title">{r.data.title}</h3>
+            <hr class="hairline recipe-card-rule" />
+            <p class="recipe-card-meta onum">
+              {[
+                r.data.totalTimeMinutes && `${r.data.totalTimeMinutes} min`,
+                r.data.servings && `${r.data.servings} servings`,
+                r.data.tags?.[0],
+              ].filter(Boolean).join(' · ')}
+            </p>
           </a>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Recipe Slideshow -->
-  <RecipeSliderIsland
-    recipes={discoverRecipes.map((r) => ({ slug: r.id, title: r.title, image: r.image }))}
-    basePath={basePath}
-    client:only="react"
-  />
+  <!-- Meal planner -->
+  <section class="planner-section">
+    <div class="container planner-head">
+      <p class="section-label">Plan</p>
+      <h2 class="section-heading">This week we're cooking</h2>
+    </div>
+    <MealPlannerIsland
+      recipes={plannerRecipes}
+      basePath={basePath}
+      client:load
+    />
+  </section>
+
+  <!-- Explore by place -->
+  <section class="map-section">
+    <div class="container">
+      <p class="section-label">Explore</p>
+      <h2 class="section-heading">Around the world</h2>
+      <p class="map-hint onum">Click a country to browse recipes from that cuisine.</p>
+    </div>
+    <WorldMap
+      availableCuisines={availableCuisines}
+      basePath={basePath}
+      compact={true}
+      client:load
+    />
+  </section>
 </BaseLayout>
 
 <style>
-  .cuisine-card {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    padding: 16px 20px;
+  /* ── Recipe collection ────────────────────────────────────── */
+  .collection-section {
+    padding: 3.5rem 0 4.5rem;
+    border-top: 1px solid var(--color-hairline);
   }
-  .cuisine-name {
-    font-size: 1rem;
+
+  .section-heading {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1.75rem;
     font-weight: 500;
-    text-transform: capitalize;
     color: var(--color-ink);
+    margin: 0 0 2rem;
   }
-  .cuisine-count {
+
+  .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 0 1.75rem;
+  }
+
+  .recipe-card {
+    display: block;
+    text-decoration: none;
+    color: var(--color-ink);
+    border-top: 1px solid var(--color-hairline);
+    padding: 1.5rem 0 1.25rem;
+    transition: opacity 0.15s;
+  }
+
+  .recipe-card:hover { opacity: 0.75; }
+
+  .recipe-card-img-wrap {
+    margin-bottom: 0.875rem;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    aspect-ratio: 4 / 3;
+  }
+
+  .recipe-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .recipe-card:hover .recipe-card-img { transform: scale(1.04); }
+
+  .recipe-card-img-placeholder {
+    aspect-ratio: 4 / 3;
+    background: var(--color-stone);
+    border-radius: var(--radius-md);
+    margin-bottom: 0.875rem;
+  }
+
+  .recipe-card-eyebrow { margin: 0 0 0.4rem; }
+
+  .recipe-card-title {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-weight: 500;
+    font-size: 1.15rem;
+    line-height: 1.28;
+    color: var(--color-ink);
+    margin: 0 0 0.8rem;
+  }
+
+  .recipe-card-rule { margin-bottom: 0.6rem; }
+
+  .recipe-card-meta {
     font-size: 0.8rem;
     color: var(--color-ink-muted);
+    margin: 0;
+  }
+
+  /* ── Meal planner ─────────────────────────────────────────── */
+  .planner-section {
+    border-top: 1px solid var(--color-hairline);
+    padding-top: 3.5rem;
+  }
+
+  .planner-head { padding-bottom: 0; }
+
+  /* ── World map ────────────────────────────────────────────── */
+  .map-section {
+    border-top: 1px solid var(--color-hairline);
+    padding-top: 3.5rem;
+    padding-bottom: 5rem;
+  }
+
+  .map-hint {
+    font-size: 0.875rem;
+    color: var(--color-ink-muted);
+    margin: -1rem 0 1.5rem;
   }
 </style>

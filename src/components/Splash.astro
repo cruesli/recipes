@@ -1,0 +1,165 @@
+---
+import { SEASONAL_ITEMS, SEASON_LABEL } from '../data/seasonal';
+---
+
+<section class="splash" aria-label="Welcome">
+  <!-- Living texture: drifting warm blobs (CSS only) -->
+  <div class="splash-blob splash-blob--1" aria-hidden="true"></div>
+  <div class="splash-blob splash-blob--2" aria-hidden="true"></div>
+  <div class="splash-blob splash-blob--3" aria-hidden="true"></div>
+
+  <div class="splash-content">
+    <p class="eyebrow splash-eyebrow">Magnus &amp; Tessern's Recipes</p>
+    <h1 class="splash-title">A kitchen, written down</h1>
+    <hr class="hairline splash-rule" />
+    <p class="splash-season">
+      <span class="splash-season-label">{SEASON_LABEL}:</span>
+      {SEASONAL_ITEMS.join(' · ')}
+    </p>
+  </div>
+
+  <div class="splash-cue" aria-hidden="true">
+    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M6 9l5 5 5-5" />
+    </svg>
+  </div>
+</section>
+
+<style>
+  .splash {
+    position: relative;
+    height: 100svh;
+    min-height: 480px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--color-paper);
+  }
+
+  /* ── Living texture ────────────────────────────────────────── */
+  .splash-blob {
+    position: absolute;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  .splash-blob--1 {
+    width: clamp(320px, 52vw, 620px);
+    height: clamp(320px, 52vw, 620px);
+    top: -15%;
+    left: -12%;
+    background: rgba(126, 38, 37, 0.08);
+    filter: blur(100px);
+    animation: blobDrift1 22s ease-in-out infinite;
+  }
+
+  .splash-blob--2 {
+    width: clamp(240px, 38vw, 480px);
+    height: clamp(240px, 38vw, 480px);
+    bottom: -10%;
+    right: -8%;
+    background: rgba(134, 139, 89, 0.09);
+    filter: blur(90px);
+    animation: blobDrift2 28s ease-in-out infinite;
+  }
+
+  .splash-blob--3 {
+    width: clamp(180px, 28vw, 360px);
+    height: clamp(180px, 28vw, 360px);
+    top: 42%;
+    left: 52%;
+    background: rgba(212, 208, 191, 0.55);
+    filter: blur(70px);
+    animation: blobDrift3 18s ease-in-out infinite;
+  }
+
+  @keyframes blobDrift1 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    38%       { transform: translate(40px, 35px) scale(1.07); }
+    70%       { transform: translate(-18px, 55px) scale(0.94); }
+  }
+
+  @keyframes blobDrift2 {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    32%       { transform: translate(-40px, -30px) scale(1.1); }
+    68%       { transform: translate(25px, -48px) scale(0.91); }
+  }
+
+  @keyframes blobDrift3 {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50%       { transform: translate(-47%, -44%) scale(1.14); }
+  }
+
+  /* ── Centred content ───────────────────────────────────────── */
+  .splash-content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 0 1.5rem;
+    max-width: 580px;
+  }
+
+  .splash-eyebrow {
+    margin: 0 0 1.5rem;
+    animation: splashFadeUp 0.9s ease both;
+    animation-delay: 0.08s;
+  }
+
+  .splash-title {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-weight: 500;
+    font-size: clamp(2.6rem, 6.5vw, 4.2rem);
+    line-height: 1.08;
+    color: var(--color-ink);
+    margin: 0 0 1.5rem;
+    animation: splashFadeUp 0.9s ease both;
+    animation-delay: 0.26s;
+  }
+
+  .splash-rule {
+    width: 52px;
+    margin: 0 auto 1.4rem;
+    animation: splashFadeUp 0.9s ease both;
+    animation-delay: 0.42s;
+  }
+
+  .splash-season {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 1rem;
+    color: var(--color-ink-muted);
+    margin: 0;
+    animation: splashFadeUp 0.9s ease both;
+    animation-delay: 0.56s;
+  }
+
+  .splash-season-label {
+    color: var(--color-olive);
+    font-weight: 500;
+    margin-right: 0.3em;
+  }
+
+  @keyframes splashFadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Scroll cue ────────────────────────────────────────────── */
+  .splash-cue {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--color-ink-muted);
+    opacity: 0;
+    animation: splashFadeUp 0.7s ease both, splashCueBounce 2.2s ease-in-out 1.2s infinite;
+    animation-delay: 0.9s, 1.2s;
+    z-index: 1;
+  }
+
+  @keyframes splashCueBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(7px); }
+  }
+</style>

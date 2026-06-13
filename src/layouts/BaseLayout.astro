@@ -44,6 +44,15 @@ const cuisines = Array.from(cuisineSet).sort((a, b) => a.localeCompare(b));
           <a href={withBase("/")}>Home</a>
           <a href={withBase("/meal-planner")}>Meal Planner</a>
         </nav>
+        <div class="header-search">
+          <input
+            type="search"
+            class="header-search-input"
+            placeholder="Search recipes…"
+            aria-label="Search recipes (coming soon)"
+            disabled
+          />
+        </div>
       </div>
     </header>
 
