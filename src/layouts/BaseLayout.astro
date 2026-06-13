@@ -1,8 +1,9 @@
 ---
 import { withBase } from "../utils/withBase";
 import { getCollection } from "astro:content";
+import "../styles/global.css";
 
-const { title = "Family Recipes" } = Astro.props;
+const { title = "Family Recipes", fullWidth = false } = Astro.props;
 
 const recipes = await getCollection("recipes");
 const cuisineSet = new Set(
@@ -16,55 +17,61 @@ const cuisines = Array.from(cuisineSet).sort((a, b) => a.localeCompare(b));
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
+    <title>{title} — Recipes</title>
     <script>
         (function () {
-          // Only do this on the Netlify admin site, not on GitHub Pages.
           if (location.hostname !== "mtrecipes.netlify.app") return;
-      
           const h = location.hash || "";
           const isInvite =
             h.includes("invite_token=") ||
             h.includes("recovery_token=") ||
             h.includes("confirmation_token=") ||
             h.includes("access_token=");
-      
           if (isInvite) {
             location.replace("/admin/" + h);
           }
         })();
       </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" />
     <link rel="stylesheet" href={withBase("/styles/global.css")} />
   </head>
   <body>
-    <header class="container header">
-      <a class="brand" href={withBase("/")}>Magnus og Tesserns oppskrifter</a>
-      <nav class="nav">
-        <a href={withBase("/")}>Cuisines</a>
-        <a href={withBase("/meal-planner")}>Meal Planner</a>
-      </nav>
+    <header class="site-header">
+      <div class="header-inner">
+        <a class="brand" href={withBase("/")}>Magnus & Tessern's Recipes</a>
+        <nav class="nav">
+          <a href={withBase("/")}>Home</a>
+          <a href={withBase("/meal-planner")}>Meal Planner</a>
+        </nav>
+      </div>
     </header>
 
-    <main class="container">
-      <div class="layout-sidebar">
-        <aside class="sidebar">
-          <h2>Cuisines</h2>
-          <nav class="sidebar-cuisines">
-            {cuisines.map((cuisine) => (
-              <a class="sidebar-cuisine-link" href={withBase(`/cuisines/${cuisine}`)}>
-                {cuisine}
-              </a>
-            ))}
-          </nav>
-        </aside>
-        <section class="content-main">
-          <slot />
-        </section>
-      </div>
-    </main>
+    {fullWidth ? (
+      <main><slot /></main>
+    ) : (
+      <main class="container">
+        <div class="layout-sidebar">
+          <aside class="sidebar">
+            <h2>Cuisines</h2>
+            <nav class="sidebar-cuisines">
+              {cuisines.map((cuisine) => (
+                <a class="sidebar-cuisine-link" href={withBase(`/cuisines/${cuisine}`)}>
+                  {cuisine}
+                </a>
+              ))}
+            </nav>
+          </aside>
+          <section class="content-main">
+            <slot />
+          </section>
+        </div>
+      </main>
+    )}
 
     <footer class="container footer">
-      <small>© {new Date().getFullYear()} Magnus og Tesserns oppskrifter</small>
+      <small>© {new Date().getFullYear()} Magnus & Tessern's Recipes</small>
     </footer>
   </body>
 </html>
