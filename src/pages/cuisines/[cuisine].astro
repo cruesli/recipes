@@ -35,8 +35,8 @@ recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 <BaseLayout title={title}>
   <p class="section-label">Cuisine</p>
-  <h1 style="font-size: 2rem; color: #292F17; margin: 0 0 6px;">{title}</h1>
-  <p style="font-size: 0.9rem; color: rgba(41,47,23,0.55); margin: 0 0 1.75rem;">
+  <h1 style="font-size: 2rem; color: var(--color-ink); margin: 0 0 6px;">{title}</h1>
+  <p style="font-size: 0.9rem; color: var(--color-ink-muted); margin: 0 0 1.75rem;">
     {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
   </p>
 
@@ -47,7 +47,7 @@ recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
           {r.data.image && (
             <img src={withBase(r.data.image)} alt={r.data.title} loading="lazy" />
           )}
-          <h2 style="margin: 0 0 6px; font-size: 1rem; font-weight: 500; color: #292F17;">{r.data.title}</h2>
+          <h2 style="margin: 0 0 6px; font-size: 1rem; font-weight: 500; color: var(--color-ink);">{r.data.title}</h2>
           <div class="badges">
             {r.data.totalTimeMinutes && (
               <span class="badge badge-meta">{r.data.totalTimeMinutes} min</span>
@@ -63,7 +63,7 @@ recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
       ))}
     </div>
   ) : (
-    <p style="color: rgba(41,47,23,0.5); font-style: italic;">
+    <p style="color: var(--color-ink-muted); font-style: italic;">
       No recipes for this cuisine yet.
     </p>
   )}

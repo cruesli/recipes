@@ -4,15 +4,258 @@
   --font-family-serif: 'EB Garamond', Georgia, serif;
   --font-family-sans: system-ui, -apple-system, sans-serif;
 
-  --color-bg: #FAF9F5;
-  --color-card: #F1ECDB;
-  --color-primary: #7E2625;
-  --color-secondary: #868B59;
-  --color-text: #292F17;
-  --color-text-muted: rgba(41, 47, 23, 0.55);
-  --color-border: rgba(41, 47, 23, 0.12);
+  /* Locked design tokens */
+  --color-paper:     #FAF8F2;
+  --color-surface:   #F3EFE4;
+  --color-stone:     #D4D0BF;
+  --color-ink:       #292F17;
+  --color-ink-muted: rgba(41, 47, 23, 0.58);
+  --color-hairline:  rgba(41, 47, 23, 0.12);
+  --color-oxblood:   #7E2625;
+  --color-olive:     #868B59;
 
   --radius-sm: 0.375rem;
   --radius-md: 0.625rem;
   --radius-lg: 0.875rem;
+}
+
+/* Legacy aliases kept for gradual migration */
+:root {
+  --max: 980px;
+  --radius: var(--radius-md);
+
+  --color-bg:          var(--color-paper);
+  --color-card:        var(--color-surface);
+  --color-primary:     var(--color-oxblood);
+  --color-secondary:   var(--color-olive);
+  --color-text:        var(--color-ink);
+  --color-text-muted:  var(--color-ink-muted);
+  --color-border:      var(--color-hairline);
+  --color-border-hover: rgba(41, 47, 23, 0.25);
+  --border: var(--color-hairline);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 18px;
+  line-height: 1.6;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+
+/* ── Editorial utilities ─────────────────────────────────────── */
+.eyebrow {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 600;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--color-oxblood);
+}
+
+.hairline {
+  border: none;
+  border-top: 1px solid var(--color-hairline);
+  margin: 0;
+}
+
+.onum {
+  font-feature-settings: "onum" 1;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  width: 100%;
+  background: rgba(250, 248, 242, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--color-hairline);
+}
+
+.header-inner {
+  max-width: var(--max);
+  margin: 0 auto;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-decoration: none;
+  color: var(--color-ink);
+  letter-spacing: 0.01em;
+  transition: opacity 0.15s;
+}
+
+.brand:hover { opacity: 0.7; }
+
+.nav { display: flex; align-items: center; }
+
+.nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: var(--color-ink-muted);
+  font-size: 0.9rem;
+  font-family: 'EB Garamond', Georgia, serif;
+  transition: color 0.15s;
+}
+
+.nav a:hover { color: var(--color-ink); }
+
+/* ── Layout ──────────────────────────────────────────────────── */
+.container { max-width: var(--max); margin: 0 auto; padding: 16px 24px; }
+
+.layout-sidebar {
+  display: flex;
+  align-items: flex-start;
+  gap: 32px;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────── */
+.sidebar {
+  flex: 0 0 120px;
+  font-size: 13px;
+  padding-top: 8px;
+}
+
+.sidebar h2 {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-ink-muted);
+  margin: 0 0 10px 0;
+}
+
+.sidebar-cuisines {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-cuisine-link {
+  display: block;
+  padding: 4px 0;
+  text-decoration: none;
+  color: var(--color-ink-muted);
+  text-transform: capitalize;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 13px;
+  transition: color 0.15s;
+}
+
+.sidebar-cuisine-link:hover { color: var(--color-ink); }
+
+.content-main { flex: 1; min-width: 0; }
+
+/* ── Cards & Grid ────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.card {
+  display: block;
+  text-decoration: none;
+  color: var(--color-ink);
+  background: none;
+  border-top: 1px solid var(--color-hairline);
+  padding: 1.25rem 0 0.75rem;
+  transition: opacity 0.15s;
+}
+
+.card:hover { opacity: 0.75; }
+
+.card img {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  margin-bottom: 0.75rem;
+  background-color: var(--color-stone);
+}
+
+/* ── Badges ──────────────────────────────────────────────────── */
+.badges { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.badge {
+  padding: 1px 8px;
+  font-size: 0.75rem;
+  font-family: 'EB Garamond', Georgia, serif;
+}
+
+.badge-tag {
+  color: var(--color-olive);
+  border: 1px solid var(--color-hairline);
+}
+
+.badge-meta {
+  color: var(--color-ink-muted);
+  border: 1px solid var(--color-hairline);
+}
+
+/* ── Section label (eyebrow alias, kept for compat) ──────────── */
+.section-label {
+  font-family: 'EB Garamond', Georgia, serif;
+  font-weight: 600;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--color-oxblood);
+  margin: 0 0 0.5rem 0;
+}
+
+hr { border: none; border-top: 1px solid var(--color-hairline); margin: 20px 0; }
+
+/* ── Recipe detail ───────────────────────────────────────────── */
+.recipe img {
+  width: 100%;
+  max-height: 400px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-hairline);
+  margin-bottom: 24px;
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+.footer {
+  border-top: 1px solid var(--color-hairline);
+  padding-top: 20px;
+  padding-bottom: 24px;
+  font-size: 0.8rem;
+  color: var(--color-ink-muted);
+}
+
+/* ── Recipe slider (kept for slider compatibility) ───────────── */
+.recipe-slider-container .slick-dots { bottom: -40px; }
+
+.recipe-slider-container .slick-dots li button:before {
+  font-size: 10px;
+  color: var(--color-stone);
+}
+
+.recipe-slider-container .slick-dots li.slick-active button:before {
+  color: var(--color-oxblood);
+  opacity: 0.75;
+}
+
+.slide-wrap:hover .slide-img { transform: scale(1.1); }
+
+/* ── Mobile ──────────────────────────────────────────────────── */
+@media (max-width: 700px) {
+  .layout-sidebar { flex-direction: column; }
+  .sidebar { width: 100%; flex: none; }
 }

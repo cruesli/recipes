@@ -120,16 +120,16 @@ export function WorldMap({ availableCuisines, basePath }: Props) {
   };
 
   return (
-    <div className="relative w-full" style={{ height: '70vh', backgroundColor: '#FAF9F5' }}>
+    <div className="relative w-full" style={{ height: '70vh', backgroundColor: 'var(--color-paper)' }}>
       {/* Heading overlay */}
       <div className="absolute top-6 left-0 right-0 text-center z-10 px-6 pointer-events-none">
-        <p className="text-xs uppercase tracking-widest mb-2" style={{ color: 'rgba(41,47,23,0.5)' }}>
+        <p className="text-xs uppercase tracking-widest mb-2" style={{ color: 'var(--color-ink-muted)' }}>
           Discover
         </p>
-        <h1 className="text-4xl md:text-5xl" style={{ color: '#292F17', fontFamily: "'EB Garamond', Georgia, serif" }}>
+        <h1 className="text-4xl md:text-5xl" style={{ color: 'var(--color-ink)', fontFamily: "'EB Garamond', Georgia, serif" }}>
           Explore the world through food
         </h1>
-        <p className="mt-2 text-base" style={{ color: 'rgba(41,47,23,0.55)' }}>
+        <p className="mt-2 text-base" style={{ color: 'var(--color-ink-muted)' }}>
           Click a country to see recipes from that cuisine
         </p>
       </div>
@@ -157,8 +157,8 @@ export function WorldMap({ availableCuisines, basePath }: Props) {
 
                 let fill = '#E8E4D4';
                 if (hasCuisine && hasRecipe) fill = '#B8B89A';
-                if (hasCuisine && !hasRecipe) fill = '#D4D0BF';
-                if (isHovered && hasCuisine) fill = '#868B59';
+                if (hasCuisine && !hasRecipe) fill = 'var(--color-stone)';
+                if (isHovered && hasCuisine) fill = 'var(--color-olive)';
 
                 return (
                   <Geography
@@ -171,22 +171,22 @@ export function WorldMap({ availableCuisines, basePath }: Props) {
                     style={{
                       default: {
                         fill,
-                        stroke: '#FAF9F5',
+                        stroke: 'var(--color-paper)',
                         strokeWidth: 0.5,
                         outline: 'none',
                         transition: 'fill 0.2s ease',
                         cursor: hasCuisine ? 'pointer' : 'default',
                       },
                       hover: {
-                        fill: hasCuisine ? '#868B59' : '#E8E4D4',
-                        stroke: '#FAF9F5',
+                        fill: hasCuisine ? 'var(--color-olive)' : '#E8E4D4',
+                        stroke: 'var(--color-paper)',
                         strokeWidth: 0.5,
                         outline: 'none',
                         cursor: hasCuisine ? 'pointer' : 'default',
                       },
                       pressed: {
-                        fill: hasCuisine ? '#7E2625' : '#E8E4D4',
-                        stroke: '#FAF9F5',
+                        fill: hasCuisine ? 'var(--color-oxblood)' : '#E8E4D4',
+                        stroke: 'var(--color-paper)',
                         strokeWidth: 0.5,
                         outline: 'none',
                       },
@@ -202,14 +202,14 @@ export function WorldMap({ availableCuisines, basePath }: Props) {
       {/* Legend */}
       <div
         className="absolute bottom-4 left-6 flex items-center gap-4 text-xs"
-        style={{ color: 'rgba(41,47,23,0.5)' }}
+        style={{ color: 'var(--color-ink-muted)' }}
       >
         <span className="flex items-center gap-1.5">
           <span className="inline-block w-3 h-3 rounded-sm" style={{ backgroundColor: '#B8B89A' }} />
           Has recipes
         </span>
         <span className="flex items-center gap-1.5">
-          <span className="inline-block w-3 h-3 rounded-sm" style={{ backgroundColor: '#D4D0BF' }} />
+          <span className="inline-block w-3 h-3 rounded-sm" style={{ backgroundColor: 'var(--color-stone)' }} />
           Cuisine with no recipes yet
         </span>
       </div>
@@ -222,7 +222,7 @@ export function WorldMap({ availableCuisines, basePath }: Props) {
         >
           <div
             className="px-3 py-1.5 rounded-lg text-sm shadow-md"
-            style={{ backgroundColor: '#292F17', color: '#FAF9F5' }}
+            style={{ backgroundColor: 'var(--color-ink)', color: 'var(--color-paper)' }}
           >
             {tooltip.label}
             {availableSet.has(tooltip.slug) && (

@@ -148,7 +148,7 @@ export function RecipePageIsland({
     : null;
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#FAF9F5', paddingTop: '60px' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--color-paper)', paddingTop: '60px' }}>
 
       {/* ── Hero (100vh) ── */}
       <div style={{ height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column' }}>
@@ -157,12 +157,12 @@ export function RecipePageIsland({
         <div style={{ maxWidth: '900px', margin: '0 auto', padding: '1.5rem 1.5rem 1rem', width: '100%', flexShrink: 0 }}>
           <a
             href={`${basePath}/`}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: 'rgba(41,47,23,0.55)', textDecoration: 'none', marginBottom: '1.25rem' }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '14px', color: 'var(--color-ink-muted)', textDecoration: 'none', marginBottom: '1.25rem' }}
           >
             <ArrowLeft size={16} />
             Back to recipes
           </a>
-          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.25rem)', color: '#292F17', margin: 0, lineHeight: 1.1, fontFamily: "'EB Garamond', Georgia, serif" }}>
+          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.25rem)', color: 'var(--color-ink)', margin: 0, lineHeight: 1.1, fontFamily: "'EB Garamond', Georgia, serif" }}>
             {title}
           </h1>
         </div>
@@ -176,14 +176,14 @@ export function RecipePageIsland({
               style={{ width: '100%', height: '100%', objectFit: 'cover' }}
             />
           ) : (
-            <div style={{ width: '100%', height: '100%', backgroundColor: '#F1ECDB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <ChefHat size={48} color="rgba(41,47,23,0.2)" />
+            <div style={{ width: '100%', height: '100%', backgroundColor: 'var(--color-stone)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <ChefHat size={48} color="var(--color-ink-muted)" />
             </div>
           )}
         </div>
 
         {/* Metadata bar */}
-        <div style={{ flexShrink: 0, borderBottom: '1px solid rgba(41,47,23,0.12)', backgroundColor: '#FAF9F5' }}>
+        <div style={{ flexShrink: 0, borderBottom: '1px solid var(--color-hairline)', backgroundColor: 'var(--color-paper)' }}>
           <div
             style={{ maxWidth: '900px', margin: '0 auto', padding: '1.25rem 1.5rem', display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'center', alignItems: 'center' }}
           >
@@ -198,14 +198,14 @@ export function RecipePageIsland({
 
             {/* Servings adjuster */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Users size={18} color="#7E2625" />
+              <Users size={18} color="var(--color-oxblood)" />
               <div>
-                <div style={{ fontSize: '11px', color: 'rgba(41,47,23,0.5)', marginBottom: '2px' }}>Servings</div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 500, color: '#292F17' }}>
+                <div style={{ fontSize: '11px', color: 'var(--color-ink-muted)', marginBottom: '2px' }}>Servings</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 500, color: 'var(--color-ink)' }}>
                   <button
                     onClick={() => setServings((s) => Math.max(1, s - 1))}
                     aria-label="Fewer servings"
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#7E2625', padding: '2px', display: 'flex' }}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex' }}
                   >
                     <Minus size={14} />
                   </button>
@@ -213,7 +213,7 @@ export function RecipePageIsland({
                   <button
                     onClick={() => setServings((s) => s + 1)}
                     aria-label="More servings"
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#7E2625', padding: '2px', display: 'flex' }}
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex' }}
                   >
                     <Plus size={14} />
                   </button>
@@ -225,7 +225,7 @@ export function RecipePageIsland({
             {tags.filter(Boolean).slice(0, 3).map((tag) => (
               <span
                 key={tag}
-                style={{ fontSize: '12px', padding: '3px 10px', borderRadius: '999px', backgroundColor: 'rgba(134,139,89,0.15)', color: '#868B59' }}
+                style={{ fontSize: '12px', padding: '3px 10px', borderRadius: '999px', backgroundColor: 'rgba(134,139,89,0.15)', color: 'var(--color-olive)' }}
               >
                 {tag}
               </span>
@@ -239,21 +239,21 @@ export function RecipePageIsland({
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '3rem', alignItems: 'start' }}>
 
           {/* Ingredients (dark panel) */}
-          <div style={{ backgroundColor: '#292F17', borderRadius: '12px', padding: '1.75rem' }}>
-            <h2 style={{ fontSize: '1.5rem', color: '#F1ECDB', margin: '0 0 1.25rem', fontFamily: "'EB Garamond', Georgia, serif" }}>
+          <div style={{ backgroundColor: 'var(--color-ink)', borderRadius: 'var(--radius-lg)', padding: '1.75rem' }}>
+            <h2 style={{ fontSize: '1.5rem', color: 'var(--color-paper)', margin: '0 0 1.25rem', fontFamily: "'EB Garamond', Georgia, serif" }}>
               Ingredients
             </h2>
             {sections.map((sec, si) => (
               <div key={si} style={{ marginBottom: sec.header ? '1.25rem' : '0' }}>
                 {sec.header && (
-                  <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(241,236,219,0.5)', margin: '0 0 8px', fontFamily: 'system-ui, sans-serif' }}>
+                  <p style={{ fontSize: '10px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(250,248,242,0.5)', margin: '0 0 8px', fontFamily: 'system-ui, sans-serif' }}>
                     {sec.header}
                   </p>
                 )}
                 <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
                   {sec.items.map((item, ii) => (
-                    <li key={ii} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', color: '#F1ECDB', fontSize: '14px', lineHeight: 1.5 }}>
-                      <span style={{ marginTop: '6px', flexShrink: 0, width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'rgba(241,236,219,0.5)' }} />
+                    <li key={ii} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', color: 'var(--color-paper)', fontSize: '14px', lineHeight: 1.5 }}>
+                      <span style={{ marginTop: '6px', flexShrink: 0, width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'rgba(250,248,242,0.5)' }} />
                       {scaleIngredient(item, ratio)}
                     </li>
                   ))}
@@ -265,13 +265,13 @@ export function RecipePageIsland({
           {/* Steps */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
-              <h2 style={{ fontSize: '1.5rem', color: '#292F17', margin: 0, fontFamily: "'EB Garamond', Georgia, serif" }}>
+              <h2 style={{ fontSize: '1.5rem', color: 'var(--color-ink)', margin: 0, fontFamily: "'EB Garamond', Georgia, serif" }}>
                 Instructions
               </h2>
 
               {/* Keep awake toggle */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <span style={{ fontSize: '12px', color: 'rgba(41,47,23,0.5)' }}>Keep screen on</span>
+                <span style={{ fontSize: '12px', color: 'var(--color-ink-muted)' }}>Keep screen on</span>
                 <button
                   onClick={toggleWakeLock}
                   role="switch"
@@ -279,7 +279,7 @@ export function RecipePageIsland({
                   style={{
                     position: 'relative', width: '40px', height: '22px', borderRadius: '999px',
                     border: 'none', cursor: 'pointer', padding: 0,
-                    backgroundColor: keepAwake ? '#7E2625' : 'rgba(41,47,23,0.2)',
+                    backgroundColor: keepAwake ? 'var(--color-oxblood)' : 'rgba(41,47,23,0.2)',
                     transition: 'background 0.2s',
                   }}
                 >
@@ -301,7 +301,7 @@ export function RecipePageIsland({
                     style={{
                       flexShrink: 0, width: '32px', height: '32px', borderRadius: '50%',
                       border: 'none', cursor: 'pointer', fontSize: '13px', fontWeight: 500,
-                      backgroundColor: '#7E2625', color: '#FAF9F5',
+                      backgroundColor: 'var(--color-oxblood)', color: 'var(--color-paper)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       transition: 'opacity 0.15s',
                     }}
@@ -329,10 +329,10 @@ export function RecipePageIsland({
 function MetaItem({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <span style={{ color: '#7E2625' }}>{icon}</span>
+      <span style={{ color: 'var(--color-oxblood)' }}>{icon}</span>
       <div>
-        <div style={{ fontSize: '11px', color: 'rgba(41,47,23,0.5)', marginBottom: '2px' }}>{label}</div>
-        <div style={{ fontSize: '14px', fontWeight: 500, color: '#292F17' }}>{value}</div>
+        <div style={{ fontSize: '11px', color: 'var(--color-ink-muted)', marginBottom: '2px' }}>{label}</div>
+        <div style={{ fontSize: '14px', fontWeight: 500, color: 'var(--color-ink)' }}>{value}</div>
       </div>
     </div>
   );

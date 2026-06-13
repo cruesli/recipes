@@ -23,7 +23,7 @@ function PrevArrow({ onClick }: { onClick?: () => void }) {
         transform: 'translateY(-50%)',
         zIndex: 10,
         padding: '12px',
-        backgroundColor: '#F1ECDB',
+        backgroundColor: 'var(--color-surface)',
         border: 'none',
         cursor: 'pointer',
         display: 'flex',
@@ -31,7 +31,7 @@ function PrevArrow({ onClick }: { onClick?: () => void }) {
         justifyContent: 'center',
       }}
     >
-      <ChevronLeft size={32} color="#7E2625" />
+      <ChevronLeft size={32} color="var(--color-oxblood)" />
     </button>
   );
 }
@@ -48,7 +48,7 @@ function NextArrow({ onClick }: { onClick?: () => void }) {
         transform: 'translateY(-50%)',
         zIndex: 10,
         padding: '12px',
-        backgroundColor: '#F1ECDB',
+        backgroundColor: 'var(--color-surface)',
         border: 'none',
         cursor: 'pointer',
         display: 'flex',
@@ -56,7 +56,7 @@ function NextArrow({ onClick }: { onClick?: () => void }) {
         justifyContent: 'center',
       }}
     >
-      <ChevronRight size={32} color="#7E2625" />
+      <ChevronRight size={32} color="var(--color-oxblood)" />
     </button>
   );
 }
@@ -82,7 +82,7 @@ export function RecipeSliderIsland({ recipes, basePath }: { recipes: SliderRecip
   };
 
   return (
-    <div style={{ backgroundColor: '#FAF9F5', padding: '4rem 0 5rem' }}>
+    <div style={{ backgroundColor: 'var(--color-paper)', padding: '4rem 0 5rem' }}>
       <div className="recipe-slider-container">
         <Slider {...settings}>
           {recipes.map((recipe) => (
@@ -100,7 +100,7 @@ export function RecipeSliderIsland({ recipes, basePath }: { recipes: SliderRecip
                       style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 500ms' }}
                     />
                   ) : (
-                    <div style={{ width: '100%', height: '100%', backgroundColor: '#F1ECDB' }} />
+                    <div style={{ width: '100%', height: '100%', backgroundColor: 'var(--color-surface)' }} />
                   )}
                   <div style={{
                     position: 'absolute',

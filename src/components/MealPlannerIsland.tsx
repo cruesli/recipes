@@ -199,7 +199,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
   const checkedCount = shoppingList.filter((i) => i.checked).length;
 
   return (
-    <div style={{ backgroundColor: '#FAF9F5', minHeight: '60vh' }}>
+    <div style={{ backgroundColor: 'var(--color-paper)', minHeight: '60vh' }}>
       <div style={{ maxWidth: '720px', margin: '0 auto', padding: '2.5rem 1.5rem' }}>
 
         {/* Page header */}
@@ -207,7 +207,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
           <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(41,47,23,0.5)', marginBottom: '4px' }}>
             Planning
           </p>
-          <h1 style={{ fontSize: '2.25rem', color: '#292F17', margin: 0 }}>Weekly Menu</h1>
+          <h1 style={{ fontSize: '2.25rem', color: 'var(--color-ink)', margin: 0 }}>Weekly Menu</h1>
           <p style={{ marginTop: '6px', fontSize: '0.9rem', color: 'rgba(41,47,23,0.6)' }}>
             Pick meals for the week and generate a shopping list automatically.
           </p>
@@ -220,7 +220,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
             const isOpen = openDay === day;
 
             return (
-              <div key={day} style={{ borderRadius: '10px', overflow: 'visible', backgroundColor: '#F1ECDB' }}>
+              <div key={day} style={{ borderRadius: '10px', overflow: 'visible', backgroundColor: 'var(--color-surface)' }}>
                 {/* Row */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 18px' }}>
                   <span style={{ width: '80px', flexShrink: 0, fontSize: '13px', color: 'rgba(41,47,23,0.55)' }}>
@@ -236,15 +236,15 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                           style={{ width: '36px', height: '36px', borderRadius: '6px', objectFit: 'cover', flexShrink: 0 }}
                         />
                       )}
-                      <span style={{ flex: 1, fontSize: '14px', color: '#292F17' }}>{meal.title}</span>
+                      <span style={{ flex: 1, fontSize: '14px', color: 'var(--color-ink)' }}>{meal.title}</span>
                       {meal.recipeId === null && (
-                        <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '999px', backgroundColor: 'rgba(134,139,89,0.15)', color: '#868B59' }}>
+                        <span style={{ fontSize: '11px', padding: '2px 8px', borderRadius: '999px', backgroundColor: 'rgba(134,139,89,0.15)', color: 'var(--color-olive)' }}>
                           custom
                         </span>
                       )}
                       <button
                         onClick={() => setOpenDay(isOpen ? null : day)}
-                        style={{ fontSize: '12px', color: '#7E2625', background: 'none', border: 'none', cursor: 'pointer', padding: '0', textDecoration: 'underline' }}
+                        style={{ fontSize: '12px', color: 'var(--color-oxblood)', background: 'none', border: 'none', cursor: 'pointer', padding: '0', textDecoration: 'underline' }}
                       >
                         Change
                       </button>
@@ -289,8 +289,8 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                           paddingBottom: '8px',
                           borderRadius: '8px',
                           border: '1px solid rgba(41,47,23,0.15)',
-                          backgroundColor: '#FAF9F5',
-                          color: '#292F17',
+                          backgroundColor: 'var(--color-paper)',
+                          color: 'var(--color-ink)',
                           fontSize: '14px',
                           outline: 'none',
                           boxSizing: 'border-box',
@@ -313,7 +313,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                               border: 'none',
                               cursor: 'pointer',
                               padding: 0,
-                              backgroundColor: '#D4D0BF',
+                              backgroundColor: 'var(--color-stone)',
                             }}
                           >
                             {r.image ? (
@@ -323,7 +323,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                                 style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                               />
                             ) : (
-                              <div style={{ width: '100%', height: '100%', backgroundColor: '#D4D0BF' }} />
+                              <div style={{ width: '100%', height: '100%', backgroundColor: 'var(--color-stone)' }} />
                             )}
                             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%)' }} />
                             <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '6px 8px', textAlign: 'left' }}>
@@ -354,8 +354,8 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                             padding: '8px 12px',
                             borderRadius: '8px',
                             border: '1px solid rgba(41,47,23,0.15)',
-                            backgroundColor: '#FAF9F5',
-                            color: '#292F17',
+                            backgroundColor: 'var(--color-paper)',
+                            color: 'var(--color-ink)',
                             fontSize: '14px',
                             outline: 'none',
                           }}
@@ -367,8 +367,8 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                             padding: '8px 16px',
                             borderRadius: '8px',
                             border: 'none',
-                            backgroundColor: '#7E2625',
-                            color: '#FAF9F5',
+                            backgroundColor: 'var(--color-oxblood)',
+                            color: 'var(--color-paper)',
                             fontSize: '14px',
                             cursor: 'pointer',
                             opacity: (customInputs[day] ?? '').trim() ? 1 : 0.4,
@@ -397,8 +397,8 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
               padding: '12px 28px',
               borderRadius: '10px',
               border: 'none',
-              backgroundColor: '#7E2625',
-              color: '#FAF9F5',
+              backgroundColor: 'var(--color-oxblood)',
+              color: 'var(--color-paper)',
               fontSize: '14px',
               cursor: canGenerate ? 'pointer' : 'not-allowed',
               opacity: canGenerate ? 1 : 0.4,
@@ -422,15 +422,15 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                 <p style={{ fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(41,47,23,0.5)', marginBottom: '4px' }}>
                   Shopping list
                 </p>
-                <h2 style={{ fontSize: '1.75rem', color: '#292F17', margin: 0 }}>Ingredients</h2>
+                <h2 style={{ fontSize: '1.75rem', color: 'var(--color-ink)', margin: 0 }}>Ingredients</h2>
               </div>
               <button
                 onClick={downloadList}
                 style={{
                   display: 'flex', alignItems: 'center', gap: '6px',
                   padding: '8px 14px', borderRadius: '8px', fontSize: '13px',
-                  border: '1px solid #292F17', backgroundColor: 'transparent',
-                  color: '#292F17', cursor: 'pointer',
+                  border: '1px solid var(--color-ink)', backgroundColor: 'transparent',
+                  color: 'var(--color-ink)', cursor: 'pointer',
                 }}
               >
                 <Download size={15} />
@@ -440,12 +440,12 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
 
             {/* Progress */}
             {shoppingList.length > 0 && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 16px', borderRadius: '8px', backgroundColor: '#F1ECDB', marginBottom: '1.5rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 16px', borderRadius: '8px', backgroundColor: 'var(--color-surface)', marginBottom: '1.5rem' }}>
                 <span style={{ fontSize: '13px', color: 'rgba(41,47,23,0.7)' }}>
                   {checkedCount} of {shoppingList.length} checked
                 </span>
                 {checkedCount === shoppingList.length && shoppingList.length > 0 && (
-                  <span style={{ fontSize: '13px', color: '#868B59', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ fontSize: '13px', color: 'var(--color-olive)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Check size={15} /> All done!
                   </span>
                 )}
@@ -463,8 +463,8 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                   return (
                     <div key={day} style={{ border: '1px solid rgba(41,47,23,0.1)', borderRadius: '10px', overflow: 'hidden' }}>
                       {/* Day header */}
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', backgroundColor: '#F1ECDB' }}>
-                        <span style={{ fontSize: '13px', fontWeight: 500, color: '#292F17' }}>{day}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '10px 16px', backgroundColor: 'var(--color-surface)' }}>
+                        <span style={{ fontSize: '13px', fontWeight: 500, color: 'var(--color-ink)' }}>{day}</span>
                         <span style={{ fontSize: '12px', color: 'rgba(41,47,23,0.5)' }}>— {meal.title}</span>
                         {meal.image && (
                           <img
@@ -496,7 +496,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                                   width: '18px', height: '18px',
                                   borderRadius: '4px',
                                   border: item.checked ? 'none' : '1.5px solid rgba(41,47,23,0.3)',
-                                  backgroundColor: item.checked ? '#7E2625' : 'transparent',
+                                  backgroundColor: item.checked ? 'var(--color-oxblood)' : 'transparent',
                                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                                 }}
                               >
@@ -506,7 +506,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                                 onClick={() => toggleItem(item.id)}
                                 style={{
                                   fontSize: '14px',
-                                  color: item.checked ? 'rgba(41,47,23,0.35)' : '#292F17',
+                                  color: item.checked ? 'rgba(41,47,23,0.35)' : 'var(--color-ink)',
                                   textDecoration: item.checked ? 'line-through' : 'none',
                                 }}
                               >
@@ -522,14 +522,14 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
 
                 {/* Note for custom meals */}
                 {DAYS.some((d) => meals[d]?.recipeId === null) && (
-                  <div style={{ padding: '16px', borderRadius: '10px', backgroundColor: '#F1ECDB' }}>
-                    <p style={{ fontSize: '13px', color: '#292F17', marginBottom: '8px' }}>
+                  <div style={{ padding: '16px', borderRadius: '10px', backgroundColor: 'var(--color-surface)' }}>
+                    <p style={{ fontSize: '13px', color: 'var(--color-ink)', marginBottom: '8px' }}>
                       Custom meals (no ingredient data):
                     </p>
                     <ul style={{ margin: 0, paddingLeft: '16px' }}>
                       {DAYS.filter((d) => meals[d]?.recipeId === null).map((d) => (
                         <li key={d} style={{ fontSize: '13px', color: 'rgba(41,47,23,0.6)' }}>
-                          <strong style={{ color: '#292F17' }}>{d}:</strong> {meals[d]?.title}
+                          <strong style={{ color: 'var(--color-ink)' }}>{d}:</strong> {meals[d]?.title}
                         </li>
                       ))}
                     </ul>
