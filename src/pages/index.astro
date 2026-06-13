@@ -1,16 +1,96 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
 import { withBase } from "../utils/withBase";
+import { WorldMap } from "../components/WorldMap";
+import { DiscoverPanel } from "../components/DiscoverPanel";
+import { RecipeSliderIsland } from "../components/RecipeSliderIsland";
+import SeasonalBanner from "../components/SeasonalBanner.astro";
+
+const recipes = await getCollection("recipes");
+
+const availableCuisines = [...new Set(recipes.map((r) => r.data.cuisine.toLowerCase()))];
+
+const countByCuisine = recipes.reduce<Record<string, number>>((acc, r) => {
+  const c = r.data.cuisine.toLowerCase();
+  acc[c] = (acc[c] ?? 0) + 1;
+  return acc;
+}, {});
+
+const discoverRecipes = recipes.map((r) => ({
+  id: r.slug,
+  title: r.data.title,
+  cuisine: r.data.cuisine,
+  image: r.data.image ?? null,
+  tags: r.data.tags ?? [],
+  totalTimeMinutes: r.data.totalTimeMinutes ?? null,
+  servings: r.data.servings ?? null,
+}));
+
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<BaseLayout title="Family Recipes">
-  <h1>Family Recipes</h1>
+<BaseLayout title="Hjem" fullWidth={true}>
+  <!-- World Map -->
+  <WorldMap
+    availableCuisines={availableCuisines}
+    basePath={basePath}
+    client:load
+  />
 
-  <h2>Create new recipe</h2>
-  <p>
-    When we add the CMS, this will link to the editor.
-    For now, you create a new recipe by adding a Markdown file under
-    <code>src/content/recipes/</code>.
-  </p>
-  <p><a class="card" href={withBase("/admin")}>Go to Admin (later)</a></p>
+  <!-- Seasonal Banner -->
+  <SeasonalBanner />
+
+  <!-- Discover Panel -->
+  <DiscoverPanel
+    recipes={discoverRecipes}
+    basePath={basePath}
+    client:load
+  />
+
+  <!-- Cuisine browse grid -->
+  <section style="background: #FAF9F5; padding: 3rem 0 4rem; border-top: 1px solid rgba(41,47,23,0.08);">
+    <div class="container">
+      <p class="section-label">All cuisines</p>
+      <h2 style="font-size: 1.75rem; color: #292F17; margin: 0 0 1.5rem;">
+        Browse by cuisine
+      </h2>
+      <div class="grid">
+        {availableCuisines.sort().map((cuisine) => (
+          <a class="card cuisine-card" href={withBase(`/cuisines/${cuisine}`)}>
+            <span class="cuisine-name">{cuisine}</span>
+            <span class="cuisine-count">
+              {countByCuisine[cuisine]} {countByCuisine[cuisine] === 1 ? "recipe" : "recipes"}
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Recipe Slideshow -->
+  <RecipeSliderIsland
+    recipes={discoverRecipes.map((r) => ({ slug: r.id, title: r.title, image: r.image }))}
+    basePath={basePath}
+    client:only="react"
+  />
 </BaseLayout>
+
+<style>
+  .cuisine-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 16px 20px;
+  }
+  .cuisine-name {
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: capitalize;
+    color: #292F17;
+  }
+  .cuisine-count {
+    font-size: 0.8rem;
+    color: rgba(41, 47, 23, 0.55);
+  }
+</style>
