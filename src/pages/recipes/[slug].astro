@@ -1,7 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
-import { withBase } from "../../utils/withBase";
+import { RecipePageIsland } from "../../components/RecipePageIsland";
+
 export async function getStaticPaths() {
   const recipes = await getCollection("recipes");
   return recipes.map((r) => ({ params: { slug: r.slug } }));
@@ -12,56 +13,42 @@ const { slug } = Astro.params;
 const recipes = await getCollection("recipes");
 const recipe = recipes.find((r) => r.slug === slug);
 
-if (!recipe) {
-  throw new Error(`Recipe not found: ${slug}`);
-}
+if (!recipe) throw new Error(`Recipe not found: ${slug}`);
 
-const { Content } = await recipe.render();
 const d = recipe.data;
 
+// Ingredients: already parsed by content schema into string[]
 const rawIngredients = d.ingredients as unknown;
 const ingredients: string[] = Array.isArray(rawIngredients)
   ? (rawIngredients as string[])
   : typeof rawIngredients === "string"
   ? (rawIngredients as string)
       .split(/\r?\n/)
-      .map((line: string) => line.trim().replace(/^-+\s*/, ""))
+      .map((l: string) => l.trim().replace(/^-+\s*/, ""))
       .filter(Boolean)
   : [];
+
+// Steps: parse numbered list items from raw markdown body
+const steps: string[] = recipe.body
+  .split(/\n(?=\d+\.)/)
+  .map((chunk) => chunk.replace(/^\d+\.\s*/, "").trim())
+  .filter(Boolean);
+
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 ---
 
-<BaseLayout title={d.title}>
-  <article class="recipe">
-    <h1>{d.title}</h1>
-
-    <div class="badges" style="margin-bottom: 12px;">
-      <span class="badge" style="text-transform: capitalize;">{d.cuisine}</span>
-      {d.foodType ? <span class="badge">{d.foodType}</span> : null}
-      {typeof d.totalTimeMinutes === "number" ? <span class="badge">{d.totalTimeMinutes} min</span> : null}
-      {typeof d.servings === "number" ? <span class="badge">{d.servings} servings</span> : null}
-      {d.tags?.map((t) => <span class="badge">{t}</span>)}
-    </div>
-
-    {d.image ? <img src={withBase(d.image)} alt={d.title} loading="lazy" /> : null}
-
-    {ingredients.length ? (
-      <section style="margin-top: 16px;">
-        <h2>Ingredients</h2>
-        <ul>
-          {ingredients.map((ingredient: string) =>
-            ingredient.endsWith(":") ? (
-              <li class="ingredients-header">{ingredient}</li>
-            ) : (
-              <li>{ingredient}</li>
-            )
-          )}
-        </ul>
-      </section>
-    ) : null}
-
-    <section style="margin-top: 16px;">
-      <h2>Steps</h2>
-      <Content />
-    </section>
-  </article>
+<BaseLayout title={d.title} fullWidth={true}>
+  <RecipePageIsland
+    title={d.title}
+    cuisine={d.cuisine}
+    totalTimeMinutes={d.totalTimeMinutes ?? null}
+    servings={d.servings ?? 4}
+    image={d.image ?? null}
+    foodType={d.foodType ?? null}
+    tags={d.tags ?? []}
+    ingredients={ingredients}
+    steps={steps}
+    basePath={basePath}
+    client:load
+  />
 </BaseLayout>
