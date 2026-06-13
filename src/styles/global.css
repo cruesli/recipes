@@ -2,7 +2,7 @@
 
 @theme {
   --font-family-serif: 'EB Garamond', Georgia, serif;
-  --font-family-sans: system-ui, -apple-system, sans-serif;
+  --font-family-sans: 'Schibsted Grotesk', system-ui, -apple-system, sans-serif;
 
   /* Locked design tokens */
   --color-paper:     #FAF8F2;

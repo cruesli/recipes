@@ -54,6 +54,8 @@ const HAIRLINE: React.CSSProperties = {
   margin: 0,
 };
 
+const SANS = "'Schibsted Grotesk', system-ui, -apple-system, sans-serif";
+
 const INPUT: React.CSSProperties = {
   border: '1px solid var(--color-hairline)',
   backgroundColor: 'var(--color-paper)',
@@ -348,6 +350,8 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                   onChange={(e) => setCollectionQuery(e.target.value)}
                   style={{
                     ...INPUT,
+                    fontFamily: SANS,
+                    fontSize: '0.85rem',
                     width: '100%',
                     paddingLeft: '28px',
                     paddingRight: '10px',
@@ -375,10 +379,10 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                       : '1px solid var(--color-hairline)',
                     backgroundColor: 'transparent',
                     color: cuisineFilter ? 'var(--color-oxblood)' : 'var(--color-ink-muted)',
-                    fontFamily: "'EB Garamond', Georgia, serif",
-                    fontSize: '0.78rem',
+                    fontFamily: SANS,
+                    fontSize: '0.72rem',
                     textTransform: 'uppercase',
-                    letterSpacing: '0.1em',
+                    letterSpacing: '0.07em',
                     cursor: 'pointer',
                     whiteSpace: 'nowrap',
                     boxSizing: 'border-box',
@@ -415,8 +419,8 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                           borderBottom: '1px solid var(--color-hairline)',
                           backgroundColor: 'transparent',
                           color: 'var(--color-ink)',
-                          fontFamily: "'EB Garamond', Georgia, serif",
-                          fontSize: '0.875rem',
+                          fontFamily: SANS,
+                          fontSize: '0.82rem',
                           textTransform: 'capitalize',
                           cursor: 'pointer',
                         }}
@@ -430,11 +434,10 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
             </div>
 
             <p className="onum" style={{
-              fontFamily: "'EB Garamond', Georgia, serif",
-              fontSize: '0.75rem',
+              fontFamily: SANS,
+              fontSize: '0.72rem',
               color: 'var(--color-ink-muted)',
               margin: 0,
-              fontStyle: 'italic',
             }}>
               {collectionRecipes.length} recipe{collectionRecipes.length !== 1 ? 's' : ''}
               {' · '}drag to a day to plan
@@ -509,8 +512,8 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                   </div>
                   {r.totalTimeMinutes && (
                     <span className="onum" style={{
-                      fontFamily: "'EB Garamond', Georgia, serif",
-                      fontSize: '0.72rem',
+                      fontFamily: SANS,
+                      fontSize: '0.68rem',
                       color: 'var(--color-ink-muted)',
                       flexShrink: 0,
                     }}>

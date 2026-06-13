@@ -1,12 +1,31 @@
 ---
 import { SEASONAL_ITEMS, SEASON_LABEL } from '../data/seasonal';
+
+interface Props {
+  photo?: string;  // Optional path to full-bleed atmospheric photo
+}
+
+const { photo } = Astro.props;
 ---
 
-<section class="splash" aria-label="Welcome">
-  <!-- Living texture: drifting warm blobs (CSS only) -->
-  <div class="splash-blob splash-blob--1" aria-hidden="true"></div>
-  <div class="splash-blob splash-blob--2" aria-hidden="true"></div>
-  <div class="splash-blob splash-blob--3" aria-hidden="true"></div>
+<section class={`splash${photo ? ' splash--photo' : ''}`} aria-label="Welcome" data-splash>
+
+  <!-- Living texture: drifting warm blobs (hidden in photo mode) -->
+  {!photo && (
+    <>
+      <div class="splash-blob splash-blob--1" aria-hidden="true"></div>
+      <div class="splash-blob splash-blob--2" aria-hidden="true"></div>
+      <div class="splash-blob splash-blob--3" aria-hidden="true"></div>
+    </>
+  )}
+
+  <!-- Photo mode background -->
+  {photo && (
+    <>
+      <div class="splash-photo" style={`background-image: url('${photo}')`} aria-hidden="true"></div>
+      <div class="splash-photo-overlay" aria-hidden="true"></div>
+    </>
+  )}
 
   <div class="splash-content">
     <p class="eyebrow splash-eyebrow">Magnus &amp; Tessern's Recipes</p>
@@ -25,6 +44,26 @@ import { SEASONAL_ITEMS, SEASON_LABEL } from '../data/seasonal';
   </div>
 </section>
 
+<script>
+  const splash = document.querySelector('[data-splash]') as HTMLElement | null;
+  if (splash) {
+    const hasWiped = sessionStorage.getItem('splash-wiped');
+    if (hasWiped) {
+      // Subsequent visit this session: skip stagger animations, show content instantly
+      splash.classList.add('splash--instant');
+    } else {
+      // First visit: set up one-time scroll wipe
+      window.addEventListener('scroll', function onFirstScroll() {
+        if (window.scrollY > 8) {
+          splash.classList.add('splash--wipe-out');
+          sessionStorage.setItem('splash-wiped', '1');
+          window.removeEventListener('scroll', onFirstScroll);
+        }
+      }, { passive: true });
+    }
+  }
+</script>
+
 <style>
   .splash {
     position: relative;
@@ -38,6 +77,36 @@ import { SEASONAL_ITEMS, SEASON_LABEL } from '../data/seasonal';
     background: var(--color-paper);
   }
 
+  /* ── Photo mode ────────────────────────────────────────────── */
+  .splash--photo { background: #1a1410; }
+
+  .splash-photo {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.75;
+  }
+
+  .splash-photo-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(18, 12, 8, 0.15) 0%,
+      rgba(18, 12, 8, 0.45) 55%,
+      rgba(18, 12, 8, 0.72) 100%
+    );
+  }
+
+  .splash--photo .splash-eyebrow   { color: rgba(250, 248, 242, 0.68); }
+  .splash--photo .splash-title     { color: #FAF8F2; }
+  .splash--photo .splash-rule      { border-top-color: rgba(250, 248, 242, 0.22); }
+  .splash--photo .splash-season    { color: rgba(250, 248, 242, 0.58); }
+  .splash--photo .splash-season-label { color: rgba(250, 248, 242, 0.82); }
+  .splash--photo .splash-cue       { color: rgba(250, 248, 242, 0.45); }
+
   /* ── Living texture ────────────────────────────────────────── */
   .splash-blob {
     position: absolute;
@@ -48,8 +117,7 @@ import { SEASONAL_ITEMS, SEASON_LABEL } from '../data/seasonal';
   .splash-blob--1 {
     width: clamp(320px, 52vw, 620px);
     height: clamp(320px, 52vw, 620px);
-    top: -15%;
-    left: -12%;
+    top: -15%; left: -12%;
     background: rgba(126, 38, 37, 0.08);
     filter: blur(100px);
     animation: blobDrift1 22s ease-in-out infinite;
@@ -58,8 +126,7 @@ import { SEASONAL_ITEMS, SEASON_LABEL } from '../data/seasonal';
   .splash-blob--2 {
     width: clamp(240px, 38vw, 480px);
     height: clamp(240px, 38vw, 480px);
-    bottom: -10%;
-    right: -8%;
+    bottom: -10%; right: -8%;
     background: rgba(134, 139, 89, 0.09);
     filter: blur(90px);
     animation: blobDrift2 28s ease-in-out infinite;
@@ -68,8 +135,7 @@ import { SEASONAL_ITEMS, SEASON_LABEL } from '../data/seasonal';
   .splash-blob--3 {
     width: clamp(180px, 28vw, 360px);
     height: clamp(180px, 28vw, 360px);
-    top: 42%;
-    left: 52%;
+    top: 42%; left: 52%;
     background: rgba(212, 208, 191, 0.55);
     filter: blur(70px);
     animation: blobDrift3 18s ease-in-out infinite;
@@ -153,13 +219,55 @@ import { SEASONAL_ITEMS, SEASON_LABEL } from '../data/seasonal';
     transform: translateX(-50%);
     color: var(--color-ink-muted);
     opacity: 0;
-    animation: splashFadeUp 0.7s ease both, splashCueBounce 2.2s ease-in-out 1.2s infinite;
-    animation-delay: 0.9s, 1.2s;
+    animation: splashFadeUp 0.7s ease 0.9s both, splashCueBounce 2.2s ease-in-out 1.2s infinite;
     z-index: 1;
   }
 
   @keyframes splashCueBounce {
     0%, 100% { transform: translateX(-50%) translateY(0); }
     50%       { transform: translateX(-50%) translateY(7px); }
+  }
+
+  /* ── Instant mode (same-session return visits) ─────────────── */
+  .splash--instant .splash-eyebrow,
+  .splash--instant .splash-title,
+  .splash--instant .splash-rule,
+  .splash--instant .splash-season {
+    animation: none;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .splash--instant .splash-cue {
+    animation: splashCueBounce 2.2s ease-in-out infinite;
+    opacity: 1;
+  }
+
+  /* ── Wipe-out (one-time organic exit on first scroll) ──────── */
+  .splash--wipe-out .splash-content {
+    animation: splashContentWipe 0.55s cubic-bezier(0.45, 0, 0.2, 1) forwards;
+    pointer-events: none;
+  }
+
+  .splash--wipe-out .splash-cue {
+    animation: none !important;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .splash--wipe-out .splash-blob,
+  .splash--wipe-out .splash-photo,
+  .splash--wipe-out .splash-photo-overlay {
+    animation: splashTextureFade 0.7s ease forwards;
+  }
+
+  @keyframes splashContentWipe {
+    0%   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    100% { opacity: 0; transform: translateY(-28px) scale(0.97); filter: blur(4px); }
+  }
+
+  @keyframes splashTextureFade {
+    0%   { opacity: 1; }
+    100% { opacity: 0; }
   }
 </style>
