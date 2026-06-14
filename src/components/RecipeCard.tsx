@@ -8,9 +8,10 @@ interface RecipeCardProps {
   meta?: (string | null | undefined)[];
   draggable?: boolean;
   onDragStart?: (e: React.DragEvent<HTMLAnchorElement>) => void;
+  onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
-export function RecipeCard({ href, imageSrc, eyebrow, title, meta, draggable, onDragStart }: RecipeCardProps) {
+export function RecipeCard({ href, imageSrc, eyebrow, title, meta, draggable, onDragStart, onClick }: RecipeCardProps) {
   const metaStr = (meta ?? []).filter(Boolean).join(' · ');
 
   return (
@@ -18,6 +19,7 @@ export function RecipeCard({ href, imageSrc, eyebrow, title, meta, draggable, on
       href={href}
       draggable={draggable}
       onDragStart={onDragStart}
+      onClick={onClick}
       className={`recipe-card${draggable ? ' cpi-drag-item' : ''}`}
       style={{
         display: 'block',
