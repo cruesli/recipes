@@ -1,42 +1,11 @@
 import { useState, useRef } from 'react';
 import { Plus, X, ChevronDown, Search, ShoppingCart, Check, Download } from 'lucide-react';
-
-export interface RecipeData {
-  id: string;
-  title: string;
-  cuisine: string;
-  image: string | null;
-  totalTimeMinutes: number | null;
-  ingredients: string[];
-}
+import { DAYS, usePlanner, type RecipeData } from './usePlanner';
 
 interface Props {
   recipes: RecipeData[];
   basePath: string;
 }
-
-interface IngredientSection {
-  header: string | null;
-  items: string[];
-}
-
-interface PlannedMeal {
-  recipeId: string | null;
-  title: string;
-  image: string | null;
-  sections: IngredientSection[];
-}
-
-interface ShoppingItem {
-  id: string;
-  text: string;
-  day: string;
-  recipeTitle: string;
-  sectionHeader: string | null;
-  checked: boolean;
-}
-
-const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 const EYEBROW: React.CSSProperties = {
   fontFamily: "'EB Garamond', Georgia, serif",
@@ -66,36 +35,33 @@ const INPUT: React.CSSProperties = {
   padding: '7px 10px',
 };
 
-function parseIngredients(raw: string[]): IngredientSection[] {
-  const sections: IngredientSection[] = [];
-  let current: IngredientSection = { header: null, items: [] };
-  for (const line of raw) {
-    if (line.endsWith(':')) {
-      if (current.items.length > 0 || current.header !== null) sections.push(current);
-      current = { header: line.slice(0, -1), items: [] };
-    } else if (line.trim()) {
-      current.items.push(line);
-    }
-  }
-  if (current.items.length > 0 || current.header !== null) sections.push(current);
-  return sections;
-}
-
 export function CollectionPlannerIsland({ recipes, basePath }: Props) {
-  // ── Planner state ─────────────────────────────────────────────────────────
-  const [meals, setMeals] = useState<Partial<Record<string, PlannedMeal>>>({});
-  const [openDay, setOpenDay] = useState<string | null>(null);
-  const [search, setSearch] = useState('');
-  const [customInputs, setCustomInputs] = useState<Partial<Record<string, string>>>({});
-  const [shoppingList, setShoppingList] = useState<ShoppingItem[]>([]);
-  const [listReady, setListReady] = useState(false);
-  const shoppingRef = useRef<HTMLDivElement>(null);
+  const {
+    meals,
+    shoppingList,
+    listReady,
+    grouped,
+    checkedCount,
+    canGenerate,
+    selectRecipe,
+    addCustom,
+    removeMeal,
+    generateList,
+    toggleItem,
+    downloadList,
+  } = usePlanner();
 
   // ── Collection state ──────────────────────────────────────────────────────
   const [collectionQuery, setCollectionQuery] = useState('');
   const [cuisineFilter, setCuisineFilter] = useState<string | null>(null);
   const [filterOpen, setFilterOpen] = useState(false);
   const [dragOverDay, setDragOverDay] = useState<string | null>(null);
+
+  // ── Picker UI state (per-day search + custom inputs) ──────────────────────
+  const [openDay, setOpenDay] = useState<string | null>(null);
+  const [search, setSearch] = useState('');
+  const [customInputs, setCustomInputs] = useState<Partial<Record<string, string>>>({});
+  const shoppingRef = useRef<HTMLDivElement>(null);
 
   const availableCuisines = [...new Set(recipes.map((r) => r.cuisine))].sort((a, b) =>
     a.localeCompare(b)
@@ -108,117 +74,30 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
     return matchesQ && matchesC;
   });
 
-  // Recipes for inline day-picker (filtered by picker's own search field)
   const pickerFiltered = recipes.filter(
     (r) =>
       r.title.toLowerCase().includes(search.toLowerCase()) ||
       r.cuisine.toLowerCase().includes(search.toLowerCase())
   );
 
-  const filledDays = DAYS.filter((d) => meals[d]);
-  const canGenerate = filledDays.length > 0;
-
-  // ── Planner actions ───────────────────────────────────────────────────────
-  function selectRecipe(day: string, recipe: RecipeData) {
-    setMeals((prev) => ({
-      ...prev,
-      [day]: {
-        recipeId: recipe.id,
-        title: recipe.title,
-        image: recipe.image,
-        sections: parseIngredients(recipe.ingredients),
-      },
-    }));
+  function handleSelectRecipe(day: string, recipe: RecipeData) {
+    selectRecipe(day, recipe);
     setOpenDay(null);
     setSearch('');
-    resetList();
   }
 
-  function addCustom(day: string) {
-    const name = (customInputs[day] ?? '').trim();
-    if (!name) return;
-    setMeals((prev) => ({
-      ...prev,
-      [day]: { recipeId: null, title: name, image: null, sections: [] },
-    }));
+  function handleAddCustom(day: string) {
+    addCustom(day, customInputs[day] ?? '');
     setCustomInputs((prev) => ({ ...prev, [day]: '' }));
     setOpenDay(null);
-    resetList();
   }
 
-  function removeMeal(day: string) {
-    setMeals((prev) => {
-      const next = { ...prev };
-      delete next[day];
-      return next;
-    });
-    resetList();
-  }
-
-  function resetList() {
-    setShoppingList([]);
-    setListReady(false);
-  }
-
-  function generateList() {
-    let counter = 0;
-    const items: ShoppingItem[] = [];
-    DAYS.forEach((day) => {
-      const meal = meals[day];
-      if (!meal) return;
-      meal.sections.forEach((sec) => {
-        sec.items.forEach((text) => {
-          items.push({
-            id: String(counter++),
-            text,
-            day,
-            recipeTitle: meal.title,
-            sectionHeader: sec.header,
-            checked: false,
-          });
-        });
-      });
-    });
-    setShoppingList(items);
-    setListReady(true);
+  function handleGenerateList() {
+    generateList();
     setTimeout(
       () => shoppingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }),
       100
     );
-  }
-
-  function toggleItem(id: string) {
-    setShoppingList((prev) => prev.map((i) => (i.id === id ? { ...i, checked: !i.checked } : i)));
-  }
-
-  function downloadList() {
-    const lines: string[] = ['SHOPPING LIST', ''];
-    lines.push('WEEKLY MENU');
-    lines.push('─'.repeat(40));
-    DAYS.forEach((day) => {
-      const meal = meals[day];
-      lines.push(`${day.padEnd(10)} ${meal ? meal.title : '—'}`);
-    });
-    lines.push('', 'INGREDIENTS', '─'.repeat(40));
-    DAYS.forEach((day) => {
-      const meal = meals[day];
-      if (!meal || meal.sections.length === 0) return;
-      lines.push('', `${day.toUpperCase()} — ${meal.title}`);
-      meal.sections.forEach((sec) => {
-        if (sec.header) lines.push(`  ${sec.header}:`);
-        sec.items.forEach((item) => {
-          const li = shoppingList.find((s) => s.day === day && s.text === item);
-          lines.push(`  ${li?.checked ? '[x]' : '[ ]'} ${item}`);
-        });
-      });
-    });
-    const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'shopping-list.txt';
-    a.click();
-    URL.revokeObjectURL(url);
   }
 
   // ── Drag-and-drop ─────────────────────────────────────────────────────────
@@ -237,30 +116,9 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
     e.preventDefault();
     const id = e.dataTransfer.getData('recipeId');
     const recipe = recipes.find((r) => r.id === id);
-    if (recipe) selectRecipe(day, recipe);
+    if (recipe) handleSelectRecipe(day, recipe);
     setDragOverDay(null);
   }
-
-  // ── Shopping list grouping ────────────────────────────────────────────────
-  type SectionGroup = { header: string | null; items: ShoppingItem[] };
-  type DayGroup = { meal: PlannedMeal; sections: SectionGroup[] };
-  const grouped: Record<string, DayGroup> = {};
-  DAYS.forEach((day) => {
-    const dayItems = shoppingList.filter((i) => i.day === day);
-    if (!dayItems.length) return;
-    const meal = meals[day]!;
-    const sections: SectionGroup[] = [];
-    dayItems.forEach((item) => {
-      const last = sections[sections.length - 1];
-      if (last && last.header === item.sectionHeader) {
-        last.items.push(item);
-      } else {
-        sections.push({ header: item.sectionHeader, items: [item] });
-      }
-    });
-    grouped[day] = { meal, sections };
-  });
-  const checkedCount = shoppingList.filter((i) => i.checked).length;
 
   return (
     <>
@@ -718,7 +576,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                           {pickerFiltered.map((r) => (
                             <button
                               key={r.id}
-                              onClick={() => selectRecipe(day, r)}
+                              onClick={() => handleSelectRecipe(day, r)}
                               style={{
                                 position: 'relative', overflow: 'hidden',
                                 aspectRatio: '3/2',
@@ -785,11 +643,11 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                             onChange={(e) =>
                               setCustomInputs((prev) => ({ ...prev, [day]: e.target.value }))
                             }
-                            onKeyDown={(e) => e.key === 'Enter' && addCustom(day)}
+                            onKeyDown={(e) => e.key === 'Enter' && handleAddCustom(day)}
                             style={{ ...INPUT, flex: 1 }}
                           />
                           <button
-                            onClick={() => addCustom(day)}
+                            onClick={() => handleAddCustom(day)}
                             disabled={!(customInputs[day] ?? '').trim()}
                             style={{
                               padding: '7px 14px',
@@ -816,7 +674,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
           {/* Generate shopping list button */}
           <div style={{ marginBottom: 'var(--space-2xl)' }}>
             <button
-              onClick={generateList}
+              onClick={handleGenerateList}
               disabled={!canGenerate}
               style={{
                 display: 'inline-flex', alignItems: 'center', gap: '10px',
