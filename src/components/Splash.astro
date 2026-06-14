@@ -41,23 +41,70 @@ const { photo } = Astro.props;
     <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
       <path d="M6 9l5 5 5-5" />
     </svg>
+    <p class="splash-cue-label">tap to explore</p>
   </div>
 </section>
 
 <script>
   const splash = document.querySelector('[data-splash]') as HTMLElement | null;
   if (splash) {
-    const hasWiped = sessionStorage.getItem('splash-wiped');
-    if (hasWiped) {
-      // Subsequent visit this session: skip stagger animations, show content instantly
-      splash.classList.add('splash--instant');
+    if (sessionStorage.getItem('splash-wiped')) {
+      // Same-session return: hide immediately, no flash
+      splash.style.display = 'none';
     } else {
-      // First visit: set up one-time scroll wipe
-      window.addEventListener('scroll', function onFirstScroll() {
+      const el = splash; // capture as HTMLElement so nested functions stay non-null
+      let touchStartY = 0;
+      let touchDelta = 0;
+      let isTouching = false;
+
+      function dismiss() {
+        el.style.transition = 'transform 0.5s cubic-bezier(0.45, 0, 0.2, 1), opacity 0.45s ease';
+        el.style.transform = 'translateY(-100%)';
+        el.style.opacity = '0';
+        el.style.pointerEvents = 'none';
+        sessionStorage.setItem('splash-wiped', '1');
+        el.addEventListener('transitionend', () => { el.style.display = 'none'; }, { once: true });
+      }
+
+      // Touch: follow finger, dismiss if swiped up far enough
+      el.addEventListener('touchstart', (e) => {
+        isTouching = true;
+        touchStartY = (e as TouchEvent).touches[0].clientY;
+        touchDelta = 0;
+        el.style.transition = 'none';
+      }, { passive: true });
+
+      el.addEventListener('touchmove', (e) => {
+        const dy = touchStartY - (e as TouchEvent).touches[0].clientY;
+        if (dy > 0) {
+          touchDelta = dy;
+          el.style.transform = `translateY(-${dy}px)`;
+          el.style.opacity = String(Math.max(0, 1 - dy / 280));
+        }
+      }, { passive: true });
+
+      el.addEventListener('touchend', () => {
+        isTouching = false;
+        if (touchDelta > 60) {
+          dismiss();
+        } else {
+          // Snap back
+          el.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+          el.style.transform = 'translateY(0)';
+          el.style.opacity = '1';
+          touchDelta = 0;
+        }
+      });
+
+      // Click anywhere to dismiss (desktop tap / backup)
+      el.addEventListener('click', dismiss);
+
+      // Scroll to dismiss (desktop mouse wheel)
+      window.addEventListener('scroll', function onScroll() {
+        if (isTouching) return;
         if (window.scrollY > 8) {
-          splash.classList.add('splash--wipe-out');
-          sessionStorage.setItem('splash-wiped', '1');
-          window.removeEventListener('scroll', onFirstScroll);
+          dismiss();
+          window.removeEventListener('scroll', onScroll);
         }
       }, { passive: true });
     }
@@ -66,9 +113,9 @@ const { photo } = Astro.props;
 
 <style>
   .splash {
-    position: relative;
-    height: 100svh;
-    min-height: 480px;
+    position: fixed;
+    inset: 0;
+    z-index: 50;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -223,51 +270,19 @@ const { photo } = Astro.props;
     z-index: 1;
   }
 
+  .splash-cue-label {
+    font-family: 'EB Garamond', Georgia, serif;
+    font-size: 0.72rem;
+    font-style: italic;
+    color: inherit;
+    margin: 0.35rem 0 0;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
   @keyframes splashCueBounce {
     0%, 100% { transform: translateX(-50%) translateY(0); }
     50%       { transform: translateX(-50%) translateY(7px); }
   }
 
-  /* ── Instant mode (same-session return visits) ─────────────── */
-  .splash--instant .splash-eyebrow,
-  .splash--instant .splash-title,
-  .splash--instant .splash-rule,
-  .splash--instant .splash-season {
-    animation: none;
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .splash--instant .splash-cue {
-    animation: splashCueBounce 2.2s ease-in-out infinite;
-    opacity: 1;
-  }
-
-  /* ── Wipe-out (one-time organic exit on first scroll) ──────── */
-  .splash--wipe-out .splash-content {
-    animation: splashContentWipe 0.55s cubic-bezier(0.45, 0, 0.2, 1) forwards;
-    pointer-events: none;
-  }
-
-  .splash--wipe-out .splash-cue {
-    animation: none !important;
-    opacity: 0;
-    transition: opacity 0.15s;
-  }
-
-  .splash--wipe-out .splash-blob,
-  .splash--wipe-out .splash-photo,
-  .splash--wipe-out .splash-photo-overlay {
-    animation: splashTextureFade 0.7s ease forwards;
-  }
-
-  @keyframes splashContentWipe {
-    0%   { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-    100% { opacity: 0; transform: translateY(-28px) scale(0.97); filter: blur(4px); }
-  }
-
-  @keyframes splashTextureFade {
-    0%   { opacity: 1; }
-    100% { opacity: 0; }
-  }
 </style>

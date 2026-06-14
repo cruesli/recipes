@@ -440,13 +440,13 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
               margin: 0,
             }}>
               {collectionRecipes.length} recipe{collectionRecipes.length !== 1 ? 's' : ''}
-              {' · '}drag to a day to plan
+              {' · '}click to open · drag to plan
             </p>
           </div>
 
           <hr style={{ ...HAIRLINE, flexShrink: 0 }} />
 
-          {/* Scrollable recipe list */}
+          {/* Scrollable recipe grid */}
           <div className="cpi-recipe-list">
             {collectionRecipes.length === 0 ? (
               <p style={{
@@ -460,68 +460,65 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                 No recipes found.
               </p>
             ) : (
-              collectionRecipes.map((r) => (
-                <div
-                  key={r.id}
-                  draggable
-                  onDragStart={(e) => handleDragStart(e, r)}
-                  className="cpi-drag-item"
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '10px',
-                    padding: '0.6rem 0',
-                    borderBottom: '1px solid var(--color-hairline)',
-                    userSelect: 'none',
-                  }}
-                >
-                  {r.image ? (
-                    <img
-                      src={`${basePath}${r.image}`}
-                      alt=""
-                      aria-hidden="true"
-                      style={{
-                        width: '44px', height: '33px',
-                        objectFit: 'cover',
-                        flexShrink: 0,
-                        borderRadius: '2px',
-                      }}
-                    />
-                  ) : (
-                    <div style={{
-                      width: '44px', height: '33px',
-                      flexShrink: 0,
-                      backgroundColor: 'var(--color-stone)',
-                      borderRadius: '2px',
-                    }} />
-                  )}
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ ...EYEBROW, fontSize: '0.58rem', marginBottom: '2px' }}>{r.cuisine}</p>
-                    <p style={{
-                      fontFamily: "'EB Garamond', Georgia, serif",
-                      fontSize: '0.9rem',
-                      lineHeight: 1.25,
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(2, 1fr)',
+                gap: '1px',
+                backgroundColor: 'var(--color-hairline)',
+                borderBottom: '1px solid var(--color-hairline)',
+              }}>
+                {collectionRecipes.map((r) => (
+                  <a
+                    key={r.id}
+                    href={`${basePath}/${r.id}`}
+                    draggable
+                    onDragStart={(e) => handleDragStart(e, r)}
+                    className="cpi-drag-item"
+                    style={{
+                      display: 'block',
+                      textDecoration: 'none',
                       color: 'var(--color-ink)',
-                      margin: 0,
-                      whiteSpace: 'nowrap',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                    }}>
-                      {r.title}
-                    </p>
-                  </div>
-                  {r.totalTimeMinutes && (
-                    <span className="onum" style={{
-                      fontFamily: SANS,
-                      fontSize: '0.68rem',
-                      color: 'var(--color-ink-muted)',
-                      flexShrink: 0,
-                    }}>
-                      {r.totalTimeMinutes}m
-                    </span>
-                  )}
-                </div>
-              ))
+                      backgroundColor: 'var(--color-paper)',
+                      userSelect: 'none',
+                    }}
+                  >
+                    {r.image ? (
+                      <img
+                        src={`${basePath}${r.image}`}
+                        alt={r.title}
+                        style={{
+                          width: '100%',
+                          aspectRatio: '3/2',
+                          objectFit: 'cover',
+                          display: 'block',
+                        }}
+                      />
+                    ) : (
+                      <div style={{
+                        width: '100%',
+                        aspectRatio: '3/2',
+                        backgroundColor: 'var(--color-stone)',
+                      }} />
+                    )}
+                    <div style={{ padding: '0.45rem 0.5rem 0.55rem' }}>
+                      <p style={{ ...EYEBROW, fontSize: '0.55rem', marginBottom: '3px' }}>{r.cuisine}</p>
+                      <p style={{
+                        fontFamily: "'EB Garamond', Georgia, serif",
+                        fontSize: '0.85rem',
+                        lineHeight: 1.25,
+                        color: 'var(--color-ink)',
+                        margin: 0,
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      } as React.CSSProperties}>
+                        {r.title}
+                      </p>
+                    </div>
+                  </a>
+                ))}
+              </div>
             )}
           </div>
         </div>
