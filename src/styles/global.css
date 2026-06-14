@@ -292,6 +292,12 @@ hr { border: none; border-top: 1px solid var(--color-hairline); margin: var(--sp
 
 .slide-wrap:hover .slide-img { transform: scale(1.1); }
 
+/* ── Recipe card (shared editorial component) ────────────────── */
+.recipe-card { transition: opacity 0.15s; }
+.recipe-card:hover { opacity: 0.75; }
+.recipe-card-img { transition: transform 0.4s ease; }
+.recipe-card:hover .recipe-card-img { transform: scale(1.04); }
+
 /* ── Mobile ──────────────────────────────────────────────────── */
 @media (max-width: 700px) {
   .layout-sidebar { flex-direction: column; }
