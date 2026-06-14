@@ -94,7 +94,7 @@ function scaleIngredient(raw: string, ratio: number): string {
 const EYEBROW: React.CSSProperties = {
   fontFamily: "'EB Garamond', Georgia, serif",
   fontWeight: 600,
-  fontSize: '0.68rem',
+  fontSize: 'var(--text-eyebrow)',
   textTransform: 'uppercase',
   letterSpacing: '0.24em',
   color: 'var(--color-oxblood)',
@@ -170,15 +170,15 @@ export function RecipePageIsland({
       <div style={{ height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column' }}>
 
         {/* Back + title */}
-        <div style={{ maxWidth: '900px', margin: '0 auto', padding: '1.75rem 1.5rem 1.25rem', width: '100%', flexShrink: 0 }}>
+        <div style={{ maxWidth: '900px', margin: '0 auto', padding: 'var(--space-xl) var(--space-lg) var(--space-lg)', width: '100%', flexShrink: 0 }}>
           <a
             href={`${basePath}/`}
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--color-ink-muted)', textDecoration: 'none', marginBottom: '1.25rem', ...EYEBROW }}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--color-ink-muted)', textDecoration: 'none', marginBottom: 'var(--space-lg)', ...EYEBROW }}
           >
             <ArrowLeft size={13} />
             All recipes
           </a>
-          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.25rem)', color: 'var(--color-ink)', margin: 0, lineHeight: 1.1, fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 500 }}>
+          <h1 style={{ fontSize: 'var(--text-title)', color: 'var(--color-ink)', margin: 0, lineHeight: 1.1, fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 500 }}>
             {title}
           </h1>
         </div>
@@ -200,7 +200,7 @@ export function RecipePageIsland({
 
         {/* Metadata bar */}
         <div style={{ flexShrink: 0, borderBottom: '1px solid var(--color-hairline)', backgroundColor: 'var(--color-paper)' }}>
-          <div style={{ maxWidth: '900px', margin: '0 auto', padding: '1.25rem 1.5rem', display: 'flex', flexWrap: 'wrap', gap: '2rem', alignItems: 'center' }}>
+          <div style={{ maxWidth: '900px', margin: '0 auto', padding: 'var(--space-lg) var(--space-lg)', display: 'flex', flexWrap: 'wrap', gap: 'var(--space-xl)', alignItems: 'center' }}>
             <MetaItem label="Cuisine" value={cuisine} />
             {timeLabel && <MetaItem label="Total time" value={timeLabel} />}
             {foodType && <MetaItem label="Type" value={foodType} />}
@@ -216,7 +216,7 @@ export function RecipePageIsland({
                 >
                   <Minus size={14} />
                 </button>
-                <span className="onum" style={{ minWidth: '1.5ch', textAlign: 'center', fontSize: '1rem' }}>{servings}</span>
+                <span className="onum" style={{ minWidth: '1.5ch', textAlign: 'center', fontSize: 'var(--text-body)' }}>{servings}</span>
                 <button
                   onClick={() => setServings((s) => s + 1)}
                   aria-label="More servings"
@@ -232,7 +232,7 @@ export function RecipePageIsland({
               {tags.filter(Boolean).slice(0, 3).map((tag) => (
                 <span
                   key={tag}
-                  style={{ fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.18em', padding: '3px 8px', border: '1px solid var(--color-hairline)', color: 'var(--color-olive)', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 600 }}
+                  style={{ fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.18em', padding: '3px 8px', border: '1px solid var(--color-hairline)', color: 'var(--color-olive)', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 600 }}
                 >
                   {tag}
                 </span>
@@ -243,19 +243,19 @@ export function RecipePageIsland({
       </div>
 
       {/* ── Content: ingredients + steps ── */}
-      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '3rem 1.5rem 6rem' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '4rem', alignItems: 'start' }}>
+      <div style={{ maxWidth: '900px', margin: '0 auto', padding: 'var(--space-2xl) var(--space-lg) var(--space-4xl)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--space-3xl)', alignItems: 'start' }}>
 
           {/* Left column: ingredients + nutrition */}
           <div>
             {/* Ingredients */}
-            <div style={{ marginBottom: '2.5rem' }}>
-              <p style={{ ...EYEBROW, marginBottom: '0.75rem' }}>Ingredients</p>
+            <div style={{ marginBottom: 'var(--space-2xl)' }}>
+              <p style={{ ...EYEBROW, marginBottom: 'var(--space-sm)' }}>Ingredients</p>
               <hr style={HAIRLINE} />
               {sections.map((sec, si) => (
                 <div key={si}>
                   {sec.header && (
-                    <p style={{ ...EYEBROW, fontSize: '0.6rem', color: 'var(--color-ink-muted)', margin: '1rem 0 0.4rem' }}>
+                    <p style={{ ...EYEBROW, color: 'var(--color-ink-muted)', margin: 'var(--space-md) 0 var(--space-2xs)' }}>
                       {sec.header}
                     </p>
                   )}
@@ -266,11 +266,11 @@ export function RecipePageIsland({
                         style={{
                           display: 'flex',
                           alignItems: 'baseline',
-                          gap: '0.6rem',
-                          padding: '0.55rem 0',
+                          gap: 'var(--space-xs)',
+                          padding: 'var(--space-xs) 0',
                           borderBottom: '1px solid var(--color-hairline)',
                           fontFamily: "'EB Garamond', Georgia, serif",
-                          fontSize: '0.95rem',
+                          fontSize: 'var(--text-meta)',
                           color: 'var(--color-ink)',
                           lineHeight: 1.45,
                         }}
@@ -286,18 +286,18 @@ export function RecipePageIsland({
 
             {/* Nutrition placeholder */}
             <div>
-              <p style={{ ...EYEBROW, marginBottom: '0.75rem' }}>Nutrition</p>
+              <p style={{ ...EYEBROW, marginBottom: 'var(--space-sm)' }}>Nutrition</p>
               <hr style={HAIRLINE} />
               {['Calories', 'Protein', 'Carbohydrates', 'Fat'].map((label) => (
                 <div
                   key={label}
-                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '0.55rem 0', borderBottom: '1px solid var(--color-hairline)' }}
+                  style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: 'var(--space-xs) 0', borderBottom: '1px solid var(--color-hairline)' }}
                 >
-                  <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.9rem', color: 'var(--color-ink)' }}>{label}</span>
-                  <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.9rem', color: 'var(--color-ink-muted)' }}>—</span>
+                  <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink)' }}>{label}</span>
+                  <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)' }}>—</span>
                 </div>
               ))}
-              <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.75rem', color: 'var(--color-ink-muted)', marginTop: '0.75rem', fontStyle: 'italic' }}>
+              <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', color: 'var(--color-ink-muted)', marginTop: 'var(--space-sm)', fontStyle: 'italic' }}>
                 Nutrition data coming soon.
               </p>
             </div>
@@ -305,12 +305,12 @@ export function RecipePageIsland({
 
           {/* Steps */}
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.75rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-xl)' }}>
               <p style={{ ...EYEBROW, margin: 0 }}>Instructions</p>
 
               {/* Keep awake toggle */}
               <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-                <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.8rem', color: 'var(--color-ink-muted)' }}>Keep screen on</span>
+                <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)' }}>Keep screen on</span>
                 <button
                   onClick={toggleWakeLock}
                   role="switch"
@@ -335,14 +335,14 @@ export function RecipePageIsland({
               {steps.map((step, i) => (
                 <li
                   key={i}
-                  style={{ display: 'flex', gap: '1.25rem', paddingTop: i === 0 ? 0 : '1.5rem', borderTop: i === 0 ? 'none' : '1px solid var(--color-hairline)', marginTop: i === 0 ? 0 : '1.5rem' }}
+                  style={{ display: 'flex', gap: 'var(--space-lg)', paddingTop: i === 0 ? 0 : 'var(--space-lg)', borderTop: i === 0 ? 'none' : '1px solid var(--color-hairline)', marginTop: i === 0 ? 0 : 'var(--space-lg)' }}
                 >
                   <button
                     onClick={() => toggleStep(i)}
                     aria-label={`Step ${i + 1}${completed.has(i) ? ' — done' : ''}`}
                     style={{
                       flexShrink: 0, width: '28px', height: '28px', borderRadius: '50%',
-                      cursor: 'pointer', fontSize: '0.75rem', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 600,
+                      cursor: 'pointer', fontSize: 'var(--text-eyebrow)', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 600,
                       backgroundColor: completed.has(i) ? 'var(--color-oxblood)' : 'transparent',
                       border: completed.has(i) ? 'none' : '1.5px solid var(--color-hairline)',
                       color: completed.has(i) ? 'var(--color-paper)' : 'var(--color-ink-muted)',
@@ -355,7 +355,7 @@ export function RecipePageIsland({
                   <p style={{
                     margin: 0, lineHeight: 1.7,
                     fontFamily: "'EB Garamond', Georgia, serif",
-                    fontSize: '1rem',
+                    fontSize: 'var(--text-body)',
                     color: completed.has(i) ? 'var(--color-ink-muted)' : 'var(--color-ink)',
                     textDecoration: completed.has(i) ? 'line-through' : 'none',
                     transition: 'color 0.2s',
@@ -379,7 +379,7 @@ function MetaItem({ label, value }: { label: string; value: string }) {
       <p style={{
         fontFamily: "'EB Garamond', Georgia, serif",
         fontWeight: 600,
-        fontSize: '0.68rem',
+        fontSize: 'var(--text-eyebrow)',
         textTransform: 'uppercase',
         letterSpacing: '0.24em',
         color: 'var(--color-oxblood)',
@@ -389,7 +389,7 @@ function MetaItem({ label, value }: { label: string; value: string }) {
       </p>
       <p style={{
         fontFamily: "'EB Garamond', Georgia, serif",
-        fontSize: '1rem',
+        fontSize: 'var(--text-body)',
         fontWeight: 500,
         color: 'var(--color-ink)',
         margin: 0,

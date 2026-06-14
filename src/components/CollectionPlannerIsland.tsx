@@ -41,7 +41,7 @@ const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
 const EYEBROW: React.CSSProperties = {
   fontFamily: "'EB Garamond', Georgia, serif",
   fontWeight: 600,
-  fontSize: '0.68rem',
+  fontSize: 'var(--text-eyebrow)',
   textTransform: 'uppercase',
   letterSpacing: '0.24em',
   color: 'var(--color-oxblood)',
@@ -61,7 +61,7 @@ const INPUT: React.CSSProperties = {
   backgroundColor: 'var(--color-paper)',
   color: 'var(--color-ink)',
   fontFamily: "'EB Garamond', Georgia, serif",
-  fontSize: '0.9rem',
+  fontSize: 'var(--text-meta)',
   outline: 'none',
   padding: '7px 10px',
 };
@@ -268,11 +268,11 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
         .cpi-grid {
           display: grid;
           grid-template-columns: minmax(260px, 1fr) minmax(280px, 1fr);
-          gap: 3.5rem;
+          gap: var(--space-2xl);
           align-items: start;
           max-width: var(--max, 980px);
           margin: 0 auto;
-          padding: 3.5rem 24px 4.5rem;
+          padding: var(--space-2xl) var(--space-lg) var(--space-3xl);
         }
         .cpi-left {
           position: sticky;
@@ -297,7 +297,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
           .cpi-grid {
             grid-template-columns: 1fr;
             gap: 0;
-            padding: 2rem 16px 3rem;
+            padding: var(--space-xl) var(--space-md) var(--space-2xl);
           }
           .cpi-left {
             position: static;
@@ -307,7 +307,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
           .cpi-recipe-list {
             max-height: 55vh;
             overflow-y: auto;
-            margin-bottom: 2rem;
+            margin-bottom: var(--space-xl);
           }
         }
       `}</style>
@@ -318,20 +318,20 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
         <div className="cpi-left">
 
           {/* Panel header */}
-          <div style={{ flexShrink: 0, paddingBottom: '1rem' }}>
-            <p style={{ ...EYEBROW, marginBottom: '0.35rem' }}>The collection</p>
+          <div style={{ flexShrink: 0, paddingBottom: 'var(--space-md)' }}>
+            <p style={{ ...EYEBROW, marginBottom: 'var(--space-xs)' }}>The collection</p>
             <h2 style={{
               fontFamily: "'EB Garamond', Georgia, serif",
-              fontSize: 'clamp(1.25rem, 2.5vw, 1.6rem)',
+              fontSize: 'var(--text-card)',
               fontWeight: 500,
               color: 'var(--color-ink)',
-              margin: '0 0 1.1rem',
+              margin: '0 0 var(--space-md)',
             }}>
               All recipes
             </h2>
 
             {/* Search + filter row */}
-            <div style={{ display: 'flex', gap: '8px', marginBottom: '0.5rem', alignItems: 'stretch' }}>
+            <div style={{ display: 'flex', gap: 'var(--space-xs)', marginBottom: 'var(--space-xs)', alignItems: 'stretch' }}>
               {/* NL search input (active now; wired to NLP in Phase 3) */}
               <div style={{ position: 'relative', flex: 1 }}>
                 <Search
@@ -351,7 +351,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                   style={{
                     ...INPUT,
                     fontFamily: SANS,
-                    fontSize: '0.85rem',
+                    fontSize: 'var(--text-meta)',
                     width: '100%',
                     paddingLeft: '28px',
                     paddingRight: '10px',
@@ -380,7 +380,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                     backgroundColor: 'transparent',
                     color: cuisineFilter ? 'var(--color-oxblood)' : 'var(--color-ink-muted)',
                     fontFamily: SANS,
-                    fontSize: '0.72rem',
+                    fontSize: 'var(--text-eyebrow)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.07em',
                     cursor: 'pointer',
@@ -420,7 +420,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                           backgroundColor: 'transparent',
                           color: 'var(--color-ink)',
                           fontFamily: SANS,
-                          fontSize: '0.82rem',
+                          fontSize: 'var(--text-meta)',
                           textTransform: 'capitalize',
                           cursor: 'pointer',
                         }}
@@ -435,7 +435,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
 
             <p className="onum" style={{
               fontFamily: SANS,
-              fontSize: '0.72rem',
+              fontSize: 'var(--text-eyebrow)',
               color: 'var(--color-ink-muted)',
               margin: 0,
             }}>
@@ -451,9 +451,9 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
             {collectionRecipes.length === 0 ? (
               <p style={{
                 fontFamily: "'EB Garamond', Georgia, serif",
-                fontSize: '0.875rem',
+                fontSize: 'var(--text-meta)',
                 color: 'var(--color-ink-muted)',
-                padding: '1.5rem 0',
+                padding: 'var(--space-lg) 0',
                 fontStyle: 'italic',
                 margin: 0,
               }}>
@@ -500,11 +500,11 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                         backgroundColor: 'var(--color-stone)',
                       }} />
                     )}
-                    <div style={{ padding: '0.45rem 0.5rem 0.55rem' }}>
-                      <p style={{ ...EYEBROW, fontSize: '0.55rem', marginBottom: '3px' }}>{r.cuisine}</p>
+                    <div style={{ padding: 'var(--space-xs)' }}>
+                      <p style={{ ...EYEBROW, fontSize: 'var(--text-eyebrow)', marginBottom: '3px' }}>{r.cuisine}</p>
                       <p style={{
                         fontFamily: "'EB Garamond', Georgia, serif",
-                        fontSize: '0.85rem',
+                        fontSize: 'var(--text-meta)',
                         lineHeight: 1.25,
                         color: 'var(--color-ink)',
                         margin: 0,
@@ -527,20 +527,20 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
         <div style={{ paddingTop: '0.25rem' }}>
 
           {/* Planner header */}
-          <div style={{ marginBottom: '2rem' }}>
-            <p style={{ ...EYEBROW, marginBottom: '0.35rem' }}>Plan</p>
+          <div style={{ marginBottom: 'var(--space-xl)' }}>
+            <p style={{ ...EYEBROW, marginBottom: 'var(--space-xs)' }}>Plan</p>
             <h2 style={{
               fontFamily: "'EB Garamond', Georgia, serif",
-              fontSize: 'clamp(1.25rem, 2.5vw, 1.6rem)',
+              fontSize: 'var(--text-card)',
               fontWeight: 500,
               color: 'var(--color-ink)',
-              margin: '0 0 0.35rem',
+              margin: '0 0 var(--space-xs)',
             }}>
               Weekly Menu
             </h2>
             <p style={{
               fontFamily: "'EB Garamond', Georgia, serif",
-              fontSize: '0.85rem',
+              fontSize: 'var(--text-meta)',
               color: 'var(--color-ink-muted)',
               margin: 0,
             }}>
@@ -549,7 +549,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
           </div>
 
           {/* Day rows */}
-          <div style={{ borderBottom: '1px solid var(--color-hairline)', marginBottom: '2rem' }}>
+          <div style={{ borderBottom: '1px solid var(--color-hairline)', marginBottom: 'var(--space-xl)' }}>
             {DAYS.map((day) => {
               const meal = meals[day];
               const isOpen = openDay === day;
@@ -572,11 +572,11 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                   }}
                 >
                   {/* Row */}
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.9rem 0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: 'var(--space-md) 0' }}>
                     <span style={{
                       width: '80px', flexShrink: 0,
                       fontFamily: "'EB Garamond', Georgia, serif",
-                      fontSize: '0.78rem',
+                      fontSize: 'var(--text-eyebrow)',
                       textTransform: 'uppercase',
                       letterSpacing: '0.1em',
                       color: 'var(--color-ink-muted)',
@@ -601,7 +601,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                         <span style={{
                           flex: 1, minWidth: 0,
                           fontFamily: "'EB Garamond', Georgia, serif",
-                          fontSize: '0.95rem',
+                          fontSize: 'var(--text-meta)',
                           color: 'var(--color-ink)',
                           whiteSpace: 'nowrap',
                           overflow: 'hidden',
@@ -612,7 +612,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                         {meal.recipeId === null && (
                           <span style={{
                             fontFamily: "'EB Garamond', Georgia, serif",
-                            fontSize: '0.68rem',
+                            fontSize: 'var(--text-eyebrow)',
                             textTransform: 'uppercase',
                             letterSpacing: '0.15em',
                             color: 'var(--color-ink-muted)',
@@ -627,7 +627,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                           onClick={() => setOpenDay(isOpen ? null : day)}
                           style={{
                             fontFamily: "'EB Garamond', Georgia, serif",
-                            fontSize: '0.72rem',
+                            fontSize: 'var(--text-eyebrow)',
                             textTransform: 'uppercase',
                             letterSpacing: '0.1em',
                             color: 'var(--color-oxblood)',
@@ -661,7 +661,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                           cursor: 'pointer',
                           color: 'var(--color-ink-muted)',
                           fontFamily: "'EB Garamond', Georgia, serif",
-                          fontSize: '0.9rem',
+                          fontSize: 'var(--text-meta)',
                           padding: 0,
                         }}
                       >
@@ -683,9 +683,9 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                   {isOpen && (
                     <div style={{
                       borderTop: '1px solid var(--color-hairline)',
-                      padding: '1.1rem 0 1.4rem',
+                      padding: 'var(--space-md) 0 var(--space-lg)',
                     }}>
-                      <div style={{ position: 'relative', marginBottom: '0.875rem' }}>
+                      <div style={{ position: 'relative', marginBottom: 'var(--space-sm)' }}>
                         <Search
                           size={13}
                           style={{
@@ -712,8 +712,8 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                         <div style={{
                           display: 'grid',
                           gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))',
-                          gap: '5px',
-                          marginBottom: '1.1rem',
+                          gap: 'var(--space-2xs)',
+                          marginBottom: 'var(--space-md)',
                         }}>
                           {pickerFiltered.map((r) => (
                             <button
@@ -745,7 +745,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                                 padding: '4px 6px', textAlign: 'left',
                               }}>
                                 <p style={{
-                                  color: 'white', fontSize: '10px',
+                                  color: 'white', fontSize: 'var(--text-eyebrow)',
                                   margin: 0, lineHeight: 1.25,
                                   fontFamily: "'EB Garamond', Georgia, serif",
                                 }}>
@@ -758,9 +758,9 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                       ) : (
                         <p style={{
                           fontFamily: "'EB Garamond', Georgia, serif",
-                          fontSize: '0.875rem',
+                          fontSize: 'var(--text-meta)',
                           color: 'var(--color-ink-muted)',
-                          marginBottom: '1rem',
+                          marginBottom: 'var(--space-md)',
                           fontStyle: 'italic',
                         }}>
                           No recipes found.
@@ -771,13 +771,13 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                       <div>
                         <p style={{
                           fontFamily: "'EB Garamond', Georgia, serif",
-                          fontSize: '0.78rem',
+                          fontSize: 'var(--text-eyebrow)',
                           color: 'var(--color-ink-muted)',
-                          marginBottom: '0.4rem',
+                          marginBottom: 'var(--space-xs)',
                         }}>
                           Or enter a custom dish:
                         </p>
-                        <div style={{ display: 'flex', gap: '8px' }}>
+                        <div style={{ display: 'flex', gap: 'var(--space-xs)' }}>
                           <input
                             type="text"
                             placeholder="Dish name…"
@@ -797,7 +797,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                               backgroundColor: 'var(--color-oxblood)',
                               color: 'var(--color-paper)',
                               fontFamily: "'EB Garamond', Georgia, serif",
-                              fontSize: '0.875rem',
+                              fontSize: 'var(--text-meta)',
                               cursor: 'pointer',
                               opacity: (customInputs[day] ?? '').trim() ? 1 : 0.4,
                             }}
@@ -814,7 +814,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
           </div>
 
           {/* Generate shopping list button */}
-          <div style={{ marginBottom: '3rem' }}>
+          <div style={{ marginBottom: 'var(--space-2xl)' }}>
             <button
               onClick={generateList}
               disabled={!canGenerate}
@@ -825,7 +825,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                 backgroundColor: canGenerate ? 'var(--color-oxblood)' : 'transparent',
                 color: canGenerate ? 'var(--color-paper)' : 'var(--color-ink-muted)',
                 fontFamily: "'EB Garamond', Georgia, serif",
-                fontSize: '0.9rem',
+                fontSize: 'var(--text-meta)',
                 cursor: canGenerate ? 'pointer' : 'not-allowed',
                 transition: 'opacity 0.15s',
               }}
@@ -836,8 +836,8 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
             {!canGenerate && (
               <p style={{
                 fontFamily: "'EB Garamond', Georgia, serif",
-                marginTop: '0.5rem',
-                fontSize: '0.8rem',
+                marginTop: 'var(--space-xs)',
+                fontSize: 'var(--text-meta)',
                 color: 'var(--color-ink-muted)',
                 fontStyle: 'italic',
               }}>
@@ -852,13 +852,13 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
               <div style={{
                 display: 'flex', alignItems: 'flex-end',
                 justifyContent: 'space-between',
-                marginBottom: '1.5rem',
+                marginBottom: 'var(--space-lg)',
               }}>
                 <div>
-                  <p style={{ ...EYEBROW, marginBottom: '0.5rem' }}>Shopping list</p>
+                  <p style={{ ...EYEBROW, marginBottom: 'var(--space-xs)' }}>Shopping list</p>
                   <h3 style={{
                     fontFamily: "'EB Garamond', Georgia, serif",
-                    fontSize: 'clamp(1.3rem, 2.5vw, 1.75rem)',
+                    fontSize: 'var(--text-card)',
                     fontWeight: 500,
                     color: 'var(--color-ink)',
                     margin: 0,
@@ -875,7 +875,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                     backgroundColor: 'transparent',
                     color: 'var(--color-ink)',
                     fontFamily: "'EB Garamond', Georgia, serif",
-                    fontSize: '0.85rem',
+                    fontSize: 'var(--text-meta)',
                     cursor: 'pointer',
                   }}
                 >
@@ -887,14 +887,14 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
               {shoppingList.length > 0 && (
                 <div style={{
                   display: 'flex', alignItems: 'center', gap: '12px',
-                  padding: '0.6rem 0',
+                  padding: 'var(--space-xs) 0',
                   borderTop: '1px solid var(--color-hairline)',
                   borderBottom: '1px solid var(--color-hairline)',
-                  marginBottom: '1.5rem',
+                  marginBottom: 'var(--space-lg)',
                 }}>
                   <span className="onum" style={{
                     fontFamily: "'EB Garamond', Georgia, serif",
-                    fontSize: '0.875rem',
+                    fontSize: 'var(--text-meta)',
                     color: 'var(--color-ink-muted)',
                   }}>
                     {checkedCount} of {shoppingList.length} checked
@@ -902,7 +902,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                   {checkedCount === shoppingList.length && shoppingList.length > 0 && (
                     <span style={{
                       fontFamily: "'EB Garamond', Georgia, serif",
-                      fontSize: '0.875rem',
+                      fontSize: 'var(--text-meta)',
                       color: 'var(--color-olive)',
                       display: 'flex', alignItems: 'center', gap: '4px',
                     }}>
@@ -916,27 +916,27 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                 <p style={{
                   fontFamily: "'EB Garamond', Georgia, serif",
                   color: 'var(--color-ink-muted)',
-                  fontSize: '0.9rem',
+                  fontSize: 'var(--text-meta)',
                   fontStyle: 'italic',
-                  padding: '1.5rem 0',
+                  padding: 'var(--space-lg) 0',
                 }}>
                   No ingredient data — all selected meals are custom.
                 </p>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', paddingBottom: '4rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xl)', paddingBottom: 'var(--space-3xl)' }}>
                   {DAYS.filter((d) => grouped[d]).map((day) => {
                     const { meal, sections } = grouped[day];
                     return (
                       <div key={day}>
                         <div style={{
-                          display: 'flex', alignItems: 'baseline', gap: '0.75rem',
-                          paddingBottom: '0.5rem',
+                          display: 'flex', alignItems: 'baseline', gap: 'var(--space-sm)',
+                          paddingBottom: 'var(--space-xs)',
                           borderBottom: '1px solid var(--color-hairline)',
                         }}>
-                          <span style={{ ...EYEBROW, fontSize: '0.6rem' }}>{day}</span>
+                          <span style={{ ...EYEBROW }}>{day}</span>
                           <span style={{
                             fontFamily: "'EB Garamond', Georgia, serif",
-                            fontSize: '0.9rem',
+                            fontSize: 'var(--text-meta)',
                             color: 'var(--color-ink)',
                           }}>
                             {meal.title}
@@ -960,11 +960,11 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                             {sec.header && (
                               <p style={{
                                 fontFamily: "'EB Garamond', Georgia, serif",
-                                fontSize: '0.65rem',
+                                fontSize: 'var(--text-eyebrow)',
                                 textTransform: 'uppercase',
                                 letterSpacing: '0.15em',
                                 color: 'var(--color-ink-muted)',
-                                margin: '0.7rem 0 0',
+                                margin: 'var(--space-sm) 0 0',
                                 fontWeight: 600,
                               }}>
                                 {sec.header}
@@ -975,7 +975,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                                 key={item.id}
                                 style={{
                                   display: 'flex', alignItems: 'center', gap: '12px',
-                                  padding: '0.5rem 0',
+                                  padding: 'var(--space-xs) 0',
                                   borderBottom: '1px solid var(--color-hairline)',
                                   cursor: 'pointer',
                                 }}
@@ -997,7 +997,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                                   className="onum"
                                   style={{
                                     fontFamily: "'EB Garamond', Georgia, serif",
-                                    fontSize: '0.9rem',
+                                    fontSize: 'var(--text-meta)',
                                     color: item.checked ? 'var(--color-ink-muted)' : 'var(--color-ink)',
                                     textDecoration: item.checked ? 'line-through' : 'none',
                                     opacity: item.checked ? 0.55 : 1,
@@ -1014,21 +1014,21 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
                   })}
 
                   {DAYS.some((d) => meals[d]?.recipeId === null) && (
-                    <div style={{ borderTop: '1px solid var(--color-hairline)', paddingTop: '1rem' }}>
+                    <div style={{ borderTop: '1px solid var(--color-hairline)', paddingTop: 'var(--space-md)' }}>
                       <p style={{
                         fontFamily: "'EB Garamond', Georgia, serif",
-                        fontSize: '0.8rem',
+                        fontSize: 'var(--text-meta)',
                         color: 'var(--color-ink-muted)',
-                        margin: '0 0 0.5rem',
+                        margin: '0 0 var(--space-xs)',
                         fontStyle: 'italic',
                       }}>
                         Custom meals (no ingredient data):
                       </p>
-                      <ul style={{ margin: 0, paddingLeft: '1rem' }}>
+                      <ul style={{ margin: 0, paddingLeft: 'var(--space-md)' }}>
                         {DAYS.filter((d) => meals[d]?.recipeId === null).map((d) => (
                           <li key={d} style={{
                             fontFamily: "'EB Garamond', Georgia, serif",
-                            fontSize: '0.9rem',
+                            fontSize: 'var(--text-meta)',
                             color: 'var(--color-ink-muted)',
                             marginBottom: '2px',
                           }}>

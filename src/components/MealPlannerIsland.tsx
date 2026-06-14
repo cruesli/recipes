@@ -43,7 +43,7 @@ const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
 const EYEBROW: React.CSSProperties = {
   fontFamily: "'EB Garamond', Georgia, serif",
   fontWeight: 600,
-  fontSize: '0.68rem',
+  fontSize: 'var(--text-eyebrow)',
   textTransform: 'uppercase',
   letterSpacing: '0.24em',
   color: 'var(--color-oxblood)',
@@ -218,21 +218,21 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
 
   return (
     <div style={{ backgroundColor: 'var(--color-paper)', minHeight: '60vh' }}>
-      <div style={{ maxWidth: '680px', margin: '0 auto', padding: '2.5rem 1.5rem' }}>
+      <div style={{ maxWidth: '680px', margin: '0 auto', padding: 'var(--space-2xl) var(--space-lg)' }}>
 
         {/* Page header */}
-        <div style={{ marginBottom: '2.5rem' }}>
-          <p style={{ ...EYEBROW, marginBottom: '0.5rem' }}>Plan</p>
-          <h1 style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'clamp(1.75rem, 4vw, 2.5rem)', fontWeight: 500, color: 'var(--color-ink)', margin: '0 0 0.4rem' }}>
+        <div style={{ marginBottom: 'var(--space-2xl)' }}>
+          <p style={{ ...EYEBROW, marginBottom: 'var(--space-xs)' }}>Plan</p>
+          <h1 style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-title)', fontWeight: 500, color: 'var(--color-ink)', margin: '0 0 var(--space-2xs)' }}>
             Weekly Menu
           </h1>
-          <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.9rem', color: 'var(--color-ink-muted)', margin: 0 }}>
+          <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', margin: 0 }}>
             Pick meals for the week and generate a shopping list automatically.
           </p>
         </div>
 
         {/* Day rows */}
-        <div style={{ borderBottom: '1px solid var(--color-hairline)', marginBottom: '2rem' }}>
+        <div style={{ borderBottom: '1px solid var(--color-hairline)', marginBottom: 'var(--space-xl)' }}>
           {DAYS.map((day) => {
             const meal = meals[day];
             const isOpen = openDay === day;
@@ -240,8 +240,8 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
             return (
               <div key={day} style={{ borderTop: '1px solid var(--color-hairline)' }}>
                 {/* Row */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '1rem 0' }}>
-                  <span style={{ width: '88px', flexShrink: 0, fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-ink-muted)' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: 'var(--space-md) 0' }}>
+                  <span style={{ width: '88px', flexShrink: 0, fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-ink-muted)' }}>
                     {day}
                   </span>
 
@@ -254,15 +254,15 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                           style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-sm)', objectFit: 'cover', flexShrink: 0 }}
                         />
                       )}
-                      <span style={{ flex: 1, fontFamily: "'EB Garamond', Georgia, serif", fontSize: '1rem', color: 'var(--color-ink)' }}>{meal.title}</span>
+                      <span style={{ flex: 1, fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-body)', color: 'var(--color-ink)' }}>{meal.title}</span>
                       {meal.recipeId === null && (
-                        <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-ink-muted)', border: '1px solid var(--color-hairline)', padding: '1px 6px' }}>
+                        <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-ink-muted)', border: '1px solid var(--color-hairline)', padding: '1px 6px' }}>
                           custom
                         </span>
                       )}
                       <button
                         onClick={() => setOpenDay(isOpen ? null : day)}
-                        style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.8rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-oxblood)', background: 'none', border: 'none', cursor: 'pointer', padding: '0' }}
+                        style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-oxblood)', background: 'none', border: 'none', cursor: 'pointer', padding: '0' }}
                       >
                         Change
                       </button>
@@ -276,7 +276,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                   ) : (
                     <button
                       onClick={() => setOpenDay(isOpen ? null : day)}
-                      style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-ink-muted)', fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.95rem', padding: 0 }}
+                      style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-ink-muted)', fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', padding: 0 }}
                     >
                       <Plus size={14} />
                       <span>Add a meal</span>
@@ -290,9 +290,9 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
 
                 {/* Picker dropdown */}
                 {isOpen && (
-                  <div style={{ borderTop: '1px solid var(--color-hairline)', padding: '1.25rem 0 1.5rem' }}>
+                  <div style={{ borderTop: '1px solid var(--color-hairline)', padding: 'var(--space-lg) 0' }}>
                     {/* Search */}
-                    <div style={{ position: 'relative', marginBottom: '1rem' }}>
+                    <div style={{ position: 'relative', marginBottom: 'var(--space-md)' }}>
                       <Search size={14} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-ink-muted)' }} />
                       <input
                         type="text"
@@ -309,7 +309,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                           backgroundColor: 'var(--color-paper)',
                           color: 'var(--color-ink)',
                           fontFamily: "'EB Garamond', Georgia, serif",
-                          fontSize: '0.9rem',
+                          fontSize: 'var(--text-meta)',
                           outline: 'none',
                           boxSizing: 'border-box',
                         }}
@@ -318,7 +318,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
 
                     {/* Recipe grid */}
                     {filtered.length > 0 ? (
-                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: '6px', marginBottom: '1.25rem' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(120px, 1fr))', gap: 'var(--space-xs)', marginBottom: 'var(--space-lg)' }}>
                         {filtered.map((r) => (
                           <button
                             key={r.id}
@@ -344,21 +344,21 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                             )}
                             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%)' }} />
                             <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '5px 7px', textAlign: 'left' }}>
-                              <p style={{ color: 'white', fontSize: '10px', margin: 0, lineHeight: 1.3, fontFamily: "'EB Garamond', Georgia, serif" }}>{r.title}</p>
+                              <p style={{ color: 'white', fontSize: 'var(--text-eyebrow)', margin: 0, lineHeight: 1.3, fontFamily: "'EB Garamond', Georgia, serif" }}>{r.title}</p>
                             </div>
                           </button>
                         ))}
                       </div>
                     ) : (
-                      <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.875rem', color: 'var(--color-ink-muted)', marginBottom: '1rem', fontStyle: 'italic' }}>No recipes found.</p>
+                      <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', marginBottom: 'var(--space-md)', fontStyle: 'italic' }}>No recipes found.</p>
                     )}
 
                     {/* Custom name */}
                     <div>
-                      <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.8rem', color: 'var(--color-ink-muted)', marginBottom: '0.5rem' }}>
+                      <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', color: 'var(--color-ink-muted)', marginBottom: 'var(--space-xs)' }}>
                         Or enter a custom dish:
                       </p>
-                      <div style={{ display: 'flex', gap: '8px' }}>
+                      <div style={{ display: 'flex', gap: 'var(--space-xs)' }}>
                         <input
                           type="text"
                           placeholder="Dish name…"
@@ -372,7 +372,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                             backgroundColor: 'var(--color-paper)',
                             color: 'var(--color-ink)',
                             fontFamily: "'EB Garamond', Georgia, serif",
-                            fontSize: '0.9rem',
+                            fontSize: 'var(--text-meta)',
                             outline: 'none',
                           }}
                         />
@@ -385,7 +385,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                             backgroundColor: 'var(--color-oxblood)',
                             color: 'var(--color-paper)',
                             fontFamily: "'EB Garamond', Georgia, serif",
-                            fontSize: '0.875rem',
+                            fontSize: 'var(--text-meta)',
                             cursor: 'pointer',
                             opacity: (customInputs[day] ?? '').trim() ? 1 : 0.4,
                           }}
@@ -402,7 +402,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
         </div>
 
         {/* Generate button */}
-        <div style={{ marginBottom: '3rem' }}>
+        <div style={{ marginBottom: 'var(--space-2xl)' }}>
           <button
             onClick={generateList}
             disabled={!canGenerate}
@@ -415,7 +415,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
               backgroundColor: canGenerate ? 'var(--color-oxblood)' : 'transparent',
               color: canGenerate ? 'var(--color-paper)' : 'var(--color-ink-muted)',
               fontFamily: "'EB Garamond', Georgia, serif",
-              fontSize: '0.9rem',
+              fontSize: 'var(--text-meta)',
               cursor: canGenerate ? 'pointer' : 'not-allowed',
               transition: 'opacity 0.15s',
             }}
@@ -424,7 +424,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
             {listReady ? 'Update shopping list' : 'Generate shopping list'}
           </button>
           {!canGenerate && (
-            <p style={{ fontFamily: "'EB Garamond', Georgia, serif", marginTop: '0.6rem', fontSize: '0.8rem', color: 'var(--color-ink-muted)', fontStyle: 'italic' }}>
+            <p style={{ fontFamily: "'EB Garamond', Georgia, serif", marginTop: 'var(--space-xs)', fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', fontStyle: 'italic' }}>
               Add at least one meal to continue.
             </p>
           )}
@@ -433,10 +433,10 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
         {/* Shopping list */}
         {listReady && (
           <div ref={shoppingRef}>
-            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: '1.5rem' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', marginBottom: 'var(--space-lg)' }}>
               <div>
-                <p style={{ ...EYEBROW, marginBottom: '0.5rem' }}>Shopping list</p>
-                <h2 style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 500, color: 'var(--color-ink)', margin: 0 }}>
+                <p style={{ ...EYEBROW, marginBottom: 'var(--space-xs)' }}>Shopping list</p>
+                <h2 style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-section)', fontWeight: 500, color: 'var(--color-ink)', margin: 0 }}>
                   Ingredients
                 </h2>
               </div>
@@ -449,7 +449,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                   backgroundColor: 'transparent',
                   color: 'var(--color-ink)',
                   fontFamily: "'EB Garamond', Georgia, serif",
-                  fontSize: '0.85rem',
+                  fontSize: 'var(--text-meta)',
                   cursor: 'pointer',
                 }}
               >
@@ -460,12 +460,12 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
 
             {/* Progress */}
             {shoppingList.length > 0 && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.65rem 0', borderTop: '1px solid var(--color-hairline)', borderBottom: '1px solid var(--color-hairline)', marginBottom: '1.5rem' }}>
-                <span className="onum" style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.875rem', color: 'var(--color-ink-muted)' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: 'var(--space-xs) 0', borderTop: '1px solid var(--color-hairline)', borderBottom: '1px solid var(--color-hairline)', marginBottom: 'var(--space-lg)' }}>
+                <span className="onum" style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)' }}>
                   {checkedCount} of {shoppingList.length} checked
                 </span>
                 {checkedCount === shoppingList.length && shoppingList.length > 0 && (
-                  <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.875rem', color: 'var(--color-olive)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-olive)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Check size={14} /> All done!
                   </span>
                 )}
@@ -473,19 +473,19 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
             )}
 
             {shoppingList.length === 0 ? (
-              <p style={{ fontFamily: "'EB Garamond', Georgia, serif", color: 'var(--color-ink-muted)', fontSize: '0.9rem', fontStyle: 'italic', padding: '1.5rem 0' }}>
+              <p style={{ fontFamily: "'EB Garamond', Georgia, serif", color: 'var(--color-ink-muted)', fontSize: 'var(--text-meta)', fontStyle: 'italic', padding: 'var(--space-lg) 0' }}>
                 No ingredient data — all selected meals are custom.
               </p>
             ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem', paddingBottom: '4rem' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xl)', paddingBottom: 'var(--space-3xl)' }}>
                 {DAYS.filter((d) => grouped[d]).map((day) => {
                   const { meal, sections } = grouped[day];
                   return (
                     <div key={day}>
                       {/* Day header */}
-                      <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.75rem', paddingBottom: '0.5rem', borderBottom: '1px solid var(--color-hairline)' }}>
-                        <span style={{ ...EYEBROW, fontSize: '0.6rem' }}>{day}</span>
-                        <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.9rem', color: 'var(--color-ink)' }}>{meal.title}</span>
+                      <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-sm)', paddingBottom: 'var(--space-xs)', borderBottom: '1px solid var(--color-hairline)' }}>
+                        <span style={{ ...EYEBROW }}>{day}</span>
+                        <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink)' }}>{meal.title}</span>
                         {meal.image && (
                           <img
                             src={`${basePath}${meal.image}`}
@@ -499,14 +499,14 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                       {sections.map((sec, si) => (
                         <div key={si}>
                           {sec.header && (
-                            <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.68rem', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-ink-muted)', margin: '0.75rem 0 0', fontWeight: 600 }}>
+                            <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-ink-muted)', margin: 'var(--space-sm) 0 0', fontWeight: 600 }}>
                               {sec.header}
                             </p>
                           )}
                           {sec.items.map((item) => (
                             <label
                               key={item.id}
-                              style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '0.55rem 0', borderBottom: '1px solid var(--color-hairline)', cursor: 'pointer' }}
+                              style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: 'var(--space-xs) 0', borderBottom: '1px solid var(--color-hairline)', cursor: 'pointer' }}
                             >
                               <span
                                 onClick={() => toggleItem(item.id)}
@@ -525,7 +525,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                                 className="onum"
                                 style={{
                                   fontFamily: "'EB Garamond', Georgia, serif",
-                                  fontSize: '0.95rem',
+                                  fontSize: 'var(--text-body)',
                                   color: item.checked ? 'var(--color-ink-muted)' : 'var(--color-ink)',
                                   textDecoration: item.checked ? 'line-through' : 'none',
                                   opacity: item.checked ? 0.55 : 1,
@@ -543,13 +543,13 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
 
                 {/* Note for custom meals */}
                 {DAYS.some((d) => meals[d]?.recipeId === null) && (
-                  <div style={{ borderTop: '1px solid var(--color-hairline)', paddingTop: '1rem' }}>
-                    <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.8rem', color: 'var(--color-ink-muted)', margin: '0 0 0.5rem', fontStyle: 'italic' }}>
+                  <div style={{ borderTop: '1px solid var(--color-hairline)', paddingTop: 'var(--space-md)' }}>
+                    <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', margin: '0 0 var(--space-xs)', fontStyle: 'italic' }}>
                       Custom meals (no ingredient data):
                     </p>
-                    <ul style={{ margin: 0, paddingLeft: '1rem' }}>
+                    <ul style={{ margin: 0, paddingLeft: 'var(--space-md)' }}>
                       {DAYS.filter((d) => meals[d]?.recipeId === null).map((d) => (
-                        <li key={d} style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: '0.9rem', color: 'var(--color-ink-muted)', marginBottom: '2px' }}>
+                        <li key={d} style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', marginBottom: '2px' }}>
                           <span style={{ color: 'var(--color-ink)' }}>{d}:</span> {meals[d]?.title}
                         </li>
                       ))}

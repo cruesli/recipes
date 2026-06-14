@@ -210,12 +210,12 @@ const { photo } = Astro.props;
     position: relative;
     z-index: 1;
     text-align: center;
-    padding: 0 1.5rem;
+    padding: 0 var(--space-lg);
     max-width: 580px;
   }
 
   .splash-eyebrow {
-    margin: 0 0 1.5rem;
+    margin: 0 0 var(--space-lg);
     animation: splashFadeUp 0.9s ease both;
     animation-delay: 0.08s;
   }
@@ -223,24 +223,24 @@ const { photo } = Astro.props;
   .splash-title {
     font-family: 'EB Garamond', Georgia, serif;
     font-weight: 500;
-    font-size: clamp(2.6rem, 6.5vw, 4.2rem);
+    font-size: var(--text-display);
     line-height: 1.08;
     color: var(--color-ink);
-    margin: 0 0 1.5rem;
+    margin: 0 0 var(--space-lg);
     animation: splashFadeUp 0.9s ease both;
     animation-delay: 0.26s;
   }
 
   .splash-rule {
     width: 52px;
-    margin: 0 auto 1.4rem;
+    margin: 0 auto var(--space-lg);
     animation: splashFadeUp 0.9s ease both;
     animation-delay: 0.42s;
   }
 
   .splash-season {
     font-family: 'EB Garamond', Georgia, serif;
-    font-size: 1rem;
+    font-size: var(--text-body);
     color: var(--color-ink-muted);
     margin: 0;
     animation: splashFadeUp 0.9s ease both;
@@ -261,7 +261,7 @@ const { photo } = Astro.props;
   /* ── Scroll cue ────────────────────────────────────────────── */
   .splash-cue {
     position: absolute;
-    bottom: 2rem;
+    bottom: var(--space-xl);
     left: 50%;
     transform: translateX(-50%);
     color: var(--color-ink-muted);
@@ -272,10 +272,10 @@ const { photo } = Astro.props;
 
   .splash-cue-label {
     font-family: 'EB Garamond', Georgia, serif;
-    font-size: 0.72rem;
+    font-size: var(--text-eyebrow);
     font-style: italic;
     color: inherit;
-    margin: 0.35rem 0 0;
+    margin: var(--space-xs) 0 0;
     letter-spacing: 0.04em;
     white-space: nowrap;
   }
