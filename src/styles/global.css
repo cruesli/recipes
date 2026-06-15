@@ -65,6 +65,7 @@ body {
   line-height: 1.6;
   background-color: var(--color-paper);
   color: var(--color-ink);
+  transition: padding-right 180ms ease;
 }
 
 /* ── Editorial utilities ─────────────────────────────────────── */

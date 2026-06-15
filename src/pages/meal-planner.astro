@@ -16,7 +16,7 @@ const recipeData = recipes.map((r) => ({
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
-<BaseLayout title="Ukemeny" fullWidth={true}>
+<BaseLayout title="Meal Planner" fullWidth={true} showPlanner={false}>
   <MealPlannerIsland
     recipes={recipeData}
     basePath={basePath}
