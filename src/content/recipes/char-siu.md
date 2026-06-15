@@ -9,7 +9,6 @@ tags:
 servings: 4
 prepTimeMinutes: 20
 cookTimeMinutes: 50
-image: /images/recipes/char-siu.png
 ingredients: |-
   - 1kg pork shoulder, cut into 4cm-thick strips
 

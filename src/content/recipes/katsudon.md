@@ -9,7 +9,6 @@ tags:
 servings: 2
 prepTimeMinutes: 15
 cookTimeMinutes: 20
-image: /images/recipes/katsudon.png
 ingredients: |-
   Pork katsu:
   - 2 pork loin steaks, about 150g each

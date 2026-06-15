@@ -10,7 +10,6 @@ tags:
 servings: 4
 prepTimeMinutes: 25
 cookTimeMinutes: 0
-image: /images/recipes/aguachile.png
 ingredients: |-
   - 500g raw shrimp, peeled, deveined and butterflied
   - Juice of 8 limes (about 200ml)

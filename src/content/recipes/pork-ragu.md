@@ -10,7 +10,6 @@ tags:
 servings: 6
 prepTimeMinutes: 20
 cookTimeMinutes: 180
-image: /images/recipes/pork-ragu.png
 ingredients: |-
   - 1.2kg pork shoulder, boneless, cut into 4 large pieces
   - 2 tablespoons olive oil

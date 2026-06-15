@@ -9,7 +9,6 @@ tags:
 servings: 4
 prepTimeMinutes: 20
 cookTimeMinutes: 90
-image: /images/recipes/lu-rou-fan.png
 ingredients: |-
   - 600g pork belly, skin on, diced into 1cm pieces
   - 6 shallots, thinly sliced

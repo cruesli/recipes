@@ -10,7 +10,6 @@ tags:
 servings: 6
 prepTimeMinutes: 20
 cookTimeMinutes: 150
-image: /images/recipes/goulash.png
 ingredients: |-
   - 1.2kg beef chuck, cut into 4cm cubes
   - 3 tablespoons lard or neutral oil

@@ -10,7 +10,6 @@ tags:
 servings: 4
 prepTimeMinutes: 20
 cookTimeMinutes: 75
-image: /images/recipes/briam.png
 ingredients: |-
   - 4 medium potatoes, sliced into 5mm rounds
   - 3 zucchini, sliced into 5mm rounds

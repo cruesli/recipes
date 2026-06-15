@@ -9,7 +9,6 @@ tags:
 servings: 2
 prepTimeMinutes: 10
 cookTimeMinutes: 20
-image: /images/recipes/teriyaki-chicken.png
 ingredients: |-
   - 4 chicken thighs, boneless, skin on (about 500g)
   - 1 teaspoon neutral oil

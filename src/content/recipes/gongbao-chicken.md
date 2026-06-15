@@ -9,7 +9,6 @@ tags:
 servings: 3
 prepTimeMinutes: 20
 cookTimeMinutes: 10
-image: /images/recipes/gongbao-chicken.png
 ingredients: |-
   Chicken and marinade:
   - 500g chicken thighs, boneless, skinless, cut into 2cm cubes

@@ -10,7 +10,6 @@ tags:
 servings: 4
 prepTimeMinutes: 10
 cookTimeMinutes: 40
-image: /images/recipes/peperonata.jpg
 ingredients: |-
   - 4 sweet peppers, sliced into strips
   - 1 red onion, thinly sliced

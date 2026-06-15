@@ -10,7 +10,6 @@ tags:
 servings: 6
 prepTimeMinutes: 20
 cookTimeMinutes: 180
-image: /images/recipes/betasuppe.png
 ingredients: |-
   - 1 pork shank, about 1kg, fresh or lightly salted
   - 2 litres water

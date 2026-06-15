@@ -9,7 +9,6 @@ tags:
 servings: 4
 prepTimeMinutes: 15
 cookTimeMinutes: 15
-image: /images/recipes/souvlaki.png
 ingredients: |-
   Souvlaki:
   - 800g pork shoulder, cut into 3cm cubes

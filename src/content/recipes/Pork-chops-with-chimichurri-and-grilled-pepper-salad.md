@@ -10,7 +10,6 @@ tags:
   - Bright
   - ""
 servings: 2
-image: /images/recipes/pork-chimichurri-pepper.png
 ingredients: |-
   Pork chops:
   - 400g pork shoulder

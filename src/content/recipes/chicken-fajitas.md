@@ -9,7 +9,6 @@ tags:
 servings: 4
 prepTimeMinutes: 15
 cookTimeMinutes: 15
-image: /images/recipes/chicken-fajitas.png
 ingredients: |-
   Marinade and chicken:
   - 600g chicken thighs, boneless, sliced into 1cm strips

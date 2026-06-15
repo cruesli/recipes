@@ -9,7 +9,6 @@ tags:
 servings: 4
 prepTimeMinutes: 20
 cookTimeMinutes: 15
-image: /images/recipes/carne-asada-tacos.png
 ingredients: |-
   Carne asada:
   - 800g skirt or flank steak
