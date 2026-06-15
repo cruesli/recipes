@@ -57,21 +57,21 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 <style>
   /* ── World map ────────────────────────────────────────────── */
   .map-section {
-    padding-top: 3.5rem;
-    padding-bottom: 5rem;
+    padding-top: var(--space-3xl);
+    padding-bottom: var(--space-4xl);
   }
 
   .section-heading {
     font-family: 'EB Garamond', Georgia, serif;
-    font-size: 1.75rem;
+    font-size: var(--text-section);
     font-weight: 500;
     color: var(--color-ink);
-    margin: 0 0 2rem;
+    margin: 0 0 var(--space-xl);
   }
 
   .map-hint {
-    font-size: 0.875rem;
+    font-size: var(--text-meta);
     color: var(--color-ink-muted);
-    margin: -1rem 0 1.5rem;
+    margin: calc(-1 * var(--space-md)) 0 var(--space-lg);
   }
 </style>

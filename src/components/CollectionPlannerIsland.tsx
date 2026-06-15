@@ -26,7 +26,7 @@ const HAIRLINE: React.CSSProperties = {
   margin: 0,
 };
 
-const SANS = "'Schibsted Grotesk', system-ui, -apple-system, sans-serif";
+const SERIF = "'EB Garamond', Georgia, serif";
 
 const INPUT: React.CSSProperties = {
   border: '1px solid var(--color-hairline)',
@@ -142,7 +142,7 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
                 placeholder="Search recipes…"
                 value={collectionQuery}
                 onChange={(e) => setCollectionQuery(e.target.value)}
-                style={{ ...INPUT, fontFamily: SANS, fontSize: 'var(--text-meta)', width: '100%', paddingLeft: '28px', paddingRight: '10px', boxSizing: 'border-box' }}
+                style={{ ...INPUT, fontFamily: SERIF, fontSize: 'var(--text-meta)', width: '100%', paddingLeft: '28px', paddingRight: '10px', boxSizing: 'border-box' }}
               />
             </div>
 
@@ -155,7 +155,7 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
                   border: cuisineFilter ? '1px solid var(--color-oxblood)' : '1px solid var(--color-hairline)',
                   backgroundColor: 'transparent',
                   color: cuisineFilter ? 'var(--color-oxblood)' : 'var(--color-ink-muted)',
-                  fontFamily: SANS, fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.07em',
+                  fontFamily: SERIF, fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.24em',
                   cursor: 'pointer', whiteSpace: 'nowrap', boxSizing: 'border-box',
                 }}
               >
@@ -185,7 +185,7 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
                         border: 'none', borderBottom: '1px solid var(--color-hairline)',
                         backgroundColor: 'transparent',
                         color: 'var(--color-ink)',
-                        fontFamily: SANS, fontSize: 'var(--text-meta)',
+                        fontFamily: SERIF, fontSize: 'var(--text-meta)',
                         textTransform: 'capitalize', cursor: 'pointer',
                       }}
                     >
