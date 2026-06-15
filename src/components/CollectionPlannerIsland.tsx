@@ -169,17 +169,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
         .cpi-collection {
           flex: 1;
           min-width: 0;
-          max-height: 70vh;
-          display: flex;
-          flex-direction: column;
-          overflow: hidden;
-          padding: var(--space-2xl) var(--space-lg) 0;
-        }
-        .cpi-collection-scroll {
-          flex: 1;
-          overflow-y: auto;
-          padding-top: var(--space-lg);
-          padding-bottom: var(--space-3xl);
+          padding: var(--space-2xl) var(--space-lg) var(--space-3xl);
         }
         /* Drawer: 32px tab when closed, 340px panel when open */
         .cpi-drawer {
@@ -265,7 +255,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
         .cpi-grid {
           display: grid;
           grid-template-columns: repeat(3, 1fr);
-          gap: 0 var(--space-lg);
+          gap: var(--space-2xl) var(--space-lg);
         }
         .cpi-drag-item { cursor: grab; user-select: none; }
         .cpi-drag-item:active { cursor: grabbing; }
@@ -291,6 +281,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
 
           {/* Toolbar */}
           <div style={{ marginBottom: 'var(--space-xl)' }}>
+            <div className="section-tick" />
             <p style={{ ...EYEBROW, marginBottom: 'var(--space-xs)' }}>The collection</p>
             <h2 style={{
               fontFamily: "'EB Garamond', Georgia, serif",
@@ -407,30 +398,28 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
 
           <hr style={HAIRLINE} />
 
-          {/* Recipe grid — scrollable; toolbar above stays static */}
-          <div className="cpi-collection-scroll">
-            {collectionRecipes.length === 0 ? (
-              <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', fontStyle: 'italic', margin: 0 }}>
-                No recipes found.
-              </p>
-            ) : (
-              <div className="cpi-grid">
-                {collectionRecipes.map((r) => (
-                  <RecipeCard
-                    key={r.id}
-                    href={`${basePath}/recipes/${r.id}`}
-                    imageSrc={r.image ? `${basePath}${r.image}` : null}
-                    eyebrow={r.cuisine}
-                    title={r.title}
-                    meta={[r.totalTimeMinutes ? `${r.totalTimeMinutes} min` : null]}
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, r)}
-                    onClick={armedDay ? (e) => handleCardClick(e, r) : undefined}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
+          {/* Recipe grid */}
+          {collectionRecipes.length === 0 ? (
+            <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', fontStyle: 'italic', margin: 0 }}>
+              No recipes found.
+            </p>
+          ) : (
+            <div className="cpi-grid">
+              {collectionRecipes.map((r) => (
+                <RecipeCard
+                  key={r.id}
+                  href={`${basePath}/recipes/${r.id}`}
+                  imageSrc={r.image ? `${basePath}${r.image}` : null}
+                  eyebrow={r.cuisine}
+                  title={r.title}
+                  meta={[r.totalTimeMinutes ? `${r.totalTimeMinutes} min` : null]}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, r)}
+                  onClick={armedDay ? (e) => handleCardClick(e, r) : undefined}
+                />
+              ))}
+            </div>
+          )}
         </div>
 
         {/* ── Push-drawer planner ─────────────────────────────────── */}

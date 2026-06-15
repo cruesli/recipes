@@ -25,7 +25,6 @@ export function RecipeCard({ href, imageSrc, eyebrow, title, meta, draggable, on
         display: 'block',
         textDecoration: 'none',
         color: 'var(--color-ink)',
-        borderTop: '1px solid var(--color-hairline)',
         paddingTop: 'var(--space-lg)',
         paddingBottom: 'var(--space-md)',
         userSelect: draggable ? 'none' : undefined,
@@ -75,7 +74,6 @@ export function RecipeCard({ href, imageSrc, eyebrow, title, meta, draggable, on
         } as React.CSSProperties}>
           {title}
         </h3>
-        <hr style={{ border: 'none', borderTop: '1px solid var(--color-hairline)', margin: '0 0 var(--space-xs)' }} />
         {metaStr && (
           <p className="onum" style={{
             fontFamily: "'EB Garamond', Georgia, serif",

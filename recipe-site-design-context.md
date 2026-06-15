@@ -12,11 +12,14 @@ restraint, cream paper, type-led layout, photography treated as precious and use
 
 ## Principles
 
-- Editorial and book-like: **whitespace + hairline rules do the structural work**, not filled cards.
-- Warmth comes from **paper tone + food photography**, not from coloured UI chrome.
+- Editorial and book-like: **whitespace + generous spacing do the structural work**, marked by
+  **short oxblood "ticks"** at section starts — not full-width rules, bordered cards, or boxes.
+- **One white only:** a single paper tone throughout; separation comes from space + accent, not
+  from tinted zone backgrounds.
+- Warmth comes from **paper tone + food photography + the oxblood accent**, not from filled UI chrome.
 - **Type-led identity** — all-serif (see Typography).
 - **Calm first, function fast**: a brief splash, then straight into the tools.
-- **Restraint**: accent colours are "spice", used sparingly.
+- **Oxblood is the single working accent**; olive is held back for seasonal cues only.
 - **Light mode only** — a cookbook is paper.
 
 ---
@@ -25,66 +28,110 @@ restraint, cream paper, type-led layout, photography treated as precious and use
 
 | Token | Hex / value | Role | Notes |
 |---|---|---|---|
-| `--color-paper` | `#FAF8F2` | Page background | Slightly creamier than the old `#FAF9F5` |
-| `--color-surface` | `#F3EFE4` | Occasional raised surface | Use sparingly — **not** a default card fill |
+| `--color-paper` | `#FAF8F2` | The one background | Used everywhere; no second surface tone in layout |
+| `--color-surface` | `#F3EFE4` | Reserved | **Currently unused** as a zone fill (single-white decision) |
 | `--color-stone` | `#D4D0BF` | Image placeholders / empty states | |
 | `--color-ink` | `#292F17` | Primary text | |
 | `--color-ink-muted` | `rgba(41,47,23,0.58)` | Secondary text / meta | |
-| `--color-hairline` | `rgba(41,47,23,0.12)` | Rules, dividers, borders | The default separator |
-| `--color-oxblood` | `#7E2625` | Primary accent ("spice") | Eyebrows, primary actions, active states — sparingly |
-| `--color-olive` | `#868B59` | Secondary accent | Seasonal cues, subtle highlights |
+| `--color-hairline` | `rgba(41,47,23,0.12)` | Minimal dividers where needed | Used sparingly, not as section separators |
+| `--color-oxblood` | `#7E2625` | **The working accent** | Ticks, section eyebrows, links, planner marks, primary actions |
+| `--color-olive` | `#868B59` | Seasonal accent only | Not used structurally for now |
 
-**Retired:** candle `#F1ECDB` is no longer a default fill.
-**Usage rule:** most surfaces are paper + air; oxblood is rare, olive is secondary.
+**Usage rule:** one white, space + oxblood ticks separate sections, oxblood carries structure,
+olive is seasonal-only. (Evolution note: the earlier "hairlines do the work / oxblood is rare"
+rule was deliberately retired — the build read too boxy, and a single warm accent on plain white
+proved cleaner and more characterful.)
+**Retired:** candle `#F1ECDB`; warm-tint zone bands.
 
 ---
 
 ## Typography
 
-All-serif. A secondary sans is deliberately **deferred** until a real need appears.
+All-serif. A secondary sans (Schibsted Grotesk) is deliberately **deferred** — and any place it
+crept in (e.g. the collection toolbar) should be returned to EB Garamond.
 
 - **Family:** EB Garamond. Weights 400, 500, 600 + 400 italic.
-- **Titles / display:** Garamond 500.
-- **Body / editorial:** Garamond 400; italic for intros and personal notes.
+- **Titles / display:** Garamond 500. **Body / editorial:** Garamond 400; italic for intros and notes.
 - **Eyebrow labels:** Garamond **600**, uppercase, letter-spacing ~`0.22–0.26em`, oxblood.
-  (The heavier weight keeps letterspaced caps from going thin.)
-- **Numbers / meta:** enable oldstyle figures (`font-feature-settings: "onum" 1`) — treat
-  them as a feature, not a bug.
-- **If a sans is ever needed** (data-dense UI), the pre-chosen companion is **Schibsted
-  Grotesk** — editorial, quietly Scandinavian, clean figures. Add only when warranted.
+- **Numbers / meta:** oldstyle figures (`font-feature-settings: "onum" 1`).
+
+### Type scale (locked, shipped)
+
+Perfect-fourth (×1.333), body-anchored, in `@theme`, consumed as `var(--text-*)`. Semantic names
+(not `--text-base/-sm`, which collide with Tailwind defaults in `WorldMap`). Top three fluid.
+
+| Token | Value | px (max) | Use |
+|---|---|---|---|
+| `--text-display` | `clamp(2.4rem,5.5vw,3.5625rem)` | 57 | splash title |
+| `--text-title` | `clamp(1.9rem,4.5vw,2.6875rem)` | 43 | recipe / cuisine h1 |
+| `--text-section` | `clamp(1.5rem,2.6vw,2rem)` | 32 | section mastheads |
+| `--text-card` | `1.5rem` | 24 | card titles |
+| `--text-body` | `1.125rem` | 18 | body |
+| `--text-meta` | `0.84rem` | 13.5 | meta / captions |
+| `--text-eyebrow` | `0.75rem` | 12 | caps labels |
+
+### Spacing scale (locked, shipped)
+
+T-shirt names, anchored `--space-md: 1rem`, in `@theme`. `2xs .25 / xs .5 / sm .75 / md 1 /
+lg 1.5 / xl 2 / 2xl 3 / 3xl 4 / 4xl 6` (rem). Named by position so values can be retuned freely.
 
 ---
 
 ## Structure & components
 
-- **Default separation:** whitespace + a single hairline rule. Avoid bordered/filled cards.
-- **Recipe card (collection):** image, oxblood eyebrow (cuisine), Garamond title, hairline,
-  muted meta (time · servings · a tag). No fill.
-- **Badges / tags:** quiet — plain text or hairline, never loud filled pills.
-- **Buttons:** hairline / outline; oxblood reserved for primary actions, used sparingly.
-- **Recipe detail:** keep the existing functionality (servings scaler, step check-off,
-  keep-awake) — restyle to editorial; add a nutrition panel (see NLP).
-- **Radius:** keep subtle (existing `~0.625rem`) for the few rounded elements (images,
-  inputs). Editorial leans squared + hairline.
+- **Default separation:** whitespace + spacing; a short oxblood tick (48×2px) marks each section
+  start. Avoid full-width rules, bordered cards, and boxed scroll areas.
+- **Recipe card (shared `RecipeCard`, home + `/recipes` + cuisine pages):** squared 220px
+  `object-fit: cover` image, oxblood cuisine eyebrow, Garamond `--text-card` title (2-line clamp),
+  muted oldstyle meta (`time · servings · tag`, missing fields dropped). **No per-card rule, no
+  hr** — cards separate by row-gap + space. (Card eyebrows may demote to muted ink if oxblood
+  reads too heavy — a one-line toggle.)
+- **Section masthead:** oxblood tick → oxblood eyebrow → `--text-section` heading.
+- **Photography:** **squared** for all display photos; `--radius-sm` only on tiny utility
+  thumbnails (22px shopping-list, 32px day-row, meal-picker tiles).
+- **Badges / tags:** quiet text, never filled pills.
+- **Buttons:** outline / hairline; oxblood for primary actions.
+- **Recipe detail:** keep functionality (servings scaler, step check-off, keep-awake); editorial
+  styling; nutrition panel pending (see NLP). Hero layout unchanged for now.
 
 ---
 
-## Homepage architecture
+## Homepage & browse architecture
 
-**Scroll-away splash (~100vh, shown every visit)**
-- Masthead: name eyebrow, large Garamond title, thin rule, self-updating "in season" line,
-  scroll-cue chevron.
-- Living texture: slow-drifting blurred warm-tone blobs (oxblood / olive / amber, low
-  opacity) + gentle staggered type reveal. **CSS only**, no JS libraries.
-- A sticky header means that after one scroll the splash is gone and we're in the tool.
-- **No featured-recipe hero** — the splash + collection replace it (this was the long-standing
-  sticking point; resolved by not picking a hero at all).
+**Scroll-away splash (~100vh, every visit)** — masthead (name eyebrow, large Garamond title, thin
+rule, self-updating "in season" line, scroll cue) over CSS living texture (drifting warm blobs)
++ staggered type reveal. CSS only. **No featured-recipe hero.**
 
-**Functional zone (after the fold)**
-1. Recipe collection — airy editorial grid.
-2. Meal planner / "this week we're cooking".
-3. Explore by place — the world map, **demoted** from a 70vh hero to a calmer secondary section.
-4. Footer.
+**Home, after the fold**
+1. **Collection preview** — a 2-row (6-card) editorial grid (newest first) + a **"View all N
+   recipes →"** link to `/recipes`. Keeps the home short so Explore stays close. The search box
+   filters the preview (so any recipe can still be surfaced + dragged to the planner).
+2. **Explore by place** — the world map, a calm secondary section (demoted from its old 70vh hero).
+3. Footer.
+
+**`/recipes` (full collection)** — the uncapped editorial grid of every recipe, with search +
+cuisine filter. The real "browse everything" page; cuisine pages remain the browse-by-place route.
+
+**Global meal-planner drawer** — a viewport-pinned (`position: fixed; right: 0`) push-drawer
+present on **all browse surfaces** (home, `/recipes`, cuisine pages) and **excluded on
+`/meal-planner`**:
+- **Closed:** a slim tab **flush to the viewport edge**, with a vertical day-mark stack (oxblood =
+  planned), a rotated "Meal planner" eyebrow, and a chevron. An oxblood divider sets it off — no
+  tint fill.
+- **Open (push):** animates page content left via padding (~180ms) so nothing is occluded; the tab
+  unfurls into the 340px panel; chevron flips.
+- **Plan from anywhere:** drag any card to the edge (auto-opens, closes after drop) or arm a day +
+  click a card. One shared week via `localStorage`; a pinned "Make shopping list · N" button →
+  `/meal-planner`.
+- **Mobile (<768px):** drawer hidden; an "Open meal planner" link routes to the page.
+
+**`/meal-planner` (full, editable)** — its own roomy planning + shopping surface: per-day
+search-picker (recipe search + custom-dish text), remove/clear, auto-generated checkable
+downloadable shopping list. No drawer here. Shares the `usePlanner` hook + `localStorage` week;
+lands with the list generated when reached from the drawer button.
+
+**Grid behaviour:** fixed 3 columns on browse pages (squeeze when the planner pushes), 1 column
+< 768px; browse frame `--max-wide: 1120px`; reading/detail layouts keep their widths.
 
 **Header (sticky):** brand, nav (Home, Meal Planner), slim search field (NLP placeholder).
 
@@ -92,42 +139,44 @@ All-serif. A secondary sans is deliberately **deferred** until a real need appea
 
 ## Motion
 
-- **Locked (Phase 1):** living-texture splash + staggered type reveal. CSS only.
-- **Phase 2 (optional):** a single organic "wipe" as the splash dissolves into the site on
-  first scroll — once per visit, calm everywhere else. **Not** a Lucci-style fluid-everywhere
-  treatment (too loud and too heavy for a daily-use tool).
+- **Shipped:** living-texture splash + staggered type reveal (CSS only); one-time swipeable splash
+  dismiss; the push-drawer's padding/width animation (~180ms) and tab-unfurl.
+- Calm elsewhere. **Not** a fluid-everywhere treatment.
 
 ---
 
 ## NLP integration (placeholder now, live later)
 
-The static Astro frontend consumes the FastAPI backend (CORS already open).
-
-- **Config:** a single `PUBLIC_NLP_API_URL` gates all API features, with graceful degradation
-  when unset.
-- **Search:** header field → `POST /api/v1/query` (natural language → filters). Placeholder /
-  disabled until live.
-- **Nutrition:** recipe-detail panel from `GET /api/v1/recipes/{slug}` and
-  `/ingredients/{ingredient}/nutrition`; Garamond with oldstyle figures, hairline-separated
-  rows. Skeleton/placeholder until live.
-- **Future discovery facets:** `GET /api/v1/recipes/filter` (protein, kcal, time, fat, carbs,
-  sodium, fibre, cuisine, dietary, origin_country, food_category).
+Static Astro frontend → FastAPI backend (CORS open). `PUBLIC_NLP_API_URL` gates all API features
+with graceful degradation. Header search → `POST /api/v1/query`. Nutrition panel →
+`GET /api/v1/recipes/{slug}` + `/ingredients/{ingredient}/nutrition`. Future facets →
+`GET /api/v1/recipes/filter`.
 
 ---
 
 ## Explicitly rejected / out of scope
 
-- Filled-card layouts as the default; candle `#F1ECDB` as a default fill.
-- Dark mode.
-- A big featured-recipe hero as the opener.
-- Loud fluid/liquid page transitions across the whole site.
-- Adding a sans font now (deferred to Schibsted Grotesk if/when needed).
+- Boxed/scroll-capped collections; bordered or filled cards as default.
+- Warm-tint zone bands / a second background tone; candle `#F1ECDB`.
+- Two-colour zoning (chose a single oxblood accent); olive as a structural colour.
+- Dark mode; a big featured-recipe hero; loud fluid page transitions.
+- Adding a sans now (Schibsted Grotesk deferred); rounded display photography.
+- A meal-planner overlay; a mobile bottom-sheet planner (mobile routes to the page).
 
 ---
 
-## Open copy & decisions (for later)
+## State of play
 
-- Splash title / welcome copy in your own voice (placeholder: *"A kitchen, written down"*).
-- Language: the site currently mixes Norwegian (`Hjem`, `Ukemeny`) and English — decide on
-  one, or make the bilingualism intentional.
-- Optional evergreen atmospheric splash photo, if a mood-led variant is ever wanted.
+- **Shipped:** type/spacing scales; shared `RecipeCard`; `usePlanner` + `localStorage`;
+  home push-drawer; mobile fence; editorial recipe/cuisine/planner pages; splash.
+- **Refinement round (current):** de-box; single-white + oxblood-tick separators; global pinned
+  planner; collection preview → `/recipes`; `index.astro` sweep + mastheads; all-serif cleanup;
+  broken-image content pass. (See `claude-code-refinement-plan.md`.)
+- **Later:** NLP wiring; nutrition panel; oxblood-dot audit; paper grain; cross-device week sync
+  (`nanostores` over `localStorage`); possible split-accent (olive separators + oxblood text).
+
+## Open copy & decisions
+
+- Splash title / welcome copy (placeholder: *"A kitchen, written down"*).
+- Language: page titles default to English now; decide Norwegian/English consistency intentionally.
+- Whether card cuisine eyebrows stay oxblood or demote to muted once the single-accent look is live.

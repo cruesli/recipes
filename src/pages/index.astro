@@ -38,6 +38,7 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
   <!-- Explore by place -->
   <section class="map-section">
     <div class="container">
+      <div class="section-tick"></div>
       <p class="section-label">Explore</p>
       <h2 class="section-heading">Around the world</h2>
       <p class="map-hint onum">Click a country to browse recipes from that cuisine.</p>
@@ -52,13 +53,8 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 </BaseLayout>
 
 <style>
-  .main-section {
-    border-top: 1px solid var(--color-hairline);
-  }
-
   /* ── World map ────────────────────────────────────────────── */
   .map-section {
-    border-top: 1px solid var(--color-hairline);
     padding-top: 3.5rem;
     padding-bottom: 5rem;
   }

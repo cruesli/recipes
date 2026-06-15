@@ -1,74 +1,119 @@
 # Recipe Site — Update Plan
 
-Ordered and phased. **Phase 0 unblocks everything else.** Items marked `(confirm)` are
-recommendations we didn't explicitly decide together — veto any before building.
+Ordered and phased. Phases 0–5 are **shipped** (committed to `main`). Phase 6 is the current
+**refinement round** — see `claude-code-refinement-plan.md` for the per-file detail.
 
 See `recipe-site-design-context.md` for the locked direction these tasks implement.
 
 ---
 
-## Phase 0 — Design-system foundations (do first)
+## Phase 0 — Design-system foundations ✅ shipped
 
-- [ ] **Single source of truth for tokens.** Define the locked palette / type / radius /
-      spacing once as CSS custom properties; mirror into Tailwind `@theme` if keeping Tailwind utilities.
-- [ ] **Delete the duplicate stylesheet.** Define tokens once in Tailwind `@theme`, consolidate
-      base styles into a single `global.css`, and remove the standalone `public/styles/global.css`.
-- [ ] **Apply locked token values:** paper `#FAF8F2`, surface `#F3EFE4`, stone `#D4D0BF`,
-      ink, muted, hairline, oxblood, olive. Retire candle `#F1ECDB`.
-- [ ] **Refactor React islands** (`WorldMap`, `DiscoverPanel`, `RecipePageIsland`,
-      `MealPlannerIsland`, `RecipeSliderIsland`) to consume `var(--color-*)` — remove inline hardcoded hex.
-- [ ] **Editorial utilities:** hairline rule, whitespace scale, eyebrow-label style,
-      oldstyle figures on numeric text.
-- [ ] **Fonts:** load EB Garamond 400 / 500 / 600 + italic; verify oldstyle figures and
-      letterspaced caps render well.
+- [x] Single source of truth for tokens (Tailwind `@theme`).
+- [x] Delete the duplicate stylesheet (`public/styles/global.css` now dead/unimported).
+- [x] Apply locked token values: paper, surface, stone, ink, muted, hairline, oxblood, olive; retire candle.
+- [x] Refactor React islands to consume `var(--color-*)`.
+- [x] Editorial utilities: hairline, whitespace, eyebrow label, oldstyle figures.
+- [x] Fonts: EB Garamond 400 / 500 / 600 + italic.
 
 ---
 
-## Phase 1 — Homepage rebuild
+## Phase 1 — Homepage rebuild ✅ shipped
 
-- [ ] **Splash component** (~100vh): CSS living texture (drifting warm blobs) + staggered
-      type reveal + scroll cue. Shown every visit.
-- [ ] **Sticky header:** brand, nav, slim placeholder search field.
-- [ ] **Recipe collection:** replace the card grid with an editorial hairline/whitespace grid
-      (image, oxblood eyebrow, Garamond title, muted meta).
-- [ ] **Meal planner / "this week"** entry in the functional zone.
-- [ ] **Demote `WorldMap`** → an "Explore by place" secondary section: drop from 70vh, calmer
-      styling, consume tokens.
-- [ ] **Remove `DiscoverPanel`** from the homepage (confirmed — discovery returns later via NLP facets).
-- [ ] **Remove `RecipeSliderIsland`** from the homepage (confirmed — the collection grid covers browsing).
-- [ ] **Seasonal data:** fold the "in season" line into the splash from a **single seasonal
-      data source** (replace the hardcoded `SeasonalBanner` list). Optional quiet seasonal strip below.
+- [x] Splash component (~100vh): CSS living texture + staggered reveal + scroll cue.
+- [x] Sticky header: brand, nav, slim placeholder search.
+- [x] Recipe collection: editorial whitespace grid.
+- [x] Meal-planner entry in the functional zone.
+- [x] Demote `WorldMap` to an "Explore by place" secondary section.
+- [x] Remove `DiscoverPanel` and `RecipeSliderIsland` from the homepage.
+- [x] Seasonal "in season" line folded into the splash from a single seasonal source.
 
 ---
 
-## Phase 2 — Recipe, cuisine & planner polish
+## Phase 2 — Recipe, cuisine & planner polish ✅ shipped (1 open)
 
-- [ ] Restyle the recipe-detail page to editorial; keep servings scaler, step check-off, keep-awake.
-- [ ] Add a **nutrition panel** (placeholder/skeleton, token-styled, wired in Phase 3).
-- [ ] Restyle cuisine pages + badges to editorial (quiet tags, hairlines).
-- [ ] Restyle the meal planner + shopping list to editorial; tabular / oldstyle figures.
+- [x] Editorial recipe-detail page (servings scaler, step check-off, keep-awake).
+- [ ] **Nutrition panel** — still a placeholder; wired in Phase 3.
+- [x] Editorial cuisine pages + quiet badges.
+- [x] Editorial meal planner + shopping list.
 
 ---
 
 ## Phase 3 — NLP integration (when the backend is ready)
 
-- [ ] Add `PUBLIC_NLP_API_URL` config + graceful degradation when unset.
-- [ ] Wire header search → `POST /api/v1/query`; build a results view.
-- [ ] Wire nutrition panels → `GET /api/v1/recipes/{slug}` + `/ingredients/{ingredient}/nutrition`.
+- [ ] `PUBLIC_NLP_API_URL` config + graceful degradation.
+- [ ] Header search → `POST /api/v1/query` + results view.
+- [ ] Nutrition panels → `GET /api/v1/recipes/{slug}` + `/ingredients/{ingredient}/nutrition`.
 - [ ] (Optional) discovery facets from `GET /api/v1/recipes/filter`.
 
 ---
 
-## Phase 4 — Later flourishes & functional upgrades
+## Phase 4 — Flourishes ✅ shipped
 
-- [ ] **Motion level 2:** one-time organic "wipe" on the splash → site scroll-away.
-- [ ] **Side-by-side collection + meal planner** with drag-and-drop recipe assignment.
-- [ ] Revisit a **secondary sans** (Schibsted Grotesk) if data-dense UI calls for it.
-- [ ] Optional mood-led splash variant with an evergreen photo.
+- [x] Motion level 2: one-time swipeable splash dismiss.
+- [x] ~~Side-by-side collection + planner with drag-and-drop.~~ **Superseded** by the push-drawer
+      (Phase 5) and then the global pinned drawer (Phase 6).
+- [x] Revisited a secondary sans (Schibsted Grotesk) — stayed all-serif; deferral holds. (Phase 6
+      removes the bits that crept into the toolbar.)
+- [x] Optional mood-led splash variant.
+
+---
+
+## Phase 5 — Scales + editorial collection & planner drawer ✅ shipped
+
+- [x] **A** — type + spacing scales in `@theme`; full sweep (snap to nearest; one-offs left literal).
+- [x] **B** — shared `usePlanner` hook + `localStorage`; `/meal-planner` refactored onto it (fully editable).
+- [x] **C** — shared `RecipeCard` (squared photos); editorial 3-col collection; widen frame.
+- [x] **D** — home push-drawer: tab + day-marks, drag/arm-to-add, mode-based auto-close, pinned button.
+- [x] **E** — mobile fence at ~768px (drop drawer, 1-col, link out).
+
+> Post-ship review: the build read **too boxy** and the collection was trapped in a 70vh
+> scroll-box; the planner sat inside the centered column (visible right gap). Addressed in Phase 6.
+
+---
+
+## Phase 6 — Refinement round (current)
+
+See `claude-code-refinement-plan.md` for per-file tasks + acceptance criteria.
+
+**R1 — Separation language + de-boxing**
+- [ ] One white only; remove any warm-tint zone fills.
+- [ ] Short **oxblood ticks** + section mastheads replace full-width rules; oxblood = single accent.
+- [ ] `RecipeCard`: drop the per-card top hairline and the title/meta `<hr>`; separate by space.
+- [ ] Remove the collection's `max-height:70vh` + inner scroll; add grid row-gap.
+
+**R2 — Global pinned planner**
+- [ ] Extract drawer → `PlannerDrawer` (on `usePlanner`); `position: fixed; right:0`.
+- [ ] Mount in `BaseLayout` on home / `/recipes` / cuisine pages; **exclude `/meal-planner`**.
+- [ ] Push via animated page padding; closed tab **flush to the viewport edge**.
+
+**R3 — Preview + `/recipes`**
+- [ ] Home shows a 2-row preview + "View all N recipes →".
+- [ ] New `src/pages/recipes/index.astro` = full uncapped collection (search + filter, planner present).
+- [ ] Fixed 3-col (squeeze on push), 1-col < 768px; browse frame `--max-wide: 1120px`.
+
+**R4 — Housekeeping**
+- [ ] Sweep `index.astro` `<style>` to tokens (missed in Phase A); apply mastheads.
+- [ ] Remove Schibsted Grotesk from the collection toolbar (all-serif).
+- [ ] English page titles (`Home`, `Meal Planner`).
+
+**R5 — Content**
+- [ ] Audit recipe `image` frontmatter; fix or null missing images (no broken-image icons).
+
+**Out of scope this round:** recipe-detail hero layout, oxblood-dot ingredient audit, paper grain,
+header NLP search, nutrition wiring.
+
+---
+
+## Later / backlog
+
+- Cross-device week sync via `nanostores` over `localStorage` (currently per-device).
+- Possible split-accent (olive separators + oxblood text) if single-oxblood reads too warm.
+- Oxblood-dot ingredient audit; subtle paper grain; soften the recipe-detail hero.
 
 ---
 
 ## Notes
 
 - Hosting: Netlify; CMS at `/admin` (Decap). Keep token/structure changes CMS-safe.
-- Decide Norwegian/English language consistency intentionally.
+- Decide Norwegian/English language consistency intentionally (titles default to English now).
