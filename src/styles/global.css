@@ -29,6 +29,9 @@
   --text-eyebrow: 0.75rem;   /* 12px — caps labels (off-ratio, intentional) */
 
   /* ── Spacing scale (t-shirt; anchored md = 1rem) ── */
+  /* ── Layout widths ── */
+  --max-wide: 1120px; /* browse pages: collection + /recipes */
+
   --space-2xs: 0.25rem; /* 4px */
   --space-xs:  0.5rem;  /* 8px */
   --space-sm:  0.75rem; /* 12px */

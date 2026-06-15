@@ -6,6 +6,8 @@ import { usePlanner, type RecipeData } from './usePlanner';
 interface Props {
   recipes: RecipeData[];
   basePath: string;
+  previewLimit?: number;  // if set, limit to N cards when no search active
+  viewAllHref?: string;   // show "View all N →" link when provided
 }
 
 const EYEBROW: React.CSSProperties = {
@@ -36,7 +38,7 @@ const INPUT: React.CSSProperties = {
   padding: '7px 10px',
 };
 
-export function CollectionPlannerIsland({ recipes, basePath }: Props) {
+export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewAllHref }: Props) {
   const [collectionQuery, setCollectionQuery] = useState('');
   const [cuisineFilter, setCuisineFilter] = useState<string | null>(null);
   const [filterOpen, setFilterOpen] = useState(false);
@@ -65,6 +67,12 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
     return matchesQ && matchesC;
   });
 
+  // When previewLimit is set and no active filter, cap the display (searching shows all matches)
+  const searchActive = collectionQuery.length > 0 || cuisineFilter !== null;
+  const displayedRecipes = (previewLimit && !searchActive)
+    ? collectionRecipes.slice(0, previewLimit)
+    : collectionRecipes;
+
   function handleDragStart(e: React.DragEvent, recipe: RecipeData) {
     e.dataTransfer.setData('recipeId', recipe.id);
     e.dataTransfer.effectAllowed = 'copy';
@@ -82,7 +90,7 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
     <>
       <style>{`
         .cpi-collection {
-          max-width: 1120px;
+          max-width: var(--max-wide);
           margin: 0 auto;
           padding: var(--space-2xl) var(--space-lg) var(--space-3xl);
         }
@@ -195,6 +203,9 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
               ? <> · <span style={{ color: 'var(--color-oxblood)' }}>click a recipe to add to {armedDay}</span></>
               : ' · click to open · drag to plan'
             }
+            {previewLimit && !searchActive && collectionRecipes.length > previewLimit && (
+              <> · showing {previewLimit} of {collectionRecipes.length}</>
+            )}
           </p>
         </div>
 
@@ -229,13 +240,13 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
 
         {/* Recipe grid */}
         <div style={{ paddingTop: 'var(--space-lg)' }}>
-          {collectionRecipes.length === 0 ? (
+          {displayedRecipes.length === 0 ? (
             <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', fontStyle: 'italic', margin: 0 }}>
               No recipes found.
             </p>
           ) : (
             <div className="cpi-grid">
-              {collectionRecipes.map((r) => (
+              {displayedRecipes.map((r) => (
                 <RecipeCard
                   key={r.id}
                   href={`${basePath}/recipes/${r.id}`}
@@ -251,6 +262,25 @@ export function CollectionPlannerIsland({ recipes, basePath }: Props) {
             </div>
           )}
         </div>
+
+        {/* View all link — shown on preview pages when limit is active */}
+        {viewAllHref && !searchActive && (
+          <div style={{ marginTop: 'var(--space-2xl)' }}>
+            <a
+              href={viewAllHref}
+              style={{
+                fontFamily: "'EB Garamond', Georgia, serif",
+                fontSize: 'var(--text-body)',
+                color: 'var(--color-oxblood)',
+                textDecoration: 'none',
+                borderBottom: '1px solid var(--color-oxblood)',
+                paddingBottom: '1px',
+              }}
+            >
+              View all {recipes.length} recipes →
+            </a>
+          </div>
+        )}
       </div>
     </>
   );

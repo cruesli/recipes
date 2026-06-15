@@ -1,0 +1,27 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { CollectionPlannerIsland } from "../../components/CollectionPlannerIsland";
+
+const recipes = await getCollection("recipes");
+recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const allRecipes = recipes.map((r) => ({
+  id: r.slug,
+  title: r.data.title,
+  cuisine: r.data.cuisine,
+  image: r.data.image ?? null,
+  totalTimeMinutes: r.data.totalTimeMinutes ?? null,
+  ingredients: r.data.ingredients ?? [],
+}));
+
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<BaseLayout title="Recipes" fullWidth={true}>
+  <CollectionPlannerIsland
+    recipes={allRecipes}
+    basePath={basePath}
+    client:load
+  />
+</BaseLayout>
