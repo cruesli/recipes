@@ -167,13 +167,15 @@ with graceful degradation. Header search → `POST /api/v1/query`. Nutrition pan
 
 ## State of play
 
-- **Shipped:** type/spacing scales; shared `RecipeCard`; `usePlanner` + `localStorage`;
-  home push-drawer; mobile fence; editorial recipe/cuisine/planner pages; splash.
-- **Refinement round (current):** de-box; single-white + oxblood-tick separators; global pinned
-  planner; collection preview → `/recipes`; `index.astro` sweep + mastheads; all-serif cleanup;
-  broken-image content pass. (See `claude-code-refinement-plan.md`.)
+- **Shipped (Phases 0–6):** type/spacing scales; shared `RecipeCard`; `usePlanner` +
+  `localStorage`; editorial recipe/cuisine/planner pages; splash. Refinement round also
+  complete: de-boxed collection; single-white + oxblood-tick separation; global pinned
+  `PlannerDrawer` (`position:fixed; right:0`, push via `padding-right`); home 6-card preview
+  and `/recipes` full-collection page; `index.astro` token sweep + mastheads; all-serif toolbar;
+  15 broken recipe images nulled (stone placeholder fallback).
 - **Later:** NLP wiring; nutrition panel; oxblood-dot audit; paper grain; cross-device week sync
-  (`nanostores` over `localStorage`); possible split-accent (olive separators + oxblood text).
+  (`nanostores` over `localStorage`); possible split-accent (olive separators + oxblood text);
+  add `date` field to recipe schema for newest-first home ordering.
 
 ## Open copy & decisions
 

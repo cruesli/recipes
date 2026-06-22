@@ -1,7 +1,7 @@
 # Recipe Site — Update Plan
 
-Ordered and phased. Phases 0–5 are **shipped** (committed to `main`). Phase 6 is the current
-**refinement round** — see `claude-code-refinement-plan.md` for the per-file detail.
+Ordered and phased. Phases 0–6 are **shipped** (committed to `main`).
+See `claude-code-refinement-plan.md` for Phase 6 per-file detail.
 
 See `recipe-site-design-context.md` for the locked direction these tasks implement.
 
@@ -72,36 +72,36 @@ See `recipe-site-design-context.md` for the locked direction these tasks impleme
 
 ---
 
-## Phase 6 — Refinement round (current)
+## Phase 6 — Refinement round ✅ shipped
 
 See `claude-code-refinement-plan.md` for per-file tasks + acceptance criteria.
 
 **R1 — Separation language + de-boxing**
-- [ ] One white only; remove any warm-tint zone fills.
-- [ ] Short **oxblood ticks** + section mastheads replace full-width rules; oxblood = single accent.
-- [ ] `RecipeCard`: drop the per-card top hairline and the title/meta `<hr>`; separate by space.
-- [ ] Remove the collection's `max-height:70vh` + inner scroll; add grid row-gap.
+- [x] One white only; remove any warm-tint zone fills.
+- [x] Short **oxblood ticks** + section mastheads replace full-width rules; oxblood = single accent.
+- [x] `RecipeCard`: drop the per-card top hairline and the title/meta `<hr>`; separate by space.
+- [x] Remove the collection's `max-height:70vh` + inner scroll; add grid row-gap.
 
 **R2 — Global pinned planner**
-- [ ] Extract drawer → `PlannerDrawer` (on `usePlanner`); `position: fixed; right:0`.
-- [ ] Mount in `BaseLayout` on home / `/recipes` / cuisine pages; **exclude `/meal-planner`**.
-- [ ] Push via animated page padding; closed tab **flush to the viewport edge**.
+- [x] Extract drawer → `PlannerDrawer` (on `usePlanner`); `position: fixed; right:0`.
+- [x] Mount in `BaseLayout` on home / `/recipes` / cuisine pages; **exclude `/meal-planner`**.
+- [x] Push via animated page padding; closed tab **flush to the viewport edge**.
 
 **R3 — Preview + `/recipes`**
-- [ ] Home shows a 2-row preview + "View all N recipes →".
-- [ ] New `src/pages/recipes/index.astro` = full uncapped collection (search + filter, planner present).
-- [ ] Fixed 3-col (squeeze on push), 1-col < 768px; browse frame `--max-wide: 1120px`.
+- [x] Home shows a 2-row preview + "View all N recipes →".
+- [x] New `src/pages/recipes/index.astro` = full uncapped collection (search + filter, planner present).
+- [x] Fixed 3-col (squeeze on push), 1-col < 768px; browse frame `--max-wide: 1120px`.
 
 **R4 — Housekeeping**
-- [ ] Sweep `index.astro` `<style>` to tokens (missed in Phase A); apply mastheads.
-- [ ] Remove Schibsted Grotesk from the collection toolbar (all-serif).
-- [ ] English page titles (`Home`, `Meal Planner`).
+- [x] Sweep `index.astro` `<style>` to tokens (missed in Phase A); apply mastheads.
+- [x] Remove Schibsted Grotesk from the collection toolbar (all-serif).
+- [x] English page titles (`Home`, `Meal Planner`, `Recipes`).
 
 **R5 — Content**
-- [ ] Audit recipe `image` frontmatter; fix or null missing images (no broken-image icons).
+- [x] Audit recipe `image` frontmatter; fix or null missing images (no broken-image icons).
+  15 of 20 recipes had missing image files; `image:` field removed; cards fall back to stone placeholder.
 
-**Out of scope this round:** recipe-detail hero layout, oxblood-dot ingredient audit, paper grain,
-header NLP search, nutrition wiring.
+> Note: "newest-first" home ordering requires a `date` field in the recipe schema — deferred to backlog.
 
 ---
 
@@ -110,6 +110,7 @@ header NLP search, nutrition wiring.
 - Cross-device week sync via `nanostores` over `localStorage` (currently per-device).
 - Possible split-accent (olive separators + oxblood text) if single-oxblood reads too warm.
 - Oxblood-dot ingredient audit; subtle paper grain; soften the recipe-detail hero.
+- Add `date` field to recipe schema + content to enable newest-first ordering on the home preview.
 
 ---
 
