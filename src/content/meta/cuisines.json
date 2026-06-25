@@ -1,21 +1,31 @@
 {
-    "cuisines": [
-      { "slug": "italian" },
-      { "slug": "indian" },
-      { "slug": "danish" },
-      { "slug": "scandinavian" },
-      { "slug": "japanese" },
-      { "slug": "mexican" },
-      { "slug": "thai" },
-      { "slug": "vietnamese" },
-      { "slug": "korean" },
-      { "slug": "chinese" },
-      { "slug": "american" },
-      { "slug": "british" },
-      { "slug": "french" },
-      { "slug": "german" },
-      { "slug": "spanish" },
-      { "slug": "middle-eastern" },
-      { "slug": "other" }
-    ]
-  }
+  "cuisines": [
+    { "slug": "northern-europe",  "label": "Northern Europe",  "parent": null },
+    { "slug": "norwegian",        "label": "Norwegian",        "parent": "northern-europe" },
+    { "slug": "central-europe",   "label": "Central Europe",   "parent": null },
+    { "slug": "hungarian",        "label": "Hungarian",        "parent": "central-europe" },
+    { "slug": "mediterranean",    "label": "Mediterranean",    "parent": null },
+    { "slug": "italian",          "label": "Italian",          "parent": "mediterranean" },
+    { "slug": "greek",            "label": "Greek",            "parent": "mediterranean" },
+    { "slug": "spanish",          "label": "Spanish",          "parent": "mediterranean" },
+    { "slug": "french",           "label": "French",           "parent": "mediterranean" },
+    { "slug": "balkan",           "label": "Balkan",           "parent": null },
+    { "slug": "eastern-europe",   "label": "Eastern Europe",   "parent": null },
+    { "slug": "middle-east",      "label": "Middle East",      "parent": null },
+    { "slug": "lebanese",         "label": "Lebanese",         "parent": "middle-east" },
+    { "slug": "north-africa",     "label": "North Africa",     "parent": null },
+    { "slug": "sub-saharan-africa","label": "Sub-Saharan Africa","parent": null },
+    { "slug": "south-asia",       "label": "South Asia",       "parent": null },
+    { "slug": "east-asia",        "label": "East Asia",        "parent": null },
+    { "slug": "japanese",         "label": "Japanese",         "parent": "east-asia" },
+    { "slug": "chinese",          "label": "Chinese",          "parent": "east-asia" },
+    { "slug": "taiwanese",        "label": "Taiwanese",        "parent": "east-asia" },
+    { "slug": "southeast-asia",   "label": "Southeast Asia",   "parent": null },
+    { "slug": "oceania",          "label": "Oceania",          "parent": null },
+    { "slug": "north-america",    "label": "North America",    "parent": null },
+    { "slug": "central-america",  "label": "Central America",  "parent": null },
+    { "slug": "mexican",          "label": "Mexican",          "parent": "central-america" },
+    { "slug": "south-america",    "label": "South America",    "parent": null },
+    { "slug": "argentinian",      "label": "Argentinian",      "parent": "south-america" }
+  ]
+}

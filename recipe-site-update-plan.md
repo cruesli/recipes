@@ -105,6 +105,42 @@ See `claude-code-refinement-plan.md` for per-file tasks + acceptance criteria.
 
 ---
 
+## Phase 7 — Cuisine map rework ✅ shipped
+
+**M1 — Cuisine taxonomy**
+- [x] Rebuild `cuisines.json` as a two-tier tree: 15 regions (`parent: null`) + 12 country leaves (`parent: "<region-slug>"`).
+- [x] Normalise recipe frontmatter to use correct slugs (`scandinavian` → `northern-europe`, `middle-eastern` → `middle-east`, `Argentinian` → `argentinian`).
+- [x] Update `config.ts` schema: `parent: z.string().nullable().optional()`; `label` required.
+- [x] Update `cuisines/[cuisine].astro`: emit all 27 slugs in `getStaticPaths`; filter via `getDescendants` for region aggregation.
+- [x] Add `getDescendants()` helper to `src/utils/cuisines.ts`.
+
+**M2 — WorldMap redesign**
+- [x] Full rewrite of `WorldMap.tsx`: near-fullscreen (`clamp(520px, 86vh, 1040px)`), `--color-map-land` / `--color-map-active` tokens, Sphere + Graticule atlas texture.
+- [x] `filterZoomEvent`: plain scroll passes through; ⌘/Ctrl+scroll or pinch zooms.
+- [x] Country · Region toggle (default Region); merged-region polygons via `topojson-client mergeArcs`.
+- [x] +/− zoom buttons (bottom-right); anchored caption with crossfading label (bottom-left); oxblood tick.
+- [x] Add `--color-map-land` and `--color-map-active` to `global.css` `@theme`.
+
+**M3 — View transitions + flight handoff**
+- [x] Add Astro `<ClientRouter />` to `BaseLayout.astro` for site-wide crossfade transitions.
+- [x] `animateFlight`: 500ms ease-out cubic RAF loop animates the camera toward the clicked shape's centroid before navigating.
+- [x] `geoCentroid` (d3-geo) computes centroids: per feature (country mode) or at merge time stored in properties (region mode).
+- [x] `prefers-reduced-motion`: skip tween, navigate immediately.
+- [x] RAF cleanup on unmount via `rafRef`.
+
+**M4 — Accessibility pass**
+- [x] `tabIndex={0}` + `role="button"` + `onKeyDown` (Enter/Space) on all clickable map shapes.
+- [x] `aria-label` per shape: `"${name} cuisine, N recipes"` / `"${name} region, N recipes"`.
+- [x] `aria-pressed` on Country · Region toggle buttons; `aria-label` on +/− zoom buttons.
+- [x] `role="status" aria-live="polite" aria-atomic="true"` on caption label.
+- [x] `:focus-visible` oxblood outline on paths and buttons via inline `<style>`.
+
+**M5 — Design-context sync**
+- [x] Update `recipe-site-design-context.md`: map tokens in palette, map description, motion section, state of play, two-tier taxonomy sub-section.
+- [x] Update `recipe-site-update-plan.md`: add Phase 7 section with all M1–M5 checkboxes.
+
+---
+
 ## Later / backlog
 
 - Cross-device week sync via `nanostores` over `localStorage` (currently per-device).

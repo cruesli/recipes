@@ -36,6 +36,8 @@ restraint, cream paper, type-led layout, photography treated as precious and use
 | `--color-hairline` | `rgba(41,47,23,0.12)` | Minimal dividers where needed | Used sparingly, not as section separators |
 | `--color-oxblood` | `#7E2625` | **The working accent** | Ticks, section eyebrows, links, planner marks, primary actions |
 | `--color-olive` | `#868B59` | Seasonal accent only | Not used structurally for now |
+| `--color-map-land`   | `#E5DECE` | Map: countries with no recipes | Tan; only used in the world map |
+| `--color-map-active` | `#ACAA8C` | Map: countries/regions with recipes | Sage; only used in the world map |
 
 **Usage rule:** one white, space + oxblood ticks separate sections, oxblood carries structure,
 olive is seasonal-only. (Evolution note: the earlier "hairlines do the work / oxblood is rare"
@@ -94,6 +96,19 @@ lg 1.5 / xl 2 / 2xl 3 / 3xl 4 / 4xl 6` (rem). Named by position so values can be
 - **Recipe detail:** keep functionality (servings scaler, step check-off, keep-awake); editorial
   styling; nutrition panel pending (see NLP). Hero layout unchanged for now.
 
+### Cuisine taxonomy (two-tier)
+
+Defined in `src/content/meta/cuisines.json`. Two levels:
+
+- **Regions** (`parent: null`) — 15 entries, e.g. `mediterranean`, `middle-east`, `northern-europe`.
+  Cuisine pages for regions aggregate all descendant recipes via `getDescendants()`.
+- **Country leaves** (`parent: "<region-slug>"`) — 12 entries, e.g. `italian`, `norwegian`,
+  `lebanese`, `argentinian`. Each maps to one region parent.
+
+The world map operates on this taxonomy: country mode maps individual countries to their leaf (or
+region) slug; region mode merges country polygons by region at runtime via `topojson-client
+mergeArcs`.
+
 ---
 
 ## Homepage & browse architecture
@@ -106,7 +121,7 @@ rule, self-updating "in season" line, scroll cue) over CSS living texture (drift
 1. **Collection preview** — a 2-row (6-card) editorial grid (newest first) + a **"View all N
    recipes →"** link to `/recipes`. Keeps the home short so Explore stays close. The search box
    filters the preview (so any recipe can still be surfaced + dragged to the planner).
-2. **Explore by place** — the world map, a calm secondary section (demoted from its old 70vh hero).
+2. **Explore by place** — the world map as a full-bleed closing editorial plate: near-fullscreen (`clamp(520px, 86vh, 1040px)`), Mercator projection, `--color-map-land` / `--color-map-active` palette. Country · Region toggle (default Region); merged-region polygons via topojson-client at runtime. Click a shape → 500ms ease-out camera flight → crossfade navigation to the cuisine page. Pinch / ⌘+scroll zooms; plain scroll passes through to the page.
 3. Footer.
 
 **`/recipes` (full collection)** — the uncapped editorial grid of every recipe, with search +
@@ -140,8 +155,12 @@ lands with the list generated when reached from the drawer button.
 ## Motion
 
 - **Shipped:** living-texture splash + staggered type reveal (CSS only); one-time swipeable splash
-  dismiss; the push-drawer's padding/width animation (~180ms) and tab-unfurl.
+  dismiss; the push-drawer's padding/width animation (~180ms) and tab-unfurl; **Astro `<ClientRouter />`
+  site-wide crossfade** (soft page transitions on every navigation); 500ms ease-out cubic **camera
+  flight** on map-shape click before the crossfade handoff.
 - Calm elsewhere. **Not** a fluid-everywhere treatment.
+- **Future idea:** use the clicked country/region shape as a CSS View Transitions shared element —
+  morphing it into the cuisine page header as a natural reveal.
 
 ---
 
@@ -167,12 +186,15 @@ with graceful degradation. Header search → `POST /api/v1/query`. Nutrition pan
 
 ## State of play
 
-- **Shipped (Phases 0–6):** type/spacing scales; shared `RecipeCard`; `usePlanner` +
+- **Shipped (Phases 0–7):** type/spacing scales; shared `RecipeCard`; `usePlanner` +
   `localStorage`; editorial recipe/cuisine/planner pages; splash. Refinement round also
   complete: de-boxed collection; single-white + oxblood-tick separation; global pinned
   `PlannerDrawer` (`position:fixed; right:0`, push via `padding-right`); home 6-card preview
   and `/recipes` full-collection page; `index.astro` token sweep + mastheads; all-serif toolbar;
-  15 broken recipe images nulled (stone placeholder fallback).
+  15 broken recipe images nulled (stone placeholder fallback). **Phase 7:** two-tier cuisine
+  taxonomy (15 regions + 12 country leaves); WorldMap rework (full-bleed, tokenised palette,
+  region merge, flight animation, keyboard accessibility, live ARIA region); Astro ClientRouter
+  view transitions site-wide.
 - **Later:** NLP wiring; nutrition panel; oxblood-dot audit; paper grain; cross-device week sync
   (`nanostores` over `localStorage`); possible split-accent (olive separators + oxblood text);
   add `date` field to recipe schema for newest-first home ordering.
