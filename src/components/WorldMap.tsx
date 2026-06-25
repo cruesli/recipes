@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import type { CuisineItem } from '../utils/cuisines';
 import {
   ComposableMap,
@@ -10,6 +10,7 @@ import {
 } from 'react-simple-maps';
 import * as topojson from 'topojson-client';
 import type { Topology } from 'topojson-specification';
+import { geoCentroid } from 'd3-geo';
 
 const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
@@ -169,6 +170,10 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
   const [topology, setTopology] = useState<Topology | null>(null);
 
+  // Keep a ref in sync so animateFlight can read latest position without stale closure
+  const positionRef = useRef(position);
+  useEffect(() => { positionRef.current = position; }, [position]);
+
   const availableSet = useMemo(() => new Set(availableCuisines), [availableCuisines]);
 
   // Fetch topology once on mount (needed for region merge)
@@ -206,6 +211,7 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
       label: string;
       shape: any;
       hasRecipes: boolean;
+      centroid: [number, number];
     }> = [];
 
     regionMap.forEach((featureIds, regionSlug) => {
@@ -228,11 +234,15 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
         return e?.parent === regionSlug;
       });
 
+      // Geographic centroid for flight animation
+      const centroid = geoCentroid({ type: 'Feature', geometry: merged, properties: {} }) as [number, number];
+
       result.push({
         slug: regionSlug,
         label: regionEntry?.label ?? regionSlug,
         shape: merged,
         hasRecipes,
+        centroid,
       });
     });
 
@@ -246,11 +256,61 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
       type: 'FeatureCollection' as const,
       features: regionShapes.map((r) => ({
         type: 'Feature' as const,
-        properties: { slug: r.slug, label: r.label, hasRecipes: r.hasRecipes },
+        properties: { slug: r.slug, label: r.label, hasRecipes: r.hasRecipes, centroid: r.centroid },
         geometry: r.shape,
       })),
     };
   }, [regionShapes]);
+
+  // Animate the ZoomableGroup camera toward a target, then call onDone
+  function animateFlight(
+    targetCoords: [number, number],
+    targetZoom: number,
+    duration: number,
+    onUpdate: (coords: [number, number], zoom: number) => void,
+    onDone: () => void
+  ) {
+    const start = performance.now();
+    const fromCoords = positionRef.current.coordinates;
+    const fromZoom = positionRef.current.zoom;
+
+    function tick(now: number) {
+      const t = Math.min((now - start) / duration, 1);
+      // ease-out cubic
+      const eased = 1 - Math.pow(1 - t, 3);
+      const coords: [number, number] = [
+        fromCoords[0] + (targetCoords[0] - fromCoords[0]) * eased,
+        fromCoords[1] + (targetCoords[1] - fromCoords[1]) * eased,
+      ];
+      const zoom = fromZoom + (targetZoom - fromZoom) * eased;
+      onUpdate(coords, zoom);
+      if (t < 1) {
+        requestAnimationFrame(tick);
+      } else {
+        onDone();
+      }
+    }
+    requestAnimationFrame(tick);
+  }
+
+  // Navigate to a cuisine page, with a camera flight animation first
+  function handleNavigate(slug: string, centroid: [number, number]) {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const target = `${basePath}/cuisines/${slug}`;
+
+    if (prefersReducedMotion) {
+      window.location.href = target;
+      return;
+    }
+
+    animateFlight(
+      centroid,
+      3.5,
+      500,
+      (coords, zoom) => setPosition({ coordinates: coords, zoom }),
+      () => { window.location.href = target; }
+    );
+  }
 
   // Fill for a given slug/hasRecipes flag
   const getFill = (slug: string | undefined, hasRecipes: boolean, isHovered: boolean) => {
@@ -354,7 +414,8 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
                       }}
                       onClick={() => {
                         if (!slug) return;
-                        window.location.href = `${basePath}/cuisines/${slug}`;
+                        const centroid = geoCentroid(geo) as [number, number];
+                        handleNavigate(slug, centroid);
                       }}
                       style={geoStyle(fill, !!slug)}
                     />
@@ -369,10 +430,11 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
             <Geographies geography={regionGeoJSON}>
               {({ geographies }) =>
                 geographies.map((geo) => {
-                  const { slug, label, hasRecipes } = geo.properties as {
+                  const { slug, label, hasRecipes, centroid } = geo.properties as {
                     slug: string;
                     label: string;
                     hasRecipes: boolean;
+                    centroid: [number, number];
                   };
                   const isHovered = hoveredSlug === slug;
                   const fill = getFill(slug, hasRecipes, isHovered);
@@ -390,7 +452,7 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
                         setHoveredLabel(null);
                       }}
                       onClick={() => {
-                        window.location.href = `${basePath}/cuisines/${slug}`;
+                        handleNavigate(slug, centroid);
                       }}
                       style={geoStyle(fill, true)}
                     />
