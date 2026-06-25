@@ -8,7 +8,6 @@ import Splash from "../components/Splash.astro";
 const recipes = await getCollection("recipes");
 recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
-const availableCuisines = [...new Set(recipes.map((r) => r.data.cuisine.toLowerCase()))];
 
 const allRecipes = recipes.map((r) => ({
   id: r.slug,
@@ -49,7 +48,7 @@ const cuisinesData = cuisinesEntry?.data.cuisines ?? [];
       <h2 class="section-heading">Around the world</h2>
     </div>
     <WorldMap
-      availableCuisines={availableCuisines}
+      recipeCuisines={recipes.map(r => r.data.cuisine.toLowerCase())}
       cuisinesData={cuisinesData}
       basePath={basePath}
       client:load

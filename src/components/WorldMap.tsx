@@ -152,7 +152,7 @@ const WORLD_ATLAS_COUNTRY_TO_SLUG: Record<string, string> = {
 };
 
 interface Props {
-  availableCuisines: string[];
+  recipeCuisines: string[];
   cuisinesData: CuisineItem[];
   basePath: string;
 }
@@ -162,7 +162,7 @@ interface Position {
   coordinates: [number, number];
 }
 
-export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
+export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
   // Mode: country or region (region is default)
   const [mode, setMode] = useState<'country' | 'region'>('region');
   const [position, setPosition] = useState<Position>({ zoom: 1, coordinates: [15, 25] });
@@ -177,7 +177,20 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
   // Track current animation frame so we can cancel it on unmount
   const rafRef = useRef<number | null>(null);
 
-  const availableSet = useMemo(() => new Set(availableCuisines), [availableCuisines]);
+  // De-duped set for hasRecipes checks; per-slug counts for aria-labels
+  const availableSet = useMemo(() => new Set(recipeCuisines), [recipeCuisines]);
+  const recipeCounts = useMemo(() => {
+    const counts: Record<string, number> = {};
+    recipeCuisines.forEach(s => { counts[s] = (counts[s] ?? 0) + 1; });
+    return counts;
+  }, [recipeCuisines]);
+
+  // Aggregate recipe count for a region slug (direct + all child leaves)
+  function getRegionCount(regionSlug: string): number {
+    let n = recipeCounts[regionSlug] ?? 0;
+    cuisinesData.forEach(c => { if (c.parent === regionSlug) n += recipeCounts[c.slug] ?? 0; });
+    return n;
+  }
 
   // Cancel any in-flight animation frame on unmount
   useEffect(() => {
@@ -238,11 +251,8 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
       const merged = topojson.mergeArcs(topology as any, countryGeoms);
 
       // Check if this region has recipes (direct slug or any child leaf)
-      const hasRecipes = availableCuisines.some((s) => {
-        if (s === regionSlug) return true;
-        const e = cuisinesData.find((c) => c.slug === s);
-        return e?.parent === regionSlug;
-      });
+      const hasRecipes = availableSet.has(regionSlug) ||
+        cuisinesData.some((c) => c.parent === regionSlug && availableSet.has(c.slug));
 
       // Geographic centroid for flight animation
       const centroid = geoCentroid({ type: 'Feature', geometry: merged, properties: {} }) as [number, number];
@@ -257,7 +267,7 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
     });
 
     return result;
-  }, [topology, mode, cuisinesData, availableCuisines]);
+  }, [topology, mode, cuisinesData, availableSet]);
 
   // Build GeoJSON FeatureCollection for region mode
   const regionGeoJSON = useMemo(() => {
@@ -331,13 +341,12 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
     return 'var(--color-map-land)';
   };
 
-  // Shared Geography style builder
+  // Shared Geography style builder — outline removed; CSS handles focus-visible ring
   const geoStyle = (fill: string, clickable: boolean) => ({
     default: {
       fill,
       stroke: 'var(--color-paper)',
       strokeWidth: 0.5,
-      outline: 'none',
       transition: 'fill 0.2s ease',
       cursor: clickable ? 'pointer' : 'default',
     },
@@ -345,14 +354,12 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
       fill: clickable ? 'var(--color-olive)' : 'var(--color-map-land)',
       stroke: 'var(--color-paper)',
       strokeWidth: 0.5,
-      outline: 'none',
       cursor: clickable ? 'pointer' : 'default',
     },
     pressed: {
       fill: clickable ? 'var(--color-oxblood)' : 'var(--color-map-land)',
       stroke: 'var(--color-paper)',
       strokeWidth: 0.5,
-      outline: 'none',
     },
   });
 
@@ -366,10 +373,16 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
         backgroundColor: 'var(--color-paper)',
       }}
     >
-      {/* Mobile override via inline media query workaround: handled by CSS class below */}
+      {/* Mobile override + focus-visible rings */}
       <style>{`
         @media (max-width: 767px) {
           .worldmap-container { height: 60vh !important; }
+        }
+        .worldmap-container path { outline: none; }
+        .worldmap-container path:focus-visible { outline: 2px solid var(--color-oxblood); outline-offset: 0; }
+        .worldmap-container button:focus-visible {
+          outline: 2px solid var(--color-oxblood);
+          outline-offset: 2px;
         }
       `}</style>
 
@@ -408,13 +421,23 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
                   const isHovered = hoveredSlug === name;
                   const fill = getFill(slug, hasRecipes, isHovered);
 
+                  // Build aria-label only for clickable countries
+                  let ariaLabel: string | undefined;
+                  if (slug) {
+                    const entry = cuisinesData.find((c) => c.slug === slug);
+                    const labelText = entry?.label ?? slug;
+                    const count = recipeCounts[slug] ?? 0;
+                    ariaLabel = count > 0
+                      ? `${labelText} cuisine, ${count} ${count === 1 ? 'recipe' : 'recipes'}`
+                      : `${labelText} cuisine, no recipes yet`;
+                  }
+
                   return (
                     <Geography
                       key={geo.rsmKey}
                       geography={geo}
                       onMouseEnter={() => {
                         if (!slug) return;
-                        // Resolve display label from cuisinesData
                         const entry = cuisinesData.find((c) => c.slug === slug);
                         setHoveredSlug(name);
                         setHoveredLabel(entry?.label ?? slug);
@@ -428,6 +451,25 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
                         const centroid = geoCentroid(geo) as [number, number];
                         handleNavigate(slug, centroid);
                       }}
+                      onKeyDown={slug ? (e: React.KeyboardEvent) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          const centroid = geoCentroid(geo) as [number, number];
+                          handleNavigate(slug, centroid);
+                        }
+                      } : undefined}
+                      onFocus={slug ? () => {
+                        const entry = cuisinesData.find((c) => c.slug === slug);
+                        setHoveredSlug(name);
+                        setHoveredLabel(entry?.label ?? slug);
+                      } : undefined}
+                      onBlur={slug ? () => {
+                        setHoveredSlug(null);
+                        setHoveredLabel(null);
+                      } : undefined}
+                      tabIndex={slug ? 0 : undefined}
+                      role={slug ? 'button' : undefined}
+                      aria-label={ariaLabel}
                       style={geoStyle(fill, !!slug)}
                     />
                   );
@@ -450,6 +492,11 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
                   const isHovered = hoveredSlug === slug;
                   const fill = getFill(slug, hasRecipes, isHovered);
 
+                  const count = getRegionCount(slug);
+                  const ariaLabel = count > 0
+                    ? `${label} region, ${count} ${count === 1 ? 'recipe' : 'recipes'}`
+                    : `${label} region, no recipes yet`;
+
                   return (
                     <Geography
                       key={geo.rsmKey}
@@ -465,6 +512,23 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
                       onClick={() => {
                         handleNavigate(slug, centroid);
                       }}
+                      onKeyDown={(e: React.KeyboardEvent) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          handleNavigate(slug, centroid);
+                        }
+                      }}
+                      onFocus={() => {
+                        setHoveredSlug(slug);
+                        setHoveredLabel(label);
+                      }}
+                      onBlur={() => {
+                        setHoveredSlug(null);
+                        setHoveredLabel(null);
+                      }}
+                      tabIndex={0}
+                      role="button"
+                      aria-label={ariaLabel}
                       style={geoStyle(fill, true)}
                     />
                   );
@@ -511,6 +575,7 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
         >
           <button
             onClick={() => setMode('country')}
+            aria-pressed={mode === 'country'}
             style={{
               background: 'none',
               border: 'none',
@@ -528,6 +593,7 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
           <span style={{ color: 'var(--color-ink-muted)', fontSize: 'var(--text-eyebrow)' }}>·</span>
           <button
             onClick={() => setMode('region')}
+            aria-pressed={mode === 'region'}
             style={{
               background: 'none',
               border: 'none',
@@ -554,8 +620,11 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
           }}
         />
 
-        {/* Crossfading label */}
+        {/* Crossfading label — live region for screen readers */}
         <p
+          role="status"
+          aria-live="polite"
+          aria-atomic="true"
           style={{
             fontFamily: 'var(--font-family-serif)',
             fontSize: 'var(--text-body)',
@@ -601,6 +670,7 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
         {(['+', '−'] as const).map((sym) => (
           <button
             key={sym}
+            aria-label={sym === '+' ? 'Zoom in' : 'Zoom out'}
             onClick={() =>
               setPosition((p) => ({
                 ...p,
