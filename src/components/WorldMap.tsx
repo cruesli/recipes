@@ -206,6 +206,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
       .then(setTopology);
   }, []);
 
+  // topojson-client + react-simple-maps types are incomplete; any is intentional here
   // Compute per-region merged shapes from topology
   const regionShapes = useMemo(() => {
     if (!topology || mode !== 'region') return null;
@@ -453,7 +454,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
                       }}
                       onKeyDown={slug ? (e: React.KeyboardEvent) => {
                         if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
+                          if (e.key === ' ') e.preventDefault();
                           const centroid = geoCentroid(geo) as [number, number];
                           handleNavigate(slug, centroid);
                         }
@@ -514,7 +515,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
                       }}
                       onKeyDown={(e: React.KeyboardEvent) => {
                         if (e.key === 'Enter' || e.key === ' ') {
-                          e.preventDefault();
+                          if (e.key === ' ') e.preventDefault();
                           handleNavigate(slug, centroid);
                         }
                       }}
