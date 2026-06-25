@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import type { CuisineItem } from '../utils/cuisines';
 import {
   ComposableMap,
   Geographies,
@@ -149,12 +150,6 @@ const WORLD_ATLAS_COUNTRY_TO_SLUG: Record<string, string> = {
   'New Zealand': 'oceania',
 };
 
-interface CuisineItem {
-  slug: string;
-  label: string;
-  parent?: string | null;
-}
-
 interface Props {
   availableCuisines: string[];
   cuisinesData: CuisineItem[];
@@ -174,7 +169,7 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
   const [topology, setTopology] = useState<Topology | null>(null);
 
-  const availableSet = new Set(availableCuisines);
+  const availableSet = useMemo(() => new Set(availableCuisines), [availableCuisines]);
 
   // Fetch topology once on mount (needed for region merge)
   useEffect(() => {
