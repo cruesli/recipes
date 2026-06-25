@@ -292,6 +292,7 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
 
   return (
     <div
+      className="worldmap-container"
       style={{
         position: 'relative',
         width: '100%',
