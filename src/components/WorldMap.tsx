@@ -174,7 +174,17 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
   const positionRef = useRef(position);
   useEffect(() => { positionRef.current = position; }, [position]);
 
+  // Track current animation frame so we can cancel it on unmount
+  const rafRef = useRef<number | null>(null);
+
   const availableSet = useMemo(() => new Set(availableCuisines), [availableCuisines]);
+
+  // Cancel any in-flight animation frame on unmount
+  useEffect(() => {
+    return () => {
+      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
 
   // Fetch topology once on mount (needed for region merge)
   useEffect(() => {
@@ -285,12 +295,13 @@ export function WorldMap({ availableCuisines, cuisinesData, basePath }: Props) {
       const zoom = fromZoom + (targetZoom - fromZoom) * eased;
       onUpdate(coords, zoom);
       if (t < 1) {
-        requestAnimationFrame(tick);
+        rafRef.current = requestAnimationFrame(tick);
       } else {
+        rafRef.current = null;
         onDone();
       }
     }
-    requestAnimationFrame(tick);
+    rafRef.current = requestAnimationFrame(tick);
   }
 
   // Navigate to a cuisine page, with a camera flight animation first
