@@ -38,14 +38,13 @@ const mealPlans = defineCollection({
   }),
 });
 
-/** NEW: Meta collection for cuisines */
 const meta = defineCollection({
   type: "data",
   schema: z.object({
     cuisines: z.array(
       z.object({
         slug: z.string(),
-        label: z.string().optional(),
+        label: z.string(),
         parent: z.string().nullable().optional(),
       })
     ),

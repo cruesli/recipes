@@ -34,7 +34,7 @@ const COUNTRY_TO_CUISINE: Record<string, string> = {
   'United States of America': 'north-america',
 
   // Middle East (all map to region slug)
-  Lebanon: 'lebanese',
+  Lebanon: 'middle-east',
   Turkey: 'middle-east',
   Syria: 'middle-east',
   Jordan: 'middle-east',

@@ -2,14 +2,14 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, getEntry } from "astro:content";
 import { displayFromSlug } from "../../utils/displayFromSlug";
-import { cuisineLabel, getDescendants } from "../../utils/cuisines";
+import { cuisineLabel, getDescendants, type CuisineItem } from "../../utils/cuisines";
 import { withBase } from "../../utils/withBase";
 import { RecipeCard } from "../../components/RecipeCard";
 
 export async function getStaticPaths() {
   const cuisinesEntry = await getEntry("meta", "cuisines");
   if (!cuisinesEntry) return [];
-  return cuisinesEntry.data.cuisines.map((c: { slug: string }) => ({
+  return cuisinesEntry.data.cuisines.map((c: CuisineItem) => ({
     params: { cuisine: c.slug },
   }));
 }
@@ -21,7 +21,7 @@ const cuisines = cuisinesEntry?.data.cuisines ?? [];
 
 // Find the entry for this slug
 const current = cuisines.find(
-  (c: { slug: string }) => c.slug === String(cuisine)
+  (c: CuisineItem) => c.slug === String(cuisine)
 );
 
 const title = current
@@ -68,7 +68,7 @@ recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
 
 <style>
   .cuisine-title {
-    font-family: 'EB Garamond', Georgia, serif;
+    font-family: var(--font-family-serif);
     font-size: var(--text-title);
     font-weight: 500;
     color: var(--color-ink);
