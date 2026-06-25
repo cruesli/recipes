@@ -21,9 +21,11 @@
     "react-simple-maps": "^3.0.0",
     "react-slick": "^0.31.0",
     "slick-carousel": "^1.8.1",
-    "tailwindcss": "^4.3.1"
+    "tailwindcss": "^4.3.1",
+    "topojson-client": "^3.1.0"
   },
   "devDependencies": {
-    "@types/react-slick": "^0.23.13"
+    "@types/react-slick": "^0.23.13",
+    "@types/topojson-client": "^3.1.5"
   }
 }

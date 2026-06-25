@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getCollection } from "astro:content";
+import { getCollection, getEntry } from "astro:content";
 import { WorldMap } from "../components/WorldMap";
 import { CollectionPlannerIsland } from "../components/CollectionPlannerIsland";
 import Splash from "../components/Splash.astro";
@@ -20,6 +20,10 @@ const allRecipes = recipes.map((r) => ({
 }));
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+// Load cuisines tree for the WorldMap
+const cuisinesEntry = await getEntry('meta', 'cuisines');
+const cuisinesData = cuisinesEntry?.data.cuisines ?? [];
 ---
 
 <BaseLayout title="Home" fullWidth={true}>
@@ -43,12 +47,11 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
       <div class="section-tick"></div>
       <p class="section-label">Explore</p>
       <h2 class="section-heading">Around the world</h2>
-      <p class="map-hint onum">Click a country to browse recipes from that cuisine.</p>
     </div>
     <WorldMap
       availableCuisines={availableCuisines}
+      cuisinesData={cuisinesData}
       basePath={basePath}
-      compact={true}
       client:load
     />
   </section>

@@ -13,6 +13,8 @@
   --color-hairline:  rgba(41, 47, 23, 0.12);
   --color-oxblood:   #7E2625;
   --color-olive:     #868B59;
+  --color-map-land:   #E5DECE;  /* tan: non-recipe countries */
+  --color-map-active: #ACAA8C;  /* sage: countries/regions that have recipes */
 
   --radius-sm: 0.375rem;
   --radius-md: 0.625rem;
