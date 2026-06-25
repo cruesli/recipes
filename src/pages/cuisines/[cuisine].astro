@@ -2,7 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection, getEntry } from "astro:content";
 import { displayFromSlug } from "../../utils/displayFromSlug";
-import { cuisineLabel } from "../../utils/cuisines";
+import { cuisineLabel, getDescendants } from "../../utils/cuisines";
 import { withBase } from "../../utils/withBase";
 import { RecipeCard } from "../../components/RecipeCard";
 
@@ -19,16 +19,20 @@ const { cuisine } = Astro.params;
 const cuisinesEntry = await getEntry("meta", "cuisines");
 const cuisines = cuisinesEntry?.data.cuisines ?? [];
 
+// Find the entry for this slug
 const current = cuisines.find(
-  (c: { slug: string }) => c.slug.toLowerCase() === String(cuisine).toLowerCase()
+  (c: { slug: string }) => c.slug === String(cuisine)
 );
 
 const title = current
   ? cuisineLabel(current)
   : displayFromSlug(String(cuisine));
 
+// Collect matching slugs (the slug itself + any leaves if it's a region)
+const matchingSlugs = new Set(getDescendants(String(cuisine), cuisines));
+
 const recipes = await getCollection("recipes", ({ data }) =>
-  data.cuisine.toLowerCase() === String(cuisine).toLowerCase()
+  matchingSlugs.has(data.cuisine)
 );
 
 recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));

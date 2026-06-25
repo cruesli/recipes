@@ -46,6 +46,7 @@ const meta = defineCollection({
       z.object({
         slug: z.string(),
         label: z.string().optional(),
+        parent: z.string().nullable().optional(),
       })
     ),
   }),
