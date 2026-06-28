@@ -162,7 +162,6 @@ interface Position {
 }
 
 export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
-  // Served from public/geo/ — avoids CDN dependency; must include basePath
   const geoUrl = `${basePath}/geo/countries-110m.json`;
 
   // Mode: country or region (region is default)
@@ -251,7 +250,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
 
       if (countryGeoms.length === 0) return;
 
-      const merged = topojson.mergeArcs(topology as any, countryGeoms);
+      const merged = topojson.merge(topology as any, countryGeoms);
 
       // Check if this region has recipes (direct slug or any child leaf)
       const hasRecipes = availableSet.has(regionSlug) ||
