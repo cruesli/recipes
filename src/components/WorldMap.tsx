@@ -376,19 +376,6 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
         backgroundColor: 'var(--color-paper)',
       }}
     >
-      {/* Mobile override + focus-visible rings */}
-      <style>{`
-        @media (max-width: 767px) {
-          .worldmap-container { height: 60vh !important; }
-        }
-        .worldmap-container path { outline: none; }
-        .worldmap-container path:focus-visible { outline: 2px solid var(--color-oxblood); outline-offset: 0; }
-        .worldmap-container button:focus-visible {
-          outline: 2px solid var(--color-oxblood);
-          outline-offset: 2px;
-        }
-      `}</style>
-
       {/* Map canvas */}
       <ComposableMap
         projection="geoMercator"

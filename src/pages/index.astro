@@ -51,7 +51,7 @@ const cuisinesData = cuisinesEntry?.data.cuisines ?? [];
       recipeCuisines={recipes.map(r => r.data.cuisine.toLowerCase())}
       cuisinesData={cuisinesData}
       basePath={basePath}
-      client:load
+      client:only="react"
     />
   </section>
 </BaseLayout>
