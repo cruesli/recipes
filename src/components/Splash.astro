@@ -46,69 +46,91 @@ const { photo } = Astro.props;
 </section>
 
 <script>
-  const splash = document.querySelector('[data-splash]') as HTMLElement | null;
-  if (splash) {
+  function initSplash() {
+    const splash = document.querySelector('[data-splash]') as HTMLElement | null;
+    if (!splash) return;
+
+    // Prevent double-init on the same DOM element (astro:page-load + immediate call)
+    if ((splash as HTMLElement & { _splashInit?: boolean })._splashInit) return;
+    (splash as HTMLElement & { _splashInit?: boolean })._splashInit = true;
+
     if (sessionStorage.getItem('splash-wiped')) {
       // Same-session return: hide immediately, no flash
       splash.style.display = 'none';
-    } else {
-      const el = splash; // capture as HTMLElement so nested functions stay non-null
-      let touchStartY = 0;
-      let touchDelta = 0;
-      let isTouching = false;
-
-      function dismiss() {
-        el.style.transition = 'transform 0.5s cubic-bezier(0.45, 0, 0.2, 1), opacity 0.45s ease';
-        el.style.transform = 'translateY(-100%)';
-        el.style.opacity = '0';
-        el.style.pointerEvents = 'none';
-        sessionStorage.setItem('splash-wiped', '1');
-        el.addEventListener('transitionend', () => { el.style.display = 'none'; }, { once: true });
-      }
-
-      // Touch: follow finger, dismiss if swiped up far enough
-      el.addEventListener('touchstart', (e) => {
-        isTouching = true;
-        touchStartY = (e as TouchEvent).touches[0].clientY;
-        touchDelta = 0;
-        el.style.transition = 'none';
-      }, { passive: true });
-
-      el.addEventListener('touchmove', (e) => {
-        const dy = touchStartY - (e as TouchEvent).touches[0].clientY;
-        if (dy > 0) {
-          touchDelta = dy;
-          el.style.transform = `translateY(-${dy}px)`;
-          el.style.opacity = String(Math.max(0, 1 - dy / 280));
-        }
-      }, { passive: true });
-
-      el.addEventListener('touchend', () => {
-        isTouching = false;
-        if (touchDelta > 60) {
-          dismiss();
-        } else {
-          // Snap back
-          el.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
-          el.style.transform = 'translateY(0)';
-          el.style.opacity = '1';
-          touchDelta = 0;
-        }
-      });
-
-      // Click anywhere to dismiss (desktop tap / backup)
-      el.addEventListener('click', dismiss);
-
-      // Scroll to dismiss (desktop mouse wheel)
-      window.addEventListener('scroll', function onScroll() {
-        if (isTouching) return;
-        if (window.scrollY > 8) {
-          dismiss();
-          window.removeEventListener('scroll', onScroll);
-        }
-      }, { passive: true });
+      return;
     }
+
+    const el = splash;
+    let touchStartY = 0;
+    let touchDelta = 0;
+    let isTouching = false;
+
+    function dismiss() {
+      el.style.transition = 'transform 0.5s cubic-bezier(0.45, 0, 0.2, 1), opacity 0.45s ease';
+      el.style.transform = 'translateY(-100%)';
+      el.style.opacity = '0';
+      el.style.pointerEvents = 'none';
+      sessionStorage.setItem('splash-wiped', '1');
+      el.addEventListener('transitionend', () => { el.style.display = 'none'; }, { once: true });
+    }
+
+    // Touch: follow finger, dismiss if swiped up far enough
+    el.addEventListener('touchstart', (e) => {
+      isTouching = true;
+      touchStartY = (e as TouchEvent).touches[0].clientY;
+      touchDelta = 0;
+      el.style.transition = 'none';
+    }, { passive: true });
+
+    el.addEventListener('touchmove', (e) => {
+      const dy = touchStartY - (e as TouchEvent).touches[0].clientY;
+      if (dy > 0) {
+        touchDelta = dy;
+        el.style.transform = `translateY(-${dy}px)`;
+        el.style.opacity = String(Math.max(0, 1 - dy / 280));
+      }
+    }, { passive: true });
+
+    el.addEventListener('touchend', () => {
+      isTouching = false;
+      if (touchDelta > 60) {
+        dismiss();
+      } else {
+        // Snap back
+        el.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+        el.style.transform = 'translateY(0)';
+        el.style.opacity = '1';
+        touchDelta = 0;
+      }
+    });
+
+    // Click anywhere to dismiss (desktop tap / backup)
+    el.addEventListener('click', dismiss);
+
+    // Scroll to dismiss: listen for both scroll (scrollY) and wheel (fires before scrollY
+    // updates — more reliable when a position:fixed overlay prevents the document from
+    // actually scrolling far enough to change scrollY).
+    function onScroll() {
+      if (isTouching) return;
+      if (window.scrollY > 8) { cleanup(); dismiss(); }
+    }
+    function onWheel(e: WheelEvent) {
+      if (isTouching) return;
+      if (e.deltaY > 0) { cleanup(); dismiss(); }
+    }
+    function cleanup() {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('wheel', onWheel as EventListener);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('wheel', onWheel, { passive: true });
   }
+
+  // Run on ClientRouter navigations (fires on initial load too in Astro 5)
+  document.addEventListener('astro:page-load', initSplash);
+  // Also run immediately so it works without ClientRouter or if the event already fired
+  initSplash();
 </script>
 
 <style>

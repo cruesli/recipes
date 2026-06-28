@@ -12,7 +12,6 @@ import * as topojson from 'topojson-client';
 import type { Topology } from 'topojson-specification';
 import { geoCentroid } from 'd3-geo';
 
-const GEO_URL = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json';
 
 // World-atlas country name → cuisine slug (leaf or region)
 const WORLD_ATLAS_COUNTRY_TO_SLUG: Record<string, string> = {
@@ -163,6 +162,9 @@ interface Position {
 }
 
 export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
+  // Served from public/geo/ — avoids CDN dependency; must include basePath
+  const geoUrl = `${basePath}/geo/countries-110m.json`;
+
   // Mode: country or region (region is default)
   const [mode, setMode] = useState<'country' | 'region'>('region');
   const [position, setPosition] = useState<Position>({ zoom: 1, coordinates: [15, 25] });
@@ -201,7 +203,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
 
   // Fetch topology once on mount (needed for region merge)
   useEffect(() => {
-    fetch(GEO_URL)
+    fetch(geoUrl)
       .then((r) => r.json())
       .then(setTopology);
   }, []);
@@ -413,7 +415,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
 
           {/* Country mode */}
           {mode === 'country' && (
-            <Geographies geography={GEO_URL}>
+            <Geographies geography={geoUrl}>
               {({ geographies }) =>
                 geographies.map((geo) => {
                   const name: string = geo.properties?.name;
@@ -540,7 +542,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
 
           {/* Region mode loading state: show plain countries while topology loads */}
           {mode === 'region' && !regionGeoJSON && (
-            <Geographies geography={GEO_URL}>
+            <Geographies geography={geoUrl}>
               {({ geographies }) =>
                 geographies.map((geo) => (
                   <Geography
