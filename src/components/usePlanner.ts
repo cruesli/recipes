@@ -161,6 +161,16 @@ export function usePlanner() {
     resetList();
   }
 
+  // Per-meal-instance servings, bounds 1–12; the generated list is a snapshot
+  function updateServings(day: string, mealId: string, servings: number) {
+    const clamped = Math.min(12, Math.max(1, Math.round(servings)));
+    setMeals((prev) => ({
+      ...prev,
+      [day]: (prev[day] ?? []).map((m) => (m.id === mealId ? { ...m, servings: clamped } : m)),
+    }));
+    resetList();
+  }
+
   function resetList() {
     setShoppingList([]);
     setListReady(false);
@@ -269,6 +279,7 @@ export function usePlanner() {
     addCustom,
     removeMeal,
     moveMeal,
+    updateServings,
     resetList,
     generateList,
     toggleItem,

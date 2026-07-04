@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Plus, X, ChevronDown, Search, ShoppingCart, Check, Download } from 'lucide-react';
+import { Plus, Minus, X, ChevronDown, Search, ShoppingCart, Check, Download } from 'lucide-react';
 import {
   DAYS,
   MAX_MEALS_PER_DAY,
@@ -43,6 +43,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
     addCustom,
     removeMeal,
     moveMeal,
+    updateServings,
     generateList,
     toggleItem,
     downloadList,
@@ -226,6 +227,33 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                           {meal.recipeId === null && (
                             <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-ink-muted)', border: '1px solid var(--color-hairline)', padding: '1px 6px' }}>
                               custom
+                            </span>
+                          )}
+                          {/* Servings stepper — recipe meals only, bounds 1–12 */}
+                          {meal.baseServings !== null && meal.servings !== null && (
+                            <span
+                              onClick={(e) => e.stopPropagation()}
+                              style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}
+                            >
+                              <button
+                                onClick={() => updateServings(day, meal.id, (meal.servings ?? 1) - 1)}
+                                disabled={(meal.servings ?? 1) <= 1}
+                                aria-label={`Fewer servings for ${meal.title}`}
+                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex', lineHeight: 1, opacity: (meal.servings ?? 1) <= 1 ? 0.3 : 1 }}
+                              >
+                                <Minus size={12} />
+                              </button>
+                              <span className="onum" style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', minWidth: '1.5ch', textAlign: 'center', color: 'var(--color-ink)' }}>
+                                {meal.servings}
+                              </span>
+                              <button
+                                onClick={() => updateServings(day, meal.id, (meal.servings ?? 1) + 1)}
+                                disabled={(meal.servings ?? 1) >= 12}
+                                aria-label={`More servings for ${meal.title}`}
+                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex', lineHeight: 1, opacity: (meal.servings ?? 1) >= 12 ? 0.3 : 1 }}
+                              >
+                                <Plus size={12} />
+                              </button>
                             </span>
                           )}
                           <button
