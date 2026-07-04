@@ -39,34 +39,55 @@ recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
 ---
 
 <BaseLayout title={title}>
-  <p class="eyebrow" style="margin: 0 0 var(--space-xs);">Cuisine</p>
-  <h1 class="cuisine-title">{title}</h1>
-  <p class="cuisine-count onum">
-    {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
-  </p>
+  <div class="cuisine-frame">
+    <a class="back-to-map" href={withBase("/#map")}>← Back to the map</a>
+    <p class="eyebrow" style="margin: 0 0 var(--space-xs);">Cuisine</p>
+    <h1 class="cuisine-title">{title}</h1>
+    <p class="cuisine-count onum">
+      {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
+    </p>
 
-  {recipes.length > 0 ? (
-    <div class="recipe-grid">
-      {recipes.map((r) => (
-        <RecipeCard
-          href={withBase(`/recipes/${r.slug}`)}
-          imageSrc={r.data.image ? withBase(r.data.image) : null}
-          eyebrow={r.data.tags?.[0]}
-          title={r.data.title}
-          meta={[
-            r.data.totalTimeMinutes ? `${r.data.totalTimeMinutes} min` : null,
-            r.data.servings ? `${r.data.servings} servings` : null,
-            r.data.tags?.[1],
-          ]}
-        />
-      ))}
-    </div>
-  ) : (
-    <p class="empty-note">No recipes for this cuisine yet.</p>
-  )}
+    {recipes.length > 0 ? (
+      <div class="recipe-grid">
+        {recipes.map((r) => (
+          <RecipeCard
+            href={withBase(`/recipes/${r.slug}`)}
+            imageSrc={r.data.image ? withBase(r.data.image) : null}
+            eyebrow={r.data.tags?.[0]}
+            title={r.data.title}
+            meta={[
+              r.data.totalTimeMinutes ? `${r.data.totalTimeMinutes} min` : null,
+              r.data.servings ? `${r.data.servings} servings` : null,
+              r.data.tags?.[1],
+            ]}
+          />
+        ))}
+      </div>
+    ) : (
+      <p class="empty-note">No recipes for this cuisine yet.</p>
+    )}
+  </div>
 </BaseLayout>
 
 <style>
+  /* Browse frame (full-width layout, no sidebar) */
+  .cuisine-frame {
+    max-width: var(--max-wide);
+    margin: 0 auto;
+    padding: var(--space-md) var(--space-lg);
+  }
+
+  .back-to-map {
+    display: inline-block;
+    font-family: var(--font-family-serif);
+    font-size: var(--text-meta);
+    color: var(--color-ink-muted);
+    text-decoration: none;
+    margin: 0 0 var(--space-lg);
+  }
+
+  .back-to-map:hover { color: var(--color-oxblood); }
+
   .cuisine-title {
     font-family: var(--font-family-serif);
     font-size: var(--text-title);

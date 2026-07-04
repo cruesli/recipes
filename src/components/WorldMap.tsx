@@ -161,12 +161,42 @@ interface Position {
   coordinates: [number, number];
 }
 
+// Consume-once map state snapshot (written at click, restored on return)
+const SNAPSHOT_KEY = 'map:snapshot';
+
+interface MapSnapshot {
+  coordinates: [number, number];
+  zoom: number;
+  mode: 'country' | 'region';
+  slug: string; // unused until Phase 10 T4
+}
+
+function readSnapshot(): MapSnapshot | null {
+  try {
+    const raw = sessionStorage.getItem(SNAPSHOT_KEY);
+    if (!raw) return null;
+    sessionStorage.removeItem(SNAPSHOT_KEY);
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+}
+
 export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
   const geoUrl = `${basePath}/geo/countries-110m.json`;
 
+  // Read + delete any snapshot once, before state init (client:only, so no SSR)
+  const snapshotRef = useRef<MapSnapshot | null | undefined>(undefined);
+  if (snapshotRef.current === undefined) snapshotRef.current = readSnapshot();
+  const snapshot = snapshotRef.current;
+
   // Mode: country or region (region is default)
-  const [mode, setMode] = useState<'country' | 'region'>('region');
-  const [position, setPosition] = useState<Position>({ zoom: 1, coordinates: [15, 25] });
+  const [mode, setMode] = useState<'country' | 'region'>(snapshot?.mode ?? 'region');
+  const [position, setPosition] = useState<Position>(
+    snapshot
+      ? { zoom: snapshot.zoom, coordinates: snapshot.coordinates }
+      : { zoom: 1, coordinates: [15, 25] }
+  );
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
   const [topology, setTopology] = useState<Topology | null>(null);
@@ -198,6 +228,19 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
     };
+  }, []);
+
+  // bfcache back-navigation restores the page without remounting — consume the snapshot here
+  useEffect(() => {
+    const onPageShow = (e: PageTransitionEvent) => {
+      if (!e.persisted) return;
+      const snap = readSnapshot();
+      if (!snap) return;
+      setMode(snap.mode);
+      setPosition({ zoom: snap.zoom, coordinates: snap.coordinates });
+    };
+    window.addEventListener('pageshow', onPageShow);
+    return () => window.removeEventListener('pageshow', onPageShow);
   }, []);
 
   // Fetch topology once on mount (needed for region merge)
@@ -320,6 +363,12 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
   function handleNavigate(slug: string, centroid: [number, number]) {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const target = `${basePath}/cuisines/${slug}`;
+
+    // Snapshot the at-click framing before any motion starts
+    const { coordinates, zoom } = positionRef.current;
+    try {
+      sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ coordinates, zoom, mode, slug }));
+    } catch { /* private mode: skip restore */ }
 
     if (prefersReducedMotion) {
       window.location.href = target;

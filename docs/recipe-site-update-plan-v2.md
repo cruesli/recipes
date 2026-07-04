@@ -15,19 +15,22 @@ Ordering is deliberate: **8 → 9 → 10** share map code and build on each othe
 
 Replace the leftover cuisine sidebar with map-first navigation.
 
-- [ ] Make `/cuisines/[cuisine].astro` `fullWidth={true}`; delete the now-dead
+- [x] Make `/cuisines/[cuisine].astro` `fullWidth={true}`; delete the now-dead
       sidebar branch (`layout-sidebar`, `sidebar-cuisines`, related CSS) from
-      `BaseLayout.astro`.
-- [ ] Add a muted Garamond **"← Back to the map"** link above the "Cuisine" eyebrow
+      `BaseLayout.astro`. *(Done: the `fullWidth` prop itself was removed — the
+      cuisine page was its last consumer; all pages now render a bare `<main>`.)*
+- [x] Add a muted Garamond **"← Back to the map"** link above the "Cuisine" eyebrow
       on all cuisine pages (leaf *and* region), href `/#map`.
-- [ ] Add `id="map"` to the map section on `index.astro`.
-- [ ] **State restore (consume-once):** in `WorldMap.tsx`, on click — *before* any
+- [x] Add `id="map"` to the map section on `index.astro`.
+- [x] **State restore (consume-once):** in `WorldMap.tsx`, on click — *before* any
       navigation motion starts — write `{ coordinates, zoom, mode, slug }` from
       `positionRef.current` to `sessionStorage` (`map:snapshot`). The `slug` field
       is unused until Phase 10 T4 but written from day one.
-- [ ] On map mount: read + delete the snapshot; if present, initialise position and
-      country/region mode from it. Instant restore, **no reverse flight**.
-- [ ] Reduced-motion path takes the same snapshot before immediate navigation.
+- [x] On map mount: read + delete the snapshot; if present, initialise position and
+      country/region mode from it. Instant restore, **no reverse flight**. *(Plus a
+      `pageshow` handler: browser-back via bfcache doesn't remount the island, so
+      the snapshot is consumed there too.)*
+- [x] Reduced-motion path takes the same snapshot before immediate navigation.
 
 **Acceptance:** no sidebar anywhere; back-link and browser back both land on the map
 at the exact at-click framing and mode; a later fresh visit to home gets default

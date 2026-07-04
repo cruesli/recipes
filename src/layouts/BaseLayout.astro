@@ -7,17 +7,12 @@ import { PlannerDrawer } from "../components/PlannerDrawer";
 
 interface Props {
   title?: string;
-  fullWidth?: boolean;
   showPlanner?: boolean;
 }
 
-const { title = "Family Recipes", fullWidth = false, showPlanner = true } = Astro.props;
+const { title = "Family Recipes", showPlanner = true } = Astro.props;
 
 const recipes = await getCollection("recipes");
-const cuisineSet = new Set(
-  recipes.map((r) => (r.data.cuisine || "other").toLowerCase())
-);
-const cuisines = Array.from(cuisineSet).sort((a, b) => a.localeCompare(b));
 
 const allRecipes = recipes.map((r) => ({
   id: r.slug,
@@ -76,27 +71,7 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
       </div>
     </header>
 
-    {fullWidth ? (
-      <main><slot /></main>
-    ) : (
-      <main class="container">
-        <div class="layout-sidebar">
-          <aside class="sidebar">
-            <h2>Cuisines</h2>
-            <nav class="sidebar-cuisines">
-              {cuisines.map((cuisine) => (
-                <a class="sidebar-cuisine-link" href={withBase(`/cuisines/${cuisine}`)}>
-                  {cuisine}
-                </a>
-              ))}
-            </nav>
-          </aside>
-          <section class="content-main">
-            <slot />
-          </section>
-        </div>
-      </main>
-    )}
+    <main><slot /></main>
 
     <footer class="container footer">
       <small>© {new Date().getFullYear()} Magnus & Tessern's Recipes</small>

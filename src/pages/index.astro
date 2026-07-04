@@ -25,7 +25,7 @@ const cuisinesEntry = await getEntry('meta', 'cuisines');
 const cuisinesData = cuisinesEntry?.data.cuisines ?? [];
 ---
 
-<BaseLayout title="Home" fullWidth={true}>
+<BaseLayout title="Home">
   <!-- Splash -->
   <Splash />
 
@@ -41,7 +41,7 @@ const cuisinesData = cuisinesEntry?.data.cuisines ?? [];
   </section>
 
   <!-- Explore by place -->
-  <section class="map-section">
+  <section class="map-section" id="map">
     <div class="container">
       <div class="section-tick"></div>
       <p class="section-label">Explore</p>
