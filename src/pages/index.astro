@@ -20,9 +20,10 @@ const allRecipes = recipes.map((r) => ({
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-// Load cuisines tree for the WorldMap
+// Load cuisines tree for the WorldMap (narrow the meta-collection union)
 const cuisinesEntry = await getEntry('meta', 'cuisines');
-const cuisinesData = cuisinesEntry?.data.cuisines ?? [];
+const cuisinesData =
+  cuisinesEntry && 'cuisines' in cuisinesEntry.data ? cuisinesEntry.data.cuisines : [];
 ---
 
 <BaseLayout title="Home">

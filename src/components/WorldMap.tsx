@@ -13,15 +13,13 @@ import type { Topology } from 'topojson-specification';
 import { geoCentroid } from 'd3-geo';
 import { navigate } from 'astro:transitions/client';
 import countryRegionsData from '../content/meta/country-regions.json';
+import { featureKey, slugForFeature as resolveSlug } from '../lib/regionGeometry.mjs';
 
 // Topology feature → cuisine slug (leaf or region) or null (inert land)
 const COUNTRY_REGIONS: Record<string, { name: string; region: string | null }> =
   countryRegionsData.countries;
 
-// Feature key: numeric id when present, else name (3 disputed territories lack ids)
-const featureKey = (geo: any): string => String(geo.id ?? geo.properties?.name);
-const slugForFeature = (geo: any): string | null =>
-  COUNTRY_REGIONS[featureKey(geo)]?.region ?? null;
+const slugForFeature = (geo: any): string | null => resolveSlug(COUNTRY_REGIONS, geo);
 
 interface Props {
   recipeCuisines: string[];

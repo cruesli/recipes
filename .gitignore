@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # git worktrees
 .worktrees/
+
+# prebuild-generated (deterministic; regenerated on every build)
+src/generated/

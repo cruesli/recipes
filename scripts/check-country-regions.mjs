@@ -2,9 +2,9 @@
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { featureKey } from '../src/lib/regionGeometry.mjs';
 
-// Feature key: numeric id when present, else name (mirrors WorldMap.tsx)
-export const featureKey = (geom) => String(geom.id ?? geom.properties?.name);
+export { featureKey };
 
 // Returns a list of error strings; empty = valid
 export function validate(topology, countryRegions, cuisines) {

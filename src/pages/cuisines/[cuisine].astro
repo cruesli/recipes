@@ -8,7 +8,8 @@ import { RecipeCard } from "../../components/RecipeCard";
 
 export async function getStaticPaths() {
   const cuisinesEntry = await getEntry("meta", "cuisines");
-  if (!cuisinesEntry) return [];
+  // Narrow the meta-collection union (cuisines.json | country-regions.json)
+  if (!cuisinesEntry || !("cuisines" in cuisinesEntry.data)) return [];
   return cuisinesEntry.data.cuisines.map((c: CuisineItem) => ({
     params: { cuisine: c.slug },
   }));
@@ -17,7 +18,8 @@ export async function getStaticPaths() {
 const { cuisine } = Astro.params;
 
 const cuisinesEntry = await getEntry("meta", "cuisines");
-const cuisines = cuisinesEntry?.data.cuisines ?? [];
+const cuisines =
+  cuisinesEntry && "cuisines" in cuisinesEntry.data ? cuisinesEntry.data.cuisines : [];
 
 // Find the entry for this slug
 const current = cuisines.find(
@@ -36,16 +38,33 @@ const recipes = await getCollection("recipes", ({ data }) =>
 );
 
 recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+// Inline silhouette, emitted by the prebuild generator (static HTML at first paint)
+const silhouettes = import.meta.glob("../../generated/silhouettes/*.svg", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+});
+const silhouette = silhouettes[`../../generated/silhouettes/${cuisine}.svg`] as
+  | string
+  | undefined;
 ---
 
 <BaseLayout title={title}>
   <div class="cuisine-frame">
     <a class="back-to-map" href={withBase("/#map")}>← Back to the map</a>
-    <p class="eyebrow" style="margin: 0 0 var(--space-xs);">Cuisine</p>
-    <h1 class="cuisine-title">{title}</h1>
-    <p class="cuisine-count onum">
-      {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
-    </p>
+    <div class="cuisine-header">
+      <div>
+        <p class="eyebrow" style="margin: 0 0 var(--space-xs);">Cuisine</p>
+        <h1 class="cuisine-title">{title}</h1>
+        <p class="cuisine-count onum">
+          {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
+        </p>
+      </div>
+      {silhouette && (
+        <div class="cuisine-silhouette" aria-hidden="true" set:html={silhouette} />
+      )}
+    </div>
 
     {recipes.length > 0 ? (
       <div class="recipe-grid">
@@ -96,10 +115,30 @@ recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
     margin: 0 0 var(--space-2xs);
   }
 
+  .cuisine-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-xl);
+    margin: 0 0 var(--space-2xl);
+  }
+
   .cuisine-count {
     font-size: var(--text-meta);
     color: var(--color-ink-muted);
-    margin: 0 0 var(--space-2xl);
+    margin: 0;
+  }
+
+  .cuisine-silhouette {
+    color: var(--color-map-active);
+    flex: none;
+  }
+
+  .cuisine-silhouette :global(svg) {
+    display: block;
+    height: clamp(80px, 12vh, 140px);
+    width: auto;
+    max-width: 200px;
   }
 
   .recipe-grid {
