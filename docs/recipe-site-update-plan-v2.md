@@ -48,27 +48,35 @@ mode), and 3 entries are silent zombies from name drift (`Czech Republic` vs
 
 **W1 — Data-driven mapping + loud failure**
 
-- [ ] New `src/content/meta/country-regions.json`: one entry per topology feature,
+- [x] New `src/content/meta/country-regions.json`: one entry per topology feature,
       keyed by **numeric feature `id`** (stable ISO codes), with a human-readable
       `name` field and a `region` value that is either a region slug or `null`
       (inert visual land — drawn tan, never merged, never interactive).
-- [ ] `WorldMap.tsx` consumes this file; delete the inline dict.
-- [ ] **Build-time completeness check** (prebuild script, shares an npm step with
+      *(Deviation: Kosovo, N. Cyprus and Somaliland have no `id` in the 110m
+      topology — they're keyed by `name`; shared `featureKey` rule = id ?? name.
+      File shape is `{ "countries": { … } }` to coexist with the meta collection
+      schema.)*
+- [x] `WorldMap.tsx` consumes this file; delete the inline dict. *(Malta, Bahrain,
+      Singapore from the old dict aren't 110m features — always dead entries,
+      dropped.)*
+- [x] **Build-time completeness check** (prebuild script, shares an npm step with
       Phase 10 T2): validates *both directions* — every topology feature id is
       mapped, every mapping entry matches a real feature, every non-null region
       value exists in `cuisines.json`. Any failure = failing build.
+      *(`scripts/check-country-regions.mjs` + `node --test` unit tests; verified a
+      deliberately broken entry fails `npm run build`.)*
 
 **W2 — Dead-land interactivity model**
 
-- [ ] A shape is **alive** iff it resolves to a cuisine slug with recipes; alive =
+- [x] A shape is **alive** iff it resolves to a cuisine slug with recipes; alive =
       sage fill, olive hover, caption update, pointer cursor, click/keyboard nav,
       `tabIndex`/`role`/`aria-label`.
-- [ ] Everything else is **fully dead**: tan fill, no hover recolor, no caption
+- [x] Everything else is **fully dead**: tan fill, no hover recolor, no caption
       change, default cursor, no focus/ARIA semantics — a decorative path. This
       shrinks the M4 accessibility surface to live shapes only.
-- [ ] Dead regions still **render** as merged shapes (tan, no internal borders) so
+- [x] Dead regions still **render** as merged shapes (tan, no internal borders) so
       the full atlas is always drawn regardless of recipe coverage.
-- [ ] **Country-mode aliveness is strict leaf-only:** a country is alive iff its
+- [x] **Country-mode aliveness is strict leaf-only:** a country is alive iff its
       *own leaf cuisine* has recipes. Countries mapped straight to a region slug
       never light up from region-tagged recipes (no more "all 14 Middle East
       countries sage from 2 recipes"). Region-tagged recipes are reachable in
@@ -77,9 +85,9 @@ mode), and 3 entries are silent zombies from name drift (`Czech Republic` vs
 
 **W3 — Taxonomy additions**
 
-- [ ] Add **`central-asia`** as the 16th region to `cuisines.json`
+- [x] Add **`central-asia`** as the 16th region to `cuisines.json`
       (`parent: null`).
-- [ ] Full assignment of the 79 previously unmapped features:
+- [x] Full assignment of the 79 previously unmapped features:
 
 | Region | Gets |
 |---|---|
@@ -98,8 +106,11 @@ mode), and 3 entries are silent zombies from name drift (`Czech Republic` vs
 | `sub-saharan-africa` | remaining 36 (Angola … eSwatini, incl. S. Sudan, Somalia, Somaliland, Madagascar) |
 | `null` (inert) | Antarctica, Fr. S. Antarctic Lands |
 
-- [ ] Fix the three name-drift zombies via id keying (they become ordinary mapped
-      entries).
+*(Done — actual leftover count is 37, not 36; all African as intended.)*
+
+- [x] Fix the three name-drift zombies via id keying (they become ordinary mapped
+      entries). *(Fixed via the table above: Czechia → central-europe, Bosnia and
+      Herz. + Macedonia → balkan.)*
 
 **Acceptance:** every landmass renders in both modes; region shapes have no holes;
 only recipe-bearing shapes react to anything; build fails if a future topology swap

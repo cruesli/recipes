@@ -10,7 +10,7 @@
     },
     "108": {
       "name": "Burundi",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "112": {
       "name": "Belarus",
@@ -22,7 +22,7 @@
     },
     "120": {
       "name": "Cameroon",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "124": {
       "name": "Canada",
@@ -30,7 +30,7 @@
     },
     "140": {
       "name": "Central African Rep.",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "144": {
       "name": "Sri Lanka",
@@ -38,7 +38,7 @@
     },
     "148": {
       "name": "Chad",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "152": {
       "name": "Chile",
@@ -58,11 +58,11 @@
     },
     "178": {
       "name": "Congo",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "180": {
       "name": "Dem. Rep. Congo",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "188": {
       "name": "Costa Rica",
@@ -82,11 +82,11 @@
     },
     "203": {
       "name": "Czechia",
-      "region": null
+      "region": "central-europe"
     },
     "204": {
       "name": "Benin",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "208": {
       "name": "Denmark",
@@ -94,7 +94,7 @@
     },
     "214": {
       "name": "Dominican Rep.",
-      "region": null
+      "region": "central-america"
     },
     "218": {
       "name": "Ecuador",
@@ -106,7 +106,7 @@
     },
     "226": {
       "name": "Eq. Guinea",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "231": {
       "name": "Ethiopia",
@@ -114,7 +114,7 @@
     },
     "232": {
       "name": "Eritrea",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "233": {
       "name": "Estonia",
@@ -122,11 +122,11 @@
     },
     "238": {
       "name": "Falkland Is.",
-      "region": null
+      "region": "south-america"
     },
     "242": {
       "name": "Fiji",
-      "region": null
+      "region": "oceania"
     },
     "246": {
       "name": "Finland",
@@ -142,19 +142,19 @@
     },
     "262": {
       "name": "Djibouti",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "266": {
       "name": "Gabon",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "268": {
       "name": "Georgia",
-      "region": null
+      "region": "middle-east"
     },
     "270": {
       "name": "Gambia",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "275": {
       "name": "Palestine",
@@ -174,7 +174,7 @@
     },
     "304": {
       "name": "Greenland",
-      "region": null
+      "region": "northern-europe"
     },
     "320": {
       "name": "Guatemala",
@@ -182,15 +182,15 @@
     },
     "324": {
       "name": "Guinea",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "328": {
       "name": "Guyana",
-      "region": null
+      "region": "south-america"
     },
     "332": {
       "name": "Haiti",
-      "region": null
+      "region": "central-america"
     },
     "340": {
       "name": "Honduras",
@@ -222,7 +222,7 @@
     },
     "372": {
       "name": "Ireland",
-      "region": null
+      "region": "northern-europe"
     },
     "376": {
       "name": "Israel",
@@ -234,11 +234,11 @@
     },
     "384": {
       "name": "Côte d'Ivoire",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "388": {
       "name": "Jamaica",
-      "region": null
+      "region": "central-america"
     },
     "392": {
       "name": "Japan",
@@ -246,7 +246,7 @@
     },
     "398": {
       "name": "Kazakhstan",
-      "region": null
+      "region": "central-asia"
     },
     "400": {
       "name": "Jordan",
@@ -270,7 +270,7 @@
     },
     "417": {
       "name": "Kyrgyzstan",
-      "region": null
+      "region": "central-asia"
     },
     "418": {
       "name": "Laos",
@@ -282,7 +282,7 @@
     },
     "426": {
       "name": "Lesotho",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "428": {
       "name": "Latvia",
@@ -290,7 +290,7 @@
     },
     "430": {
       "name": "Liberia",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "434": {
       "name": "Libya",
@@ -302,15 +302,15 @@
     },
     "442": {
       "name": "Luxembourg",
-      "region": null
+      "region": "central-europe"
     },
     "450": {
       "name": "Madagascar",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "454": {
       "name": "Malawi",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "458": {
       "name": "Malaysia",
@@ -318,11 +318,11 @@
     },
     "466": {
       "name": "Mali",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "478": {
       "name": "Mauritania",
-      "region": null
+      "region": "north-africa"
     },
     "484": {
       "name": "Mexico",
@@ -346,7 +346,7 @@
     },
     "508": {
       "name": "Mozambique",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "512": {
       "name": "Oman",
@@ -354,7 +354,7 @@
     },
     "516": {
       "name": "Namibia",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "524": {
       "name": "Nepal",
@@ -362,15 +362,15 @@
     },
     "528": {
       "name": "Netherlands",
-      "region": null
+      "region": "central-europe"
     },
     "540": {
       "name": "New Caledonia",
-      "region": null
+      "region": "oceania"
     },
     "548": {
       "name": "Vanuatu",
-      "region": null
+      "region": "oceania"
     },
     "554": {
       "name": "New Zealand",
@@ -382,7 +382,7 @@
     },
     "562": {
       "name": "Niger",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "566": {
       "name": "Nigeria",
@@ -402,7 +402,7 @@
     },
     "598": {
       "name": "Papua New Guinea",
-      "region": null
+      "region": "oceania"
     },
     "600": {
       "name": "Paraguay",
@@ -426,15 +426,15 @@
     },
     "624": {
       "name": "Guinea-Bissau",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "626": {
       "name": "Timor-Leste",
-      "region": null
+      "region": "southeast-asia"
     },
     "630": {
       "name": "Puerto Rico",
-      "region": null
+      "region": "central-america"
     },
     "634": {
       "name": "Qatar",
@@ -450,7 +450,7 @@
     },
     "646": {
       "name": "Rwanda",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "682": {
       "name": "Saudi Arabia",
@@ -458,7 +458,7 @@
     },
     "686": {
       "name": "Senegal",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "688": {
       "name": "Serbia",
@@ -466,7 +466,7 @@
     },
     "694": {
       "name": "Sierra Leone",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "703": {
       "name": "Slovakia",
@@ -482,7 +482,7 @@
     },
     "706": {
       "name": "Somalia",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "710": {
       "name": "South Africa",
@@ -490,7 +490,7 @@
     },
     "716": {
       "name": "Zimbabwe",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "724": {
       "name": "Spain",
@@ -498,7 +498,7 @@
     },
     "728": {
       "name": "S. Sudan",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "729": {
       "name": "Sudan",
@@ -506,15 +506,15 @@
     },
     "732": {
       "name": "W. Sahara",
-      "region": null
+      "region": "north-africa"
     },
     "740": {
       "name": "Suriname",
-      "region": null
+      "region": "south-america"
     },
     "748": {
       "name": "eSwatini",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "752": {
       "name": "Sweden",
@@ -530,7 +530,7 @@
     },
     "762": {
       "name": "Tajikistan",
-      "region": null
+      "region": "central-asia"
     },
     "764": {
       "name": "Thailand",
@@ -538,11 +538,11 @@
     },
     "768": {
       "name": "Togo",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "780": {
       "name": "Trinidad and Tobago",
-      "region": null
+      "region": "central-america"
     },
     "784": {
       "name": "United Arab Emirates",
@@ -558,11 +558,11 @@
     },
     "795": {
       "name": "Turkmenistan",
-      "region": null
+      "region": "central-asia"
     },
     "800": {
       "name": "Uganda",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "804": {
       "name": "Ukraine",
@@ -570,7 +570,7 @@
     },
     "807": {
       "name": "Macedonia",
-      "region": null
+      "region": "balkan"
     },
     "818": {
       "name": "Egypt",
@@ -578,7 +578,7 @@
     },
     "826": {
       "name": "United Kingdom",
-      "region": null
+      "region": "northern-europe"
     },
     "834": {
       "name": "Tanzania",
@@ -590,7 +590,7 @@
     },
     "854": {
       "name": "Burkina Faso",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "858": {
       "name": "Uruguay",
@@ -598,7 +598,7 @@
     },
     "860": {
       "name": "Uzbekistan",
-      "region": null
+      "region": "central-asia"
     },
     "862": {
       "name": "Venezuela",
@@ -610,11 +610,11 @@
     },
     "894": {
       "name": "Zambia",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "004": {
       "name": "Afghanistan",
-      "region": null
+      "region": "central-asia"
     },
     "008": {
       "name": "Albania",
@@ -626,7 +626,7 @@
     },
     "024": {
       "name": "Angola",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "010": {
       "name": "Antarctica",
@@ -638,7 +638,7 @@
     },
     "051": {
       "name": "Armenia",
-      "region": null
+      "region": "middle-east"
     },
     "036": {
       "name": "Australia",
@@ -650,11 +650,11 @@
     },
     "031": {
       "name": "Azerbaijan",
-      "region": null
+      "region": "middle-east"
     },
     "044": {
       "name": "Bahamas",
-      "region": null
+      "region": "central-america"
     },
     "050": {
       "name": "Bangladesh",
@@ -662,15 +662,15 @@
     },
     "056": {
       "name": "Belgium",
-      "region": null
+      "region": "central-europe"
     },
     "084": {
       "name": "Belize",
-      "region": null
+      "region": "central-america"
     },
     "064": {
       "name": "Bhutan",
-      "region": null
+      "region": "south-asia"
     },
     "068": {
       "name": "Bolivia",
@@ -678,11 +678,11 @@
     },
     "070": {
       "name": "Bosnia and Herz.",
-      "region": null
+      "region": "balkan"
     },
     "072": {
       "name": "Botswana",
-      "region": null
+      "region": "sub-saharan-africa"
     },
     "076": {
       "name": "Brazil",
@@ -690,23 +690,23 @@
     },
     "096": {
       "name": "Brunei",
-      "region": null
+      "region": "southeast-asia"
     },
     "Kosovo": {
       "name": "Kosovo",
-      "region": null
+      "region": "balkan"
     },
     "N. Cyprus": {
       "name": "N. Cyprus",
-      "region": null
+      "region": "mediterranean"
     },
     "090": {
       "name": "Solomon Is.",
-      "region": null
+      "region": "oceania"
     },
     "Somaliland": {
       "name": "Somaliland",
-      "region": null
+      "region": "sub-saharan-africa"
     }
   }
 }

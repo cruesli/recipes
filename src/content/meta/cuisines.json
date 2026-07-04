@@ -15,6 +15,7 @@
     { "slug": "lebanese",         "label": "Lebanese",         "parent": "middle-east" },
     { "slug": "north-africa",     "label": "North Africa",     "parent": null },
     { "slug": "sub-saharan-africa","label": "Sub-Saharan Africa","parent": null },
+    { "slug": "central-asia",     "label": "Central Asia",     "parent": null },
     { "slug": "south-asia",       "label": "South Asia",       "parent": null },
     { "slug": "east-asia",        "label": "East Asia",        "parent": null },
     { "slug": "japanese",         "label": "Japanese",         "parent": "east-asia" },
