@@ -82,6 +82,12 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
 
   // De-duped set for hasRecipes checks; per-slug counts for aria-labels
   const availableSet = useMemo(() => new Set(recipeCuisines), [recipeCuisines]);
+
+  // Leaf cuisine slugs — country-mode aliveness is strict leaf-only
+  const leafSet = useMemo(
+    () => new Set(cuisinesData.filter((c) => c.parent != null).map((c) => c.slug)),
+    [cuisinesData]
+  );
   const recipeCounts = useMemo(() => {
     const counts: Record<string, number> = {};
     recipeCuisines.forEach(s => { counts[s] = (counts[s] ?? 0) + 1; });
@@ -123,29 +129,33 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
   }, []);
 
   // topojson-client + react-simple-maps types are incomplete; any is intentional here
-  // Compute per-region merged shapes from topology
+  // Compute per-region merged shapes from topology; inert (null-region) features stay individual
   const regionShapes = useMemo(() => {
     if (!topology || mode !== 'region') return null;
 
     const countries = (topojson.feature(topology, (topology as any).objects.countries) as any);
 
-    // Group feature *geometries* (from the topology objects array) by region slug
-    const regionMap = new Map<string, any[]>();
+    // Group feature keys by region slug — all mapped features, recipes or not
+    const regionMap = new Map<string, string[]>();
+    const inert: any[] = [];
 
     countries.features.forEach((feature: any) => {
       const leafSlug = slugForFeature(feature);
-      if (!leafSlug) return;
+      if (!leafSlug) {
+        inert.push(feature);
+        return;
+      }
 
       // Resolve to region: if leaf has a parent cuisine, use parent; else leaf IS the region
       const entry = cuisinesData.find((c) => c.slug === leafSlug);
       const regionSlug = entry?.parent ?? leafSlug;
 
       if (!regionMap.has(regionSlug)) regionMap.set(regionSlug, []);
-      regionMap.get(regionSlug)!.push(feature.id);
+      regionMap.get(regionSlug)!.push(featureKey(feature));
     });
 
     // Merge arcs per region using topology geometry objects
-    const result: Array<{
+    const regions: Array<{
       slug: string;
       label: string;
       shape: any;
@@ -153,13 +163,13 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
       centroid: [number, number];
     }> = [];
 
-    regionMap.forEach((featureIds, regionSlug) => {
+    regionMap.forEach((featureKeys, regionSlug) => {
       const regionEntry = cuisinesData.find((c) => c.slug === regionSlug);
-      const idSet = new Set(featureIds.map(String));
+      const keySet = new Set(featureKeys);
 
-      // Filter the original topology geometry objects by matching id
+      // Filter the original topology geometry objects by matching key
       const countryGeoms = ((topology as any).objects.countries as any).geometries.filter(
-        (g: any) => idSet.has(String(g.id))
+        (g: any) => keySet.has(featureKey(g))
       );
 
       if (countryGeoms.length === 0) return;
@@ -173,7 +183,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
       // Geographic centroid for flight animation
       const centroid = geoCentroid({ type: 'Feature', geometry: merged, properties: {} }) as [number, number];
 
-      result.push({
+      regions.push({
         slug: regionSlug,
         label: regionEntry?.label ?? regionSlug,
         shape: merged,
@@ -182,19 +192,26 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
       });
     });
 
-    return result;
+    return { regions, inert };
   }, [topology, mode, cuisinesData, availableSet]);
 
-  // Build GeoJSON FeatureCollection for region mode
+  // Build GeoJSON FeatureCollection for region mode (merged regions + inert land)
   const regionGeoJSON = useMemo(() => {
     if (!regionShapes) return null;
     return {
       type: 'FeatureCollection' as const,
-      features: regionShapes.map((r) => ({
-        type: 'Feature' as const,
-        properties: { slug: r.slug, label: r.label, hasRecipes: r.hasRecipes, centroid: r.centroid },
-        geometry: r.shape,
-      })),
+      features: [
+        ...regionShapes.regions.map((r) => ({
+          type: 'Feature' as const,
+          properties: { slug: r.slug, label: r.label, hasRecipes: r.hasRecipes, centroid: r.centroid },
+          geometry: r.shape,
+        })),
+        ...regionShapes.inert.map((f: any) => ({
+          type: 'Feature' as const,
+          properties: { slug: null, label: null, hasRecipes: false, centroid: null },
+          geometry: f.geometry,
+        })),
+      ],
     };
   }, [regionShapes]);
 
@@ -255,12 +272,10 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
     );
   }
 
-  // Fill for a given slug/hasRecipes flag
-  const getFill = (slug: string | null, hasRecipes: boolean, isHovered: boolean) => {
-    if (isHovered) return 'var(--color-olive)';
-    if (!slug) return 'var(--color-map-land)';
-    if (hasRecipes) return 'var(--color-map-active)';
-    return 'var(--color-map-land)';
+  // Fill: alive shapes are sage (olive on hover); everything dead is tan
+  const getFill = (alive: boolean, isHovered: boolean) => {
+    if (!alive) return 'var(--color-map-land)';
+    return isHovered ? 'var(--color-olive)' : 'var(--color-map-active)';
   };
 
   // Shared Geography style builder — outline removed; CSS handles focus-visible ring
@@ -319,67 +334,64 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
           <Sphere id="sphere" fill="none" stroke="var(--color-hairline)" strokeWidth={0.3} />
           <Graticule stroke="var(--color-hairline)" strokeWidth={0.15} />
 
-          {/* Country mode */}
+          {/* Country mode — alive iff the country's own leaf cuisine has recipes */}
           {mode === 'country' && (
             <Geographies geography={geoUrl}>
               {({ geographies }) =>
                 geographies.map((geo) => {
                   const name: string = geo.properties?.name;
                   const slug = slugForFeature(geo);
-                  const hasRecipes = slug ? availableSet.has(slug) : false;
+                  const alive = slug !== null && leafSet.has(slug) && availableSet.has(slug);
                   const isHovered = hoveredSlug === name;
-                  const fill = getFill(slug, hasRecipes, isHovered);
+                  const fill = getFill(alive, isHovered);
 
-                  // Build aria-label only for clickable countries
-                  let ariaLabel: string | undefined;
-                  if (slug) {
-                    const entry = cuisinesData.find((c) => c.slug === slug);
-                    const labelText = entry?.label ?? slug;
-                    const count = recipeCounts[slug] ?? 0;
-                    ariaLabel = count > 0
-                      ? `${labelText} cuisine, ${count} ${count === 1 ? 'recipe' : 'recipes'}`
-                      : `${labelText} cuisine, no recipes yet`;
+                  // Dead land: decorative path only
+                  if (!alive) {
+                    return (
+                      <Geography key={geo.rsmKey} geography={geo} style={geoStyle(fill, false)} />
+                    );
                   }
+
+                  const entry = cuisinesData.find((c) => c.slug === slug);
+                  const labelText = entry?.label ?? slug;
+                  const count = recipeCounts[slug] ?? 0;
+                  const ariaLabel = `${labelText} cuisine, ${count} ${count === 1 ? 'recipe' : 'recipes'}`;
 
                   return (
                     <Geography
                       key={geo.rsmKey}
                       geography={geo}
                       onMouseEnter={() => {
-                        if (!slug) return;
-                        const entry = cuisinesData.find((c) => c.slug === slug);
                         setHoveredSlug(name);
-                        setHoveredLabel(entry?.label ?? slug);
+                        setHoveredLabel(labelText);
                       }}
                       onMouseLeave={() => {
                         setHoveredSlug(null);
                         setHoveredLabel(null);
                       }}
                       onClick={() => {
-                        if (!slug) return;
                         const centroid = geoCentroid(geo) as [number, number];
                         handleNavigate(slug, centroid);
                       }}
-                      onKeyDown={slug ? (e: React.KeyboardEvent) => {
+                      onKeyDown={(e: React.KeyboardEvent) => {
                         if (e.key === 'Enter' || e.key === ' ') {
                           if (e.key === ' ') e.preventDefault();
                           const centroid = geoCentroid(geo) as [number, number];
                           handleNavigate(slug, centroid);
                         }
-                      } : undefined}
-                      onFocus={slug ? () => {
-                        const entry = cuisinesData.find((c) => c.slug === slug);
+                      }}
+                      onFocus={() => {
                         setHoveredSlug(name);
-                        setHoveredLabel(entry?.label ?? slug);
-                      } : undefined}
-                      onBlur={slug ? () => {
+                        setHoveredLabel(labelText);
+                      }}
+                      onBlur={() => {
                         setHoveredSlug(null);
                         setHoveredLabel(null);
-                      } : undefined}
-                      tabIndex={slug ? 0 : undefined}
-                      role={slug ? 'button' : undefined}
+                      }}
+                      tabIndex={0}
+                      role="button"
                       aria-label={ariaLabel}
-                      style={geoStyle(fill, !!slug)}
+                      style={geoStyle(fill, true)}
                     />
                   );
                 })
@@ -387,24 +399,30 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
             </Geographies>
           )}
 
-          {/* Region mode */}
+          {/* Region mode — alive iff the region (or a child leaf) has recipes */}
           {mode === 'region' && regionGeoJSON && (
             <Geographies geography={regionGeoJSON}>
               {({ geographies }) =>
                 geographies.map((geo) => {
                   const { slug, label, hasRecipes, centroid } = geo.properties as {
-                    slug: string;
-                    label: string;
+                    slug: string | null;
+                    label: string | null;
                     hasRecipes: boolean;
-                    centroid: [number, number];
+                    centroid: [number, number] | null;
                   };
+                  const alive = slug !== null && hasRecipes;
                   const isHovered = hoveredSlug === slug;
-                  const fill = getFill(slug, hasRecipes, isHovered);
+                  const fill = getFill(alive, isHovered);
+
+                  // Dead land (recipe-less region or inert feature): decorative path only
+                  if (!alive || slug === null || label === null || centroid === null) {
+                    return (
+                      <Geography key={geo.rsmKey} geography={geo} style={geoStyle(fill, false)} />
+                    );
+                  }
 
                   const count = getRegionCount(slug);
-                  const ariaLabel = count > 0
-                    ? `${label} region, ${count} ${count === 1 ? 'recipe' : 'recipes'}`
-                    : `${label} region, no recipes yet`;
+                  const ariaLabel = `${label} region, ${count} ${count === 1 ? 'recipe' : 'recipes'}`;
 
                   return (
                     <Geography
