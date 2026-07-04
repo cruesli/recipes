@@ -1,6 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, Plus, X } from 'lucide-react';
-import { DAYS, usePlanner, type RecipeData } from './usePlanner';
+import {
+  DAYS,
+  MAX_MEALS_PER_DAY,
+  PLANNER_ADD_TYPE as ADD_TYPE,
+  PLANNER_MOVE_TYPE as MOVE_TYPE,
+  usePlanner,
+  type RecipeData,
+} from './usePlanner';
 
 interface Props {
   recipes: RecipeData[];
@@ -26,9 +33,19 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
   const [armedDay, setArmedDay] = useState<string | null>(null);
   const [dragOverTab, setDragOverTab] = useState(false);
   const [dragOverDay, setDragOverDay] = useState<string | null>(null);
+  const [dayNote, setDayNote] = useState<{ day: string; msg: string } | null>(null);
+  const noteTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const { meals, mealCount, selectRecipe, removeMeal } = usePlanner();
+  const { meals, mealCount, selectRecipe, removeMeal, moveMeal } = usePlanner();
   const plannerHref = `${basePath}/meal-planner`;
+
+  const isFull = (day: string) => (meals[day]?.length ?? 0) >= MAX_MEALS_PER_DAY;
+
+  function flashNote(day: string, msg: string) {
+    if (noteTimer.current) clearTimeout(noteTimer.current);
+    setDayNote({ day, msg });
+    noteTimer.current = setTimeout(() => setDayNote(null), 2500);
+  }
 
   // Push page content when drawer opens; mobile never pushes
   useEffect(() => {
@@ -48,10 +65,10 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
       const { recipeId } = (e as CustomEvent<{ recipeId: string }>).detail;
       if (!armedDay) return;
       const recipe = recipes.find((r) => r.id === recipeId);
-      if (recipe) {
-        selectRecipe(armedDay, recipe);
-        setArmedDay(null);
-      }
+      if (!recipe) return;
+      const ok = selectRecipe(armedDay, recipe);
+      if (!ok) flashNote(armedDay, 'day is full'); // quiet no-op, auto-disarm
+      setArmedDay(null);
     }
     window.addEventListener('planner:pick', handler);
     return () => window.removeEventListener('planner:pick', handler);
@@ -100,8 +117,10 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
   }
 
   function handleDragOverDay(e: React.DragEvent, day: string) {
+    // Full day = blocked: no preventDefault → no-drop cursor, no highlight
+    if (isFull(day)) return;
     e.preventDefault();
-    e.dataTransfer.dropEffect = 'copy';
+    e.dataTransfer.dropEffect = e.dataTransfer.types.includes(MOVE_TYPE) ? 'move' : 'copy';
     setDragOverDay(day);
   }
 
@@ -113,12 +132,30 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
 
   function handleDropOnDay(e: React.DragEvent, day: string) {
     e.preventDefault();
-    const recipeId = e.dataTransfer.getData('recipeId');
-    const recipe = recipes.find((r) => r.id === recipeId);
-    if (recipe) selectRecipe(day, recipe);
+    const moveRaw = e.dataTransfer.getData(MOVE_TYPE);
+    if (moveRaw) {
+      try {
+        const { fromDay, mealId } = JSON.parse(moveRaw);
+        moveMeal(fromDay, mealId, day); // same-day / full = no-op in the hook
+      } catch {}
+    } else {
+      const addRaw = e.dataTransfer.getData(ADD_TYPE);
+      if (addRaw) {
+        try {
+          const { recipeId } = JSON.parse(addRaw);
+          const recipe = recipes.find((r) => r.id === recipeId);
+          if (recipe) selectRecipe(day, recipe);
+        } catch {}
+      }
+    }
     setDragOverDay(null);
     setDragOverTab(false);
     if (drawerMode === 'drag') setDrawerOpen(false);
+  }
+
+  function handleChipDragStart(e: React.DragEvent, day: string, mealId: string) {
+    e.dataTransfer.setData(MOVE_TYPE, JSON.stringify({ kind: 'move', fromDay: day, mealId }));
+    e.dataTransfer.effectAllowed = 'move';
   }
 
   return (
@@ -290,7 +327,12 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
 
                     <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '3px' }}>
                       {dayMeals.map((meal) => (
-                        <div key={meal.id} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                        <div
+                          key={meal.id}
+                          draggable
+                          onDragStart={(e) => handleChipDragStart(e, day, meal.id)}
+                          style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'grab' }}
+                        >
                           {meal.image && (
                             <img
                               src={`${basePath}${meal.image}`}
@@ -335,6 +377,16 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
                           opacity: 0.75,
                         }}>
                           {isArmed ? 'click a card…' : '—'}
+                        </span>
+                      )}
+                      {dayNote?.day === day && (
+                        <span style={{
+                          fontFamily: "'EB Garamond', Georgia, serif",
+                          fontSize: 'var(--text-eyebrow)',
+                          color: 'var(--color-ink-muted)',
+                          fontStyle: 'italic',
+                        }}>
+                          {dayNote.msg}
                         </span>
                       )}
                     </div>

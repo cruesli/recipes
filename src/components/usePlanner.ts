@@ -4,6 +4,10 @@ import { migrateWeek, addMealIn, moveMealIn, newMealId, MAX_MEALS_PER_DAY } from
 export const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 export { MAX_MEALS_PER_DAY };
 
+// dataTransfer types: the key itself discriminates add vs move during dragover
+export const PLANNER_ADD_TYPE = 'application/x-planner-add';
+export const PLANNER_MOVE_TYPE = 'application/x-planner-move';
+
 export interface RecipeData {
   id: string;
   title: string;

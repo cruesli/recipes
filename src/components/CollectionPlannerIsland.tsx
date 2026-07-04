@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Search, ChevronDown, ChevronRight } from 'lucide-react';
 import { RecipeCard } from './RecipeCard';
-import { usePlanner, type RecipeData } from './usePlanner';
+import { PLANNER_ADD_TYPE, usePlanner, type RecipeData } from './usePlanner';
 
 interface Props {
   recipes: RecipeData[];
@@ -74,7 +74,8 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
     : collectionRecipes;
 
   function handleDragStart(e: React.DragEvent, recipe: RecipeData) {
-    e.dataTransfer.setData('recipeId', recipe.id);
+    // Typed payload: the key discriminates add vs move in dragover handlers
+    e.dataTransfer.setData(PLANNER_ADD_TYPE, JSON.stringify({ recipeId: recipe.id }));
     e.dataTransfer.effectAllowed = 'copy';
   }
 
