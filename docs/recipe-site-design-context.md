@@ -100,14 +100,24 @@ lg 1.5 / xl 2 / 2xl 3 / 3xl 4 / 4xl 6` (rem). Named by position so values can be
 
 Defined in `src/content/meta/cuisines.json`. Two levels:
 
-- **Regions** (`parent: null`) — 15 entries, e.g. `mediterranean`, `middle-east`, `northern-europe`.
-  Cuisine pages for regions aggregate all descendant recipes via `getDescendants()`.
+- **Regions** (`parent: null`) — **16** entries, e.g. `mediterranean`, `middle-east`,
+  `northern-europe`, `central-asia`. Cuisine pages for regions aggregate all descendant
+  recipes via `getDescendants()`.
 - **Country leaves** (`parent: "<region-slug>"`) — 12 entries, e.g. `italian`, `norwegian`,
   `lebanese`, `argentinian`. Each maps to one region parent.
 
-The world map operates on this taxonomy: country mode maps individual countries to their leaf (or
-region) slug; region mode merges country polygons by region at runtime via `topojson-client
-mergeArcs`.
+The world map operates on this taxonomy via a **data-driven mapping**:
+`src/content/meta/country-regions.json` covers every topology feature (id-keyed; three
+id-less disputed territories keyed by name) with a cuisine slug or `null` (inert land).
+A **build-time completeness check** (`npm run prebuild`) fails the build if the mapping
+and topology ever disagree, or a region slug is unknown. Region mode merges country
+polygons by region at runtime (`topojson.merge` via the shared `src/lib/regionGeometry.mjs`).
+
+**Dead-land model:** only recipe-bearing shapes are interactive (sage fill, olive hover,
+caption, click/keyboard/ARIA); everything else is a decorative tan path — but the **full
+atlas always renders** in both modes (dead regions merge borderless; inert land draws
+individually). **Country mode is strict leaf-only:** a country lights up iff its own leaf
+cuisine has recipes; region-tagged recipes are reachable in region mode only.
 
 ---
 
@@ -121,8 +131,13 @@ rule, self-updating "in season" line, scroll cue) over CSS living texture (drift
 1. **Collection preview** — a 2-row (6-card) editorial grid (newest first) + a **"View all N
    recipes →"** link to `/recipes`. Keeps the home short so Explore stays close. The search box
    filters the preview (so any recipe can still be surfaced + dragged to the planner).
-2. **Explore by place** — the world map as a full-bleed closing editorial plate: near-fullscreen (`clamp(520px, 86vh, 1040px)`), Mercator projection, `--color-map-land` / `--color-map-active` palette. Country · Region toggle (default Region); merged-region polygons via topojson-client at runtime. Click a shape → 500ms ease-out camera flight → crossfade navigation to the cuisine page. Pinch / ⌘+scroll zooms; plain scroll passes through to the page.
+2. **Explore by place** — the world map as a full-bleed closing editorial plate: near-fullscreen (`clamp(520px, 86vh, 1040px)`, server-rendered frame), Mercator projection, `--color-map-land` / `--color-map-active` palette. Country · Region toggle (default Region); merged-region polygons via topojson at runtime; only recipe-bearing shapes are interactive (dead-land model). Click a live shape → **country-shape morph** into the cuisine page header (see Motion). Pinch / ⌘+scroll zooms; plain scroll passes through to the page.
 3. Footer.
+
+**Cuisine pages** — full-width (the legacy sidebar is gone); header carries the cuisine's
+**sage map silhouette** (generated at prebuild, inlined in static HTML) beside the title.
+A muted Garamond **"← Back to the map"** link (→ `/#map`) is the return route; the map
+restores the exact at-click framing + mode via a consume-once `sessionStorage` snapshot.
 
 **`/recipes` (full collection)** — the uncapped editorial grid of every recipe, with search +
 cuisine filter. The real "browse everything" page; cuisine pages remain the browse-by-place route.
@@ -138,12 +153,26 @@ present on **all browse surfaces** (home, `/recipes`, cuisine pages) and **exclu
 - **Plan from anywhere:** drag any card to the edge (auto-opens, closes after drop) or arm a day +
   click a card. One shared week via `localStorage`; a pinned "Make shopping list · N" button →
   `/meal-planner`.
+- **Multi-meal days:** each day holds up to **4 meals** as an unlabeled ordered chip list (no
+  breakfast/lunch slot labels). Day rows grow with their chips; the panel scrolls; closed-tab
+  day-marks stay binary (mark = ≥1 meal). Meals move between days by **dragging chips**
+  (drawer is drag-only); full days are honestly blocked (no-drop cursor, no highlight; armed
+  picks quietly no-op with a muted note).
 - **Mobile (<768px):** drawer hidden; an "Open meal planner" link routes to the page.
 
 **`/meal-planner` (full, editable)** — its own roomy planning + shopping surface: per-day
 search-picker (recipe search + custom-dish text), remove/clear, auto-generated checkable
 downloadable shopping list. No drawer here. Shares the `usePlanner` hook + `localStorage` week;
-lands with the list generated when reached from the drawer button.
+lands with the list generated when reached from the drawer button. Meals move by drag **and**
+by **tap-to-move** (tap a chip → arms oxblood → tap a destination day; doubles as the keyboard
+path via focus + Enter). Each recipe meal carries a **per-instance servings stepper** (−/+
+grammar from the recipe page, oldstyle number, bounds 1–12; custom dishes have none) — the
+ratio scales that meal's lines in the generated shopping list.
+
+**Shopping list** — will be grouped by shopping-category buckets with per-ingredient day notes
+(see the NLP plan); the current **day → recipe grouping is the degraded mode** and stays as the
+fallback. Quantity parsing/scaling lives in a shared util (`src/lib/quantity.mjs`), used by the
+recipe-page scaler and the list.
 
 **Grid behaviour:** fixed 3 columns on browse pages (squeeze when the planner pushes), 1 column
 < 768px; browse frame `--max-wide: 1120px`; reading/detail layouts keep their widths.
@@ -156,11 +185,14 @@ lands with the list generated when reached from the drawer button.
 
 - **Shipped:** living-texture splash + staggered type reveal (CSS only); one-time swipeable splash
   dismiss; the push-drawer's padding/width animation (~180ms) and tab-unfurl; **Astro `<ClientRouter />`
-  site-wide crossfade** (soft page transitions on every navigation); 500ms ease-out cubic **camera
-  flight** on map-shape click before the crossfade handoff.
+  site-wide crossfade** (soft page transitions on every navigation).
+- **Country-shape morph (the flight tween is retired — the morph IS the flight):** clicking a live
+  map shape spawns a fixed overlay of that shape (`view-transition-name: cuisine-shape`) which the
+  browser morphs into the cuisine header silhouette, ~400 ms ease-out. **Reverse morph** on return
+  to the map (silhouette flies back onto the restored framing, injected at `astro:after-swap`);
+  the plain crossfade is the contractual fallback when anything is missing. **Reduced motion =
+  instant navigation**; unsupported browsers get the crossfade.
 - Calm elsewhere. **Not** a fluid-everywhere treatment.
-- **Future idea:** use the clicked country/region shape as a CSS View Transitions shared element —
-  morphing it into the cuisine page header as a natural reveal.
 
 ---
 
@@ -192,12 +224,19 @@ with graceful degradation. Header search → `POST /api/v1/query`. Nutrition pan
   `PlannerDrawer` (`position:fixed; right:0`, push via `padding-right`); home 6-card preview
   and `/recipes` full-collection page; `index.astro` token sweep + mastheads; all-serif toolbar;
   15 broken recipe images nulled (stone placeholder fallback). **Phase 7:** two-tier cuisine
-  taxonomy (15 regions + 12 country leaves); WorldMap rework (full-bleed, tokenised palette,
-  region merge, flight animation, keyboard accessibility, live ARIA region); Astro ClientRouter
-  view transitions site-wide.
-- **Later:** NLP wiring; nutrition panel; oxblood-dot audit; paper grain; cross-device week sync
-  (`nanostores` over `localStorage`); possible split-accent (olive separators + oxblood text);
-  add `date` field to recipe schema for newest-first home ordering.
+  taxonomy; WorldMap rework (full-bleed, tokenised palette, region merge, keyboard
+  accessibility, live ARIA region); Astro ClientRouter view transitions site-wide.
+- **Shipped (Phases 8–11, plan v2):** cuisine sidebar removed (map-first navigation with
+  "← Back to the map" + consume-once state restore); data-driven country→region mapping with
+  build-failing completeness check; dead-land model + strict leaf-only country mode;
+  `central-asia` (16 regions, full atlas assigned); country-shape morph forward + reverse
+  (flight tween retired); prebuild silhouette generator + inline cuisine-header silhouettes;
+  planner multi-meal days (cap 4) with localStorage migration, drag/tap move, per-meal
+  servings scaler; shared quantity util (glued-unit `400g` scaling fixed).
+- **Later:** NLP wiring (incl. shopping-list category buckets); nutrition panel; oxblood-dot
+  audit; paper grain; cross-device week sync (`nanostores` over `localStorage`); possible
+  split-accent (olive separators + oxblood text); add `date` field to recipe schema for
+  newest-first home ordering; split `sub-saharan-africa` when recipes warrant it.
 
 ## Open copy & decisions
 
