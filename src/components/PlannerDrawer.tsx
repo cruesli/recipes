@@ -27,8 +27,7 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
   const [dragOverTab, setDragOverTab] = useState(false);
   const [dragOverDay, setDragOverDay] = useState<string | null>(null);
 
-  const { meals, filledDays, selectRecipe, removeMeal } = usePlanner();
-  const mealCount = filledDays.length;
+  const { meals, mealCount, selectRecipe, removeMeal } = usePlanner();
   const plannerHref = `${basePath}/meal-planner`;
 
   // Push page content when drawer opens; mobile never pushes
@@ -181,7 +180,7 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
         }
         .pd-day-row {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           gap: var(--space-xs);
           padding: var(--space-sm) 0;
           border-bottom: 1px solid var(--color-hairline);
@@ -221,7 +220,7 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
           >
             <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
               {DAYS.map((day) => (
-                <div key={day} className={meals[day] ? 'pd-mark' : 'pd-mark-empty'} title={day} />
+                <div key={day} className={(meals[day]?.length ?? 0) > 0 ? 'pd-mark' : 'pd-mark-empty'} title={day} />
               ))}
             </div>
 
@@ -263,7 +262,7 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
               </div>
 
               {DAYS.map((day) => {
-                const meal = meals[day];
+                const dayMeals = meals[day] ?? [];
                 const isArmed = armedDay === day;
                 const isDragTarget = dragOverDay === day;
 
@@ -278,6 +277,7 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
                     <span style={{
                       width: '28px',
                       flexShrink: 0,
+                      marginTop: '3px',
                       fontFamily: "'EB Garamond', Georgia, serif",
                       fontSize: 'var(--text-eyebrow)',
                       fontWeight: 600,
@@ -288,9 +288,9 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
                       {day.slice(0, 3)}
                     </span>
 
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      {meal ? (
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                    <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '3px' }}>
+                      {dayMeals.map((meal) => (
+                        <div key={meal.id} style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                           {meal.image && (
                             <img
                               src={`${basePath}${meal.image}`}
@@ -299,6 +299,7 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
                             />
                           )}
                           <span style={{
+                            flex: 1,
                             fontFamily: "'EB Garamond', Georgia, serif",
                             fontSize: 'var(--text-eyebrow)',
                             color: 'var(--color-ink)',
@@ -308,8 +309,24 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
                           }}>
                             {meal.title}
                           </span>
+                          <button
+                            onClick={() => removeMeal(day, meal.id)}
+                            title={`Remove ${meal.title}`}
+                            style={{
+                              background: 'none', border: 'none',
+                              color: 'var(--color-ink-muted)',
+                              cursor: 'pointer',
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                              width: '18px', height: '18px',
+                              padding: 0, flexShrink: 0,
+                              opacity: 0.5,
+                            }}
+                          >
+                            <X size={11} />
+                          </button>
                         </div>
-                      ) : (
+                      ))}
+                      {(dayMeals.length === 0 || isArmed) && (
                         <span style={{
                           fontFamily: "'EB Garamond', Georgia, serif",
                           fontSize: 'var(--text-eyebrow)',
@@ -338,23 +355,6 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
                       >
                         <Plus size={11} />
                       </button>
-                      {meal && (
-                        <button
-                          onClick={() => removeMeal(day)}
-                          title={`Clear ${day}`}
-                          style={{
-                            background: 'none', border: 'none',
-                            color: 'var(--color-ink-muted)',
-                            cursor: 'pointer',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            width: '20px', height: '20px',
-                            padding: 0,
-                            opacity: 0.5,
-                          }}
-                        >
-                          <X size={11} />
-                        </button>
-                      )}
                     </div>
                   </div>
                 );

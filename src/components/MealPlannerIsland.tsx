@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Plus, X, ChevronDown, Search, ShoppingCart, Check, Download } from 'lucide-react';
-import { DAYS, usePlanner, type RecipeData } from './usePlanner';
+import { DAYS, MAX_MEALS_PER_DAY, usePlanner, type RecipeData } from './usePlanner';
 
 interface Props {
   recipes: RecipeData[];
@@ -61,7 +61,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
   );
 
   function handleSelectRecipe(day: string, recipe: RecipeData) {
-    selectRecipe(day, recipe);
+    if (!selectRecipe(day, recipe)) return; // day full
     setOpenDay(null);
     setSearch('');
   }
@@ -95,58 +95,62 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
         {/* Day rows */}
         <div style={{ borderBottom: '1px solid var(--color-hairline)', marginBottom: 'var(--space-xl)' }}>
           {DAYS.map((day) => {
-            const meal = meals[day];
+            const dayMeals = meals[day] ?? [];
             const isOpen = openDay === day;
+            const isFull = dayMeals.length >= MAX_MEALS_PER_DAY;
 
             return (
               <div key={day} style={{ borderTop: '1px solid var(--color-hairline)' }}>
-                {/* Row */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: 'var(--space-md) 0' }}>
-                  <span style={{ width: '88px', flexShrink: 0, fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-ink-muted)' }}>
+                {/* Row: up to 4 meal chips + add */}
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', padding: 'var(--space-md) 0' }}>
+                  <span style={{ width: '88px', flexShrink: 0, marginTop: '7px', fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-ink-muted)' }}>
                     {day}
                   </span>
 
-                  {meal ? (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1 }}>
-                      {meal.image && (
-                        <img
-                          src={`${basePath}${meal.image}`}
-                          alt={meal.title}
-                          style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-sm)', objectFit: 'cover', flexShrink: 0 }}
-                        />
-                      )}
-                      <span style={{ flex: 1, fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-body)', color: 'var(--color-ink)' }}>{meal.title}</span>
-                      {meal.recipeId === null && (
-                        <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-ink-muted)', border: '1px solid var(--color-hairline)', padding: '1px 6px' }}>
-                          custom
-                        </span>
-                      )}
+                  <div style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {dayMeals.map((meal) => (
+                      <div key={meal.id} style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        {meal.image && (
+                          <img
+                            src={`${basePath}${meal.image}`}
+                            alt={meal.title}
+                            style={{ width: '32px', height: '32px', borderRadius: 'var(--radius-sm)', objectFit: 'cover', flexShrink: 0 }}
+                          />
+                        )}
+                        <span style={{ flex: 1, fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-body)', color: 'var(--color-ink)' }}>{meal.title}</span>
+                        {meal.recipeId === null && (
+                          <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-ink-muted)', border: '1px solid var(--color-hairline)', padding: '1px 6px' }}>
+                            custom
+                          </span>
+                        )}
+                        <button
+                          onClick={() => removeMeal(day, meal.id)}
+                          title={`Remove ${meal.title}`}
+                          style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-ink-muted)', padding: '2px', display: 'flex', opacity: 0.6 }}
+                        >
+                          <X size={15} />
+                        </button>
+                      </div>
+                    ))}
+
+                    {!isFull ? (
                       <button
                         onClick={() => setOpenDay(isOpen ? null : day)}
-                        style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--color-oxblood)', background: 'none', border: 'none', cursor: 'pointer', padding: '0' }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '8px', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-ink-muted)', fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', padding: 0 }}
                       >
-                        Change
+                        <Plus size={14} />
+                        <span>Add a meal</span>
+                        <ChevronDown
+                          size={14}
+                          style={{ marginLeft: 'auto', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}
+                        />
                       </button>
-                      <button
-                        onClick={() => removeMeal(day)}
-                        style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-ink-muted)', padding: '2px', display: 'flex', opacity: 0.6 }}
-                      >
-                        <X size={15} />
-                      </button>
-                    </div>
-                  ) : (
-                    <button
-                      onClick={() => setOpenDay(isOpen ? null : day)}
-                      style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-ink-muted)', fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', padding: 0 }}
-                    >
-                      <Plus size={14} />
-                      <span>Add a meal</span>
-                      <ChevronDown
-                        size={14}
-                        style={{ marginLeft: 'auto', transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s' }}
-                      />
-                    </button>
-                  )}
+                    ) : (
+                      <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', fontStyle: 'italic' }}>
+                        Day full ({MAX_MEALS_PER_DAY} meals)
+                      </span>
+                    )}
+                  </div>
                 </div>
 
                 {/* Picker dropdown */}
@@ -339,81 +343,90 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
               </p>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xl)', paddingBottom: 'var(--space-3xl)' }}>
-                {DAYS.filter((d) => grouped[d]).map((day) => {
-                  const { meal, sections } = grouped[day];
-                  return (
-                    <div key={day}>
-                      {/* Day header */}
-                      <div style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-sm)', paddingBottom: 'var(--space-xs)', borderBottom: '1px solid var(--color-hairline)' }}>
-                        <span style={{ ...EYEBROW }}>{day}</span>
-                        <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink)' }}>{meal.title}</span>
-                        {meal.image && (
-                          <img
-                            src={`${basePath}${meal.image}`}
-                            alt={meal.title}
-                            style={{ width: '24px', height: '24px', borderRadius: 'var(--radius-sm)', objectFit: 'cover', marginLeft: 'auto' }}
-                          />
-                        )}
-                      </div>
-
-                      {/* Sections + items */}
-                      {sections.map((sec, si) => (
-                        <div key={si}>
-                          {sec.header && (
-                            <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-ink-muted)', margin: 'var(--space-sm) 0 0', fontWeight: 600 }}>
-                              {sec.header}
-                            </p>
-                          )}
-                          {sec.items.map((item) => (
-                            <label
-                              key={item.id}
-                              style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: 'var(--space-xs) 0', borderBottom: '1px solid var(--color-hairline)', cursor: 'pointer' }}
-                            >
-                              <span
-                                onClick={() => toggleItem(item.id)}
-                                style={{
-                                  flexShrink: 0,
-                                  width: '16px', height: '16px',
-                                  border: item.checked ? 'none' : '1.5px solid var(--color-hairline)',
-                                  backgroundColor: item.checked ? 'var(--color-oxblood)' : 'transparent',
-                                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                }}
-                              >
-                                {item.checked && <Check size={10} color="var(--color-paper)" />}
-                              </span>
-                              <span
-                                onClick={() => toggleItem(item.id)}
-                                className="onum"
-                                style={{
-                                  fontFamily: "'EB Garamond', Georgia, serif",
-                                  fontSize: 'var(--text-body)',
-                                  color: item.checked ? 'var(--color-ink-muted)' : 'var(--color-ink)',
-                                  textDecoration: item.checked ? 'line-through' : 'none',
-                                  opacity: item.checked ? 0.55 : 1,
-                                }}
-                              >
-                                {item.text}
-                              </span>
-                            </label>
-                          ))}
-                        </div>
-                      ))}
+                {DAYS.filter((d) => grouped[d]).map((day) => (
+                  <div key={day}>
+                    {/* Day header */}
+                    <div style={{ paddingBottom: 'var(--space-xs)', borderBottom: '1px solid var(--color-hairline)' }}>
+                      <span style={{ ...EYEBROW }}>{day}</span>
                     </div>
-                  );
-                })}
+
+                    {/* Meal blocks */}
+                    {grouped[day].map(({ meal, sections }) => (
+                      <div key={meal.id} style={{ marginTop: 'var(--space-sm)' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
+                          <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink)' }}>{meal.title}</span>
+                          {meal.image && (
+                            <img
+                              src={`${basePath}${meal.image}`}
+                              alt={meal.title}
+                              style={{ width: '24px', height: '24px', borderRadius: 'var(--radius-sm)', objectFit: 'cover', marginLeft: 'auto' }}
+                            />
+                          )}
+                        </div>
+
+                        {/* Sections + items */}
+                        {sections.map((sec, si) => (
+                          <div key={si}>
+                            {sec.header && (
+                              <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-ink-muted)', margin: 'var(--space-sm) 0 0', fontWeight: 600 }}>
+                                {sec.header}
+                              </p>
+                            )}
+                            {sec.items.map((item) => (
+                              <label
+                                key={item.id}
+                                style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: 'var(--space-xs) 0', borderBottom: '1px solid var(--color-hairline)', cursor: 'pointer' }}
+                              >
+                                <span
+                                  onClick={() => toggleItem(item.id)}
+                                  style={{
+                                    flexShrink: 0,
+                                    width: '16px', height: '16px',
+                                    border: item.checked ? 'none' : '1.5px solid var(--color-hairline)',
+                                    backgroundColor: item.checked ? 'var(--color-oxblood)' : 'transparent',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                  }}
+                                >
+                                  {item.checked && <Check size={10} color="var(--color-paper)" />}
+                                </span>
+                                <span
+                                  onClick={() => toggleItem(item.id)}
+                                  className="onum"
+                                  style={{
+                                    fontFamily: "'EB Garamond', Georgia, serif",
+                                    fontSize: 'var(--text-body)',
+                                    color: item.checked ? 'var(--color-ink-muted)' : 'var(--color-ink)',
+                                    textDecoration: item.checked ? 'line-through' : 'none',
+                                    opacity: item.checked ? 0.55 : 1,
+                                  }}
+                                >
+                                  {item.text}
+                                </span>
+                              </label>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    ))}
+                  </div>
+                ))}
 
                 {/* Note for custom meals */}
-                {DAYS.some((d) => meals[d]?.recipeId === null) && (
+                {DAYS.some((d) => (meals[d] ?? []).some((m) => m.recipeId === null)) && (
                   <div style={{ borderTop: '1px solid var(--color-hairline)', paddingTop: 'var(--space-md)' }}>
                     <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', margin: '0 0 var(--space-xs)', fontStyle: 'italic' }}>
                       Custom meals (no ingredient data):
                     </p>
                     <ul style={{ margin: 0, paddingLeft: 'var(--space-md)' }}>
-                      {DAYS.filter((d) => meals[d]?.recipeId === null).map((d) => (
-                        <li key={d} style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', marginBottom: '2px' }}>
-                          <span style={{ color: 'var(--color-ink)' }}>{d}:</span> {meals[d]?.title}
-                        </li>
-                      ))}
+                      {DAYS.flatMap((d) =>
+                        (meals[d] ?? [])
+                          .filter((m) => m.recipeId === null)
+                          .map((m) => (
+                            <li key={m.id} style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', marginBottom: '2px' }}>
+                              <span style={{ color: 'var(--color-ink)' }}>{d}:</span> {m.title}
+                            </li>
+                          ))
+                      )}
                     </ul>
                   </div>
                 )}

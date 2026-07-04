@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { migrateWeek, addMealIn, moveMealIn, newMealId, MAX_MEALS_PER_DAY } from '../lib/plannerModel.mjs';
 
 export const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+export { MAX_MEALS_PER_DAY };
 
 export interface RecipeData {
   id: string;
@@ -8,6 +10,7 @@ export interface RecipeData {
   cuisine: string;
   image: string | null;
   totalTimeMinutes: number | null;
+  servings: number | null;
   ingredients: string[];
 }
 
@@ -17,11 +20,16 @@ export interface IngredientSection {
 }
 
 export interface PlannedMeal {
+  id: string; // per-instance id — recipeId is not unique (same recipe twice is fine)
   recipeId: string | null;
   title: string;
   image: string | null;
   sections: IngredientSection[];
+  servings: number | null; // null for custom dishes (no scaler)
+  baseServings: number | null; // recipe frontmatter servings at add-time
 }
+
+export type Week = Partial<Record<string, PlannedMeal[]>>;
 
 export interface ShoppingItem {
   id: string;
@@ -37,24 +45,24 @@ export interface SectionGroup {
   items: ShoppingItem[];
 }
 
-export interface DayGroup {
+export interface MealGroup {
   meal: PlannedMeal;
   sections: SectionGroup[];
 }
 
 const STORAGE_KEY = 'recipes:week';
 
-function loadWeek(): Partial<Record<string, PlannedMeal>> {
+function loadWeek(): Week {
   if (typeof window === 'undefined') return {};
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : {};
+    return raw ? (migrateWeek(JSON.parse(raw)) as Week) : {};
   } catch {
     return {};
   }
 }
 
-function saveWeek(meals: Partial<Record<string, PlannedMeal>>): void {
+function saveWeek(meals: Week): void {
   if (typeof window === 'undefined') return;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(meals));
@@ -76,8 +84,14 @@ export function parseIngredients(raw: string[]): IngredientSection[] {
   return sections;
 }
 
+// TODO(nlp-plan): KG enrichment, category buckets, merged day notes — see
+// nlp-integration-update-plan.md
+function enrichShoppingItems(items: ShoppingItem[]): ShoppingItem[] {
+  return items;
+}
+
 export function usePlanner() {
-  const [meals, setMeals] = useState<Partial<Record<string, PlannedMeal>>>({});
+  const [meals, setMeals] = useState<Week>({});
   const [shoppingList, setShoppingList] = useState<ShoppingItem[]>([]);
   const [listReady, setListReady] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -94,35 +108,52 @@ export function usePlanner() {
     saveWeek(meals);
   }, [meals, loaded]);
 
-  function selectRecipe(day: string, recipe: RecipeData) {
-    setMeals((prev) => ({
-      ...prev,
-      [day]: {
-        recipeId: recipe.id,
-        title: recipe.title,
-        image: recipe.image,
-        sections: parseIngredients(recipe.ingredients),
-      },
-    }));
+  // Returns false when the day is already full (caller may show a note)
+  function selectRecipe(day: string, recipe: RecipeData): boolean {
+    if ((meals[day] ?? []).length >= MAX_MEALS_PER_DAY) return false;
+    const meal: PlannedMeal = {
+      id: newMealId(),
+      recipeId: recipe.id,
+      title: recipe.title,
+      image: recipe.image,
+      sections: parseIngredients(recipe.ingredients),
+      servings: recipe.servings ?? null,
+      baseServings: recipe.servings ?? null,
+    };
+    setMeals((prev) => (addMealIn(prev, day, meal) as Week | null) ?? prev);
     resetList();
+    return true;
   }
 
   function addCustom(day: string, name: string) {
     const trimmed = name.trim();
     if (!trimmed) return;
-    setMeals((prev) => ({
-      ...prev,
-      [day]: { recipeId: null, title: trimmed, image: null, sections: [] },
-    }));
+    const meal: PlannedMeal = {
+      id: newMealId(),
+      recipeId: null,
+      title: trimmed,
+      image: null,
+      sections: [],
+      servings: null,
+      baseServings: null,
+    };
+    setMeals((prev) => (addMealIn(prev, day, meal) as Week | null) ?? prev);
     resetList();
   }
 
-  function removeMeal(day: string) {
+  function removeMeal(day: string, mealId: string) {
     setMeals((prev) => {
+      const dayMeals = (prev[day] ?? []).filter((m) => m.id !== mealId);
       const next = { ...prev };
-      delete next[day];
+      if (dayMeals.length === 0) delete next[day];
+      else next[day] = dayMeals;
       return next;
     });
+    resetList();
+  }
+
+  function moveMeal(fromDay: string, mealId: string, toDay: string) {
+    setMeals((prev) => (moveMealIn(prev, fromDay, mealId, toDay) as Week | null) ?? prev);
     resetList();
   }
 
@@ -135,22 +166,22 @@ export function usePlanner() {
     let counter = 0;
     const items: ShoppingItem[] = [];
     DAYS.forEach((day) => {
-      const meal = meals[day];
-      if (!meal) return;
-      meal.sections.forEach((sec) => {
-        sec.items.forEach((text) => {
-          items.push({
-            id: String(counter++),
-            text,
-            day,
-            recipeTitle: meal.title,
-            sectionHeader: sec.header,
-            checked: false,
+      (meals[day] ?? []).forEach((meal) => {
+        meal.sections.forEach((sec) => {
+          sec.items.forEach((text) => {
+            items.push({
+              id: String(counter++),
+              text,
+              day,
+              recipeTitle: meal.title,
+              sectionHeader: sec.header,
+              checked: false,
+            });
           });
         });
       });
     });
-    setShoppingList(items);
+    setShoppingList(enrichShoppingItems(items));
     setListReady(true);
   }
 
@@ -158,24 +189,51 @@ export function usePlanner() {
     setShoppingList((prev) => prev.map((i) => (i.id === id ? { ...i, checked: !i.checked } : i)));
   }
 
+  // Day → meal → section grouping. Items were generated in DAYS × meals order,
+  // so a cursor pairs them back up unambiguously (duplicate recipes included).
+  const grouped: Record<string, MealGroup[]> = {};
+  if (shoppingList.length > 0) {
+    let cursor = 0;
+    DAYS.forEach((day) => {
+      (meals[day] ?? []).forEach((meal) => {
+        const count = meal.sections.reduce((n, s) => n + s.items.length, 0);
+        if (count === 0) return;
+        const mealItems = shoppingList.slice(cursor, cursor + count);
+        cursor += count;
+        const sections: SectionGroup[] = [];
+        mealItems.forEach((item) => {
+          const last = sections[sections.length - 1];
+          if (last && last.header === item.sectionHeader) last.items.push(item);
+          else sections.push({ header: item.sectionHeader, items: [item] });
+        });
+        (grouped[day] ??= []).push({ meal, sections });
+      });
+    });
+  }
+
   function downloadList() {
     const lines: string[] = ['SHOPPING LIST', ''];
     lines.push('WEEKLY MENU');
     lines.push('─'.repeat(40));
     DAYS.forEach((day) => {
-      const meal = meals[day];
-      lines.push(`${day.padEnd(10)} ${meal ? meal.title : '—'}`);
+      const dayMeals = meals[day] ?? [];
+      if (dayMeals.length === 0) {
+        lines.push(`${day.padEnd(10)} —`);
+      } else {
+        dayMeals.forEach((meal, i) => {
+          lines.push(`${(i === 0 ? day : '').padEnd(10)} ${meal.title}`);
+        });
+      }
     });
     lines.push('', 'INGREDIENTS', '─'.repeat(40));
     DAYS.forEach((day) => {
-      const meal = meals[day];
-      if (!meal || meal.sections.length === 0) return;
-      lines.push('', `${day.toUpperCase()} — ${meal.title}`);
-      meal.sections.forEach((sec) => {
-        if (sec.header) lines.push(`  ${sec.header}:`);
-        sec.items.forEach((item) => {
-          const li = shoppingList.find((s) => s.day === day && s.text === item);
-          lines.push(`  ${li?.checked ? '[x]' : '[ ]'} ${item}`);
+      (grouped[day] ?? []).forEach(({ meal, sections }) => {
+        lines.push('', `${day.toUpperCase()} — ${meal.title}`);
+        sections.forEach((sec) => {
+          if (sec.header) lines.push(`  ${sec.header}:`);
+          sec.items.forEach((item) => {
+            lines.push(`  ${item.checked ? '[x]' : '[ ]'} ${item.text}`);
+          });
         });
       });
     });
@@ -188,27 +246,10 @@ export function usePlanner() {
     URL.revokeObjectURL(url);
   }
 
-  // Shopping list grouping — derived from shoppingList + meals
-  const grouped: Record<string, DayGroup> = {};
-  DAYS.forEach((day) => {
-    const dayItems = shoppingList.filter((i) => i.day === day);
-    if (!dayItems.length) return;
-    const meal = meals[day]!;
-    const sections: SectionGroup[] = [];
-    dayItems.forEach((item) => {
-      const last = sections[sections.length - 1];
-      if (last && last.header === item.sectionHeader) {
-        last.items.push(item);
-      } else {
-        sections.push({ header: item.sectionHeader, items: [item] });
-      }
-    });
-    grouped[day] = { meal, sections };
-  });
-
   const checkedCount = shoppingList.filter((i) => i.checked).length;
-  const filledDays = DAYS.filter((d) => meals[d]);
-  const canGenerate = filledDays.length > 0;
+  const filledDays = DAYS.filter((d) => (meals[d] ?? []).length > 0);
+  const mealCount = DAYS.reduce((n, d) => n + (meals[d]?.length ?? 0), 0);
+  const canGenerate = mealCount > 0;
 
   return {
     meals,
@@ -218,10 +259,12 @@ export function usePlanner() {
     grouped,
     checkedCount,
     filledDays,
+    mealCount,
     canGenerate,
     selectRecipe,
     addCustom,
     removeMeal,
+    moveMeal,
     resetList,
     generateList,
     toggleItem,

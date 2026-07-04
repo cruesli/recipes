@@ -12,6 +12,7 @@ const allRecipes = recipes.map((r) => ({
   cuisine: r.data.cuisine,
   image: r.data.image ?? null,
   totalTimeMinutes: r.data.totalTimeMinutes ?? null,
+  servings: r.data.servings ?? null,
   ingredients: r.data.ingredients ?? [],
 }));
 
