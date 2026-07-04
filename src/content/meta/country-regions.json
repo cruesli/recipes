@@ -1,0 +1,712 @@
+{
+  "countries": {
+    "100": {
+      "name": "Bulgaria",
+      "region": "balkan"
+    },
+    "104": {
+      "name": "Myanmar",
+      "region": "southeast-asia"
+    },
+    "108": {
+      "name": "Burundi",
+      "region": null
+    },
+    "112": {
+      "name": "Belarus",
+      "region": "eastern-europe"
+    },
+    "116": {
+      "name": "Cambodia",
+      "region": "southeast-asia"
+    },
+    "120": {
+      "name": "Cameroon",
+      "region": null
+    },
+    "124": {
+      "name": "Canada",
+      "region": "north-america"
+    },
+    "140": {
+      "name": "Central African Rep.",
+      "region": null
+    },
+    "144": {
+      "name": "Sri Lanka",
+      "region": "south-asia"
+    },
+    "148": {
+      "name": "Chad",
+      "region": null
+    },
+    "152": {
+      "name": "Chile",
+      "region": "south-america"
+    },
+    "156": {
+      "name": "China",
+      "region": "chinese"
+    },
+    "158": {
+      "name": "Taiwan",
+      "region": "taiwanese"
+    },
+    "170": {
+      "name": "Colombia",
+      "region": "south-america"
+    },
+    "178": {
+      "name": "Congo",
+      "region": null
+    },
+    "180": {
+      "name": "Dem. Rep. Congo",
+      "region": null
+    },
+    "188": {
+      "name": "Costa Rica",
+      "region": "central-america"
+    },
+    "191": {
+      "name": "Croatia",
+      "region": "balkan"
+    },
+    "192": {
+      "name": "Cuba",
+      "region": "central-america"
+    },
+    "196": {
+      "name": "Cyprus",
+      "region": "mediterranean"
+    },
+    "203": {
+      "name": "Czechia",
+      "region": null
+    },
+    "204": {
+      "name": "Benin",
+      "region": null
+    },
+    "208": {
+      "name": "Denmark",
+      "region": "northern-europe"
+    },
+    "214": {
+      "name": "Dominican Rep.",
+      "region": null
+    },
+    "218": {
+      "name": "Ecuador",
+      "region": "south-america"
+    },
+    "222": {
+      "name": "El Salvador",
+      "region": "central-america"
+    },
+    "226": {
+      "name": "Eq. Guinea",
+      "region": null
+    },
+    "231": {
+      "name": "Ethiopia",
+      "region": "sub-saharan-africa"
+    },
+    "232": {
+      "name": "Eritrea",
+      "region": null
+    },
+    "233": {
+      "name": "Estonia",
+      "region": "eastern-europe"
+    },
+    "238": {
+      "name": "Falkland Is.",
+      "region": null
+    },
+    "242": {
+      "name": "Fiji",
+      "region": null
+    },
+    "246": {
+      "name": "Finland",
+      "region": "northern-europe"
+    },
+    "250": {
+      "name": "France",
+      "region": "french"
+    },
+    "260": {
+      "name": "Fr. S. Antarctic Lands",
+      "region": null
+    },
+    "262": {
+      "name": "Djibouti",
+      "region": null
+    },
+    "266": {
+      "name": "Gabon",
+      "region": null
+    },
+    "268": {
+      "name": "Georgia",
+      "region": null
+    },
+    "270": {
+      "name": "Gambia",
+      "region": null
+    },
+    "275": {
+      "name": "Palestine",
+      "region": "middle-east"
+    },
+    "276": {
+      "name": "Germany",
+      "region": "central-europe"
+    },
+    "288": {
+      "name": "Ghana",
+      "region": "sub-saharan-africa"
+    },
+    "300": {
+      "name": "Greece",
+      "region": "greek"
+    },
+    "304": {
+      "name": "Greenland",
+      "region": null
+    },
+    "320": {
+      "name": "Guatemala",
+      "region": "central-america"
+    },
+    "324": {
+      "name": "Guinea",
+      "region": null
+    },
+    "328": {
+      "name": "Guyana",
+      "region": null
+    },
+    "332": {
+      "name": "Haiti",
+      "region": null
+    },
+    "340": {
+      "name": "Honduras",
+      "region": "central-america"
+    },
+    "348": {
+      "name": "Hungary",
+      "region": "hungarian"
+    },
+    "352": {
+      "name": "Iceland",
+      "region": "northern-europe"
+    },
+    "356": {
+      "name": "India",
+      "region": "south-asia"
+    },
+    "360": {
+      "name": "Indonesia",
+      "region": "southeast-asia"
+    },
+    "364": {
+      "name": "Iran",
+      "region": "middle-east"
+    },
+    "368": {
+      "name": "Iraq",
+      "region": "middle-east"
+    },
+    "372": {
+      "name": "Ireland",
+      "region": null
+    },
+    "376": {
+      "name": "Israel",
+      "region": "middle-east"
+    },
+    "380": {
+      "name": "Italy",
+      "region": "italian"
+    },
+    "384": {
+      "name": "Côte d'Ivoire",
+      "region": null
+    },
+    "388": {
+      "name": "Jamaica",
+      "region": null
+    },
+    "392": {
+      "name": "Japan",
+      "region": "japanese"
+    },
+    "398": {
+      "name": "Kazakhstan",
+      "region": null
+    },
+    "400": {
+      "name": "Jordan",
+      "region": "middle-east"
+    },
+    "404": {
+      "name": "Kenya",
+      "region": "sub-saharan-africa"
+    },
+    "408": {
+      "name": "North Korea",
+      "region": "east-asia"
+    },
+    "410": {
+      "name": "South Korea",
+      "region": "east-asia"
+    },
+    "414": {
+      "name": "Kuwait",
+      "region": "middle-east"
+    },
+    "417": {
+      "name": "Kyrgyzstan",
+      "region": null
+    },
+    "418": {
+      "name": "Laos",
+      "region": "southeast-asia"
+    },
+    "422": {
+      "name": "Lebanon",
+      "region": "middle-east"
+    },
+    "426": {
+      "name": "Lesotho",
+      "region": null
+    },
+    "428": {
+      "name": "Latvia",
+      "region": "eastern-europe"
+    },
+    "430": {
+      "name": "Liberia",
+      "region": null
+    },
+    "434": {
+      "name": "Libya",
+      "region": "north-africa"
+    },
+    "440": {
+      "name": "Lithuania",
+      "region": "eastern-europe"
+    },
+    "442": {
+      "name": "Luxembourg",
+      "region": null
+    },
+    "450": {
+      "name": "Madagascar",
+      "region": null
+    },
+    "454": {
+      "name": "Malawi",
+      "region": null
+    },
+    "458": {
+      "name": "Malaysia",
+      "region": "southeast-asia"
+    },
+    "466": {
+      "name": "Mali",
+      "region": null
+    },
+    "478": {
+      "name": "Mauritania",
+      "region": null
+    },
+    "484": {
+      "name": "Mexico",
+      "region": "mexican"
+    },
+    "496": {
+      "name": "Mongolia",
+      "region": "east-asia"
+    },
+    "498": {
+      "name": "Moldova",
+      "region": "eastern-europe"
+    },
+    "499": {
+      "name": "Montenegro",
+      "region": "balkan"
+    },
+    "504": {
+      "name": "Morocco",
+      "region": "north-africa"
+    },
+    "508": {
+      "name": "Mozambique",
+      "region": null
+    },
+    "512": {
+      "name": "Oman",
+      "region": "middle-east"
+    },
+    "516": {
+      "name": "Namibia",
+      "region": null
+    },
+    "524": {
+      "name": "Nepal",
+      "region": "south-asia"
+    },
+    "528": {
+      "name": "Netherlands",
+      "region": null
+    },
+    "540": {
+      "name": "New Caledonia",
+      "region": null
+    },
+    "548": {
+      "name": "Vanuatu",
+      "region": null
+    },
+    "554": {
+      "name": "New Zealand",
+      "region": "oceania"
+    },
+    "558": {
+      "name": "Nicaragua",
+      "region": "central-america"
+    },
+    "562": {
+      "name": "Niger",
+      "region": null
+    },
+    "566": {
+      "name": "Nigeria",
+      "region": "sub-saharan-africa"
+    },
+    "578": {
+      "name": "Norway",
+      "region": "norwegian"
+    },
+    "586": {
+      "name": "Pakistan",
+      "region": "south-asia"
+    },
+    "591": {
+      "name": "Panama",
+      "region": "central-america"
+    },
+    "598": {
+      "name": "Papua New Guinea",
+      "region": null
+    },
+    "600": {
+      "name": "Paraguay",
+      "region": "south-america"
+    },
+    "604": {
+      "name": "Peru",
+      "region": "south-america"
+    },
+    "608": {
+      "name": "Philippines",
+      "region": "southeast-asia"
+    },
+    "616": {
+      "name": "Poland",
+      "region": "central-europe"
+    },
+    "620": {
+      "name": "Portugal",
+      "region": "mediterranean"
+    },
+    "624": {
+      "name": "Guinea-Bissau",
+      "region": null
+    },
+    "626": {
+      "name": "Timor-Leste",
+      "region": null
+    },
+    "630": {
+      "name": "Puerto Rico",
+      "region": null
+    },
+    "634": {
+      "name": "Qatar",
+      "region": "middle-east"
+    },
+    "642": {
+      "name": "Romania",
+      "region": "balkan"
+    },
+    "643": {
+      "name": "Russia",
+      "region": "eastern-europe"
+    },
+    "646": {
+      "name": "Rwanda",
+      "region": null
+    },
+    "682": {
+      "name": "Saudi Arabia",
+      "region": "middle-east"
+    },
+    "686": {
+      "name": "Senegal",
+      "region": null
+    },
+    "688": {
+      "name": "Serbia",
+      "region": "balkan"
+    },
+    "694": {
+      "name": "Sierra Leone",
+      "region": null
+    },
+    "703": {
+      "name": "Slovakia",
+      "region": "central-europe"
+    },
+    "704": {
+      "name": "Vietnam",
+      "region": "southeast-asia"
+    },
+    "705": {
+      "name": "Slovenia",
+      "region": "balkan"
+    },
+    "706": {
+      "name": "Somalia",
+      "region": null
+    },
+    "710": {
+      "name": "South Africa",
+      "region": "sub-saharan-africa"
+    },
+    "716": {
+      "name": "Zimbabwe",
+      "region": null
+    },
+    "724": {
+      "name": "Spain",
+      "region": "spanish"
+    },
+    "728": {
+      "name": "S. Sudan",
+      "region": null
+    },
+    "729": {
+      "name": "Sudan",
+      "region": "north-africa"
+    },
+    "732": {
+      "name": "W. Sahara",
+      "region": null
+    },
+    "740": {
+      "name": "Suriname",
+      "region": null
+    },
+    "748": {
+      "name": "eSwatini",
+      "region": null
+    },
+    "752": {
+      "name": "Sweden",
+      "region": "northern-europe"
+    },
+    "756": {
+      "name": "Switzerland",
+      "region": "central-europe"
+    },
+    "760": {
+      "name": "Syria",
+      "region": "middle-east"
+    },
+    "762": {
+      "name": "Tajikistan",
+      "region": null
+    },
+    "764": {
+      "name": "Thailand",
+      "region": "southeast-asia"
+    },
+    "768": {
+      "name": "Togo",
+      "region": null
+    },
+    "780": {
+      "name": "Trinidad and Tobago",
+      "region": null
+    },
+    "784": {
+      "name": "United Arab Emirates",
+      "region": "middle-east"
+    },
+    "788": {
+      "name": "Tunisia",
+      "region": "north-africa"
+    },
+    "792": {
+      "name": "Turkey",
+      "region": "middle-east"
+    },
+    "795": {
+      "name": "Turkmenistan",
+      "region": null
+    },
+    "800": {
+      "name": "Uganda",
+      "region": null
+    },
+    "804": {
+      "name": "Ukraine",
+      "region": "eastern-europe"
+    },
+    "807": {
+      "name": "Macedonia",
+      "region": null
+    },
+    "818": {
+      "name": "Egypt",
+      "region": "north-africa"
+    },
+    "826": {
+      "name": "United Kingdom",
+      "region": null
+    },
+    "834": {
+      "name": "Tanzania",
+      "region": "sub-saharan-africa"
+    },
+    "840": {
+      "name": "United States of America",
+      "region": "north-america"
+    },
+    "854": {
+      "name": "Burkina Faso",
+      "region": null
+    },
+    "858": {
+      "name": "Uruguay",
+      "region": "south-america"
+    },
+    "860": {
+      "name": "Uzbekistan",
+      "region": null
+    },
+    "862": {
+      "name": "Venezuela",
+      "region": "south-america"
+    },
+    "887": {
+      "name": "Yemen",
+      "region": "middle-east"
+    },
+    "894": {
+      "name": "Zambia",
+      "region": null
+    },
+    "004": {
+      "name": "Afghanistan",
+      "region": null
+    },
+    "008": {
+      "name": "Albania",
+      "region": "balkan"
+    },
+    "012": {
+      "name": "Algeria",
+      "region": "north-africa"
+    },
+    "024": {
+      "name": "Angola",
+      "region": null
+    },
+    "010": {
+      "name": "Antarctica",
+      "region": null
+    },
+    "032": {
+      "name": "Argentina",
+      "region": "argentinian"
+    },
+    "051": {
+      "name": "Armenia",
+      "region": null
+    },
+    "036": {
+      "name": "Australia",
+      "region": "oceania"
+    },
+    "040": {
+      "name": "Austria",
+      "region": "central-europe"
+    },
+    "031": {
+      "name": "Azerbaijan",
+      "region": null
+    },
+    "044": {
+      "name": "Bahamas",
+      "region": null
+    },
+    "050": {
+      "name": "Bangladesh",
+      "region": "south-asia"
+    },
+    "056": {
+      "name": "Belgium",
+      "region": null
+    },
+    "084": {
+      "name": "Belize",
+      "region": null
+    },
+    "064": {
+      "name": "Bhutan",
+      "region": null
+    },
+    "068": {
+      "name": "Bolivia",
+      "region": "south-america"
+    },
+    "070": {
+      "name": "Bosnia and Herz.",
+      "region": null
+    },
+    "072": {
+      "name": "Botswana",
+      "region": null
+    },
+    "076": {
+      "name": "Brazil",
+      "region": "south-america"
+    },
+    "096": {
+      "name": "Brunei",
+      "region": null
+    },
+    "Kosovo": {
+      "name": "Kosovo",
+      "region": null
+    },
+    "N. Cyprus": {
+      "name": "N. Cyprus",
+      "region": null
+    },
+    "090": {
+      "name": "Solomon Is.",
+      "region": null
+    },
+    "Somaliland": {
+      "name": "Somaliland",
+      "region": null
+    }
+  }
+}

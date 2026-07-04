@@ -40,15 +40,26 @@ const mealPlans = defineCollection({
 
 const meta = defineCollection({
   type: "data",
-  schema: z.object({
-    cuisines: z.array(
-      z.object({
-        slug: z.string(),
-        label: z.string(),
-        parent: z.string().nullable().optional(),
-      })
-    ),
-  }),
+  // Union: cuisines.json | country-regions.json
+  schema: z.union([
+    z.object({
+      cuisines: z.array(
+        z.object({
+          slug: z.string(),
+          label: z.string(),
+          parent: z.string().nullable().optional(),
+        })
+      ),
+    }),
+    z.object({
+      countries: z.record(
+        z.object({
+          name: z.string(),
+          region: z.string().nullable(),
+        })
+      ),
+    }),
+  ]),
 });
 
 export const collections = {

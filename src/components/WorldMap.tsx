@@ -11,144 +11,16 @@ import {
 import * as topojson from 'topojson-client';
 import type { Topology } from 'topojson-specification';
 import { geoCentroid } from 'd3-geo';
+import countryRegionsData from '../content/meta/country-regions.json';
 
+// Topology feature → cuisine slug (leaf or region) or null (inert land)
+const COUNTRY_REGIONS: Record<string, { name: string; region: string | null }> =
+  countryRegionsData.countries;
 
-// World-atlas country name → cuisine slug (leaf or region)
-const WORLD_ATLAS_COUNTRY_TO_SLUG: Record<string, string> = {
-  // Northern Europe
-  'Norway': 'norwegian',
-  'Sweden': 'northern-europe',
-  'Denmark': 'northern-europe',
-  'Finland': 'northern-europe',
-  'Iceland': 'northern-europe',
-
-  // Central Europe
-  'Germany': 'central-europe',
-  'Austria': 'central-europe',
-  'Switzerland': 'central-europe',
-  'Hungary': 'hungarian',
-  'Czech Republic': 'central-europe',
-  'Slovakia': 'central-europe',
-  'Poland': 'central-europe',
-
-  // Mediterranean
-  'Italy': 'italian',
-  'Spain': 'spanish',
-  'France': 'french',
-  'Greece': 'greek',
-  'Portugal': 'mediterranean',
-  'Malta': 'mediterranean',
-  'Cyprus': 'mediterranean',
-
-  // Balkan
-  'Croatia': 'balkan',
-  'Serbia': 'balkan',
-  'Bosnia and Herzegovina': 'balkan',
-  'Montenegro': 'balkan',
-  'Albania': 'balkan',
-  'North Macedonia': 'balkan',
-  'Slovenia': 'balkan',
-  'Bulgaria': 'balkan',
-  'Romania': 'balkan',
-
-  // Eastern Europe
-  'Ukraine': 'eastern-europe',
-  'Belarus': 'eastern-europe',
-  'Russia': 'eastern-europe',
-  'Moldova': 'eastern-europe',
-  'Lithuania': 'eastern-europe',
-  'Latvia': 'eastern-europe',
-  'Estonia': 'eastern-europe',
-
-  // Middle East
-  'Lebanon': 'middle-east',
-  'Turkey': 'middle-east',
-  'Syria': 'middle-east',
-  'Jordan': 'middle-east',
-  'Israel': 'middle-east',
-  'Palestine': 'middle-east',
-  'Iran': 'middle-east',
-  'Iraq': 'middle-east',
-  'Saudi Arabia': 'middle-east',
-  'Yemen': 'middle-east',
-  'Kuwait': 'middle-east',
-  'Qatar': 'middle-east',
-  'Bahrain': 'middle-east',
-  'United Arab Emirates': 'middle-east',
-  'Oman': 'middle-east',
-
-  // North Africa
-  'Egypt': 'north-africa',
-  'Libya': 'north-africa',
-  'Tunisia': 'north-africa',
-  'Algeria': 'north-africa',
-  'Morocco': 'north-africa',
-  'Sudan': 'north-africa',
-
-  // Sub-Saharan Africa
-  'Nigeria': 'sub-saharan-africa',
-  'Ethiopia': 'sub-saharan-africa',
-  'Kenya': 'sub-saharan-africa',
-  'South Africa': 'sub-saharan-africa',
-  'Ghana': 'sub-saharan-africa',
-  'Tanzania': 'sub-saharan-africa',
-
-  // South Asia
-  'India': 'south-asia',
-  'Pakistan': 'south-asia',
-  'Bangladesh': 'south-asia',
-  'Sri Lanka': 'south-asia',
-  'Nepal': 'south-asia',
-
-  // East Asia
-  'China': 'chinese',
-  'Japan': 'japanese',
-  'South Korea': 'east-asia',
-  'North Korea': 'east-asia',
-  'Mongolia': 'east-asia',
-  'Taiwan': 'taiwanese',
-
-  // Southeast Asia
-  'Thailand': 'southeast-asia',
-  'Vietnam': 'southeast-asia',
-  'Indonesia': 'southeast-asia',
-  'Malaysia': 'southeast-asia',
-  'Philippines': 'southeast-asia',
-  'Myanmar': 'southeast-asia',
-  'Cambodia': 'southeast-asia',
-  'Laos': 'southeast-asia',
-  'Singapore': 'southeast-asia',
-
-  // North America
-  'United States of America': 'north-america',
-  'Canada': 'north-america',
-
-  // Central America
-  'Mexico': 'mexican',
-  'Guatemala': 'central-america',
-  'Honduras': 'central-america',
-  'El Salvador': 'central-america',
-  'Nicaragua': 'central-america',
-  'Costa Rica': 'central-america',
-  'Panama': 'central-america',
-  'Cuba': 'central-america',
-
-  // South America
-  'Brazil': 'south-america',
-  'Argentina': 'argentinian',
-  'Colombia': 'south-america',
-  'Chile': 'south-america',
-  'Peru': 'south-america',
-  'Venezuela': 'south-america',
-  'Ecuador': 'south-america',
-  'Bolivia': 'south-america',
-  'Paraguay': 'south-america',
-  'Uruguay': 'south-america',
-
-  // Oceania
-  'Australia': 'oceania',
-  'New Zealand': 'oceania',
-};
+// Feature key: numeric id when present, else name (3 disputed territories lack ids)
+const featureKey = (geo: any): string => String(geo.id ?? geo.properties?.name);
+const slugForFeature = (geo: any): string | null =>
+  COUNTRY_REGIONS[featureKey(geo)]?.region ?? null;
 
 interface Props {
   recipeCuisines: string[];
@@ -261,8 +133,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
     const regionMap = new Map<string, any[]>();
 
     countries.features.forEach((feature: any) => {
-      const countryName = feature.properties?.name;
-      const leafSlug = WORLD_ATLAS_COUNTRY_TO_SLUG[countryName];
+      const leafSlug = slugForFeature(feature);
       if (!leafSlug) return;
 
       // Resolve to region: if leaf has a parent cuisine, use parent; else leaf IS the region
@@ -385,7 +256,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
   }
 
   // Fill for a given slug/hasRecipes flag
-  const getFill = (slug: string | undefined, hasRecipes: boolean, isHovered: boolean) => {
+  const getFill = (slug: string | null, hasRecipes: boolean, isHovered: boolean) => {
     if (isHovered) return 'var(--color-olive)';
     if (!slug) return 'var(--color-map-land)';
     if (hasRecipes) return 'var(--color-map-active)';
@@ -454,7 +325,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
               {({ geographies }) =>
                 geographies.map((geo) => {
                   const name: string = geo.properties?.name;
-                  const slug = WORLD_ATLAS_COUNTRY_TO_SLUG[name];
+                  const slug = slugForFeature(geo);
                   const hasRecipes = slug ? availableSet.has(slug) : false;
                   const isHovered = hoveredSlug === name;
                   const fill = getFill(slug, hasRecipes, isHovered);
