@@ -211,56 +211,56 @@ Scope change resolved in session: the one-meal-per-day restriction is removed
 
 **P1 — Data model**
 
-- [ ] `meals[day]: PlannedMeal` → `PlannedMeal[]`, **cap 4 per day**.
-- [ ] Meals gain a stable per-instance `id` (nanoid-style) — `recipeId` is no longer
+- [x] `meals[day]: PlannedMeal` → `PlannedMeal[]`, **cap 4 per day**.
+- [x] Meals gain a stable per-instance `id` (nanoid-style) — `recipeId` is no longer
       unique (same recipe twice in a week/day is legitimate).
-- [ ] `PlannedMeal` gains `servings` and `baseServings` (see P3).
-- [ ] `selectRecipe` / `addCustom` become append-with-capacity-check;
+- [x] `PlannedMeal` gains `servings` and `baseServings` (see P3).
+- [x] `selectRecipe` / `addCustom` become append-with-capacity-check;
       `removeMeal(day)` → `removeMeal(day, mealId)`; `generateList` /
       `downloadList` iterate arrays.
-- [ ] **localStorage migration shim** in `loadWeek`: non-array stored value → wrap
+- [x] **localStorage migration shim** in `loadWeek`: non-array stored value → wrap
       as `[meal]`, backfill instance id + servings fields. Without it the deploy
       crashes every existing week.
-- [ ] Within a day, meals are an **unlabeled ordered list** (no breakfast/lunch slot
+- [x] Within a day, meals are an **unlabeled ordered list** (no breakfast/lunch slot
       labels, no within-day reordering in v1 — workaround is move-out-move-back;
       arrays are ordered, so within-day insert stays a pure additive upgrade).
 
 **P2 — Move interactions**
 
-- [ ] New `usePlanner` primitive `moveMeal(fromDay, mealId, toDay)`: remove from
+- [x] New `usePlanner` primitive `moveMeal(fromDay, mealId, toDay)`: remove from
       source, append to target. Calls `resetList()` like every other mutation.
-- [ ] **Full target day (4 meals) = blocked**: no-drop cursor + no highlight on
+- [x] **Full target day (4 meals) = blocked**: no-drop cursor + no highlight on
       drag; armed-day card-click quietly no-ops (day auto-disarms, muted note);
       tap-to-move target inert. Drop on same day = no-op.
-- [ ] Drag on **both surfaces** (drawer + `/meal-planner`): day rows / meal chips
+- [x] Drag on **both surfaces** (drawer + `/meal-planner`): day rows / meal chips
       become drag sources; `dataTransfer` payload gains a discriminator
       (`{ kind: 'move', fromDay, mealId }` vs the existing recipe-add payload) so
       one drop handler serves both; `dropEffect` `'move'` vs `'copy'`.
-- [ ] **Tap-to-move on `/meal-planner`** (touch + keyboard path in one): tap a meal
+- [x] **Tap-to-move on `/meal-planner`** (touch + keyboard path in one): tap a meal
       chip → arms (oxblood tint, same grammar as the drawer's armed day) → tap a
       destination day → move; tap elsewhere disarms. Focus + Enter follows the same
       states. Drawer stays **drag-only** (desktop-only by definition; keep it slim).
-- [ ] Drawer geometry: day rows grow with up to 4 chips; panel gets
+- [x] Drawer geometry: day rows grow with up to 4 chips; panel gets
       `overflow-y: auto`; closed-tab day-marks stay binary (mark = ≥1 meal).
 
 **P3 — Per-meal servings scaler**
 
-- [ ] Grain: **per meal instance** — `servings` defaults to the recipe's frontmatter
+- [x] Grain: **per meal instance** — `servings` defaults to the recipe's frontmatter
       `servings` (stored as `baseServings` at add-time); ratio =
       `servings / baseServings`. Custom dishes get no scaler.
-- [ ] Placement: **`/meal-planner` page only** (drawer stays add-and-arrange; the
+- [x] Placement: **`/meal-planner` page only** (drawer stays add-and-arrange; the
       page is also the mobile surface). UI: the recipe page's −/+ stepper grammar,
       small oldstyle number per meal chip. Bounds 1–12.
-- [ ] Ratio applies at `generateList()` — each item's quantity scales by *its own
+- [x] Ratio applies at `generateList()` — each item's quantity scales by *its own
       meal's* factor before any same-day merging (see NLP plan). Changing servings
       calls `resetList()` (the generated list is a snapshot; never mutate under
       checked items).
 
 **P4 — Shared quantity util (+ recipe-page bug fix)**
 
-- [ ] Extract quantity parsing/scaling into one shared module with two consumers:
+- [x] Extract quantity parsing/scaling into one shared module with two consumers:
       the recipe-page scaler and the shopping list's degraded mode (NLP plan N4).
-- [ ] Fix the root-cause bug: `scaleIngredient`'s regex requires whitespace after
+- [x] Fix the root-cause bug: `scaleIngredient`'s regex requires whitespace after
       the quantity, so glued units (`400g chicken thighs`, `1.2kg beef chuck`)
       silently pass through unscaled. Accept an attached unit suffix; scale the
       number; preserve the unit. Keep existing fraction/range handling.

@@ -133,6 +133,7 @@ export function usePlanner() {
   function addCustom(day: string, name: string) {
     const trimmed = name.trim();
     if (!trimmed) return;
+    if ((meals[day] ?? []).length >= MAX_MEALS_PER_DAY) return;
     const meal: PlannedMeal = {
       id: newMealId(),
       recipeId: null,
@@ -158,7 +159,9 @@ export function usePlanner() {
   }
 
   function moveMeal(fromDay: string, mealId: string, toDay: string) {
-    setMeals((prev) => (moveMealIn(prev, fromDay, mealId, toDay) as Week | null) ?? prev);
+    const next = moveMealIn(meals, fromDay, mealId, toDay) as Week | null;
+    if (!next) return; // same day / full target: don't wipe a generated list
+    setMeals(next);
     resetList();
   }
 

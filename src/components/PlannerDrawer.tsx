@@ -101,13 +101,14 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
   }
 
   function handleDragOverDrawer(e: React.DragEvent) {
+    // Open drawer: day rows own their dragover (blocking + dropEffect) —
+    // preventDefault here would override full-day no-drop with a copy cursor
+    if (drawerOpen) return;
     e.preventDefault();
     e.dataTransfer.dropEffect = 'copy';
-    if (!drawerOpen) {
-      setDragOverTab(true);
-      setDrawerOpen(true);
-      setDrawerMode('drag');
-    }
+    setDragOverTab(true);
+    setDrawerOpen(true);
+    setDrawerMode('drag');
   }
 
   function handleDragLeaveDrawer(e: React.DragEvent) {

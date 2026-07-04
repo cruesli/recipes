@@ -44,8 +44,7 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
   const [filterOpen, setFilterOpen] = useState(false);
   const [armedDay, setArmedDay] = useState<string | null>(null);
 
-  const { filledDays } = usePlanner();
-  const mealCount = filledDays.length;
+  const { mealCount } = usePlanner();
 
   // Sync armed day from PlannerDrawer
   useEffect(() => {
