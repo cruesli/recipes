@@ -126,58 +126,72 @@ one continuous shared-element motion (~400 ms, ease-out).
 
 **T1 — Prerequisite fix**
 
-- [ ] Replace `window.location.href` in `handleNavigate` with `navigate()` from
+- [x] Replace `window.location.href` in `handleNavigate` with `navigate()` from
       `astro:transitions/client` (both normal and reduced-motion branches).
       Currently every map click is a full page load that bypasses `<ClientRouter />`
       entirely — there has never actually been a crossfade.
 
 **T2 — Silhouette generator (build-time, Node)**
 
-- [ ] Extract the region-merge logic from `WorldMap.tsx` into a shared module;
+- [x] Extract the region-merge logic from `WorldMap.tsx` into a shared module;
       both the runtime map and the generator import it (identical geometry is what
       makes the morph seamless — same `countries-110m.json`, same merge, same
-      Mercator projection settings).
-- [ ] Prebuild Node script emits one small SVG silhouette per cuisine slug — **all
+      Mercator projection settings). *(`src/lib/regionGeometry.mjs`; review
+      verified runtime vs generated `d` strings byte-identical. Lebanon remapped
+      → `lebanese` so every leaf has geometry; d3-geo added as devDependency —
+      both approved.)*
+- [x] Prebuild Node script emits one small SVG silhouette per cuisine slug — **all
       slugs** in `cuisines.json`, not just recipe-bearing — into
       `src/generated/silhouettes/` (git-ignored; Netlify regenerates
       deterministically). Sibling of the W1 completeness check under one
-      `npm run prebuild`.
-- [ ] The generator **also emits each shape's projected bounding box** in base SVG
+      `npm run prebuild`. *(Also wired as `predev` so dev servers have
+      silhouettes.)*
+- [x] The generator **also emits each shape's projected bounding box** in base SVG
       coordinates (groundwork for T4; ~10 extra lines against the same projection
-      module).
-- [ ] Cuisine page header inlines its silhouette at first paint (static HTML — a
+      module). *(`manifest.json`; the silhouette `viewBox` carries the same bbox.)*
+- [x] Cuisine page header inlines its silhouette at first paint (static HTML — a
       late-arriving element cannot participate in a view transition).
 
 **T3 — Forward morph**
 
-- [ ] Constraint driving the pattern: `view-transition-name` cannot target an SVG
+- [x] Constraint driving the pattern: `view-transition-name` cannot target an SVG
       *child* path. On click: read the clicked path's live screen box via
       `getBoundingClientRect()` (automatically accounts for pan/zoom), spawn a
       `position: fixed` overlay `<svg>` of just that shape exactly over the real
       one, with `view-transition-name: cuisine-shape`.
-- [ ] Header silhouette carries the same `view-transition-name`; call `navigate()`;
+- [x] Header silhouette carries the same `view-transition-name`; call `navigate()`;
       the browser morphs overlay-box → header-box. Identical geometry + aspect
       ratio ⇒ distortion-free "the country lands in the header".
-- [ ] Remove the flight-tween machinery (`animateFlight` becomes dead code); the
+- [x] Remove the flight-tween machinery (`animateFlight` becomes dead code); the
       Phase 8 snapshot logic is untouched (fires pre-motion either way).
-- [ ] Timing via `::view-transition-group(cuisine-shape)` CSS: ~400 ms, ease-out.
-- [ ] **Reduced motion:** no morph, no crossfade — instant navigation.
-- [ ] **No-support fallback** (older Safari/Firefox): Astro `fallback="animate"`
+      *(Deleted outright, incl. the centroid plumbing that only served it.)*
+- [x] Timing via `::view-transition-group(cuisine-shape)` CSS: ~400 ms, ease-out.
+- [x] **Reduced motion:** no morph, no crossfade — instant navigation. *(Astro's
+      own `@media (prefers-reduced-motion)` rules kill all transition animation.)*
+- [x] **No-support fallback** (older Safari/Firefox): Astro `fallback="animate"`
       simulated crossfade; morph silently absent. Nothing to build.
 
 **T4 — Reverse morph** *(sequenced second — ship T1–T3 first; reverse-crossfade is
 the contractual fallback by construction: missing named element ⇒ browsers just
 crossfade)*
 
-- [ ] Trigger: arriving at home with a `map:snapshot` present (covers browser back
+- [x] Trigger: arriving at home with a `map:snapshot` present (covers browser back
       *and* the "← Back to the map" link uniformly).
-- [ ] In `astro:after-swap` (runs inside the view-transition callback, so injected
+- [x] In `astro:after-swap` (runs inside the view-transition callback, so injected
       DOM is captured): inject a fixed overlay SVG of the slug's silhouette, named
       `cuisine-shape`, at a screen rect computed from the T2 projected bbox + the
       restored ZoomableGroup transform + the map container's post-swap rect.
-- [ ] WorldMap hydrates, restores the Phase 8 position (now load-bearing — the real
-      country must render exactly under the overlay), emits an event; overlay
-      removed invisibly.
+      *(Implementation notes: the map island is `client:only`, so a server-rendered
+      `.worldmap-frame` div now reserves the map's height — that is the measurable
+      post-swap rect and also fixes `/#map` anchor-scroll accuracy. The snapshot
+      gained a `projected` field (base-coord projection of the centre) so the
+      swap-time script needs no d3. The silhouette is cloned from the outgoing
+      cuisine header in `astro:before-swap`; its `viewBox` carries the projected
+      bbox. Astro scrolls before `astro:after-swap`, so the rect is scroll-safe.)*
+- [x] WorldMap hydrates, restores the Phase 8 position (now load-bearing — the real
+      country must render exactly under the overlay), emits an event
+      (`worldmap:restored`); overlay removed invisibly (plus a 1.5 s hard
+      fallback).
 - [ ] Known risks, accepted: scroll-timing of the rect measurement (where the tuning
       hours go) and a possible cold-cache beat where the shape sits on unpainted
       ocean. **Bail-out clause:** if scroll-timing tuning exceeds roughly a session

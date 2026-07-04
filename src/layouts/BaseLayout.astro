@@ -84,5 +84,75 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
         client:load
       />
     )}
+
+    <script>
+      // Reverse morph (Phase 10 T4): arriving at the home map with a snapshot
+      // present, fly the cuisine silhouette back onto the restored framing.
+      // Module script — runs once, listeners persist across router swaps.
+      import { MAP_WIDTH, MAP_HEIGHT } from "../lib/regionGeometry.mjs";
+
+      let stash: { svg: SVGSVGElement; snap: any } | null = null;
+
+      document.addEventListener("astro:before-swap", (e: any) => {
+        stash = null;
+        if (!("startViewTransition" in document)) return; // fallback = plain crossfade
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+        const svg = document.querySelector(".cuisine-silhouette svg");
+        const raw = sessionStorage.getItem("map:snapshot");
+        if (!svg || !raw || !e.newDocument?.querySelector(".worldmap-frame")) return;
+        try {
+          stash = { svg: svg.cloneNode(true) as SVGSVGElement, snap: JSON.parse(raw) };
+        } catch { /* corrupt snapshot: no morph */ }
+      });
+
+      document.addEventListener("astro:after-swap", () => {
+        if (!stash) return;
+        const { svg, snap } = stash;
+        stash = null;
+
+        const frame = document.querySelector(".worldmap-frame");
+        const vb = (svg.getAttribute("viewBox") ?? "").split(" ").map(Number);
+        if (!frame || !snap.projected || vb.length !== 4 || vb.some(Number.isNaN)) return;
+
+        // Base map point → screen: ZoomableGroup transform, then viewBox "meet"
+        // fit. Scroll is final here — Astro scrolls before astro:after-swap.
+        const rect = frame.getBoundingClientRect();
+        const s = Math.min(rect.width / MAP_WIDTH, rect.height / MAP_HEIGHT);
+        const ox = rect.left + (rect.width - MAP_WIDTH * s) / 2;
+        const oy = rect.top + (rect.height - MAP_HEIGHT * s) / 2;
+        const k = snap.zoom;
+        const [cx, cy] = snap.projected;
+        const toScreen = (x: number, y: number) => [
+          ox + s * (MAP_WIDTH / 2 + k * (x - cx)),
+          oy + s * (MAP_HEIGHT / 2 + k * (y - cy)),
+        ];
+        const [x0, y0] = toScreen(vb[0], vb[1]);
+        const [x1, y1] = toScreen(vb[0] + vb[2], vb[1] + vb[3]);
+
+        Object.assign(svg.style, {
+          position: "fixed",
+          left: `${x0}px`,
+          top: `${y0}px`,
+          width: `${x1 - x0}px`,
+          height: `${y1 - y0}px`,
+          color: "var(--color-map-active)",
+          pointerEvents: "none",
+          zIndex: "999",
+          viewTransitionName: "cuisine-shape",
+        });
+        document.body.appendChild(svg);
+
+        // Remove invisibly once the restored map has painted underneath and the
+        // ~400ms morph is over; hard fallback in case the island never reports.
+        const remove = () => {
+          svg.remove();
+          window.removeEventListener("worldmap:restored", onRestored);
+          clearTimeout(fallback);
+        };
+        const onRestored = () => setTimeout(remove, 450);
+        window.addEventListener("worldmap:restored", onRestored, { once: true });
+        const fallback = setTimeout(remove, 1500);
+      });
+    </script>
   </body>
 </html>

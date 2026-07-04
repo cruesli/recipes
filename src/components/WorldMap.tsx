@@ -11,14 +11,28 @@ import {
 import * as topojson from 'topojson-client';
 import type { Topology } from 'topojson-specification';
 import { navigate } from 'astro:transitions/client';
+import { geoMercator } from 'd3-geo';
 import countryRegionsData from '../content/meta/country-regions.json';
-import { featureKey, slugForFeature as resolveSlug } from '../lib/regionGeometry.mjs';
+import {
+  featureKey,
+  slugForFeature as resolveSlug,
+  MAP_WIDTH,
+  MAP_HEIGHT,
+  PROJECTION_CONFIG,
+} from '../lib/regionGeometry.mjs';
 
 // Topology feature → cuisine slug (leaf or region) or null (inert land)
 const COUNTRY_REGIONS: Record<string, { name: string; region: string | null }> =
   countryRegionsData.countries;
 
 const slugForFeature = (geo: any): string | null => resolveSlug(COUNTRY_REGIONS, geo);
+
+// Base (unzoomed 800×600) projection — snapshots carry the projected centre so
+// the reverse-morph overlay can be placed without importing d3 at swap time
+const baseProjection = geoMercator()
+  .translate([MAP_WIDTH / 2, MAP_HEIGHT / 2])
+  .center(PROJECTION_CONFIG.center as [number, number])
+  .scale(PROJECTION_CONFIG.scale);
 
 interface Props {
   recipeCuisines: string[];
@@ -38,7 +52,8 @@ interface MapSnapshot {
   coordinates: [number, number];
   zoom: number;
   mode: 'country' | 'region';
-  slug: string; // unused until Phase 10 T4
+  slug: string;
+  projected: [number, number] | null; // base-coord projection of coordinates
 }
 
 function readSnapshot(): MapSnapshot | null {
@@ -115,6 +130,22 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
       .then((r) => r.json())
       .then(setTopology);
   }, []);
+
+  // Reverse morph handshake: once the restored framing has painted, tell the
+  // overlay script (BaseLayout) it can remove the injected silhouette
+  useEffect(() => {
+    if (!snapshot || !topology) return;
+    let raf2 = 0;
+    const raf1 = requestAnimationFrame(() => {
+      raf2 = requestAnimationFrame(() => {
+        window.dispatchEvent(new CustomEvent('worldmap:restored'));
+      });
+    });
+    return () => {
+      cancelAnimationFrame(raf1);
+      if (raf2) cancelAnimationFrame(raf2);
+    };
+  }, [snapshot, topology]);
 
   // topojson-client + react-simple-maps types are incomplete; any is intentional here
   // Compute per-region merged shapes from topology; inert (null-region) features stay individual
@@ -231,7 +262,11 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
     // Snapshot the at-click framing before any motion starts
     const { coordinates, zoom } = positionRef.current;
     try {
-      sessionStorage.setItem(SNAPSHOT_KEY, JSON.stringify({ coordinates, zoom, mode, slug }));
+      const projected = baseProjection(coordinates) ?? null;
+      sessionStorage.setItem(
+        SNAPSHOT_KEY,
+        JSON.stringify({ coordinates, zoom, mode, slug, projected })
+      );
     } catch { /* private mode: skip restore */ }
 
     if (!prefersReducedMotion && el) spawnMorphOverlay(el);
@@ -272,14 +307,14 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
       style={{
         position: 'relative',
         width: '100%',
-        height: 'clamp(520px, 86vh, 1040px)',
+        height: '100%',
         backgroundColor: 'var(--color-paper)',
       }}
     >
       {/* Map canvas */}
       <ComposableMap
         projection="geoMercator"
-        projectionConfig={{ scale: 170, center: [15, 25] }}
+        projectionConfig={PROJECTION_CONFIG as { scale: number; center: [number, number] }}
         style={{ width: '100%', height: '100%' }}
       >
         <ZoomableGroup

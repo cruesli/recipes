@@ -48,12 +48,16 @@ const cuisinesData =
       <p class="section-label">Explore</p>
       <h2 class="section-heading">Around the world</h2>
     </div>
-    <WorldMap
-      recipeCuisines={recipes.map(r => r.data.cuisine.toLowerCase())}
-      cuisinesData={cuisinesData}
-      basePath={basePath}
-      client:only="react"
-    />
+    <!-- Server-rendered frame: reserves the map's height pre-hydration so anchor
+         scroll and the reverse-morph rect are measurable at astro:after-swap -->
+    <div class="worldmap-frame">
+      <WorldMap
+        recipeCuisines={recipes.map(r => r.data.cuisine.toLowerCase())}
+        cuisinesData={cuisinesData}
+        basePath={basePath}
+        client:only="react"
+      />
+    </div>
   </section>
 </BaseLayout>
 
