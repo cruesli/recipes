@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { Clock, Users, ChefHat, ArrowLeft, Check, Minus, Plus } from 'lucide-react';
+import { scaleIngredient } from '../lib/quantity.mjs';
 
 export interface RecipePageProps {
   title: string;
@@ -14,79 +15,6 @@ export interface RecipePageProps {
   /** Plain-text steps, one per array entry */
   steps: string[];
   basePath: string;
-}
-
-// ── Fraction helpers ──────────────────────────────────────────────────────────
-
-const FRACTION_TO_DECIMAL: Record<string, number> = {
-  '¼': 0.25, '½': 0.5, '¾': 0.75,
-  '⅓': 0.333333, '⅔': 0.666667,
-  '⅕': 0.2, '⅖': 0.4, '⅗': 0.6, '⅘': 0.8,
-  '⅙': 0.166667, '⅚': 0.833333,
-  '⅛': 0.125, '⅜': 0.375, '⅝': 0.625, '⅞': 0.875,
-};
-
-const DECIMAL_TO_FRACTION: Array<[number, string]> = [
-  [0.875, '⅞'], [0.833333, '⅚'], [0.8, '⅘'], [0.75, '¾'],
-  [0.666667, '⅔'], [0.625, '⅝'], [0.6, '⅗'], [0.5, '½'],
-  [0.4, '⅖'], [0.375, '⅜'], [0.333333, '⅓'], [0.25, '¼'],
-  [0.2, '⅕'], [0.166667, '⅙'], [0.125, '⅛'],
-];
-
-function parseFractionChar(ch: string): number {
-  return FRACTION_TO_DECIMAL[ch] ?? 0;
-}
-
-function formatFraction(decimal: number): string {
-  for (const [value, sym] of DECIMAL_TO_FRACTION) {
-    if (Math.abs(decimal - value) < 0.01) return sym;
-  }
-  const s = decimal.toFixed(2).replace(/\.?0+$/, '');
-  return s === '0' ? '' : s;
-}
-
-function parseQuantity(str: string): number {
-  if (str.includes('/')) {
-    const parts = str.split('/');
-    return parseFloat(parts[0]) / parseFloat(parts[1]);
-  }
-  let value = 0;
-  let digits = '';
-  for (const ch of str) {
-    const frac = parseFractionChar(ch);
-    if (frac > 0) {
-      if (digits) { value += parseFloat(digits); digits = ''; }
-      value += frac;
-    } else if (ch >= '0' && ch <= '9') {
-      digits += ch;
-    }
-  }
-  if (digits) value += parseFloat(digits);
-  return value;
-}
-
-function formatQuantity(n: number): string {
-  const whole = Math.floor(n);
-  const frac = n - whole;
-  const fracStr = frac > 0.05 ? formatFraction(frac) : '';
-  if (whole === 0) return fracStr || '0';
-  return fracStr ? `${whole} ${fracStr}` : `${whole}`;
-}
-
-function scaleIngredient(raw: string, ratio: number): string {
-  if (ratio === 1) return raw;
-  const m = raw.match(/^([\d¼½¾⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞\/\.\s]+(?:\s*-\s*[\d¼½¾⅓⅔⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞\/\.]+)?)\s+/);
-  if (!m) return raw;
-  const qStr = m[1].trim();
-  const rest = raw.slice(m[0].length);
-
-  if (qStr.includes('-')) {
-    const [lo, hi] = qStr.split('-').map((s) => parseQuantity(s.trim()) * ratio);
-    return `${formatQuantity(lo)}-${formatQuantity(hi)} ${rest}`;
-  }
-
-  const scaled = parseQuantity(qStr) * ratio;
-  return `${formatQuantity(scaled)} ${rest}`;
 }
 
 // ── Shared style constants ────────────────────────────────────────────────────

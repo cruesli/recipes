@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { migrateWeek, addMealIn, moveMealIn, newMealId, MAX_MEALS_PER_DAY } from '../lib/plannerModel.mjs';
+import { scaleIngredient } from '../lib/quantity.mjs';
 
 export const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 export { MAX_MEALS_PER_DAY };
@@ -181,11 +182,14 @@ export function usePlanner() {
     const items: ShoppingItem[] = [];
     DAYS.forEach((day) => {
       (meals[day] ?? []).forEach((meal) => {
+        // Each raw line scales by its own meal's servings ratio
+        const ratio =
+          meal.servings !== null && meal.baseServings ? meal.servings / meal.baseServings : 1;
         meal.sections.forEach((sec) => {
           sec.items.forEach((text) => {
             items.push({
               id: String(counter++),
-              text,
+              text: scaleIngredient(text, ratio),
               day,
               recipeTitle: meal.title,
               sectionHeader: sec.header,
