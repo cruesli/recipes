@@ -11,6 +11,7 @@ import {
 import * as topojson from 'topojson-client';
 import type { Topology } from 'topojson-specification';
 import { geoCentroid } from 'd3-geo';
+import { navigate } from 'astro:transitions/client';
 import countryRegionsData from '../content/meta/country-regions.json';
 
 // Topology feature → cuisine slug (leaf or region) or null (inert land)
@@ -259,7 +260,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
     } catch { /* private mode: skip restore */ }
 
     if (prefersReducedMotion) {
-      window.location.href = target;
+      navigate(target);
       return;
     }
 
@@ -268,7 +269,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
       3.5,
       500,
       (coords, zoom) => setPosition({ coordinates: coords, zoom }),
-      () => { window.location.href = target; }
+      () => { navigate(target); }
     );
   }
 
