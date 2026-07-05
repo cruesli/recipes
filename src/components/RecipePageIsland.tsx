@@ -35,6 +35,12 @@ const HAIRLINE: React.CSSProperties = {
   margin: 0,
 };
 
+const PLATE_HAIRLINE: React.CSSProperties = {
+  border: 'none',
+  borderTop: '1px solid var(--color-plate-hairline)',
+  margin: 0,
+};
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function RecipePageIsland({
@@ -133,28 +139,6 @@ export function RecipePageIsland({
             {timeLabel && <MetaItem label="Total time" value={timeLabel} />}
             {foodType && <MetaItem label="Type" value={foodType} />}
 
-            {/* Servings adjuster */}
-            <div>
-              <p style={{ ...EYEBROW, marginBottom: '4px' }}>Servings</p>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 500, color: 'var(--color-ink)' }}>
-                <button
-                  onClick={() => setServings((s) => Math.max(1, s - 1))}
-                  aria-label="Fewer servings"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex', lineHeight: 1 }}
-                >
-                  <Minus size={14} />
-                </button>
-                <span className="onum" style={{ minWidth: '1.5ch', textAlign: 'center', fontSize: 'var(--text-body)' }}>{servings}</span>
-                <button
-                  onClick={() => setServings((s) => s + 1)}
-                  aria-label="More servings"
-                  style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex', lineHeight: 1 }}
-                >
-                  <Plus size={14} />
-                </button>
-              </div>
-            </div>
-
             {/* Tags */}
             <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginLeft: 'auto' }}>
               {tags.filter(Boolean).slice(0, 3).map((tag) => (
@@ -176,14 +160,38 @@ export function RecipePageIsland({
 
           {/* Left column: ingredients + nutrition */}
           <div>
-            {/* Ingredients */}
-            <div style={{ marginBottom: 'var(--space-2xl)' }}>
-              <p style={{ ...EYEBROW, marginBottom: 'var(--space-sm)' }}>Ingredients</p>
-              <hr style={HAIRLINE} />
+            {/* Ingredients — the one sanctioned printed plate: solid oxblood,
+                paper type, print grammar (squared, flat, no border/shadow) */}
+            <div style={{ backgroundColor: 'var(--color-oxblood)', padding: 'var(--space-xl) var(--space-lg)', marginBottom: 'var(--space-2xl)' }}>
+              <p style={{ ...EYEBROW, color: 'var(--color-plate-text)', marginBottom: 'var(--space-sm)' }}>Ingredients</p>
+              <hr style={PLATE_HAIRLINE} />
+
+              {/* Servings stepper — moved onto the plate (the mid-cooking surface) */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 'var(--space-xs) 0', borderBottom: '1px solid var(--color-plate-hairline)' }}>
+                <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', fontWeight: 500, color: 'var(--color-plate-muted)' }}>Servings</span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 500, color: 'var(--color-plate-text)' }}>
+                  <button
+                    onClick={() => setServings((s) => Math.max(1, s - 1))}
+                    aria-label="Fewer servings"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-plate-text)', padding: '2px', display: 'flex', lineHeight: 1 }}
+                  >
+                    <Minus size={14} />
+                  </button>
+                  <span className="onum" style={{ minWidth: '1.5ch', textAlign: 'center', fontSize: 'var(--text-body)' }}>{servings}</span>
+                  <button
+                    onClick={() => setServings((s) => s + 1)}
+                    aria-label="More servings"
+                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-plate-text)', padding: '2px', display: 'flex', lineHeight: 1 }}
+                  >
+                    <Plus size={14} />
+                  </button>
+                </div>
+              </div>
+
               {sections.map((sec, si) => (
                 <div key={si}>
                   {sec.header && (
-                    <p style={{ ...EYEBROW, color: 'var(--color-ink-muted)', margin: 'var(--space-md) 0 var(--space-2xs)' }}>
+                    <p style={{ ...EYEBROW, color: 'var(--color-plate-muted)', margin: 'var(--space-md) 0 var(--space-2xs)' }}>
                       {sec.header}
                     </p>
                   )}
@@ -196,14 +204,15 @@ export function RecipePageIsland({
                           alignItems: 'baseline',
                           gap: 'var(--space-xs)',
                           padding: 'var(--space-xs) 0',
-                          borderBottom: '1px solid var(--color-hairline)',
+                          borderBottom: '1px solid var(--color-plate-hairline)',
                           fontFamily: "'EB Garamond', Georgia, serif",
                           fontSize: 'var(--text-meta)',
-                          color: 'var(--color-ink)',
+                          fontWeight: 500, /* light serif optically thins on dark ground */
+                          color: 'var(--color-plate-text)',
                           lineHeight: 1.45,
                         }}
                       >
-                        <span style={{ color: 'var(--color-oxblood)', fontSize: '0.5rem', flexShrink: 0, marginTop: '0.1rem' }}>●</span>
+                        <span style={{ color: 'var(--color-plate-text)', fontSize: '0.5rem', flexShrink: 0, marginTop: '0.1rem' }}>●</span>
                         <span>{scaleIngredient(item, ratio)}</span>
                       </li>
                     ))}

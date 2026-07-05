@@ -16,6 +16,11 @@
   --color-map-land:   #E5DECE;  /* tan: non-recipe countries */
   --color-map-active: #ACAA8C;  /* sage: countries/regions that have recipes */
 
+  /* On-plate type (the recipe-page ingredient plate — the one sanctioned fill) */
+  --color-plate-text:     var(--color-paper);
+  --color-plate-muted:    rgba(250, 248, 242, 0.7);
+  --color-plate-hairline: rgba(250, 248, 242, 0.19);
+
   --radius-sm: 0.375rem;
   --radius-md: 0.625rem;
   --radius-lg: 0.875rem;
