@@ -25,62 +25,62 @@ with navigation but never forced narrowing.
 
 **C1 — Page composition (chapter opener)**
 
-- [ ] Restructure `[cuisine].astro` from the split flex header into a stacked
+- [x] Restructure `[cuisine].astro` from the split flex header into a stacked
       chapter opener, top to bottom: `← Back to the map` → oxblood tick +
       "Cuisine" eyebrow → **h1 title** → muted oldstyle recipe count → **the
       plate** → deliberate gap (`--space-3xl`) → recipe grid. Title on top:
       arrival identity paints in the first frame while the shape flies in
       beneath it; title-beneath is caption grammar and demotes the h1.
-- [ ] Title at `--text-title`; escalate toward `--text-display` **only if** it
+- [x] Title at `--text-title`; escalate toward `--text-display` **only if** it
       reads weak against the big plate (try smaller first).
-- [ ] Plate sizing — area budget, not fixed height (Chile/Norway/Indonesia aspect
+- [x] Plate sizing — area budget, not fixed height (Chile/Norway/Indonesia aspect
       chaos): `max-height: clamp(240px, 34vh, 420px)` **and** max-width ~60% of
       the content frame; each shape finds its natural size via its `viewBox`
       aspect. Plate sits **inside `--max-wide`**, never full-bleed (the world map
       earns full-bleed; chapter plates live within book margins). Type stays
       left-aligned per the masthead grammar.
-- [ ] Fill: **solid sage** `--color-map-active` on paper. No gradients, no
+- [x] Fill: **solid sage** `--color-map-active` on paper. No gradients, no
       photo-in-shape masking (photography stays precious; sage continuity is what
       makes the morph read).
-- [ ] Morph compatibility: the plate keeps `view-transition-name: cuisine-shape`
+- [x] Morph compatibility: the plate keeps `view-transition-name: cuisine-shape`
       — the forward morph inherits the new, larger endpoint automatically.
       **Verify the reverse morph** (T4 clones the header silhouette in
       `astro:before-swap`; its `viewBox` must keep carrying the projected bbox).
-- [ ] The header silhouette element must remain **static HTML at first paint**
+- [x] The header silhouette element must remain **static HTML at first paint**
       (late-arriving elements can't join a view transition) — unchanged
       constraint from Phase 10 T2.
 
 **C2 — Region plates: the cuisines inside**
 
-- [ ] Extend the silhouette generator: for **region slugs**, emit a second
+- [x] Extend the silhouette generator: for **region slugs**, emit a second
       variant — the merged region outline **plus internal leaf-country paths**
       (a miniature country-mode map of just that region). Each leaf path carries
       its slug and an **alive** flag (alive iff the leaf cuisine has recipes —
       strict leaf-only, same rule as Phase 9 W2). Same shared projection module;
       leaf plates stay the existing single-path asset.
-- [ ] Rendering: live leaves **sage**, inert member land **tan**
+- [x] Rendering: live leaves **sage**, inert member land **tan**
       (`--color-map-land`), paper strokes between shapes (the map's stroke
       grammar; tune width at plate scale — fall back to hairline strokes only if
       paper gaps turn invisible).
-- [ ] Interaction = **map grammar, navigate** (never filter): live leaf → olive
+- [x] Interaction = **map grammar, navigate** (never filter): live leaf → olive
       on hover, click → `navigate()` to `/cuisines/<leaf>`; keyboard focus +
       Enter/Space; `aria-label` "`<label>` cuisine, N recipes". Dead leaves and
       inert land are decorative paths — no hover, no cursor, no focus/ARIA.
-- [ ] **The full-region grid remains the page default and is never filtered by
+- [x] **The full-region grid remains the page default and is never filtered by
       the plate.** Leaf selection is strictly optional navigation; "← Back"
       returns to the full region.
-- [ ] Region-plate → leaf-page transition: **crossfade by default.** Attempt the
+- [x] Region-plate → leaf-page transition: **crossfade by default.** Attempt the
       shared-element morph only if it falls out nearly free from the shared
       silhouette machinery — do not spend tuning time; the wow-moment is
       map → page, not page → page.
-- [ ] Keep first paint static: prefer inline static SVG + a small inline script
+- [x] Keep first paint static: prefer inline static SVG + a small inline script
       (or minimal island) for leaf hover/click; the plate element itself must be
       in static HTML regardless.
 
 **C3 — Small viewports (<768px)**
 
-- [ ] Keep the plate, capped at ~36–40vh — mobile keeps the arrival visual.
-- [ ] Region plates are **decorative on touch/small viewports**: no tap targets,
+- [x] Keep the plate, capped at ~36–40vh — mobile keeps the arrival visual.
+- [x] Region plates are **decorative on touch/small viewports**: no tap targets,
       no focus/ARIA (leaf shapes fail the fat-finger test; honest per the
       established drawer precedent). Narrowing path = the map's country mode or
       the grid. No leaf text-links in v1 — add later only if missed.
