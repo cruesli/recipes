@@ -28,9 +28,33 @@ const { photo } = Astro.props;
   )}
 
   <div class="splash-content">
-    <p class="eyebrow splash-eyebrow">Magnus &amp; Tessern's Recipes</p>
-    <h1 class="splash-title">A kitchen, written down</h1>
-    <hr class="hairline splash-rule" />
+    <h1 class="splash-title">Magnus &amp; Tessern's Recipes</h1>
+
+    <!-- The pot: hairline ink line drawing (4.2 L round cocotte — generic,
+         no brand marks); steam is the one oxblood element -->
+    <figure class="splash-pot" aria-hidden="true">
+      <svg viewBox="0 0 132 132" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <g class="pot-steam" stroke="var(--color-oxblood)">
+          <path class="steam steam--1" d="M34,80 C29,72 38,64 33,54 C29,46 36,37 32,26" />
+          <path class="steam steam--2" d="M78,77 C73,68 82,60 77,50 C73,42 80,33 76,22" />
+          <path class="steam steam--3" d="M98,80 C103,72 94,64 99,53 C104,45 96,36 101,26" />
+        </g>
+        <g class="pot-lid" stroke="currentColor">
+          <path d="M57,63 C57,58.5 61,56.5 66,56.5 C71,56.5 75,58.5 75,63" />
+          <path d="M57,63 L75,63" />
+          <path d="M61,63 L62.5,68.6" />
+          <path d="M71,63 L69.5,68.6" />
+          <path d="M18,84 C24,72 44,68 66,68 C88,68 108,72 114,84" />
+          <path d="M14,84 L118,84" />
+        </g>
+        <g class="pot-body" stroke="currentColor">
+          <path d="M18,86 C16.5,92 16,98 17,105 C18.5,117 30,124 66,124 C102,124 113.5,117 115,105 C116,98 115.5,92 114,86" />
+          <path d="M17,91.5 C8,90.5 5.5,98 16.5,100.8" />
+          <path d="M115,91.5 C124,90.5 126.5,98 115.5,100.8" />
+        </g>
+      </svg>
+    </figure>
+
     <p class="splash-season">
       <span class="splash-season-label">{SEASON_LABEL}:</span>
       {SEASONAL_ITEMS.join(' · ')}
@@ -66,11 +90,17 @@ const { photo } = Astro.props;
     let isTouching = false;
 
     function dismiss() {
+      sessionStorage.setItem('splash-wiped', '1');
+      // Reduced motion: instant, no scroll-away, no burst
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        el.style.display = 'none';
+        return;
+      }
+      el.classList.add('splash--dismissing'); // lid rattle-hop + puff, concurrent
       el.style.transition = 'transform 0.5s cubic-bezier(0.45, 0, 0.2, 1), opacity 0.45s ease';
       el.style.transform = 'translateY(-100%)';
       el.style.opacity = '0';
       el.style.pointerEvents = 'none';
-      sessionStorage.setItem('splash-wiped', '1');
       el.addEventListener('transitionend', () => { el.style.display = 'none'; }, { once: true });
     }
 
@@ -169,9 +199,8 @@ const { photo } = Astro.props;
     );
   }
 
-  .splash--photo .splash-eyebrow   { color: rgba(250, 248, 242, 0.68); }
   .splash--photo .splash-title     { color: #FAF8F2; }
-  .splash--photo .splash-rule      { border-top-color: rgba(250, 248, 242, 0.22); }
+  .splash--photo .splash-pot       { color: rgba(250, 248, 242, 0.85); }
   .splash--photo .splash-season    { color: rgba(250, 248, 242, 0.58); }
   .splash--photo .splash-season-label { color: rgba(250, 248, 242, 0.82); }
   .splash--photo .splash-cue       { color: rgba(250, 248, 242, 0.45); }
@@ -233,13 +262,7 @@ const { photo } = Astro.props;
     z-index: 1;
     text-align: center;
     padding: 0 var(--space-lg);
-    max-width: 580px;
-  }
-
-  .splash-eyebrow {
-    margin: 0 0 var(--space-lg);
-    animation: splashFadeUp 0.9s ease both;
-    animation-delay: 0.08s;
+    max-width: 640px;
   }
 
   .splash-title {
@@ -250,14 +273,68 @@ const { photo } = Astro.props;
     color: var(--color-ink);
     margin: 0 0 var(--space-lg);
     animation: splashFadeUp 0.9s ease both;
-    animation-delay: 0.26s;
+    animation-delay: 0.08s;
   }
 
-  .splash-rule {
-    width: 52px;
+  /* ── The pot (engraving figure) ────────────────────────────── */
+  .splash-pot {
+    width: clamp(110px, 16vw, 150px);
     margin: 0 auto var(--space-lg);
+    color: var(--color-ink);
     animation: splashFadeUp 0.9s ease both;
-    animation-delay: 0.42s;
+    animation-delay: 0.3s;
+  }
+
+  .splash-pot svg { display: block; width: 100%; height: auto; }
+
+  .splash-pot path,
+  .splash-pot ellipse {
+    stroke-width: 1.25px;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Idle: wisps drift up from under the lid rim and fade; pot body static */
+  .steam {
+    opacity: 0;
+    animation: steamRise 4.2s ease-in-out infinite;
+  }
+
+  .steam--2 { animation-delay: 1.4s; }
+  .steam--3 { animation-delay: 2.8s; }
+
+  @keyframes steamRise {
+    0%   { opacity: 0; transform: translateY(7px); }
+    22%  { opacity: 0.55; }
+    70%  { opacity: 0; transform: translateY(-13px); }
+    100% { opacity: 0; transform: translateY(-13px); }
+  }
+
+  /* Dismiss burst: lid rattle-hop + stronger puff, concurrent with the
+     scroll-away (never gating it) */
+  .pot-lid {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+  }
+
+  :global(.splash--dismissing) .pot-lid {
+    animation: lidRattle 0.5s ease-out;
+  }
+
+  :global(.splash--dismissing) .steam {
+    animation: steamPuff 0.5s ease-out forwards;
+  }
+
+  @keyframes lidRattle {
+    0%   { transform: translateY(0) rotate(0deg); }
+    22%  { transform: translateY(-4px) rotate(-1.6deg); }
+    45%  { transform: translateY(0) rotate(1deg); }
+    68%  { transform: translateY(-2px) rotate(-0.7deg); }
+    100% { transform: translateY(0) rotate(0deg); }
+  }
+
+  @keyframes steamPuff {
+    0%   { opacity: 0.6; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-24px) scale(1.3); }
   }
 
   .splash-season {
@@ -266,7 +343,7 @@ const { photo } = Astro.props;
     color: var(--color-ink-muted);
     margin: 0;
     animation: splashFadeUp 0.9s ease both;
-    animation-delay: 0.56s;
+    animation-delay: 0.5s;
   }
 
   .splash-season-label {
@@ -307,4 +384,17 @@ const { photo } = Astro.props;
     50%       { transform: translateX(-50%) translateY(7px); }
   }
 
+  /* ── Reduced motion: static pot, no steam, everything settled ── */
+  @media (prefers-reduced-motion: reduce) {
+    .splash-blob,
+    .splash-title,
+    .splash-pot,
+    .splash-season,
+    .splash-cue,
+    .pot-lid {
+      animation: none;
+    }
+    .splash-title, .splash-pot, .splash-season, .splash-cue { opacity: 1; }
+    .steam { display: none; }
+  }
 </style>
