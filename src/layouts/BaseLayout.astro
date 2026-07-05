@@ -102,7 +102,18 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
         const raw = sessionStorage.getItem("map:snapshot");
         if (!svg || !raw || !e.newDocument?.querySelector(".worldmap-frame")) return;
         try {
-          stash = { svg: svg.cloneNode(true) as SVGSVGElement, snap: JSON.parse(raw) };
+          const clone = svg.cloneNode(true) as SVGSVGElement;
+          // Bake computed fills/strokes in: the source page's scoped styles
+          // (region-plate classes) don't exist on the destination page
+          const src = svg.querySelectorAll("path");
+          clone.querySelectorAll("path").forEach((p, i) => {
+            const cs = getComputedStyle(src[i]);
+            p.style.fill = cs.fill;
+            p.style.stroke = cs.stroke;
+            p.style.strokeWidth = cs.strokeWidth;
+            p.setAttribute("vector-effect", "non-scaling-stroke");
+          });
+          stash = { svg: clone, snap: JSON.parse(raw) };
         } catch { /* corrupt snapshot: no morph */ }
       });
 

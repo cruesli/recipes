@@ -55,6 +55,35 @@ const bbox = (manifest as Record<string, { width: number; height: number }>)[
   String(cuisine)
 ];
 const plateAspect = bbox ? bbox.width / bbox.height : 1;
+
+// Region-plate variant (mini country-mode map). Aliveness is strict leaf-only,
+// decided here against the collection; used only when ≥1 leaf is alive —
+// otherwise the solid silhouette stands (an all-tan plate would read dead).
+interface RegionPlate {
+  viewBox: string;
+  leaves: { slug: string; d: string }[];
+  inert: string[];
+}
+const plates = import.meta.glob("../../generated/silhouettes/*.plate.json", {
+  import: "default",
+  eager: true,
+});
+const plate = plates[`../../generated/silhouettes/${cuisine}.plate.json`] as
+  | RegionPlate
+  | undefined;
+
+const allRecipes = await getCollection("recipes");
+const leafCounts = new Map<string, number>();
+allRecipes.forEach((r) =>
+  leafCounts.set(r.data.cuisine, (leafCounts.get(r.data.cuisine) ?? 0) + 1)
+);
+
+const plateLeaves = (plate?.leaves ?? []).map((l) => {
+  const entry = cuisines.find((c: CuisineItem) => c.slug === l.slug);
+  const count = leafCounts.get(l.slug) ?? 0;
+  return { ...l, count, label: cuisineLabel(entry ?? { slug: l.slug }) };
+});
+const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
 ---
 
 <BaseLayout title={title}>
@@ -69,7 +98,37 @@ const plateAspect = bbox ? bbox.width / bbox.height : 1;
       {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
     </p>
 
-    {silhouette && (
+    {regionPlate ? (
+      <div
+        class="cuisine-silhouette chapter-plate region-plate"
+        style={`--plate-ar: ${plateAspect.toFixed(4)}`}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox={regionPlate.viewBox}
+          role="group"
+          aria-label={`${title} — the cuisines inside`}
+        >
+          {regionPlate.inert.map((d) => (
+            <path d={d} class="plate-inert" />
+          ))}
+          {plateLeaves.map((l) =>
+            l.count > 0 ? (
+              <path
+                d={l.d}
+                class="plate-leaf"
+                data-leaf-href={withBase(`/cuisines/${l.slug}`)}
+                tabindex="0"
+                role="button"
+                aria-label={`${l.label} cuisine, ${l.count} ${l.count === 1 ? "recipe" : "recipes"}`}
+              />
+            ) : (
+              <path d={l.d} class="plate-inert" />
+            )
+          )}
+        </svg>
+      </div>
+    ) : silhouette && (
       <div
         class="cuisine-silhouette chapter-plate"
         aria-hidden="true"
@@ -99,6 +158,40 @@ const plateAspect = bbox ? bbox.width / bbox.height : 1;
     )}
   </div>
 </BaseLayout>
+
+<script>
+  // Region-plate leaf navigation — map grammar, navigate (never filter).
+  // Module script: runs once, document-level delegation survives router swaps.
+  import { navigate } from "astro:transitions/client";
+
+  const leafOf = (e: Event) =>
+    (e.target as Element).closest?.("[data-leaf-href]") as SVGPathElement | null;
+
+  document.addEventListener("click", (e) => {
+    const el = leafOf(e);
+    if (el) navigate(el.getAttribute("data-leaf-href")!);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter" && e.key !== " ") return;
+    const el = leafOf(e);
+    if (!el) return;
+    e.preventDefault();
+    navigate(el.getAttribute("data-leaf-href")!);
+  });
+
+  // Small viewports: region plates are decorative — drop focus/ARIA as well
+  // (CSS already kills pointer events under 768px)
+  const strip = () => {
+    if (!window.matchMedia("(max-width: 767px)").matches) return;
+    document.querySelectorAll("[data-leaf-href]").forEach((el) => {
+      ["tabindex", "role", "aria-label", "data-leaf-href"].forEach((a) =>
+        el.removeAttribute(a)
+      );
+    });
+  };
+  document.addEventListener("astro:page-load", strip);
+</script>
 
 <style>
   /* Browse frame (full-width layout, no sidebar) */
@@ -152,12 +245,35 @@ const plateAspect = bbox ? bbox.width / bbox.height : 1;
     view-transition-name: cuisine-shape;
   }
 
-  /* Mobile keeps the arrival visual, slightly tighter cap */
+  /* Region plate: mini country-mode map — the map's stroke/fill grammar */
+  .region-plate path {
+    stroke: var(--color-paper);
+    stroke-width: 1.25px;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+  }
+
+  .plate-inert { fill: var(--color-map-land); }
+
+  .plate-leaf {
+    fill: var(--color-map-active);
+    cursor: pointer;
+    transition: fill 0.2s ease;
+    outline: none;
+  }
+
+  .plate-leaf:hover,
+  .plate-leaf:focus-visible { fill: var(--color-olive); }
+  .plate-leaf:focus-visible { outline: 2px solid var(--color-oxblood); }
+
+  /* Mobile keeps the arrival visual (tighter cap); region plates go decorative
+     — no tap targets (fat-finger honesty; the script strips focus/ARIA too) */
   @media (max-width: 767px) {
     .chapter-plate {
       --plate-max-h: 38vh;
       width: min(100%, calc(var(--plate-max-h) * var(--plate-ar, 1)));
     }
+    .region-plate path { pointer-events: none; }
   }
 
   .recipe-grid {

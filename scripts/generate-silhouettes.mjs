@@ -7,6 +7,7 @@ import * as topojson from 'topojson-client';
 import { geoMercator, geoPath } from 'd3-geo';
 import {
   featuresBySlug,
+  slugForFeature,
   MAP_WIDTH,
   MAP_HEIGHT,
   PROJECTION_CONFIG,
@@ -51,10 +52,34 @@ for (const { slug } of cuisines) {
   writeFileSync(path.join(outDir, `${slug}.svg`), svg);
 }
 
+// Region-plate variant: a miniature country-mode map of the region — one merged
+// path per leaf cuisine (slug carried; aliveness is decided at page render) plus
+// per-country paths for inert member land. Same viewBox as the plain silhouette,
+// so both morph directions keep their endpoint.
+let plates = 0;
+for (const region of cuisines.filter((c) => !c.parent)) {
+  const leaves = cuisines.filter((c) => c.parent === region.slug);
+  const bbox = manifest[region.slug];
+  if (!leaves.length || !bbox) continue;
+  const leafPaths = leaves
+    .filter((l) => groups.get(l.slug)?.length)
+    .map((l) => ({ slug: l.slug, d: pathGen(topojson.merge(topology, groups.get(l.slug))) }));
+  const inert = (groups.get(region.slug) ?? [])
+    .filter((g) => slugForFeature(mapping, g) === region.slug)
+    .map((g) => pathGen(topojson.feature(topology, g)));
+  const plate = {
+    viewBox: `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`,
+    leaves: leafPaths,
+    inert,
+  };
+  writeFileSync(path.join(outDir, `${region.slug}.plate.json`), JSON.stringify(plate) + '\n');
+  plates += 1;
+}
+
 writeFileSync(path.join(outDir, 'manifest.json'), JSON.stringify(manifest, null, 2) + '\n');
 
 if (missing.length) {
   console.error('silhouettes: no geometry for slugs:', missing.join(', '));
   process.exit(1);
 }
-console.log(`silhouettes: ${Object.keys(manifest).length} generated`);
+console.log(`silhouettes: ${Object.keys(manifest).length} generated, ${plates} region plates`);
