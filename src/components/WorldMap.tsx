@@ -58,6 +58,9 @@ interface MapSnapshot {
 
 function readSnapshot(): MapSnapshot | null {
   try {
+    // Astro's ClientRouter pre-hydrates client:only pages in a hidden iframe
+    // (prepareForClientOnlyComponents) — that copy must not consume the snapshot
+    if (window.self !== window.top) return null;
     const raw = sessionStorage.getItem(SNAPSHOT_KEY);
     if (!raw) return null;
     sessionStorage.removeItem(SNAPSHOT_KEY);
