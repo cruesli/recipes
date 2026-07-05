@@ -5,6 +5,7 @@ import { displayFromSlug } from "../../utils/displayFromSlug";
 import { cuisineLabel, getDescendants, type CuisineItem } from "../../utils/cuisines";
 import { withBase } from "../../utils/withBase";
 import { RecipeCard } from "../../components/RecipeCard";
+import manifest from "../../generated/silhouettes/manifest.json";
 
 export async function getStaticPaths() {
   const cuisinesEntry = await getEntry("meta", "cuisines");
@@ -48,23 +49,34 @@ const silhouettes = import.meta.glob("../../generated/silhouettes/*.svg", {
 const silhouette = silhouettes[`../../generated/silhouettes/${cuisine}.svg`] as
   | string
   | undefined;
+
+// Plate aspect ratio (projected bbox) — drives the area-budget sizing below
+const bbox = (manifest as Record<string, { width: number; height: number }>)[
+  String(cuisine)
+];
+const plateAspect = bbox ? bbox.width / bbox.height : 1;
 ---
 
 <BaseLayout title={title}>
   <div class="cuisine-frame">
     <a class="back-to-map" href={withBase("/#map")}>← Back to the map</a>
-    <div class="cuisine-header">
-      <div>
-        <p class="eyebrow" style="margin: 0 0 var(--space-xs);">Cuisine</p>
-        <h1 class="cuisine-title">{title}</h1>
-        <p class="cuisine-count onum">
-          {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
-        </p>
-      </div>
-      {silhouette && (
-        <div class="cuisine-silhouette" aria-hidden="true" set:html={silhouette} />
-      )}
-    </div>
+
+    <!-- Chapter opener: tick → eyebrow → title → count → the plate -->
+    <div class="section-tick"></div>
+    <p class="eyebrow cuisine-eyebrow">Cuisine</p>
+    <h1 class="cuisine-title">{title}</h1>
+    <p class="cuisine-count onum">
+      {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
+    </p>
+
+    {silhouette && (
+      <div
+        class="cuisine-silhouette chapter-plate"
+        aria-hidden="true"
+        style={`--plate-ar: ${plateAspect.toFixed(4)}`}
+        set:html={silhouette}
+      />
+    )}
 
     {recipes.length > 0 ? (
       <div class="recipe-grid">
@@ -107,6 +119,8 @@ const silhouette = silhouettes[`../../generated/silhouettes/${cuisine}.svg`] as
 
   .back-to-map:hover { color: var(--color-oxblood); }
 
+  .cuisine-eyebrow { margin: 0 0 var(--space-xs); }
+
   .cuisine-title {
     font-family: var(--font-family-serif);
     font-size: var(--text-title);
@@ -115,31 +129,35 @@ const silhouette = silhouettes[`../../generated/silhouettes/${cuisine}.svg`] as
     margin: 0 0 var(--space-2xs);
   }
 
-  .cuisine-header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: var(--space-xl);
-    margin: 0 0 var(--space-2xl);
-  }
-
   .cuisine-count {
     font-size: var(--text-meta);
     color: var(--color-ink-muted);
-    margin: 0;
+    margin: 0 0 var(--space-xl);
   }
 
-  .cuisine-silhouette {
+  /* The chapter plate: area budget (never full-bleed) — height capped by
+     --plate-max-h, width by 60% of the frame; the shape's own viewBox aspect
+     (--plate-ar, set inline) resolves which constraint binds. */
+  .chapter-plate {
+    --plate-max-h: clamp(240px, 34vh, 420px);
     color: var(--color-map-active);
-    flex: none;
+    width: min(60%, calc(var(--plate-max-h) * var(--plate-ar, 1)));
+    margin: 0 0 var(--space-3xl);
   }
 
   .cuisine-silhouette :global(svg) {
     display: block;
-    height: clamp(80px, 12vh, 140px);
-    width: auto;
-    max-width: 200px;
+    width: 100%;
+    height: auto;
     view-transition-name: cuisine-shape;
+  }
+
+  /* Mobile keeps the arrival visual, slightly tighter cap */
+  @media (max-width: 767px) {
+    .chapter-plate {
+      --plate-max-h: 38vh;
+      width: min(100%, calc(var(--plate-max-h) * var(--plate-ar, 1)));
+    }
   }
 
   .recipe-grid {
