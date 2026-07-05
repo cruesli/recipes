@@ -105,23 +105,23 @@ interaction-only), sage wash / parchment tint (tinted paper is exactly what the
 one-white rule exists to prevent). Paper-on-oxblood ≈ 9.1:1 — the version of this
 idea that typographically works, matching the liked earlier iteration.
 
-- [ ] Wrap the **ingredient block only** — "Ingredients" eyebrow, servings
+- [x] Wrap the **ingredient block only** — "Ingredients" eyebrow, servings
       stepper, section sub-headers, list — in a solid `--color-oxblood` plate in
       `RecipePageIsland.tsx`. The future nutrition panel stays on paper (a full
       dark left column would read as a dark-sidebar layout).
-- [ ] Print grammar, not card grammar: squared corners, flat fill, **no border,
+- [x] Print grammar, not card grammar: squared corners, flat fill, **no border,
       no shadow**, generous padding (`--space-lg`/`--space-xl`). It should read
       as if the page were printed with an oxblood block.
-- [ ] Inverted on-plate type as **tokens** in `global.css` (no inline rgba
+- [x] Inverted on-plate type as **tokens** in `global.css` (no inline rgba
       literals): `--color-plate-text: var(--color-paper)`;
       `--color-plate-muted:` paper at ~0.7; `--color-plate-hairline:` paper at
       ~0.18–0.20 (row dividers). Eyebrow on the plate = paper (it can't stay
       oxblood-on-oxblood); section sub-headers = plate-muted, still letterspaced
       caps.
-- [ ] Light serif optically thins on dark ground: try **Garamond 500** for the
+- [x] Light serif optically thins on dark ground: try **Garamond 500** for the
       on-plate list; step back to 400 only if it reads heavy.
-- [ ] Stepper/check interactions unchanged — restyle only.
-- [ ] Photo-less recipes: the plate stands as the page's sole strong visual —
+- [x] Stepper/check interactions unchanged — restyle only.
+- [x] Photo-less recipes: the plate stands as the page's sole strong visual —
       **accepted, no softening** (resolves itself as photos are added).
 
 **Acceptance:** the list is comfortably legible at arm's length (paper on oxblood

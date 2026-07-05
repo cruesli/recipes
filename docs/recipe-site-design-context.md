@@ -308,11 +308,15 @@ facets → `GET /api/v1/recipes/filter`.
   leaves navigate with map grammar, aliveness strict leaf-only, full-region grid never
   filtered; regions with no live leaves keep the solid sage silhouette); mobile keeps the
   plate but drops in-plate interactivity.
-- **In plan (Phases 14–16, plan v3 — July 2026 grilling session #2):** the **oxblood
-  ingredient plate**; **splash rework** (title = site name, line-drawn pot with steam,
-  timeboxed with bail-out); **voice & finish** (optional Norwegian `intro` headnotes,
-  `/about`, 404, footer, head hygiene, `date` field + real newest-first, header-search
-  removal, dead-code sweep, silhouette placeholders, map caption-tick removal).
+- **Shipped (Phase 14, plan v3):** the **oxblood ingredient plate** — ingredient block only
+  (eyebrow, servings stepper, sub-headers, list) on solid oxblood with print grammar and the
+  on-plate tokens in `@theme`; the servings stepper moved from the metadata bar onto the
+  plate; list runs Garamond 500; nutrition stays on paper.
+- **In plan (Phases 15–16, plan v3 — July 2026 grilling session #2):** **splash rework**
+  (title = site name, line-drawn pot with steam, timeboxed with bail-out); **voice & finish**
+  (optional Norwegian `intro` headnotes, `/about`, 404, footer, head hygiene, `date` field +
+  real newest-first, header-search removal, dead-code sweep, silhouette placeholders, map
+  caption-tick removal).
 - **Later:** NLP wiring (incl. shopping-list category buckets); nutrition panel; oxblood-dot
   audit; paper grain; cross-device week sync (`nanostores` over `localStorage`); possible
   split-accent (olive separators + oxblood text); split `sub-saharan-africa` when recipes
