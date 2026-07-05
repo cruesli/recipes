@@ -135,25 +135,25 @@ nothing else on the recipe page changes; no other surface anywhere gains a fill.
 Tagline replaced, resolved in session: no text tagline at all — the site name
 **is** the splash, with a line-drawn pot as the figure.
 
-- [ ] Remove *"A kitchen, written down"*; promote **"Magnus & Tessern's
+- [x] Remove *"A kitchen, written down"*; promote **"Magnus & Tessern's
       Recipes"** to the display title (`--text-display`). Nothing replaces the
       tagline. Header-brand duplication accepted (a book's cover and running
       header repeat the title).
-- [ ] Keep the self-updating in-season line, the scroll cue, and the
+- [x] Keep the self-updating in-season line, the scroll cue, and the
       living-texture blobs. If pot + blobs read busy, **the blobs are the thing
       to drop** — one CSS deletion.
-- [ ] **The pot:** a single-weight hairline ink **line drawing** — engraving /
+- [x] **The pot:** a single-weight hairline ink **line drawing** — engraving /
       cookbook-marginal style, no fills, no cartoon roundness — with the
       proportions of a 4.2 L round cocotte (two side handles, domed lid, lid
       knob). Generic in execution: **no brand marks or logo reproduction.**
       Modest size, composed as a figure beneath/beside the title, not a mascot.
       The steam may be the one oxblood element.
-- [ ] **Idle:** 2–3 steam-wisp paths drifting up from under the lid rim and
+- [x] **Idle:** 2–3 steam-wisp paths drifting up from under the lid rim and
       fading, slow CSS loop (~4 s). The pot body does not move at idle.
-- [ ] **Dismiss (click/tap/scroll):** ~500 ms burst — small lid rattle-hop +
+- [x] **Dismiss (click/tap/scroll):** ~500 ms burst — small lid rattle-hop +
       stronger puff — playing **during** the scroll-away, never gating it.
-- [ ] **Reduced motion:** static pot, no steam, instant dismiss.
-- [ ] **Timebox + bail-out:** the code is small; the risk is the *drawing*. If
+- [x] **Reduced motion:** static pot, no steam, instant dismiss.
+- [x] **Timebox + bail-out:** the code is small; the risk is the *drawing*. If
       the pot doesn't look right within roughly one session, ship the title
       change alone and move the pot to backlog — the title change is valuable
       independently.

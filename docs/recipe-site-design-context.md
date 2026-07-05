@@ -312,8 +312,11 @@ facets → `GET /api/v1/recipes/filter`.
   (eyebrow, servings stepper, sub-headers, list) on solid oxblood with print grammar and the
   on-plate tokens in `@theme`; the servings stepper moved from the metadata bar onto the
   plate; list runs Garamond 500; nutrition stays on paper.
-- **In plan (Phases 15–16, plan v3 — July 2026 grilling session #2):** **splash rework**
-  (title = site name, line-drawn pot with steam, timeboxed with bail-out); **voice & finish**
+- **Shipped (Phase 15, plan v3):** **splash rework** — tagline removed, site name at
+  `--text-display` is the splash; the pot shipped within the timebox (hairline inline-SVG
+  cocotte, oxblood steam idle loop, dismiss rattle-hop + puff concurrent with scroll-away,
+  reduced-motion static); blobs, in-season line and cue kept.
+- **In plan (Phase 16, plan v3 — July 2026 grilling session #2):** **voice & finish**
   (optional Norwegian `intro` headnotes, `/about`, 404, footer, head hygiene, `date` field +
   real newest-first, header-search removal, dead-code sweep, silhouette placeholders, map
   caption-tick removal).
