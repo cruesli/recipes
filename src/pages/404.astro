@@ -1,0 +1,60 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../utils/withBase";
+---
+
+<BaseLayout title="Not found" description="This page isn't on the menu.">
+  <div class="notfound">
+    <div class="section-tick"></div>
+    <p class="eyebrow">404</p>
+    <h1 class="notfound-title">This page isn't on the menu.</h1>
+    <p class="notfound-line">
+      It may have been renamed, moved, or never written down in the first place.
+    </p>
+    <p class="notfound-links">
+      <a href={withBase("/")}>Back to the collection</a>
+      <span aria-hidden="true">·</span>
+      <a href={withBase("/#map")}>Explore the map</a>
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .notfound {
+    max-width: var(--max-wide);
+    margin: 0 auto;
+    padding: var(--space-4xl) var(--space-lg);
+  }
+
+  .notfound-title {
+    font-family: var(--font-family-serif);
+    font-size: var(--text-title);
+    font-weight: 500;
+    color: var(--color-ink);
+    margin: var(--space-xs) 0 var(--space-md);
+  }
+
+  .notfound-line {
+    font-size: var(--text-body);
+    color: var(--color-ink-muted);
+    margin: 0 0 var(--space-xl);
+    max-width: 48ch;
+  }
+
+  .notfound-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    align-items: baseline;
+    font-size: var(--text-body);
+    color: var(--color-ink-muted);
+    margin: 0;
+  }
+
+  .notfound-links a {
+    color: var(--color-oxblood);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-oxblood);
+    padding-bottom: 1px;
+  }
+</style>

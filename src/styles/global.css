@@ -145,23 +145,6 @@ body {
 
 .nav a:hover { color: var(--color-ink); }
 
-.header-search { display: flex; align-items: center; margin-left: var(--space-lg); }
-
-.header-search-input {
-  width: 148px;
-  padding: var(--space-2xs) var(--space-xs);
-  font-family: 'EB Garamond', Georgia, serif;
-  font-size: var(--text-meta);
-  color: var(--color-ink-muted);
-  background: transparent;
-  border: 1px solid var(--color-hairline);
-  border-radius: var(--radius-sm);
-  outline: none;
-  cursor: default;
-}
-
-.header-search-input::placeholder { color: var(--color-ink-muted); opacity: 0.75; }
-
 /* ── Layout ──────────────────────────────────────────────────── */
 .container { max-width: var(--max); margin: 0 auto; padding: var(--space-md) var(--space-lg); }
 
@@ -251,6 +234,21 @@ hr { border: none; border-top: 1px solid var(--color-hairline); margin: var(--sp
   font-size: var(--text-meta);
   color: var(--color-ink-muted);
 }
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-xs);
+}
+
+.footer-links a {
+  color: var(--color-ink-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.footer-links a:hover { color: var(--color-oxblood); }
 
 /* ── Recipe slider (kept for slider compatibility) ───────────── */
 .recipe-slider-container .slick-dots { bottom: -40px; }
