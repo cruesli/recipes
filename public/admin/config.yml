@@ -44,6 +44,8 @@ collections:
         search_fields: ["cuisines.*.slug", "cuisines.*.label"]
         value_field: "cuisines.*.slug"
         display_fields: ["cuisines.*.label", "cuisines.*.slug"]
+      - { name: "intro", label: "Headnote (optional, Norwegian)", widget: "text", required: false, hint: "A sentence or two shown in italics above the recipe. Leave empty for none." }
+      - { name: "date", label: "Date added", widget: "datetime", required: false, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD", hint: "Drives the newest-first ordering on the home page." }
       - { name: "foodType", label: "Food type", widget: "string", required: false }
       - { name: "tags", label: "Tags", widget: "list", required: false }
       - { name: "servings", label: "Servings", widget: "number", value_type: "int", required: false, min: 1 }

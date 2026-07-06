@@ -1,5 +1,6 @@
 ---
 title: Teriyaki chicken
+date: 2026-06-14
 cuisine: japanese
 foodType: Simple
 season: Autumn

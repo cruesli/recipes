@@ -5,6 +5,10 @@ const recipes = defineCollection({
   schema: z.object({
     title: z.string(),
     cuisine: z.string(),
+    // Optional Norwegian headnote (italic body between title and columns)
+    intro: z.string().optional(),
+    // Rough "added" date — drives newest-first home sort
+    date: z.coerce.date().optional(),
     foodType: z.string().optional(),
     tags: z.array(z.string()).default([]),
     servings: z.number().int().positive().optional(),

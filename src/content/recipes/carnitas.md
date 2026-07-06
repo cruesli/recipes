@@ -1,5 +1,6 @@
 ---
 title: Carnitas
+date: 2026-02-22
 cuisine: mexican
 foodType: Taco
 tags:

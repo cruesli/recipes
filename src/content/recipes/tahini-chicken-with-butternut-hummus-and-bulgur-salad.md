@@ -1,5 +1,6 @@
 ---
 title: Tahini chicken with butternut hummus and bulgur salad
+date: 2026-03-16
 cuisine: middle-east
 foodType: Simple
 tags:

@@ -1,5 +1,6 @@
 ---
 title: Carne asada tacos
+date: 2026-06-14
 cuisine: mexican
 foodType: Simple
 season: Summer

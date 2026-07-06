@@ -1,5 +1,6 @@
 ---
 title: Pytt i Panne
+date: 2026-01-24
 cuisine: northern-europe
 foodType: Lazy
 tags:

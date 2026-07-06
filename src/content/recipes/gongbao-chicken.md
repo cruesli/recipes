@@ -1,5 +1,6 @@
 ---
 title: Gongbao chicken
+date: 2026-06-14
 cuisine: chinese
 foodType: Simple
 season: Autumn

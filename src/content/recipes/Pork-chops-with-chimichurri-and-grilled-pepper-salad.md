@@ -1,5 +1,6 @@
 ---
 title: Pork chops with chimichurri and grilled pepper salad.
+date: 2026-06-14
 cuisine: argentinian
 foodType: Simple
 tags:

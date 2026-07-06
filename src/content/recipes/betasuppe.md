@@ -1,5 +1,6 @@
 ---
 title: Betasuppe with pork shank
+date: 2026-06-14
 cuisine: norwegian
 foodType: Simple
 season: Winter

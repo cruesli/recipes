@@ -4,6 +4,8 @@ import { scaleIngredient } from '../lib/quantity.mjs';
 
 export interface RecipePageProps {
   title: string;
+  /** Optional headnote (Norwegian); italic body above the columns */
+  intro: string | null;
   cuisine: string;
   totalTimeMinutes: number | null;
   servings: number;
@@ -44,7 +46,7 @@ const PLATE_HAIRLINE: React.CSSProperties = {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function RecipePageIsland({
-  title, cuisine, totalTimeMinutes, servings: defaultServings,
+  title, intro, cuisine, totalTimeMinutes, servings: defaultServings,
   image, foodType, tags, ingredients, steps, basePath,
 }: RecipePageProps) {
   const [servings, setServings] = useState(defaultServings);
@@ -156,6 +158,20 @@ export function RecipePageIsland({
 
       {/* ── Content: ingredients + steps ── */}
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: 'var(--space-2xl) var(--space-lg) var(--space-4xl)' }}>
+        {/* Headnote — italic Garamond body, author's voice before the columns */}
+        {intro && (
+          <p style={{
+            fontFamily: "'EB Garamond', Georgia, serif",
+            fontStyle: 'italic',
+            fontSize: 'var(--text-body)',
+            lineHeight: 1.7,
+            color: 'var(--color-ink)',
+            maxWidth: '62ch',
+            margin: '0 0 var(--space-2xl)',
+          }}>
+            {intro}
+          </p>
+        )}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--space-3xl)', alignItems: 'start' }}>
 
           {/* Left column: ingredients + nutrition */}

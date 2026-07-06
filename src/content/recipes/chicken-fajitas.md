@@ -1,5 +1,6 @@
 ---
 title: Chicken fajitas
+date: 2026-06-14
 cuisine: mexican
 foodType: Simple
 season: Summer

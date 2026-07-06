@@ -1,5 +1,6 @@
 ---
 title: Lebanese chicken, hummus and grilled vegetables
+date: 2026-02-27
 cuisine: middle-east
 foodType: Simple
 tags:

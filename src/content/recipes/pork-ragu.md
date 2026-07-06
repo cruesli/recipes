@@ -1,5 +1,6 @@
 ---
 title: Pork ragu
+date: 2026-06-14
 cuisine: italian
 foodType: Simple
 season: Winter

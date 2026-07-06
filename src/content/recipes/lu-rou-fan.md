@@ -1,5 +1,6 @@
 ---
 title: Lu rou fan
+date: 2026-06-14
 cuisine: taiwanese
 foodType: Simple
 season: Winter

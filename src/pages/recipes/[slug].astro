@@ -40,6 +40,7 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
 <BaseLayout title={d.title}>
   <RecipePageIsland
     title={d.title}
+    intro={d.intro ?? null}
     cuisine={d.cuisine}
     totalTimeMinutes={d.totalTimeMinutes ?? null}
     servings={d.servings ?? 4}

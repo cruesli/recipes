@@ -1,5 +1,6 @@
 ---
 title: Pasta Bolognese alla Magnus
+date: 2026-01-24
 cuisine: italian
 foodType: Dinner
 season: All

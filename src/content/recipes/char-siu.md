@@ -1,5 +1,6 @@
 ---
 title: Char siu
+date: 2026-06-14
 cuisine: chinese
 foodType: Simple
 season: Summer

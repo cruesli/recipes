@@ -1,5 +1,6 @@
 ---
 title: Briam
+date: 2026-06-14
 cuisine: greek
 foodType: Simple
 season: Summer

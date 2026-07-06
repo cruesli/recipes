@@ -6,7 +6,10 @@ import { CollectionPlannerIsland } from "../components/CollectionPlannerIsland";
 import Splash from "../components/Splash.astro";
 
 const recipes = await getCollection("recipes");
-recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
+// Newest-first for the home preview (the top changes when a recipe lands);
+// undated recipes fall to the back, ties broken by title.
+const added = (r: (typeof recipes)[number]) => r.data.date?.valueOf() ?? 0;
+recipes.sort((a, b) => added(b) - added(a) || a.data.title.localeCompare(b.data.title));
 
 
 const allRecipes = recipes.map((r) => ({
