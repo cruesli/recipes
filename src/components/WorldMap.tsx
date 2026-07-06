@@ -538,16 +538,6 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
           </button>
         </div>
 
-        {/* Oxblood tick */}
-        <div
-          style={{
-            width: 48,
-            height: 2,
-            backgroundColor: 'var(--color-oxblood)',
-            marginBottom: 'var(--space-xs)',
-          }}
-        />
-
         {/* Crossfading label — live region for screen readers */}
         <p
           role="status"
