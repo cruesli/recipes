@@ -316,14 +316,18 @@ facets → `GET /api/v1/recipes/filter`.
   `--text-display` is the splash; the pot shipped within the timebox (hairline inline-SVG
   cocotte, oxblood steam idle loop, dismiss rattle-hop + puff concurrent with scroll-away,
   reduced-motion static); blobs, in-season line and cue kept.
-- **In plan (Phase 16, plan v3 — July 2026 grilling session #2):** **voice & finish**
-  (optional Norwegian `intro` headnotes, `/about`, 404, footer, head hygiene, `date` field +
-  real newest-first, header-search removal, dead-code sweep, silhouette placeholders, map
-  caption-tick removal).
+- **Shipped (Phase 16, plan v3):** **voice & finish** — optional Norwegian `intro` headnotes
+  (italic Garamond body, zero backfill); `/about` colophon + a site-voice 404; footer = name ·
+  About · © year; head hygiene (in-brand favicon = oxblood ground + paper tick, meta
+  description, og/twitter cards, dead `Layout.astro` deleted); recipe `date` field with rough
+  git-history backfill driving a real newest-first home preview; the disabled header search
+  input removed (NLP-gated return); empty-state copy pass in the site's voice; `global.css`
+  dead-code sweep (legacy card/grid/badge + recipe-slider blocks); RecipeCard placeholder
+  silhouettes; map caption-tick removed.
 - **Later:** NLP wiring (incl. shopping-list category buckets); nutrition panel; oxblood-dot
   audit; paper grain; cross-device week sync (`nanostores` over `localStorage`); possible
   split-accent (olive separators + oxblood text); split `sub-saharan-africa` when recipes
-  warrant it; splash pot (only if the Phase 15 bail-out fires).
+  warrant it.
 
 ## Open copy & decisions
 

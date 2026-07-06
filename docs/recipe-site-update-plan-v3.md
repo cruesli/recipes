@@ -173,38 +173,38 @@ descriptions were considered and **rejected** (too blog-like).
 
 **V — Voice**
 
-- [ ] Recipe schema: optional `intro` (string). Render when present as *italic
+- [x] Recipe schema: optional `intro` (string). Render when present as *italic
       Garamond body* between the title block and the ingredients/method columns —
       a couple of sentences, never an essay. **Zero backfill required** — all 20
       recipes stay untouched until a headnote is actually written (Norwegian, at
       leisure; not every recipe has a story).
-- [ ] **`/about`** — a single-screen colophon (English): who cooks here, what the
+- [x] **`/about`** — a single-screen colophon (English): who cooks here, what the
       site is, a line on how it's built. Linked from the footer.
-- [ ] **Empty-state copy pass** (English, site voice): cuisine empty note,
+- [x] **Empty-state copy pass** (English, site voice): cuisine empty note,
       empty planner day, no-search-matches.
 
 **F — Finish**
 
-- [ ] **Remove the header search input entirely** (redundant: home preview and
+- [x] **Remove the header search input entirely** (redundant: home preview and
       `/recipes` both have search; a disabled input is a promise the site isn't
       keeping). NLP search returns later gated by `PUBLIC_NLP_API_URL`.
-- [ ] Footer becomes: **name · About · © year** (hairline top border as now).
-- [ ] **404 page** in the site's voice — eyebrow, a dry one-liner, links to Home
+- [x] Footer becomes: **name · About · © year** (hairline top border as now).
+- [x] **404 page** in the site's voice — eyebrow, a dry one-liner, links to Home
       and the map.
-- [ ] `<head>` hygiene: favicon (oxblood tick or a small silhouette — in-brand),
+- [x] `<head>` hygiene: favicon (oxblood tick or a small silhouette — in-brand),
       `<meta name="description">`, `og:title`/`og:image`; **delete the dead
       `src/layouts/Layout.astro`.**
-- [ ] Recipe schema: optional **`date`** field; rough backfill (git history /
+- [x] Recipe schema: optional **`date`** field; rough backfill (git history /
       memory — precision doesn't matter); home preview sorts **newest-first for
       real**. Closes the standing backlog item.
-- [ ] **Dead-code sweep** in `global.css`: recipe-slider block, legacy
+- [x] **Dead-code sweep** in `global.css`: recipe-slider block, legacy
       `.card`/`.badge`/`.grid` styles superseded by `RecipeCard` — audit and
       delete what's unreferenced.
-- [ ] **Intentional placeholder:** `RecipeCard`'s stone square gains the
+- [x] **Intentional placeholder:** `RecipeCard`'s stone square gains the
       recipe's **cuisine silhouette in a lighter tone** (reuse the generated
       assets) so unphotographed recipes look deliberate. Real photos replace
       them at cooking pace — no stock, no AI images.
-- [ ] **Map:** delete the 48×2 oxblood tick under the Country · Region toggle —
+- [x] **Map:** delete the 48×2 oxblood tick under the Country · Region toggle —
       the caption becomes the crossfading label alone (the tick sat orphaned
       whenever nothing was hovered, diluting the section-tick grammar).
 
