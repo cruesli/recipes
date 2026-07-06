@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection, getEntry } from "astro:content";
 import { WorldMap } from "../components/WorldMap";
 import { CollectionPlannerIsland } from "../components/CollectionPlannerIsland";
+import { silhouetteFor } from "../utils/silhouettes";
 import Splash from "../components/Splash.astro";
 
 const recipes = await getCollection("recipes");
@@ -20,6 +21,7 @@ const allRecipes = recipes.map((r) => ({
   totalTimeMinutes: r.data.totalTimeMinutes ?? null,
   servings: r.data.servings ?? null,
   ingredients: r.data.ingredients ?? [],
+  silhouette: silhouetteFor(r.data.cuisine),
 }));
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');

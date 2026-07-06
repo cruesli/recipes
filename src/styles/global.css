@@ -271,6 +271,19 @@ hr { border: none; border-top: 1px solid var(--color-hairline); margin: var(--sp
 .recipe-card-img { transition: transform 0.4s ease; }
 .recipe-card:hover .recipe-card-img { transform: scale(1.04); }
 
+/* Photo-less placeholder: a light sage watermark of the recipe's cuisine.
+   Sage = the place/material family (map fills → chapter plates → this). */
+.recipe-card-silhouette {
+  width: 55%;
+  height: 55%;
+  display: flex;
+  color: var(--color-map-active);
+  opacity: 0.5;
+  transition: transform 0.4s ease;
+}
+.recipe-card-silhouette svg { width: 100%; height: 100%; display: block; }
+.recipe-card:hover .recipe-card-silhouette { transform: scale(1.04); }
+
 /* ── World map ───────────────────────────────────────────────── */
 .worldmap-frame { height: clamp(520px, 86vh, 1040px); }
 @media (max-width: 767px) {

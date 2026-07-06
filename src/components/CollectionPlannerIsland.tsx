@@ -251,6 +251,7 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
                   key={r.id}
                   href={`${basePath}/recipes/${r.id}`}
                   imageSrc={r.image ? `${basePath}${r.image}` : null}
+                  silhouette={r.silhouette}
                   eyebrow={r.cuisine}
                   title={r.title}
                   meta={[r.totalTimeMinutes ? `${r.totalTimeMinutes} min` : null]}

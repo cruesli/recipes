@@ -17,6 +17,8 @@ export interface RecipeData {
   totalTimeMinutes: number | null;
   servings: number | null;
   ingredients: string[];
+  /** Raw cuisine silhouette SVG for the photo-less card placeholder */
+  silhouette?: string | null;
 }
 
 export interface IngredientSection {

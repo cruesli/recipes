@@ -5,6 +5,7 @@ import { displayFromSlug } from "../../utils/displayFromSlug";
 import { cuisineLabel, getDescendants, type CuisineItem } from "../../utils/cuisines";
 import { withBase } from "../../utils/withBase";
 import { RecipeCard } from "../../components/RecipeCard";
+import { silhouetteFor } from "../../utils/silhouettes";
 import manifest from "../../generated/silhouettes/manifest.json";
 
 export async function getStaticPaths() {
@@ -143,6 +144,7 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
           <RecipeCard
             href={withBase(`/recipes/${r.slug}`)}
             imageSrc={r.data.image ? withBase(r.data.image) : null}
+            silhouette={silhouetteFor(r.data.cuisine)}
             eyebrow={r.data.tags?.[0]}
             title={r.data.title}
             meta={[

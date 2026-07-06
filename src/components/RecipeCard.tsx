@@ -3,6 +3,8 @@ import type React from 'react';
 interface RecipeCardProps {
   href: string;
   imageSrc?: string | null;
+  /** Raw cuisine silhouette SVG — a light watermark when there's no photo */
+  silhouette?: string | null;
   eyebrow?: string | null;
   title: string;
   meta?: (string | null | undefined)[];
@@ -11,7 +13,7 @@ interface RecipeCardProps {
   onClick?: (e: React.MouseEvent<HTMLAnchorElement>) => void;
 }
 
-export function RecipeCard({ href, imageSrc, eyebrow, title, meta, draggable, onDragStart, onClick }: RecipeCardProps) {
+export function RecipeCard({ href, imageSrc, silhouette, eyebrow, title, meta, draggable, onDragStart, onClick }: RecipeCardProps) {
   const metaStr = (meta ?? []).filter(Boolean).join(' · ');
 
   return (
@@ -41,6 +43,11 @@ export function RecipeCard({ href, imageSrc, eyebrow, title, meta, draggable, on
             className="recipe-card-img"
             style={{ width: '100%', height: '220px', objectFit: 'cover', display: 'block' }}
           />
+        ) : silhouette ? (
+          // Deliberate placeholder: stone ground + a light cuisine silhouette
+          <div style={{ width: '100%', height: '220px', backgroundColor: 'var(--color-stone)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div className="recipe-card-silhouette" aria-hidden="true" dangerouslySetInnerHTML={{ __html: silhouette }} />
+          </div>
         ) : (
           <div style={{ width: '100%', height: '220px', backgroundColor: 'var(--color-stone)' }} />
         )}
