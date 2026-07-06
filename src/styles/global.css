@@ -148,53 +148,6 @@ body {
 /* ── Layout ──────────────────────────────────────────────────── */
 .container { max-width: var(--max); margin: 0 auto; padding: var(--space-md) var(--space-lg); }
 
-/* ── Cards & Grid ────────────────────────────────────────────── */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--space-md);
-}
-
-.card {
-  display: block;
-  text-decoration: none;
-  color: var(--color-ink);
-  background: none;
-  border-top: 1px solid var(--color-hairline);
-  padding: var(--space-lg) 0 var(--space-sm);
-  transition: opacity 0.15s;
-}
-
-.card:hover { opacity: 0.75; }
-
-.card img {
-  width: 100%;
-  aspect-ratio: 4/3;
-  object-fit: cover;
-  border-radius: var(--radius-md);
-  margin-bottom: var(--space-sm);
-  background-color: var(--color-stone);
-}
-
-/* ── Badges ──────────────────────────────────────────────────── */
-.badges { display: flex; flex-wrap: wrap; gap: var(--space-xs); }
-
-.badge {
-  padding: 1px var(--space-xs);
-  font-size: var(--text-eyebrow);
-  font-family: 'EB Garamond', Georgia, serif;
-}
-
-.badge-tag {
-  color: var(--color-olive);
-  border: 1px solid var(--color-hairline);
-}
-
-.badge-meta {
-  color: var(--color-ink-muted);
-  border: 1px solid var(--color-hairline);
-}
-
 /* ── Section label (eyebrow alias, kept for compat) ──────────── */
 .section-label {
   font-family: 'EB Garamond', Georgia, serif;
@@ -215,16 +168,6 @@ body {
 }
 
 hr { border: none; border-top: 1px solid var(--color-hairline); margin: var(--space-lg) 0; }
-
-/* ── Recipe detail ───────────────────────────────────────────── */
-.recipe img {
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--color-hairline);
-  margin-bottom: var(--space-lg);
-}
 
 /* ── Footer ──────────────────────────────────────────────────── */
 .footer {
@@ -249,21 +192,6 @@ hr { border: none; border-top: 1px solid var(--color-hairline); margin: var(--sp
 }
 
 .footer-links a:hover { color: var(--color-oxblood); }
-
-/* ── Recipe slider (kept for slider compatibility) ───────────── */
-.recipe-slider-container .slick-dots { bottom: -40px; }
-
-.recipe-slider-container .slick-dots li button:before {
-  font-size: 10px;
-  color: var(--color-stone);
-}
-
-.recipe-slider-container .slick-dots li.slick-active button:before {
-  color: var(--color-oxblood);
-  opacity: 0.75;
-}
-
-.slide-wrap:hover .slide-img { transform: scale(1.1); }
 
 /* ── Recipe card (shared editorial component) ────────────────── */
 .recipe-card { transition: opacity 0.15s; }
