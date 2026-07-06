@@ -74,9 +74,9 @@ def test_normalise_all_maps_list():
     ))
     result = normalise_all(["400g Chicken thighs", "1 Butternut squash", "Tahini"], client)
     assert result == [
-        {"name": "chicken thigh", "quantity_g": 400.0},
-        {"name": "butternut squash", "quantity_g": 700.0},
-        {"name": "tahini", "quantity_g": None},
+        {"name": "chicken thigh", "quantity_g": 400.0, "category": "other", "quantity": None},
+        {"name": "butternut squash", "quantity_g": 700.0, "category": "other", "quantity": None},
+        {"name": "tahini", "quantity_g": None, "category": "other", "quantity": None},
     ]
 
 
@@ -218,3 +218,76 @@ def test_make_client_returns_openai_client(monkeypatch):
     assert isinstance(client, openai.OpenAI)
 
 
+
+
+# --- N1 fields: shopping category + stated quantity ---
+
+from backend.categories import SHOPPING_CATEGORIES, coerce_category
+
+
+def _json_resp_n1(*items) -> str:
+    """Build a JSON response from (name, quantity_g, category, quantity) tuples."""
+    return json.dumps([
+        {"name": n, "quantity_g": g, "category": c, "quantity": q}
+        for n, g, c, q in items
+    ])
+
+
+def test_categories_enum_has_nine_buckets():
+    assert len(SHOPPING_CATEGORIES) == 9
+    assert SHOPPING_CATEGORIES[0] == "produce"
+    assert SHOPPING_CATEGORIES[-1] == "other"
+
+
+def test_coerce_category_passes_valid_slug():
+    assert coerce_category("dairy-eggs") == "dairy-eggs"
+
+
+def test_coerce_category_coerces_unknown_to_other():
+    assert coerce_category("weird-bucket") == "other"
+
+
+def test_coerce_category_coerces_none_to_other():
+    assert coerce_category(None) == "other"
+
+
+def test_normalise_all_returns_category():
+    client = _mock_client(_json_resp_n1(("onion", 150.0, "produce", {"amount": 1, "unit": "count"})))
+    result = normalise_all(["1 onion"], client)
+    assert result[0]["category"] == "produce"
+
+
+def test_normalise_all_coerces_invalid_category():
+    client = _mock_client(_json_resp_n1(("onion", 150.0, "vegetables", {"amount": 1, "unit": "count"})))
+    result = normalise_all(["1 onion"], client)
+    assert result[0]["category"] == "other"
+
+
+def test_normalise_all_missing_category_becomes_other():
+    client = _mock_client(_json_resp(("onion", 150.0)))
+    result = normalise_all(["1 onion"], client)
+    assert result[0]["category"] == "other"
+
+
+def test_normalise_all_returns_stated_quantity():
+    client = _mock_client(_json_resp_n1(("onion", 600.0, "produce", {"amount": 4, "unit": "count"})))
+    result = normalise_all(["4 large onions"], client)
+    assert result[0]["quantity"] == {"amount": 4, "unit": "count"}
+
+
+def test_normalise_all_null_stated_quantity():
+    client = _mock_client(_json_resp_n1(("salt", None, "spices-seasonings", None)))
+    result = normalise_all(["salt to taste"], client)
+    assert result[0]["quantity"] is None
+
+
+def test_normalise_all_malformed_quantity_becomes_null():
+    client = _mock_client(_json_resp_n1(("salt", None, "spices-seasonings", {"amount": "some"})))
+    result = normalise_all(["salt"], client)
+    assert result[0]["quantity"] is None
+
+
+def test_system_prompt_lists_all_categories():
+    from backend.normaliser import _SYSTEM_PROMPT
+    for slug in SHOPPING_CATEGORIES:
+        assert slug in _SYSTEM_PROMPT
