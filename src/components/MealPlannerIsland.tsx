@@ -358,7 +358,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                         ))}
                       </div>
                     ) : (
-                      <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', marginBottom: 'var(--space-md)', fontStyle: 'italic' }}>No recipes found.</p>
+                      <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', marginBottom: 'var(--space-md)', fontStyle: 'italic' }}>Nothing matches that search.</p>
                     )}
 
                     {/* Custom name */}
@@ -482,7 +482,9 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
 
             {shoppingList.length === 0 ? (
               <p style={{ fontFamily: "'EB Garamond', Georgia, serif", color: 'var(--color-ink-muted)', fontSize: 'var(--text-meta)', fontStyle: 'italic', padding: 'var(--space-lg) 0' }}>
-                No ingredient data — all selected meals are custom.
+                {DAYS.some((d) => (meals[d] ?? []).length > 0)
+                  ? 'Nothing to shop for — every meal this week is a custom dish.'
+                  : 'Plan a meal and its ingredients gather here.'}
               </p>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xl)', paddingBottom: 'var(--space-3xl)' }}>

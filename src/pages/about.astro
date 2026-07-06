@@ -1,0 +1,79 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../utils/withBase";
+---
+
+<BaseLayout
+  title="About"
+  description="A household cookbook — who cooks here, what this is, and how it's built."
+>
+  <div class="about">
+    <div class="section-tick"></div>
+    <p class="eyebrow">About</p>
+    <h1 class="about-title">A kitchen, written down.</h1>
+
+    <div class="about-body">
+      <!-- Personalise this opening line as you like — keep it a sentence or two. -->
+      <p>
+        <em>Magnus &amp; Tessern's Recipes</em> is a household cookbook: the dishes
+        we actually cook, kept in one place so they stop scattering across scraps
+        of paper and forgotten browser tabs.
+      </p>
+      <p>
+        There's no audience to please here. A recipe earns its spot by being made
+        again. Where a dish carries a story, the headnote is written in Norwegian;
+        everything else is in English.
+      </p>
+      <p>
+        Built by hand with Astro and React and set entirely in EB Garamond. No ads,
+        no tracking, no banner asking you to rate the recipe before you've cooked it.
+      </p>
+    </div>
+
+    <p class="about-links">
+      <a href={withBase("/")}>The collection</a>
+      <span aria-hidden="true">·</span>
+      <a href={withBase("/#map")}>The map</a>
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .about {
+    max-width: 62ch;
+    margin: 0 auto;
+    padding: var(--space-3xl) var(--space-lg) var(--space-4xl);
+  }
+
+  .about-title {
+    font-family: var(--font-family-serif);
+    font-size: var(--text-title);
+    font-weight: 500;
+    color: var(--color-ink);
+    margin: var(--space-xs) 0 var(--space-xl);
+  }
+
+  .about-body p {
+    font-size: var(--text-body);
+    color: var(--color-ink);
+    line-height: 1.7;
+    margin: 0 0 var(--space-lg);
+  }
+
+  .about-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    align-items: baseline;
+    margin: var(--space-xl) 0 0;
+    font-size: var(--text-body);
+    color: var(--color-ink-muted);
+  }
+
+  .about-links a {
+    color: var(--color-oxblood);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-oxblood);
+    padding-bottom: 1px;
+  }
+</style>

@@ -242,7 +242,7 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
         <div style={{ paddingTop: 'var(--space-lg)' }}>
           {displayedRecipes.length === 0 ? (
             <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', fontStyle: 'italic', margin: 0 }}>
-              No recipes found.
+              Nothing matches that search.
             </p>
           ) : (
             <div className="cpi-grid">
