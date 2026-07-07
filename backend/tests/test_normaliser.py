@@ -135,6 +135,7 @@ from backend.normaliser import get_model
 
 _ENV_VARS = (
     "LLM_API_KEY", "LLM_BASE_URL", "LLM_MODEL",
+    "GEMINI_API_KEY",
     "CAMPUSAI_API_KEY", "CAMPUSAI_BASE_URL", "CAMPUSAI_MODEL",
 )
 
@@ -179,6 +180,7 @@ def test_make_client_raises_without_any_api_key(monkeypatch):
 
 def test_get_model_prefers_llm_model(monkeypatch):
     _clear_llm_env(monkeypatch)
+    monkeypatch.setenv("LLM_API_KEY", "llm-key")
     monkeypatch.setenv("LLM_MODEL", "llm-model")
     monkeypatch.setenv("CAMPUSAI_MODEL", "campus-model")
     assert get_model() == "llm-model"
@@ -186,21 +188,47 @@ def test_get_model_prefers_llm_model(monkeypatch):
 
 def test_get_model_falls_back_to_campusai_model(monkeypatch):
     _clear_llm_env(monkeypatch)
+    monkeypatch.setenv("CAMPUSAI_API_KEY", "campus-key")
     monkeypatch.setenv("CAMPUSAI_MODEL", "campus-model")
     assert get_model() == "campus-model"
 
 
 def test_get_model_defaults_to_gemini_flash(monkeypatch):
     _clear_llm_env(monkeypatch)
+    monkeypatch.setenv("LLM_API_KEY", "llm-key")
     assert "gemini" in get_model()
 
 
 def test_normalise_all_uses_get_model(monkeypatch):
     _clear_llm_env(monkeypatch)
+    monkeypatch.setenv("LLM_API_KEY", "llm-key")
     monkeypatch.setenv("LLM_MODEL", "test-model")
     client = _mock_client(_json_resp(("onion", 150.0)))
     normalise_all(["1 onion"], client)
     assert client.chat.completions.create.call_args.kwargs["model"] == "test-model"
+
+
+# --- GEMINI_API_KEY recognised as a coherent provider (regression) ---
+
+def test_gemini_key_recognised(monkeypatch):
+    _clear_llm_env(monkeypatch)
+    monkeypatch.setenv("GEMINI_API_KEY", "gem-key")
+    client = make_client()
+    assert client.api_key == "gem-key"
+    assert "generativelanguage.googleapis.com" in str(client.base_url)
+
+
+def test_gemini_key_ignores_stale_campusai_config(monkeypatch):
+    # A Gemini key must not get paired with a leftover CampusAI base URL / model.
+    _clear_llm_env(monkeypatch)
+    monkeypatch.setenv("GEMINI_API_KEY", "gem-key")
+    monkeypatch.setenv("CAMPUSAI_API_KEY", "campus-key")
+    monkeypatch.setenv("CAMPUSAI_BASE_URL", "https://campus.example/v1")
+    monkeypatch.setenv("CAMPUSAI_MODEL", "gemma-x")
+    client = make_client()
+    assert client.api_key == "gem-key"
+    assert "generativelanguage.googleapis.com" in str(client.base_url)
+    assert "gemini" in get_model()
 
 
 # --- make_client (legacy) ---

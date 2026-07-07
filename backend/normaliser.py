@@ -61,21 +61,47 @@ def _parse_response(content: str) -> List[Dict[str, Any]]:
     return json.loads(content)
 
 
-# Provider config: LLM_* preferred, CAMPUSAI_* legacy fallback, Gemini defaults
+# Provider config. Each provider resolves as a COHERENT set — key + base URL +
+# model together — so a stray CAMPUSAI_* leftover can never get paired with a
+# Gemini key. Priority: explicit LLM_* override → Gemini → CampusAI (legacy).
 _GEMINI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/"
-_DEFAULT_MODEL = "gemini-2.5-flash"
+_GEMINI_MODEL = "gemini-2.5-flash"
+_CAMPUSAI_BASE_URL = "https://chat.campusai.compute.dtu.dk/api/v1"
+_CAMPUSAI_MODEL = "gemma-3-27b-it"
+
+
+def _resolve_provider() -> tuple[str, str, str]:
+    """Return (api_key, base_url, model) for the active provider."""
+    if os.getenv("LLM_API_KEY"):
+        return (
+            os.environ["LLM_API_KEY"],
+            os.getenv("LLM_BASE_URL", _GEMINI_BASE_URL),
+            os.getenv("LLM_MODEL", _GEMINI_MODEL),
+        )
+    if os.getenv("GEMINI_API_KEY"):
+        return (
+            os.environ["GEMINI_API_KEY"],
+            os.getenv("LLM_BASE_URL", _GEMINI_BASE_URL),
+            os.getenv("LLM_MODEL", _GEMINI_MODEL),
+        )
+    if os.getenv("CAMPUSAI_API_KEY"):
+        return (
+            os.environ["CAMPUSAI_API_KEY"],
+            os.getenv("CAMPUSAI_BASE_URL", _CAMPUSAI_BASE_URL),
+            os.getenv("CAMPUSAI_MODEL", _CAMPUSAI_MODEL),
+        )
+    raise ValueError(
+        "No LLM API key set — add LLM_API_KEY, GEMINI_API_KEY, or CAMPUSAI_API_KEY to your .env file."
+    )
 
 
 def make_client() -> openai.OpenAI:
-    api_key = os.getenv("LLM_API_KEY") or os.getenv("CAMPUSAI_API_KEY")
-    if not api_key:
-        raise ValueError("LLM_API_KEY (or legacy CAMPUSAI_API_KEY) not set. Add it to your .env file.")
-    base_url = os.getenv("LLM_BASE_URL") or os.getenv("CAMPUSAI_BASE_URL") or _GEMINI_BASE_URL
+    api_key, base_url, _ = _resolve_provider()
     return openai.OpenAI(api_key=api_key, base_url=base_url)
 
 
 def get_model() -> str:
-    return os.getenv("LLM_MODEL") or os.getenv("CAMPUSAI_MODEL") or _DEFAULT_MODEL
+    return _resolve_provider()[2]
 
 
 def normalise_all(ingredients: List[str], client: openai.OpenAI) -> List[Dict[str, Any]]:
