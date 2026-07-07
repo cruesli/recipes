@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+.DS_Store
+# .cache/ is committed on purpose: lets re-ingest run without re-hitting Wikidata/USDA

@@ -20,6 +20,9 @@ NUTRIENT_IDS = {
     "cholesterol":    1253,
 }
 
+# Foundation Foods report energy under Atwater factors, not 1008; try in order.
+_ENERGY_IDS = (1008, 2047, 2048)
+
 _PREFERRED_DATA_TYPES = ["Foundation", "SR Legacy"]
 _USDA_URL = "https://api.nal.usda.gov/fdc/v1/foods/search"
 _USER_AGENT = "recipe-kg/1.0 (geirdunma@gmail.com)"
@@ -84,15 +87,19 @@ def _search(ingredient: str, session: requests.Session) -> dict:
 def per_serving_totals(ing_nutritions: list, servings: Optional[int]) -> Optional[dict]:
     """Per-serving macro totals from (NutritionPer100g, grams|None) pairs.
 
-    Unquantified ingredients count as 100g — the same approximation the graph
-    has always used. Returns None when there is nothing to compute.
+    Unquantified ingredients ("salt to taste") are excluded — counting them as
+    any fixed weight would wildly inflate salt/spice contributions. Returns None
+    when there are no servings or nothing quantified to compute from.
     """
-    if not ing_nutritions or not servings:
+    if not servings:
+        return None
+    quantified = [(n, qty) for n, qty in ing_nutritions if qty is not None]
+    if not quantified:
         return None
     totals = {"protein": 0.0, "kcal": 0.0, "fat": 0.0,
               "carbs": 0.0, "sodium": 0.0, "fibre": 0.0}
-    for n, qty in ing_nutritions:
-        factor = (qty / 100) if qty is not None else 1.0
+    for n, qty in quantified:
+        factor = qty / 100
         totals["protein"] += factor * n.protein_per_100g
         totals["kcal"]    += factor * n.kcal_per_100g
         totals["fat"]     += factor * n.fat_per_100g
@@ -152,11 +159,12 @@ def _pick_best(foods: list, query: str = "") -> Optional[dict]:
 def _extract_nutrition(food: dict) -> NutritionPer100g:
     nutrients = {n["nutrientId"]: n.get("value", 0.0) for n in food.get("foodNutrients", []) if "nutrientId" in n}
     ids = NUTRIENT_IDS
+    kcal = next((nutrients[eid] for eid in _ENERGY_IDS if nutrients.get(eid)), 0.0)
     return NutritionPer100g(
         protein_per_100g=nutrients.get(ids["protein"], 0.0),
         fat_per_100g=nutrients.get(ids["fat"], 0.0),
         carbs_per_100g=nutrients.get(ids["carbohydrates"], 0.0),
-        kcal_per_100g=nutrients.get(ids["kcal"], 0.0),
+        kcal_per_100g=kcal,
         fibre_per_100g=nutrients.get(ids["fibre"]),
         sugar_per_100g=nutrients.get(ids["sugar"]),
         saturated_fat_per_100g=nutrients.get(ids["saturated_fat"]),

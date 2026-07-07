@@ -37,6 +37,16 @@ def recipes_dir(tmp_path):
     return d
 
 
+@pytest.fixture(autouse=True)
+def _isolate_ingest_paths(tmp_path, monkeypatch):
+    """Keep run_ingest's default data/report/export paths off the real repo files."""
+    base = tmp_path / "_isolated"
+    (base / "data").mkdir(parents=True)
+    monkeypatch.setattr("backend.ingest._DEFAULT_DATA_DIR", base / "data")
+    monkeypatch.setattr("backend.ingest._DEFAULT_REPORT_PATH", base / "report.json")
+    monkeypatch.setattr("backend.export._DEFAULT_EXPORT_DIR", base / "enriched")
+
+
 # ── collect_unique_ingredients ──────────────────────────────────────────────
 
 def test_collect_unique_returns_empty_for_no_recipes():
@@ -500,3 +510,29 @@ def test_run_ingest_writes_report(recipes_dir, tmp_path, cache_dir):
     assert line["raw"] == "400g Chicken thighs"
     assert line["category"] == "meat-poultry"
     assert line["quantity"] == {"amount": 400, "unit": "g"}
+
+
+def test_run_ingest_nutrition_override_wins_over_cache(recipes_dir, tmp_path, cache_dir):
+    _write_recipe(recipes_dir, "soup", ["1 leek"])
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    (data_dir / "nutrition_overrides.json").write_text(json.dumps({
+        "leek": {"protein_per_100g": 1.5, "fat_per_100g": 0.3,
+                 "carbs_per_100g": 14.2, "kcal_per_100g": 61.0},
+    }))
+    # Pre-seed a wrong cached value (0 kcal) that the override must beat
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    (cache_dir / "nutrition.json").write_text(json.dumps({
+        "leek": {"protein_per_100g": 0.0, "fat_per_100g": 0.0,
+                 "carbs_per_100g": 0.0, "kcal_per_100g": 0.0},
+    }))
+    out = tmp_path / "graph.ttl"
+    mock_fetch = MagicMock(return_value=None)
+    with patch("backend.ingest.normalise_all", MagicMock(return_value=[_nd_full("leek", 90.0, "produce")])), \
+         patch("backend.ingest.link_ingredient", return_value=None), \
+         patch("backend.ingest.fetch_nutrition", mock_fetch):
+        run_ingest(recipes_dir, out, llm_client=MagicMock(),
+                   cache_dir=cache_dir, data_dir=data_dir)
+    # override applied without a network fetch, and the graph shows 61 not 0
+    mock_fetch.assert_not_called()
+    assert "61" in out.read_text()

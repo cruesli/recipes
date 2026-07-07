@@ -1,0 +1,158 @@
+{
+  "slug": "char-siu",
+  "version": 1,
+  "servings": 4,
+  "nutritionPerServing": {
+    "kcal": 769,
+    "proteinG": 46.3,
+    "fatG": 49.4,
+    "carbsG": 34.8,
+    "fibreG": 2.9,
+    "sodiumMg": 1450
+  },
+  "ingredients": [
+    {
+      "raw": "1kg pork shoulder, cut into 4cm-thick strips",
+      "section": null,
+      "canonical": "pork shoulder",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 1,
+        "unit": "kg"
+      },
+      "grams": 1000.0
+    },
+    {
+      "raw": "3 tablespoons hoisin sauce",
+      "section": "Marinade",
+      "canonical": "hoisin sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tbsp"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "2 tablespoons light soy sauce",
+      "section": "Marinade",
+      "canonical": "light soy sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 tablespoon dark soy sauce",
+      "section": "Marinade",
+      "canonical": "dark soy sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 1,
+        "unit": "tbsp"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "2 tablespoons Shaoxing wine",
+      "section": "Marinade",
+      "canonical": "shaoxing wine",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "2 cubes red fermented bean curd, plus 1 tablespoon of its liquid",
+      "section": "Marinade",
+      "canonical": "red fermented bean curd",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 2,
+        "unit": "cube"
+      },
+      "grams": 40.0
+    },
+    {
+      "raw": "2 tablespoons honey",
+      "section": "Marinade",
+      "canonical": "honey",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "2 tablespoons sugar",
+      "section": "Marinade",
+      "canonical": "sugar",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 teaspoon five-spice powder",
+      "section": "Marinade",
+      "canonical": "five-spice powder",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "4 garlic cloves, grated",
+      "section": "Marinade",
+      "canonical": "garlic clove",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "1 teaspoon white pepper",
+      "section": "Marinade",
+      "canonical": "white pepper",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "3 tablespoons honey",
+      "section": "Glaze",
+      "canonical": "honey",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tbsp"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "2 tablespoons reserved marinade",
+      "section": "Glaze",
+      "canonical": "reserved marinade",
+      "category": "other",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    }
+  ]
+}

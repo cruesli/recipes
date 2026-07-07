@@ -345,3 +345,43 @@ def test_fetch_nutrition_override_misses_fall_through_to_search(monkeypatch, tmp
     n = fetch_nutrition("chicken thigh", s)
     assert n is not None
     s.get.assert_called_once()
+
+
+# --- energy nutrient fallback (Foundation Foods use Atwater IDs, not 1008) ---
+
+def _food_with(nutrients):
+    return {"fdcId": 42, "description": "x", "dataType": "Foundation", "foodNutrients": nutrients}
+
+
+def test_energy_prefers_1008_when_present():
+    from backend.nutrition import _extract_nutrition
+    food = _food_with([
+        {"nutrientId": 1008, "value": 250.0},
+        {"nutrientId": 2047, "value": 999.0},
+        {"nutrientId": 1005, "value": 10.0},
+    ])
+    assert _extract_nutrition(food).kcal_per_100g == 250.0
+
+
+def test_energy_falls_back_to_atwater_general_2047():
+    from backend.nutrition import _extract_nutrition
+    food = _food_with([
+        {"nutrientId": 2047, "value": 22.9},
+        {"nutrientId": 1005, "value": 4.6},
+    ])
+    assert _extract_nutrition(food).kcal_per_100g == 22.9
+
+
+def test_energy_prefers_2047_over_2048():
+    from backend.nutrition import _extract_nutrition
+    food = _food_with([
+        {"nutrientId": 2047, "value": 22.9},
+        {"nutrientId": 2048, "value": 19.7},
+    ])
+    assert _extract_nutrition(food).kcal_per_100g == 22.9
+
+
+def test_energy_uses_2048_when_only_specific_present():
+    from backend.nutrition import _extract_nutrition
+    food = _food_with([{"nutrientId": 2048, "value": 19.7}])
+    assert _extract_nutrition(food).kcal_per_100g == 19.7

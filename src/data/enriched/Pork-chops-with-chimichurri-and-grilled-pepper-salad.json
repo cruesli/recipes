@@ -1,0 +1,179 @@
+{
+  "slug": "Pork-chops-with-chimichurri-and-grilled-pepper-salad",
+  "version": 1,
+  "servings": 2,
+  "nutritionPerServing": {
+    "kcal": 877,
+    "proteinG": 38.5,
+    "fatG": 69.6,
+    "carbsG": 21.6,
+    "fibreG": 4.1,
+    "sodiumMg": 1314
+  },
+  "ingredients": [
+    {
+      "raw": "400g pork shoulder",
+      "section": "Pork chops",
+      "canonical": "pork shoulder",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 400,
+        "unit": "g"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "6g Salt",
+      "section": "Pork chops",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 6,
+        "unit": "g"
+      },
+      "grams": 6.0
+    },
+    {
+      "raw": "Pepper to taste",
+      "section": "Pork chops",
+      "canonical": "pepper",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "2 Large bell peppers",
+      "section": "Grilled pepper salad",
+      "canonical": "bell pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "100g corn salad",
+      "section": "Grilled pepper salad",
+      "canonical": "corn salad",
+      "category": "produce",
+      "quantity": {
+        "amount": 100,
+        "unit": "g"
+      },
+      "grams": 100.0
+    },
+    {
+      "raw": "10g pine nuts",
+      "section": "Grilled pepper salad",
+      "canonical": "pine nut",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 10,
+        "unit": "g"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "1/2 red onion, thinly sliced",
+      "section": "Grilled pepper salad",
+      "canonical": "red onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 0.5,
+        "unit": "count"
+      },
+      "grams": 75.0
+    },
+    {
+      "raw": "1 tsp Balsamic vinegar",
+      "section": "Grilled pepper salad",
+      "canonical": "balsamic vinegar",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "Salt and pepper",
+      "section": "Grilled pepper salad",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1/2 cup Parsley, finely chopped",
+      "section": "Chimichurri",
+      "canonical": "parsley",
+      "category": "produce",
+      "quantity": {
+        "amount": 0.5,
+        "unit": "cup"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "1 red chilli, finely chopped",
+      "section": "Chimichurri",
+      "canonical": "red chilli",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "1 clove garlic, finely chopped",
+      "section": "Chimichurri",
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "clove"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1/4 cup olive oil",
+      "section": "Chimichurri",
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 0.25,
+        "unit": "cup"
+      },
+      "grams": 60.0
+    },
+    {
+      "raw": "pinch of oregano",
+      "section": "Chimichurri",
+      "canonical": "oregano",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1 tsp Balsamic vinegar",
+      "section": "Chimichurri",
+      "canonical": "balsamic vinegar",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "Salt and pepper",
+      "section": "Chimichurri",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

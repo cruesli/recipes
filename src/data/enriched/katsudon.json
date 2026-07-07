@@ -1,0 +1,163 @@
+{
+  "slug": "katsudon",
+  "version": 1,
+  "servings": 2,
+  "nutritionPerServing": {
+    "kcal": 954,
+    "proteinG": 62.3,
+    "fatG": 16.5,
+    "carbsG": 138.3,
+    "fibreG": 5.7,
+    "sodiumMg": 1916
+  },
+  "ingredients": [
+    {
+      "raw": "2 pork loin steaks, about 150g each",
+      "section": "Pork katsu",
+      "canonical": "pork loin steak",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 300.0
+    },
+    {
+      "raw": "50g plain flour",
+      "section": "Pork katsu",
+      "canonical": "plain flour",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 50,
+        "unit": "g"
+      },
+      "grams": 50.0
+    },
+    {
+      "raw": "1 egg, beaten",
+      "section": "Pork katsu",
+      "canonical": "egg",
+      "category": "dairy-eggs",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 50.0
+    },
+    {
+      "raw": "80g panko breadcrumbs",
+      "section": "Pork katsu",
+      "canonical": "panko breadcrumb",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 80,
+        "unit": "g"
+      },
+      "grams": 80.0
+    },
+    {
+      "raw": "Salt and black pepper",
+      "section": "Pork katsu",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Neutral oil, for frying",
+      "section": "Pork katsu",
+      "canonical": "neutral oil",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1 onion, thinly sliced",
+      "section": "Donburi",
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "200ml dashi",
+      "section": "Donburi",
+      "canonical": "dashi",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 200,
+        "unit": "ml"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "3 tablespoons soy sauce",
+      "section": "Donburi",
+      "canonical": "soy sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "2 tablespoons mirin",
+      "section": "Donburi",
+      "canonical": "mirin",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tablespoons"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 tablespoon sugar",
+      "section": "Donburi",
+      "canonical": "sugar",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tablespoon"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "4 eggs, lightly beaten",
+      "section": "Donburi",
+      "canonical": "egg",
+      "category": "dairy-eggs",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "2 spring onions, sliced",
+      "section": "Donburi",
+      "canonical": "spring onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 36.0
+    },
+    {
+      "raw": "2 portions hot steamed rice",
+      "section": "Donburi",
+      "canonical": "steamed rice",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 2,
+        "unit": "portions"
+      },
+      "grams": 360.0
+    }
+  ]
+}

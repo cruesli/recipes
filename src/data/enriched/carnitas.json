@@ -1,0 +1,111 @@
+{
+  "slug": "carnitas",
+  "version": 1,
+  "servings": 15,
+  "nutritionPerServing": {
+    "kcal": 446,
+    "proteinG": 28.9,
+    "fatG": 30.3,
+    "carbsG": 13.6,
+    "fibreG": 0.8,
+    "sodiumMg": 899
+  },
+  "ingredients": [
+    {
+      "raw": "2.5 kg Pork shoulder",
+      "section": null,
+      "canonical": "pork shoulder",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 2.5,
+        "unit": "kg"
+      },
+      "grams": 2500.0
+    },
+    {
+      "raw": "1 Orange sliced in half",
+      "section": null,
+      "canonical": "orange",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 180.0
+    },
+    {
+      "raw": "1 Yellow onion sliced in half",
+      "section": null,
+      "canonical": "yellow onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "1 Cinnamon stick",
+      "section": null,
+      "canonical": "cinnamon stick",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 3.0
+    },
+    {
+      "raw": "5 Garlic cloves",
+      "section": null,
+      "canonical": "garlic clove",
+      "category": "produce",
+      "quantity": {
+        "amount": 5,
+        "unit": "count"
+      },
+      "grams": 25.0
+    },
+    {
+      "raw": "2 Bay leafs",
+      "section": null,
+      "canonical": "bay leaf",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 0.4
+    },
+    {
+      "raw": "30g salt",
+      "section": null,
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 30,
+        "unit": "g"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "Roughly 500ml Water",
+      "section": null,
+      "canonical": "water",
+      "category": "other",
+      "quantity": {
+        "amount": 500,
+        "unit": "ml"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "Neutral oil",
+      "section": null,
+      "canonical": "neutral oil",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "slug": "carne-asada-tacos",
+  "version": 1,
+  "servings": 4,
+  "nutritionPerServing": {
+    "kcal": 946,
+    "proteinG": 51.4,
+    "fatG": 37.7,
+    "carbsG": 103.2,
+    "fibreG": 7.4,
+    "sodiumMg": 678
+  },
+  "ingredients": [
+    {
+      "raw": "800g skirt or flank steak",
+      "section": "Carne asada",
+      "canonical": "skirt steak",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 800,
+        "unit": "g"
+      },
+      "grams": 800.0
+    },
+    {
+      "raw": "Juice of 2 limes",
+      "section": "Carne asada",
+      "canonical": "lime",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 60.0
+    },
+    {
+      "raw": "Juice of 1 orange",
+      "section": "Carne asada",
+      "canonical": "orange",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 80.0
+    },
+    {
+      "raw": "4 garlic cloves, grated",
+      "section": "Carne asada",
+      "canonical": "garlic clove",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "1 small handful fresh cilantro, chopped",
+      "section": "Carne asada",
+      "canonical": "cilantro",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "handful"
+      },
+      "grams": null
+    },
+    {
+      "raw": "2 tablespoons olive oil",
+      "section": "Carne asada",
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "2 teaspoons ground cumin",
+      "section": "Carne asada",
+      "canonical": "cumin",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "tsp"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "1 teaspoon dried oregano",
+      "section": "Carne asada",
+      "canonical": "oregano",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 teaspoon salt",
+      "section": "Carne asada",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 teaspoon black pepper",
+      "section": "Carne asada",
+      "canonical": "black pepper",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "12 small corn tortillas",
+      "section": "To serve",
+      "canonical": "corn tortilla",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 12,
+        "unit": "count"
+      },
+      "grams": 360.0
+    },
+    {
+      "raw": "1 white onion, finely diced",
+      "section": "To serve",
+      "canonical": "white onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "1 small handful fresh cilantro, chopped",
+      "section": "To serve",
+      "canonical": "cilantro",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "handful"
+      },
+      "grams": null
+    },
+    {
+      "raw": "2 limes, cut into wedges",
+      "section": "To serve",
+      "canonical": "lime",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 120.0
+    },
+    {
+      "raw": "Salsa verde or salsa roja",
+      "section": "To serve",
+      "canonical": "salsa verde",
+      "category": "canned-jarred",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

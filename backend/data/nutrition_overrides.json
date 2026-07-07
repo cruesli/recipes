@@ -1,1 +1,14 @@
-{}
+{
+  "salt": {"protein_per_100g": 0.0, "fat_per_100g": 0.0, "carbs_per_100g": 0.0, "kcal_per_100g": 0.0, "sodium_mg_per_100g": 38758.0},
+  "dashi": {"protein_per_100g": 0.5, "fat_per_100g": 0.0, "carbs_per_100g": 0.0, "kcal_per_100g": 3.0, "sodium_mg_per_100g": 300.0},
+  "corn salad": {"protein_per_100g": 2.0, "fat_per_100g": 0.4, "carbs_per_100g": 3.6, "kcal_per_100g": 21.0, "fibre_per_100g": 1.8, "sodium_mg_per_100g": 4.0},
+  "basil": {"protein_per_100g": 3.2, "fat_per_100g": 0.6, "carbs_per_100g": 2.7, "kcal_per_100g": 23.0, "fibre_per_100g": 1.6, "sodium_mg_per_100g": 4.0},
+  "leek": {"protein_per_100g": 1.5, "fat_per_100g": 0.3, "carbs_per_100g": 14.2, "kcal_per_100g": 61.0, "fibre_per_100g": 1.8, "sodium_mg_per_100g": 20.0},
+  "shallot": {"protein_per_100g": 2.5, "fat_per_100g": 0.1, "carbs_per_100g": 16.8, "kcal_per_100g": 72.0, "fibre_per_100g": 3.2, "sodium_mg_per_100g": 12.0},
+  "rutabaga": {"protein_per_100g": 1.1, "fat_per_100g": 0.2, "carbs_per_100g": 8.6, "kcal_per_100g": 37.0, "fibre_per_100g": 2.3, "sodium_mg_per_100g": 12.0},
+  "parsley": {"protein_per_100g": 3.0, "fat_per_100g": 0.8, "carbs_per_100g": 6.3, "kcal_per_100g": 36.0, "fibre_per_100g": 3.3, "sodium_mg_per_100g": 56.0},
+  "smoked paprika": {"protein_per_100g": 14.1, "fat_per_100g": 12.9, "carbs_per_100g": 54.0, "kcal_per_100g": 282.0, "fibre_per_100g": 34.9, "sodium_mg_per_100g": 68.0},
+  "sweet Hungarian paprika": {"protein_per_100g": 14.1, "fat_per_100g": 12.9, "carbs_per_100g": 54.0, "kcal_per_100g": 282.0, "fibre_per_100g": 34.9, "sodium_mg_per_100g": 68.0},
+  "hot Hungarian paprika": {"protein_per_100g": 14.1, "fat_per_100g": 12.9, "carbs_per_100g": 54.0, "kcal_per_100g": 282.0, "fibre_per_100g": 34.9, "sodium_mg_per_100g": 68.0},
+  "chili powder": {"protein_per_100g": 13.5, "fat_per_100g": 14.3, "carbs_per_100g": 49.7, "kcal_per_100g": 282.0, "fibre_per_100g": 34.8, "sodium_mg_per_100g": 1640.0}
+}

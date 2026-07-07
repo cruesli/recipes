@@ -1,0 +1,223 @@
+{
+  "slug": "chicken-fajitas",
+  "version": 1,
+  "servings": 4,
+  "nutritionPerServing": {
+    "kcal": 750,
+    "proteinG": 29.8,
+    "fatG": 47.6,
+    "carbsG": 59.2,
+    "fibreG": 8.3,
+    "sodiumMg": 1167
+  },
+  "ingredients": [
+    {
+      "raw": "600g chicken thighs, boneless, sliced into 1cm strips",
+      "section": "Marinade and chicken",
+      "canonical": "chicken thigh",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 600,
+        "unit": "g"
+      },
+      "grams": 600.0
+    },
+    {
+      "raw": "2 tablespoons olive oil",
+      "section": "Marinade and chicken",
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "Juice of 2 limes",
+      "section": "Marinade and chicken",
+      "canonical": "lime",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 60.0
+    },
+    {
+      "raw": "4 garlic cloves, minced",
+      "section": "Marinade and chicken",
+      "canonical": "garlic clove",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "2 teaspoons ground cumin",
+      "section": "Marinade and chicken",
+      "canonical": "cumin",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "tsp"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "2 teaspoons smoked paprika",
+      "section": "Marinade and chicken",
+      "canonical": "smoked paprika",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "tsp"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "1 teaspoon chili powder",
+      "section": "Marinade and chicken",
+      "canonical": "chili powder",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 teaspoon dried oregano",
+      "section": "Marinade and chicken",
+      "canonical": "oregano",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 teaspoon salt",
+      "section": "Marinade and chicken",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 teaspoon black pepper",
+      "section": "Marinade and chicken",
+      "canonical": "black pepper",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 red bell pepper, sliced",
+      "section": "Peppers and onions",
+      "canonical": "red bell pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "1 yellow bell pepper, sliced",
+      "section": "Peppers and onions",
+      "canonical": "yellow bell pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "1 green bell pepper, sliced",
+      "section": "Peppers and onions",
+      "canonical": "green bell pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "2 large onions, sliced",
+      "section": "Peppers and onions",
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 300.0
+    },
+    {
+      "raw": "2 tablespoons neutral oil",
+      "section": "Peppers and onions",
+      "canonical": "neutral oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "8 flour tortillas, warmed",
+      "section": "To serve",
+      "canonical": "flour tortilla",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 8,
+        "unit": "count"
+      },
+      "grams": 320.0
+    },
+    {
+      "raw": "Sour cream",
+      "section": "To serve",
+      "canonical": "sour cream",
+      "category": "dairy-eggs",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Guacamole",
+      "section": "To serve",
+      "canonical": "guacamole",
+      "category": "canned-jarred",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Lime wedges",
+      "section": "To serve",
+      "canonical": "lime",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Fresh cilantro",
+      "section": "To serve",
+      "canonical": "cilantro",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

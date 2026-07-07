@@ -1,0 +1,122 @@
+{
+  "slug": "aguachile",
+  "version": 1,
+  "servings": 4,
+  "nutritionPerServing": {
+    "kcal": 185,
+    "proteinG": 16.7,
+    "fatG": 7.6,
+    "carbsG": 15.8,
+    "fibreG": 5.6,
+    "sodiumMg": 1112
+  },
+  "ingredients": [
+    {
+      "raw": "500g raw shrimp, peeled, deveined and butterflied",
+      "section": null,
+      "canonical": "shrimp",
+      "category": "fish-seafood",
+      "quantity": {
+        "amount": 500,
+        "unit": "g"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "Juice of 8 limes (about 200ml)",
+      "section": null,
+      "canonical": "lime",
+      "category": "produce",
+      "quantity": {
+        "amount": 8,
+        "unit": "count"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "3 serrano chiles, stems removed",
+      "section": null,
+      "canonical": "serrano chile",
+      "category": "produce",
+      "quantity": {
+        "amount": 3,
+        "unit": "count"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 small handful fresh cilantro",
+      "section": null,
+      "canonical": "cilantro",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "handful"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "2 garlic cloves",
+      "section": null,
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "clove"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "1 cucumber, half diced and half thinly sliced",
+      "section": null,
+      "canonical": "cucumber",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 250.0
+    },
+    {
+      "raw": "1 red onion, thinly sliced",
+      "section": null,
+      "canonical": "red onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "1 avocado, sliced",
+      "section": null,
+      "canonical": "avocado",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 170.0
+    },
+    {
+      "raw": "1 teaspoon salt",
+      "section": null,
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "Tostadas or tortilla chips, to serve",
+      "section": null,
+      "canonical": "tostada",
+      "category": "other",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

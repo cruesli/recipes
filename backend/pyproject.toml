@@ -1,0 +1,22 @@
+[project]
+name = "recipe-kg"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "python-frontmatter",
+    "pydantic",
+    "openai",
+    "python-dotenv",
+    "requests",
+    "rdflib>=7.6.0",
+    "fastapi>=0.136.1",
+    "uvicorn>=0.46.0",
+    "httpx>=0.28.1",
+    "sentence-transformers>=5.5.1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.pytest.ini_options]
+pythonpath = [".."]

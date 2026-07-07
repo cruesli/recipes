@@ -612,9 +612,9 @@ def test_filter_results_are_recipe_summaries(kg):
     assert all(isinstance(r, RecipeSummary) for r in result.results)
 
 
-def test_filter_by_min_protein_returns_match(kg):
-    # tahini-chicken has 2 ingredients with combined protein 17.4+17.0=34.4, /2 servings=17.2
-    result = kg.filter_recipes(min_protein=10.0)
+def test_filter_by_min_protein_returns_match(kg_with_quantities):
+    # chicken 400g*17.4/100 + tahini 30g*17.0/100 = 69.6+5.1 = 74.7, /2 servings = 37.35
+    result = kg_with_quantities.filter_recipes(min_protein=10.0)
     assert result.count == 1
 
 
@@ -633,8 +633,8 @@ def test_filter_by_min_protein_excludes_low_protein():
     assert result.count == 0
 
 
-def test_filter_by_max_kcal_returns_match(kg):
-    result = kg.filter_recipes(max_kcal=10000.0)
+def test_filter_by_max_kcal_returns_match(kg_with_quantities):
+    result = kg_with_quantities.filter_recipes(max_kcal=10000.0)
     assert result.count == 1
 
 
@@ -771,11 +771,12 @@ def test_approx_kcal_per_serving_uses_quantity_weight(kg_with_quantities):
     assert float(vals[0]) == pytest.approx(443.25)
 
 
-def test_approx_protein_fallback_factor_one_without_quantities(kg):
-    # factor=1.0 for both: (17.4 + 17.0) / 2 = 17.2
+def test_approx_protein_absent_without_quantities(kg):
+    # Unquantified ingredients are excluded, so no approx nutrition is stored —
+    # counting "salt to taste" as 100g would wildly inflate the totals.
     recipe_node = RKG["recipe_tahini-chicken"]
     vals = list(kg.graph.objects(recipe_node, RKG.approxProteinPerServing))
-    assert float(vals[0]) == pytest.approx(17.2)
+    assert vals == []
 
 
 def test_get_recipe_by_slug_ingredient_has_quantity_g(kg_with_quantities):

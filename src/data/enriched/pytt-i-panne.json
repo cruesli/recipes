@@ -1,0 +1,67 @@
+{
+  "slug": "pytt-i-panne",
+  "version": 1,
+  "servings": 1,
+  "nutritionPerServing": {
+    "kcal": 1265,
+    "proteinG": 45.8,
+    "fatG": 75.4,
+    "carbsG": 94.9,
+    "fibreG": 12.0,
+    "sodiumMg": 2290
+  },
+  "ingredients": [
+    {
+      "raw": "2 Sausages",
+      "section": null,
+      "canonical": "sausage",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 140.0
+    },
+    {
+      "raw": "3 Strips of bacon (optional)",
+      "section": null,
+      "canonical": "bacon",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 3,
+        "unit": "strips"
+      },
+      "grams": 60.0
+    },
+    {
+      "raw": "2 Medium size potatoes",
+      "section": null,
+      "canonical": "potato",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 340.0
+    },
+    {
+      "raw": "1 Medium size onion",
+      "section": null,
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "Ketchup for topping",
+      "section": null,
+      "canonical": "ketchup",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

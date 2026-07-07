@@ -65,10 +65,17 @@ def test_per_serving_totals_divides_by_servings():
     assert totals["kcal"] == pytest.approx(100.0)
 
 
-def test_per_serving_totals_unquantified_uses_100g():
+def test_per_serving_totals_excludes_unquantified():
+    # "salt to taste" (grams=None) must not count as 100g — it contributes nothing.
     n = NutritionPer100g(protein_per_100g=10.0, fat_per_100g=0.0, carbs_per_100g=0.0, kcal_per_100g=100.0)
-    totals = per_serving_totals([(n, None)], 1)
-    assert totals["protein"] == pytest.approx(10.0)
+    quantified = NutritionPer100g(protein_per_100g=20.0, fat_per_100g=0.0, carbs_per_100g=0.0, kcal_per_100g=200.0)
+    totals = per_serving_totals([(quantified, 100.0), (n, None)], 1)
+    assert totals["protein"] == pytest.approx(20.0)  # only the 100g quantified item
+
+
+def test_per_serving_totals_none_when_nothing_quantified():
+    n = NutritionPer100g(protein_per_100g=10.0, fat_per_100g=0.0, carbs_per_100g=0.0, kcal_per_100g=100.0)
+    assert per_serving_totals([(n, None)], 1) is None
 
 
 def test_per_serving_totals_none_without_servings():

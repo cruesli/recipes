@@ -211,9 +211,14 @@ def run_ingest(
     print("Fetching nutrition from USDA...")
     nutrition_map: Dict[str, Optional[NutritionPer100g]] = {}
     for norm in unique_normalised:
-        if norm in nutrition_cache:
+        nutrition: Optional[NutritionPer100g]
+        if norm in nutrition_overrides:
+            # manual override wins over cache — edits take effect on re-run
+            nutrition = NutritionPer100g(**nutrition_overrides[norm])
+            print(f"  {norm}: {nutrition.kcal_per_100g} kcal/100g (override)")
+        elif norm in nutrition_cache:
             cached_n = nutrition_cache[norm]
-            nutrition: Optional[NutritionPer100g] = NutritionPer100g(**cached_n) if cached_n else None
+            nutrition = NutritionPer100g(**cached_n) if cached_n else None
             status_n = f"{nutrition.kcal_per_100g} kcal/100g (cached)" if nutrition else "not found (cached)"
             print(f"  {norm}: {status_n}")
         else:

@@ -1,0 +1,185 @@
+{
+  "slug": "lu-rou-fan",
+  "version": 1,
+  "servings": 4,
+  "nutritionPerServing": {
+    "kcal": 771,
+    "proteinG": 32.7,
+    "fatG": 54.9,
+    "carbsG": 36.6,
+    "fibreG": 4.3,
+    "sodiumMg": 1407
+  },
+  "ingredients": [
+    {
+      "raw": "600g pork belly, skin on, diced into 1cm pieces",
+      "section": null,
+      "canonical": "pork belly",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 600,
+        "unit": "g"
+      },
+      "grams": 600.0
+    },
+    {
+      "raw": "6 shallots, thinly sliced",
+      "section": null,
+      "canonical": "shallot",
+      "category": "produce",
+      "quantity": {
+        "amount": 6,
+        "unit": "count"
+      },
+      "grams": 210.0
+    },
+    {
+      "raw": "4 garlic cloves, minced",
+      "section": null,
+      "canonical": "garlic clove",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "1 thumb ginger, sliced",
+      "section": null,
+      "canonical": "ginger",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "thumb"
+      },
+      "grams": 25.0
+    },
+    {
+      "raw": "4 tablespoons dark soy sauce",
+      "section": null,
+      "canonical": "dark soy sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 4,
+        "unit": "tablespoons"
+      },
+      "grams": 60.0
+    },
+    {
+      "raw": "2 tablespoons light soy sauce",
+      "section": null,
+      "canonical": "light soy sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "3 tablespoons Shaoxing rice wine",
+      "section": null,
+      "canonical": "Shaoxing rice wine",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "2 tablespoons rock sugar",
+      "section": null,
+      "canonical": "rock sugar",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "tablespoons"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 teaspoon five-spice powder",
+      "section": null,
+      "canonical": "five-spice powder",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 star anise",
+      "section": null,
+      "canonical": "star anise",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 1.5
+    },
+    {
+      "raw": "1 cinnamon stick",
+      "section": null,
+      "canonical": "cinnamon stick",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 4.0
+    },
+    {
+      "raw": "4 dried shiitake mushrooms, soaked and diced",
+      "section": null,
+      "canonical": "dried shiitake mushroom",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 24.0
+    },
+    {
+      "raw": "4 soft-boiled eggs, peeled",
+      "section": null,
+      "canonical": "egg",
+      "category": "dairy-eggs",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "500ml water or pork stock",
+      "section": null,
+      "canonical": "water",
+      "category": "other",
+      "quantity": {
+        "amount": 500,
+        "unit": "ml"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "Steamed rice, to serve",
+      "section": null,
+      "canonical": "steamed rice",
+      "category": "dry-goods",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Pickled greens, to serve",
+      "section": null,
+      "canonical": "pickled greens",
+      "category": "canned-jarred",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

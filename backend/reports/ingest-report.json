@@ -1,0 +1,3698 @@
+{
+  "generated": "2026-07-07T18:41:03",
+  "summary": {
+    "recipes": 20,
+    "uniqueRawLines": 219,
+    "uniqueIngredients": 134,
+    "linked": 120,
+    "nutritionFound": 134
+  },
+  "ingredients": [
+    {
+      "canonical": "pork shoulder",
+      "qid": "Q2255700",
+      "linkSource": "cache",
+      "foodCategory": "pork",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 236.0
+      }
+    },
+    {
+      "canonical": "salt",
+      "qid": "Q11254",
+      "linkSource": "cache",
+      "foodCategory": "mixture",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "override",
+        "kcalPer100g": 0.0
+      }
+    },
+    {
+      "canonical": "pepper",
+      "qid": "Q1548030",
+      "linkSource": "cache",
+      "foodCategory": "Group",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 34.0
+      }
+    },
+    {
+      "canonical": "bell pepper",
+      "qid": "Q1548030",
+      "linkSource": "cache",
+      "foodCategory": "Group",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 22.9
+      }
+    },
+    {
+      "canonical": "corn salad",
+      "qid": "Q94642761",
+      "linkSource": "cache",
+      "foodCategory": "dish",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "override",
+        "kcalPer100g": 21.0
+      }
+    },
+    {
+      "canonical": "pine nut",
+      "qid": "Q212933",
+      "linkSource": "cache",
+      "foodCategory": "nut",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 689.0
+      }
+    },
+    {
+      "canonical": "red onion",
+      "qid": "Q622350",
+      "linkSource": "cache",
+      "foodCategory": "taxon",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 44.0
+      }
+    },
+    {
+      "canonical": "balsamic vinegar",
+      "qid": "Q170037",
+      "linkSource": "cache",
+      "foodCategory": "condiment",
+      "originCountry": "Italy",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 300.0
+      }
+    },
+    {
+      "canonical": "parsley",
+      "qid": "Q65522500",
+      "linkSource": "cache",
+      "foodCategory": "spice",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "override",
+        "kcalPer100g": 36.0
+      }
+    },
+    {
+      "canonical": "red chilli",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 67.0
+      }
+    },
+    {
+      "canonical": "garlic",
+      "qid": "Q21546392",
+      "linkSource": "cache",
+      "foodCategory": "herbal medicinal product",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 167.0
+      }
+    },
+    {
+      "canonical": "olive oil",
+      "qid": "Q93165",
+      "linkSource": "cache",
+      "foodCategory": "non-drying oil",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 900.0
+      }
+    },
+    {
+      "canonical": "oregano",
+      "qid": "Q134283",
+      "linkSource": "cache",
+      "foodCategory": "taxon",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 0.0
+      }
+    },
+    {
+      "canonical": "shrimp",
+      "qid": "Q1517781",
+      "linkSource": "cache",
+      "foodCategory": "organisms known by a particular common name",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 47.0
+      }
+    },
+    {
+      "canonical": "lime",
+      "qid": "Q13195",
+      "linkSource": "pin",
+      "foodCategory": "common name",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 30.0
+      }
+    },
+    {
+      "canonical": "serrano chile",
+      "qid": "Q617583",
+      "linkSource": "pin",
+      "foodCategory": "cultivar",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 29.2
+      }
+    },
+    {
+      "canonical": "cilantro",
+      "qid": "Q41611",
+      "linkSource": "cache",
+      "foodCategory": "taxon",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 200.0
+      }
+    },
+    {
+      "canonical": "cucumber",
+      "qid": "Q23425",
+      "linkSource": "cache",
+      "foodCategory": "taxon",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 16.0
+      }
+    },
+    {
+      "canonical": "avocado",
+      "qid": "Q961769",
+      "linkSource": "cache",
+      "foodCategory": "tropical fruit",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 167.0
+      }
+    },
+    {
+      "canonical": "tostada",
+      "qid": "Q3280441",
+      "linkSource": "cache",
+      "foodCategory": "dish",
+      "originCountry": "Mexico",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 474.0
+      }
+    },
+    {
+      "canonical": "pork shank",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 193.0
+      }
+    },
+    {
+      "canonical": "water",
+      "qid": "Q283",
+      "linkSource": "pin",
+      "foodCategory": "type of chemical entity",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 42.0
+      }
+    },
+    {
+      "canonical": "bay leaf",
+      "qid": "Q72444924",
+      "linkSource": "cache",
+      "foodCategory": "essential oil",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 22.0
+      }
+    },
+    {
+      "canonical": "black peppercorn",
+      "qid": "Q22915010",
+      "linkSource": "cache",
+      "foodCategory": "food ingredient",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 176.0
+      }
+    },
+    {
+      "canonical": "allspice berry",
+      "qid": "Q1963621",
+      "linkSource": "pin",
+      "foodCategory": "food ingredient",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 263.0
+      }
+    },
+    {
+      "canonical": "leek",
+      "qid": "Q1807269",
+      "linkSource": "cache",
+      "foodCategory": "organisms known by a particular common name",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "override",
+        "kcalPer100g": 61.0
+      }
+    },
+    {
+      "canonical": "rutabaga",
+      "qid": "Q104733765",
+      "linkSource": "cache",
+      "foodCategory": "winter vegetable",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "override",
+        "kcalPer100g": 37.0
+      }
+    },
+    {
+      "canonical": "carrot",
+      "qid": "Q81",
+      "linkSource": "cache",
+      "foodCategory": "food crop",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 41.0
+      }
+    },
+    {
+      "canonical": "celeriac",
+      "qid": "Q103765549",
+      "linkSource": "cache",
+      "foodCategory": "root vegetable",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 42.0
+      }
+    },
+    {
+      "canonical": "yellow split pea",
+      "qid": "Q2265406",
+      "linkSource": "cache",
+      "foodCategory": "split pulse",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 61.0
+      }
+    },
+    {
+      "canonical": "potato",
+      "qid": "Q16587531",
+      "linkSource": "cache",
+      "foodCategory": "staple food",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 171.0
+      }
+    },
+    {
+      "canonical": "flatbread",
+      "qid": "Q666242",
+      "linkSource": "cache",
+      "foodCategory": "bing",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 250.0
+      }
+    },
+    {
+      "canonical": "zucchini",
+      "qid": "Q7533",
+      "linkSource": "cache",
+      "foodCategory": "taxon",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 21.0
+      }
+    },
+    {
+      "canonical": "tomato",
+      "qid": "Q23501",
+      "linkSource": "cache",
+      "foodCategory": "food crop",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 20.0
+      }
+    },
+    {
+      "canonical": "passata",
+      "qid": "Q1114674",
+      "linkSource": "cache",
+      "foodCategory": "tomato dish",
+      "originCountry": "Italy",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 26.0
+      }
+    },
+    {
+      "canonical": "dried oregano",
+      "qid": "Q68496350",
+      "linkSource": "cache",
+      "foodCategory": "Origanum vulgare",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 265.0
+      }
+    },
+    {
+      "canonical": "feta",
+      "qid": "Q182760",
+      "linkSource": "cache",
+      "foodCategory": "mixed milk cheese",
+      "originCountry": "Greece",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 273.0
+      }
+    },
+    {
+      "canonical": "skirt steak",
+      "qid": "Q643995",
+      "linkSource": "cache",
+      "foodCategory": "Plate steak",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 195.0
+      }
+    },
+    {
+      "canonical": "orange",
+      "qid": "Q13191",
+      "linkSource": "cache",
+      "foodCategory": "common name",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 246.0
+      }
+    },
+    {
+      "canonical": "garlic clove",
+      "qid": "Q28966859",
+      "linkSource": "cache",
+      "foodCategory": "food ingredient",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 274.0
+      }
+    },
+    {
+      "canonical": "cumin",
+      "qid": "Q57328174",
+      "linkSource": "cache",
+      "foodCategory": "fruit",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 375.0
+      }
+    },
+    {
+      "canonical": "black pepper",
+      "qid": "Q22915010",
+      "linkSource": "cache",
+      "foodCategory": "food ingredient",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 251.0
+      }
+    },
+    {
+      "canonical": "corn tortilla",
+      "qid": "Q15660894",
+      "linkSource": "cache",
+      "foodCategory": "tortilla",
+      "originCountry": "Mesoamerica",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 429.0
+      }
+    },
+    {
+      "canonical": "white onion",
+      "qid": "Q7995660",
+      "linkSource": "cache",
+      "foodCategory": "cultivar",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 35.0
+      }
+    },
+    {
+      "canonical": "salsa verde",
+      "qid": "Q20747642",
+      "linkSource": "cache",
+      "foodCategory": "sauce",
+      "originCountry": "Mexico",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 31.0
+      }
+    },
+    {
+      "canonical": "yellow onion",
+      "qid": "Q8051898",
+      "linkSource": "cache",
+      "foodCategory": "onion",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 38.0
+      }
+    },
+    {
+      "canonical": "cinnamon stick",
+      "qid": "Q30038886",
+      "linkSource": "cache",
+      "foodCategory": "ingredient",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 316.0
+      }
+    },
+    {
+      "canonical": "neutral oil",
+      "qid": "Q170885",
+      "linkSource": "cache",
+      "foodCategory": "mixture",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 884.0
+      }
+    },
+    {
+      "canonical": "hoisin sauce",
+      "qid": "Q404114",
+      "linkSource": "cache",
+      "foodCategory": "sauce",
+      "originCountry": "People's Republic of China",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 220.0
+      }
+    },
+    {
+      "canonical": "light soy sauce",
+      "qid": "Q8529545",
+      "linkSource": "cache",
+      "foodCategory": "soy sauce",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 60.0
+      }
+    },
+    {
+      "canonical": "dark soy sauce",
+      "qid": "Q8484030",
+      "linkSource": "cache",
+      "foodCategory": "soy sauce",
+      "originCountry": "People's Republic of China",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 60.0
+      }
+    },
+    {
+      "canonical": "shaoxing wine",
+      "qid": "Q175245",
+      "linkSource": "cache",
+      "foodCategory": "Huangjiu",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 49.0
+      }
+    },
+    {
+      "canonical": "red fermented bean curd",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 116.0
+      }
+    },
+    {
+      "canonical": "honey",
+      "qid": "Q10987",
+      "linkSource": "cache",
+      "foodCategory": "organic matter",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 304.0
+      }
+    },
+    {
+      "canonical": "sugar",
+      "qid": "Q11002",
+      "linkSource": "cache",
+      "foodCategory": "excipient",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 375.0
+      }
+    },
+    {
+      "canonical": "five-spice powder",
+      "qid": "Q1051492",
+      "linkSource": "cache",
+      "foodCategory": "pentad",
+      "originCountry": "China",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 282.0
+      }
+    },
+    {
+      "canonical": "white pepper",
+      "qid": "Q744814",
+      "linkSource": "cache",
+      "foodCategory": "food ingredient",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 296.0
+      }
+    },
+    {
+      "canonical": "reserved marinade",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 348.0
+      }
+    },
+    {
+      "canonical": "chicken thigh",
+      "qid": "Q102354615",
+      "linkSource": "cache",
+      "foodCategory": "thigh",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 193.0
+      }
+    },
+    {
+      "canonical": "smoked paprika",
+      "qid": "Q3127593",
+      "linkSource": "cache",
+      "foodCategory": "food ingredient",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "override",
+        "kcalPer100g": 282.0
+      }
+    },
+    {
+      "canonical": "chili powder",
+      "qid": "Q1072946",
+      "linkSource": "cache",
+      "foodCategory": "food",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "override",
+        "kcalPer100g": 282.0
+      }
+    },
+    {
+      "canonical": "red bell pepper",
+      "qid": "Q106446932",
+      "linkSource": "cache",
+      "foodCategory": "bell pepper",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 31.3
+      }
+    },
+    {
+      "canonical": "yellow bell pepper",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 30.8
+      }
+    },
+    {
+      "canonical": "green bell pepper",
+      "qid": "Q67865843",
+      "linkSource": "cache",
+      "foodCategory": "bell pepper",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 22.9
+      }
+    },
+    {
+      "canonical": "onion",
+      "qid": "Q49391",
+      "linkSource": "cache",
+      "foodCategory": "parivyaya",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 40.0
+      }
+    },
+    {
+      "canonical": "flour tortilla",
+      "qid": "Q204251",
+      "linkSource": "cache",
+      "foodCategory": "flatbread",
+      "originCountry": "Mexico",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 279.0
+      }
+    },
+    {
+      "canonical": "sour cream",
+      "qid": "Q840171",
+      "linkSource": "cache",
+      "foodCategory": "dairy product",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 200.0
+      }
+    },
+    {
+      "canonical": "guacamole",
+      "qid": "Q207968",
+      "linkSource": "cache",
+      "foodCategory": "dip",
+      "originCountry": "Mexico",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 150.0
+      }
+    },
+    {
+      "canonical": "cornstarch",
+      "qid": "Q3393961",
+      "linkSource": "cache",
+      "foodCategory": "food ingredient",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 381.0
+      }
+    },
+    {
+      "canonical": "chinkiang black vinegar",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 88.0
+      }
+    },
+    {
+      "canonical": "dried Sichuan chile",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 324.0
+      }
+    },
+    {
+      "canonical": "Sichuan peppercorn",
+      "qid": "Q756800",
+      "linkSource": "cache",
+      "foodCategory": "food ingredient",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 564.0
+      }
+    },
+    {
+      "canonical": "ginger",
+      "qid": "Q15046077",
+      "linkSource": "cache",
+      "foodCategory": "rhizome",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 1.0
+      }
+    },
+    {
+      "canonical": "spring onion",
+      "qid": "Q774278",
+      "linkSource": "cache",
+      "foodCategory": "parivyaya",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 32.0
+      }
+    },
+    {
+      "canonical": "peanut",
+      "qid": "Q3621199",
+      "linkSource": "cache",
+      "foodCategory": "food ingredient",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 515.0
+      }
+    },
+    {
+      "canonical": "beef chuck",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 232.0
+      }
+    },
+    {
+      "canonical": "lard",
+      "qid": "Q72827",
+      "linkSource": "cache",
+      "foodCategory": "dripping",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 902.0
+      }
+    },
+    {
+      "canonical": "sweet Hungarian paprika",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "override",
+        "kcalPer100g": 282.0
+      }
+    },
+    {
+      "canonical": "hot Hungarian paprika",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "override",
+        "kcalPer100g": 282.0
+      }
+    },
+    {
+      "canonical": "caraway seed",
+      "qid": "Q21155816",
+      "linkSource": "cache",
+      "foodCategory": "spice",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 333.0
+      }
+    },
+    {
+      "canonical": "tomato paste",
+      "qid": "Q1499073",
+      "linkSource": "cache",
+      "foodCategory": "food ingredient",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 91.0
+      }
+    },
+    {
+      "canonical": "beef stock",
+      "qid": "Q96362190",
+      "linkSource": "cache",
+      "foodCategory": "stock",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 13.0
+      }
+    },
+    {
+      "canonical": "pork loin steak",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 168.0
+      }
+    },
+    {
+      "canonical": "plain flour",
+      "qid": "Q95388739",
+      "linkSource": "cache",
+      "foodCategory": "flour",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 381.0
+      }
+    },
+    {
+      "canonical": "egg",
+      "qid": "Q93189",
+      "linkSource": "cache",
+      "foodCategory": "animal-based food",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 55.0
+      }
+    },
+    {
+      "canonical": "panko breadcrumb",
+      "qid": "Q1820454",
+      "linkSource": "pin",
+      "foodCategory": "Japanese cuisine",
+      "originCountry": "Japan",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 357.0
+      }
+    },
+    {
+      "canonical": "dashi",
+      "qid": "Q851746",
+      "linkSource": "cache",
+      "foodCategory": "broth",
+      "originCountry": "Japan",
+      "usda": {
+        "found": true,
+        "source": "override",
+        "kcalPer100g": 3.0
+      }
+    },
+    {
+      "canonical": "soy sauce",
+      "qid": "Q229385",
+      "linkSource": "cache",
+      "foodCategory": "sauce",
+      "originCountry": "China",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 53.0
+      }
+    },
+    {
+      "canonical": "mirin",
+      "qid": "Q1045910",
+      "linkSource": "cache",
+      "foodCategory": "condiment",
+      "originCountry": "Japan",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 300.0
+      }
+    },
+    {
+      "canonical": "steamed rice",
+      "qid": "Q103921799",
+      "linkSource": "cache",
+      "foodCategory": "cooked rice",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 151.0
+      }
+    },
+    {
+      "canonical": "hummus",
+      "qid": "Q241987",
+      "linkSource": "cache",
+      "foodCategory": "type of food or dish",
+      "originCountry": "Near East",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 321.0
+      }
+    },
+    {
+      "canonical": "lemon",
+      "qid": "Q1093742",
+      "linkSource": "cache",
+      "foodCategory": "fruit",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 17.0
+      }
+    },
+    {
+      "canonical": "spice",
+      "qid": "Q42527",
+      "linkSource": "cache",
+      "foodCategory": "condiment",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 342.0
+      }
+    },
+    {
+      "canonical": "pork belly",
+      "qid": "Q1365868",
+      "linkSource": "cache",
+      "foodCategory": "pork",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 380.0
+      }
+    },
+    {
+      "canonical": "shallot",
+      "qid": "Q67206407",
+      "linkSource": "cache",
+      "foodCategory": "bulb",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "override",
+        "kcalPer100g": 72.0
+      }
+    },
+    {
+      "canonical": "Shaoxing rice wine",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 134.0
+      }
+    },
+    {
+      "canonical": "rock sugar",
+      "qid": "Q849816",
+      "linkSource": "cache",
+      "foodCategory": "confection",
+      "originCountry": "Iran",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 400.0
+      }
+    },
+    {
+      "canonical": "star anise",
+      "qid": "Q4075018",
+      "linkSource": "cache",
+      "foodCategory": "essential oil",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 337.0
+      }
+    },
+    {
+      "canonical": "dried shiitake mushroom",
+      "qid": "Q320999",
+      "linkSource": "cache",
+      "foodCategory": "taxon",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 44.1
+      }
+    },
+    {
+      "canonical": "pickled greens",
+      "qid": "Q20134",
+      "linkSource": "cache",
+      "foodCategory": "vegetable",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 145.0
+      }
+    },
+    {
+      "canonical": "minced beef",
+      "qid": "Q192628",
+      "linkSource": "cache",
+      "foodCategory": "meat",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 263.0
+      }
+    },
+    {
+      "canonical": "bacon",
+      "qid": "Q11106",
+      "linkSource": "cache",
+      "foodCategory": "pork",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 600.0
+      }
+    },
+    {
+      "canonical": "celery",
+      "qid": "Q23012379",
+      "linkSource": "cache",
+      "foodCategory": "herb",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 17.0
+      }
+    },
+    {
+      "canonical": "tomato puree",
+      "qid": "Q1114674",
+      "linkSource": "cache",
+      "foodCategory": "tomato dish",
+      "originCountry": "Italy",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 40.0
+      }
+    },
+    {
+      "canonical": "red wine",
+      "qid": "Q1827",
+      "linkSource": "cache",
+      "foodCategory": "wine",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 19.0
+      }
+    },
+    {
+      "canonical": "canned tomatoes",
+      "qid": "Q5032643",
+      "linkSource": "cache",
+      "foodCategory": "tomato",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 40.8
+      }
+    },
+    {
+      "canonical": "thyme",
+      "qid": "Q3215980",
+      "linkSource": "cache",
+      "foodCategory": "crude drug",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 0.0
+      }
+    },
+    {
+      "canonical": "parmesan rind",
+      "qid": "Q155922",
+      "linkSource": "cache",
+      "foodCategory": "cheese",
+      "originCountry": "Italy",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 19.4
+      }
+    },
+    {
+      "canonical": "sweet pepper",
+      "qid": "Q1548030",
+      "linkSource": "cache",
+      "foodCategory": "Group",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 20.0
+      }
+    },
+    {
+      "canonical": "capers",
+      "qid": "Q3229775",
+      "linkSource": "cache",
+      "foodCategory": "bud",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 27.0
+      }
+    },
+    {
+      "canonical": "red wine vinegar",
+      "qid": "Q68431797",
+      "linkSource": "cache",
+      "foodCategory": "wine vinegar",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 33.0
+      }
+    },
+    {
+      "canonical": "basil",
+      "qid": "Q38859",
+      "linkSource": "cache",
+      "foodCategory": "taxon",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "override",
+        "kcalPer100g": 23.0
+      }
+    },
+    {
+      "canonical": "dry white wine",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 152.0
+      }
+    },
+    {
+      "canonical": "peeled tomatoes",
+      "qid": "Q12798512",
+      "linkSource": "cache",
+      "foodCategory": "canned tomato",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 15.9
+      }
+    },
+    {
+      "canonical": "chicken stock",
+      "qid": "Q96362076",
+      "linkSource": "cache",
+      "foodCategory": "broth",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 13.0
+      }
+    },
+    {
+      "canonical": "rosemary",
+      "qid": null,
+      "linkSource": "cache",
+      "foodCategory": null,
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 0.0
+      }
+    },
+    {
+      "canonical": "orange peel",
+      "qid": "Q102035949",
+      "linkSource": "cache",
+      "foodCategory": "peel",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 15.9
+      }
+    },
+    {
+      "canonical": "pasta",
+      "qid": "Q178",
+      "linkSource": "cache",
+      "foodCategory": "dish",
+      "originCountry": "Kingdom of Italy",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 375.0
+      }
+    },
+    {
+      "canonical": "parmesan",
+      "qid": "Q155922",
+      "linkSource": "cache",
+      "foodCategory": "cheese",
+      "originCountry": "Italy",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 421.0
+      }
+    },
+    {
+      "canonical": "sausage",
+      "qid": "Q131419",
+      "linkSource": "cache",
+      "foodCategory": "human food",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 188.0
+      }
+    },
+    {
+      "canonical": "ketchup",
+      "qid": "Q178143",
+      "linkSource": "cache",
+      "foodCategory": "tomato sauce",
+      "originCountry": "Ukrainian Soviet Socialist Republic",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 109.0
+      }
+    },
+    {
+      "canonical": "lemon juice",
+      "qid": "Q1375049",
+      "linkSource": "cache",
+      "foodCategory": "lemon and lime juice",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 22.0
+      }
+    },
+    {
+      "canonical": "pita bread",
+      "qid": "Q211340",
+      "linkSource": "cache",
+      "foodCategory": "flatbread",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 275.0
+      }
+    },
+    {
+      "canonical": "tzatziki",
+      "qid": "Q836538",
+      "linkSource": "cache",
+      "foodCategory": "food",
+      "originCountry": "Greece",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 50.0
+      }
+    },
+    {
+      "canonical": "chicken",
+      "qid": "Q864693",
+      "linkSource": "cache",
+      "foodCategory": "poultry meat",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 107.0
+      }
+    },
+    {
+      "canonical": "tahini",
+      "qid": "Q383389",
+      "linkSource": "cache",
+      "foodCategory": "spread",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 697.0
+      }
+    },
+    {
+      "canonical": "vinegar",
+      "qid": "Q41354",
+      "linkSource": "cache",
+      "foodCategory": "aqueous solution",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 21.0
+      }
+    },
+    {
+      "canonical": "chili",
+      "qid": "Q165199",
+      "linkSource": "cache",
+      "foodCategory": "organisms known by a particular common name",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 102.0
+      }
+    },
+    {
+      "canonical": "butternut squash",
+      "qid": "Q4169287",
+      "linkSource": "pin",
+      "foodCategory": "cultivar",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 47.0
+      }
+    },
+    {
+      "canonical": "chickpeas",
+      "qid": "Q21156930",
+      "linkSource": "cache",
+      "foodCategory": "bean",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 128.0
+      }
+    },
+    {
+      "canonical": "bulgur",
+      "qid": "Q250432",
+      "linkSource": "cache",
+      "foodCategory": "seed",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 342.0
+      }
+    },
+    {
+      "canonical": "sake",
+      "qid": "Q170219",
+      "linkSource": "cache",
+      "foodCategory": "rice wine",
+      "originCountry": "Japan",
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 134.0
+      }
+    },
+    {
+      "canonical": "greens",
+      "qid": "Q20134",
+      "linkSource": "cache",
+      "foodCategory": "type of vegetable",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 22.0
+      }
+    },
+    {
+      "canonical": "sesame seeds",
+      "qid": "Q12000036",
+      "linkSource": "cache",
+      "foodCategory": "food ingredient",
+      "originCountry": null,
+      "usda": {
+        "found": true,
+        "source": "search",
+        "kcalPer100g": 631.0
+      }
+    }
+  ],
+  "lines": [
+    {
+      "raw": "400g pork shoulder",
+      "canonical": "pork shoulder",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 400,
+        "unit": "g"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "6g Salt",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 6,
+        "unit": "g"
+      },
+      "grams": 6.0
+    },
+    {
+      "raw": "Pepper to taste",
+      "canonical": "pepper",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "2 Large bell peppers",
+      "canonical": "bell pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "100g corn salad",
+      "canonical": "corn salad",
+      "category": "produce",
+      "quantity": {
+        "amount": 100,
+        "unit": "g"
+      },
+      "grams": 100.0
+    },
+    {
+      "raw": "10g pine nuts",
+      "canonical": "pine nut",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 10,
+        "unit": "g"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "1/2 red onion, thinly sliced",
+      "canonical": "red onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 0.5,
+        "unit": "count"
+      },
+      "grams": 75.0
+    },
+    {
+      "raw": "1 tsp Balsamic vinegar",
+      "canonical": "balsamic vinegar",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "Salt and pepper",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1/2 cup Parsley, finely chopped",
+      "canonical": "parsley",
+      "category": "produce",
+      "quantity": {
+        "amount": 0.5,
+        "unit": "cup"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "1 red chilli, finely chopped",
+      "canonical": "red chilli",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "1 clove garlic, finely chopped",
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "clove"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1/4 cup olive oil",
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 0.25,
+        "unit": "cup"
+      },
+      "grams": 60.0
+    },
+    {
+      "raw": "pinch of oregano",
+      "canonical": "oregano",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "500g raw shrimp, peeled, deveined and butterflied",
+      "canonical": "shrimp",
+      "category": "fish-seafood",
+      "quantity": {
+        "amount": 500,
+        "unit": "g"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "Juice of 8 limes (about 200ml)",
+      "canonical": "lime",
+      "category": "produce",
+      "quantity": {
+        "amount": 8,
+        "unit": "count"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "3 serrano chiles, stems removed",
+      "canonical": "serrano chile",
+      "category": "produce",
+      "quantity": {
+        "amount": 3,
+        "unit": "count"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 small handful fresh cilantro",
+      "canonical": "cilantro",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "handful"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "2 garlic cloves",
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "clove"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "1 cucumber, half diced and half thinly sliced",
+      "canonical": "cucumber",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 250.0
+    },
+    {
+      "raw": "1 red onion, thinly sliced",
+      "canonical": "red onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "1 avocado, sliced",
+      "canonical": "avocado",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 170.0
+    },
+    {
+      "raw": "1 teaspoon salt",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "Tostadas or tortilla chips, to serve",
+      "canonical": "tostada",
+      "category": "other",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1 pork shank, about 1kg, fresh or lightly salted",
+      "canonical": "pork shank",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 1000.0
+    },
+    {
+      "raw": "2 litres water",
+      "canonical": "water",
+      "category": "other",
+      "quantity": {
+        "amount": 2,
+        "unit": "l"
+      },
+      "grams": 2000.0
+    },
+    {
+      "raw": "2 bay leaves",
+      "canonical": "bay leaf",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 1.0
+    },
+    {
+      "raw": "1 teaspoon whole black peppercorns",
+      "canonical": "black peppercorn",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 teaspoon whole allspice berries",
+      "canonical": "allspice berry",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 leek, sliced",
+      "canonical": "leek",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "1 small rutabaga (kålrot), peeled and diced into 2cm cubes",
+      "canonical": "rutabaga",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "3 carrots, diced into 2cm cubes",
+      "canonical": "carrot",
+      "category": "produce",
+      "quantity": {
+        "amount": 3,
+        "unit": "count"
+      },
+      "grams": 360.0
+    },
+    {
+      "raw": "1 small celeriac, peeled and diced into 2cm cubes",
+      "canonical": "celeriac",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "100g yellow split peas, rinsed",
+      "canonical": "yellow split pea",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 100,
+        "unit": "g"
+      },
+      "grams": 100.0
+    },
+    {
+      "raw": "4 potatoes, peeled and diced into 2cm cubes",
+      "canonical": "potato",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 700.0
+    },
+    {
+      "raw": "Salt and black pepper",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1 small handful fresh parsley, chopped",
+      "canonical": "parsley",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "handful"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "Flatbread or rye bread, to serve",
+      "canonical": "flatbread",
+      "category": "dry-goods",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "4 medium potatoes, sliced into 5mm rounds",
+      "canonical": "potato",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 700.0
+    },
+    {
+      "raw": "3 zucchini, sliced into 5mm rounds",
+      "canonical": "zucchini",
+      "category": "produce",
+      "quantity": {
+        "amount": 3,
+        "unit": "count"
+      },
+      "grams": 600.0
+    },
+    {
+      "raw": "4 tomatoes, sliced",
+      "canonical": "tomato",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "200g passata or grated tomato",
+      "canonical": "passata",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 200,
+        "unit": "g"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "2 red onions, thinly sliced",
+      "canonical": "red onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 300.0
+    },
+    {
+      "raw": "4 garlic cloves, sliced",
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "clove"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "100ml olive oil",
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 100,
+        "unit": "ml"
+      },
+      "grams": 100.0
+    },
+    {
+      "raw": "2 teaspoons dried oregano",
+      "canonical": "dried oregano",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "tsp"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "Crumbled feta, to serve (optional)",
+      "canonical": "feta",
+      "category": "dairy-eggs",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "800g skirt or flank steak",
+      "canonical": "skirt steak",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 800,
+        "unit": "g"
+      },
+      "grams": 800.0
+    },
+    {
+      "raw": "Juice of 2 limes",
+      "canonical": "lime",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 60.0
+    },
+    {
+      "raw": "Juice of 1 orange",
+      "canonical": "orange",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 80.0
+    },
+    {
+      "raw": "4 garlic cloves, grated",
+      "canonical": "garlic clove",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "1 small handful fresh cilantro, chopped",
+      "canonical": "cilantro",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "handful"
+      },
+      "grams": null
+    },
+    {
+      "raw": "2 tablespoons olive oil",
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "2 teaspoons ground cumin",
+      "canonical": "cumin",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "tsp"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "1 teaspoon dried oregano",
+      "canonical": "oregano",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 teaspoon black pepper",
+      "canonical": "black pepper",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "12 small corn tortillas",
+      "canonical": "corn tortilla",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 12,
+        "unit": "count"
+      },
+      "grams": 360.0
+    },
+    {
+      "raw": "1 white onion, finely diced",
+      "canonical": "white onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "2 limes, cut into wedges",
+      "canonical": "lime",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 120.0
+    },
+    {
+      "raw": "Salsa verde or salsa roja",
+      "canonical": "salsa verde",
+      "category": "canned-jarred",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "2.5 kg Pork shoulder",
+      "canonical": "pork shoulder",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 2.5,
+        "unit": "kg"
+      },
+      "grams": 2500.0
+    },
+    {
+      "raw": "1 Orange sliced in half",
+      "canonical": "orange",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 180.0
+    },
+    {
+      "raw": "1 Yellow onion sliced in half",
+      "canonical": "yellow onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "1 Cinnamon stick",
+      "canonical": "cinnamon stick",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 3.0
+    },
+    {
+      "raw": "5 Garlic cloves",
+      "canonical": "garlic clove",
+      "category": "produce",
+      "quantity": {
+        "amount": 5,
+        "unit": "count"
+      },
+      "grams": 25.0
+    },
+    {
+      "raw": "2 Bay leafs",
+      "canonical": "bay leaf",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 0.4
+    },
+    {
+      "raw": "30g salt",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 30,
+        "unit": "g"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "Roughly 500ml Water",
+      "canonical": "water",
+      "category": "other",
+      "quantity": {
+        "amount": 500,
+        "unit": "ml"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "Neutral oil",
+      "canonical": "neutral oil",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1kg pork shoulder, cut into 4cm-thick strips",
+      "canonical": "pork shoulder",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 1,
+        "unit": "kg"
+      },
+      "grams": 1000.0
+    },
+    {
+      "raw": "3 tablespoons hoisin sauce",
+      "canonical": "hoisin sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tbsp"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "2 tablespoons light soy sauce",
+      "canonical": "light soy sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 tablespoon dark soy sauce",
+      "canonical": "dark soy sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 1,
+        "unit": "tbsp"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "2 tablespoons Shaoxing wine",
+      "canonical": "shaoxing wine",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "2 cubes red fermented bean curd, plus 1 tablespoon of its liquid",
+      "canonical": "red fermented bean curd",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 2,
+        "unit": "cube"
+      },
+      "grams": 40.0
+    },
+    {
+      "raw": "2 tablespoons honey",
+      "canonical": "honey",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "2 tablespoons sugar",
+      "canonical": "sugar",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 teaspoon five-spice powder",
+      "canonical": "five-spice powder",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 teaspoon white pepper",
+      "canonical": "white pepper",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "3 tablespoons honey",
+      "canonical": "honey",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tbsp"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "2 tablespoons reserved marinade",
+      "canonical": "reserved marinade",
+      "category": "other",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "600g chicken thighs, boneless, sliced into 1cm strips",
+      "canonical": "chicken thigh",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 600,
+        "unit": "g"
+      },
+      "grams": 600.0
+    },
+    {
+      "raw": "4 garlic cloves, minced",
+      "canonical": "garlic clove",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "2 teaspoons smoked paprika",
+      "canonical": "smoked paprika",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "tsp"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "1 teaspoon chili powder",
+      "canonical": "chili powder",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 red bell pepper, sliced",
+      "canonical": "red bell pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "1 yellow bell pepper, sliced",
+      "canonical": "yellow bell pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "1 green bell pepper, sliced",
+      "canonical": "green bell pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "2 large onions, sliced",
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 300.0
+    },
+    {
+      "raw": "2 tablespoons neutral oil",
+      "canonical": "neutral oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "8 flour tortillas, warmed",
+      "canonical": "flour tortilla",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 8,
+        "unit": "count"
+      },
+      "grams": 320.0
+    },
+    {
+      "raw": "Sour cream",
+      "canonical": "sour cream",
+      "category": "dairy-eggs",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Guacamole",
+      "canonical": "guacamole",
+      "category": "canned-jarred",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Lime wedges",
+      "canonical": "lime",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Fresh cilantro",
+      "canonical": "cilantro",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "500g chicken thighs, boneless, skinless, cut into 2cm cubes",
+      "canonical": "chicken thigh",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 500,
+        "unit": "g"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "1 tablespoon Shaoxing wine",
+      "canonical": "shaoxing wine",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 1,
+        "unit": "tbsp"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "1 tablespoon light soy sauce",
+      "canonical": "light soy sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 1,
+        "unit": "tbsp"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "1 teaspoon cornstarch",
+      "canonical": "cornstarch",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "2 tablespoons Chinkiang black vinegar",
+      "canonical": "chinkiang black vinegar",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "2 teaspoons sugar",
+      "canonical": "sugar",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "teaspoons"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "2 tablespoons water",
+      "canonical": "water",
+      "category": "other",
+      "quantity": {
+        "amount": 2,
+        "unit": "tablespoons"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "12 dried Sichuan chiles, snipped, seeds shaken out",
+      "canonical": "dried Sichuan chile",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 12,
+        "unit": "count"
+      },
+      "grams": 18.0
+    },
+    {
+      "raw": "2 teaspoons whole Sichuan peppercorns",
+      "canonical": "Sichuan peppercorn",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "teaspoons"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "1 thumb ginger, sliced",
+      "canonical": "ginger",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "thumb"
+      },
+      "grams": 25.0
+    },
+    {
+      "raw": "4 spring onions, white parts only, cut into 2cm pieces",
+      "canonical": "spring onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 72.0
+    },
+    {
+      "raw": "80g unsalted roasted peanuts",
+      "canonical": "peanut",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 80,
+        "unit": "g"
+      },
+      "grams": 80.0
+    },
+    {
+      "raw": "3 tablespoons neutral oil",
+      "canonical": "neutral oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "1.2kg beef chuck, cut into 4cm cubes",
+      "canonical": "beef chuck",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 1.2,
+        "unit": "kg"
+      },
+      "grams": 1200.0
+    },
+    {
+      "raw": "3 tablespoons lard or neutral oil",
+      "canonical": "lard",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "4 large onions, finely diced",
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 880.0
+    },
+    {
+      "raw": "4 tablespoons sweet Hungarian paprika",
+      "canonical": "sweet Hungarian paprika",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 4,
+        "unit": "tablespoons"
+      },
+      "grams": 60.0
+    },
+    {
+      "raw": "1 teaspoon hot Hungarian paprika (optional)",
+      "canonical": "hot Hungarian paprika",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "teaspoon"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 teaspoon caraway seeds, lightly crushed",
+      "canonical": "caraway seed",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "teaspoon"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "2 tablespoons tomato paste",
+      "canonical": "tomato paste",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 2,
+        "unit": "tablespoons"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "2 red bell peppers, diced",
+      "canonical": "red bell pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 380.0
+    },
+    {
+      "raw": "2 ripe tomatoes, diced",
+      "canonical": "tomato",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 330.0
+    },
+    {
+      "raw": "1.5 litres beef stock or water",
+      "canonical": "beef stock",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 1.5,
+        "unit": "litres"
+      },
+      "grams": 1500.0
+    },
+    {
+      "raw": "4 medium potatoes, peeled and cut into 3cm chunks",
+      "canonical": "potato",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 800.0
+    },
+    {
+      "raw": "Sour cream and parsley, to serve",
+      "canonical": "sour cream",
+      "category": "dairy-eggs",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "2 pork loin steaks, about 150g each",
+      "canonical": "pork loin steak",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 300.0
+    },
+    {
+      "raw": "50g plain flour",
+      "canonical": "plain flour",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 50,
+        "unit": "g"
+      },
+      "grams": 50.0
+    },
+    {
+      "raw": "1 egg, beaten",
+      "canonical": "egg",
+      "category": "dairy-eggs",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 50.0
+    },
+    {
+      "raw": "80g panko breadcrumbs",
+      "canonical": "panko breadcrumb",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 80,
+        "unit": "g"
+      },
+      "grams": 80.0
+    },
+    {
+      "raw": "Neutral oil, for frying",
+      "canonical": "neutral oil",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1 onion, thinly sliced",
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "200ml dashi",
+      "canonical": "dashi",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 200,
+        "unit": "ml"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "3 tablespoons soy sauce",
+      "canonical": "soy sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "2 tablespoons mirin",
+      "canonical": "mirin",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tablespoons"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 tablespoon sugar",
+      "canonical": "sugar",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tablespoon"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "4 eggs, lightly beaten",
+      "canonical": "egg",
+      "category": "dairy-eggs",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "2 spring onions, sliced",
+      "canonical": "spring onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 36.0
+    },
+    {
+      "raw": "2 portions hot steamed rice",
+      "canonical": "steamed rice",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 2,
+        "unit": "portions"
+      },
+      "grams": 360.0
+    },
+    {
+      "raw": "400g Chicken thighs",
+      "canonical": "chicken thigh",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 400,
+        "unit": "g"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "200g Hummus",
+      "canonical": "hummus",
+      "category": "other",
+      "quantity": {
+        "amount": 200,
+        "unit": "g"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "1 Bell pepper cut into chunks",
+      "canonical": "bell pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 190.0
+    },
+    {
+      "raw": "1 Onion cut into chunks",
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "2-3 garlic cloves thinly sliced",
+      "canonical": "garlic clove",
+      "category": "produce",
+      "quantity": {
+        "amount": 2.5,
+        "unit": "cloves"
+      },
+      "grams": 12.5
+    },
+    {
+      "raw": "1 Lemon cut in half",
+      "canonical": "lemon",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 110.0
+    },
+    {
+      "raw": "Spices for marinating chicken",
+      "canonical": "spice",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Olive oil",
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "600g pork belly, skin on, diced into 1cm pieces",
+      "canonical": "pork belly",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 600,
+        "unit": "g"
+      },
+      "grams": 600.0
+    },
+    {
+      "raw": "6 shallots, thinly sliced",
+      "canonical": "shallot",
+      "category": "produce",
+      "quantity": {
+        "amount": 6,
+        "unit": "count"
+      },
+      "grams": 210.0
+    },
+    {
+      "raw": "4 tablespoons dark soy sauce",
+      "canonical": "dark soy sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 4,
+        "unit": "tablespoons"
+      },
+      "grams": 60.0
+    },
+    {
+      "raw": "3 tablespoons Shaoxing rice wine",
+      "canonical": "Shaoxing rice wine",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "2 tablespoons rock sugar",
+      "canonical": "rock sugar",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "tablespoons"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 star anise",
+      "canonical": "star anise",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 1.5
+    },
+    {
+      "raw": "1 cinnamon stick",
+      "canonical": "cinnamon stick",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 4.0
+    },
+    {
+      "raw": "4 dried shiitake mushrooms, soaked and diced",
+      "canonical": "dried shiitake mushroom",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 24.0
+    },
+    {
+      "raw": "4 soft-boiled eggs, peeled",
+      "canonical": "egg",
+      "category": "dairy-eggs",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "500ml water or pork stock",
+      "canonical": "water",
+      "category": "other",
+      "quantity": {
+        "amount": 500,
+        "unit": "ml"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "Steamed rice, to serve",
+      "canonical": "steamed rice",
+      "category": "dry-goods",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Pickled greens, to serve",
+      "canonical": "pickled greens",
+      "category": "canned-jarred",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "700g Minced beef",
+      "canonical": "minced beef",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 700,
+        "unit": "g"
+      },
+      "grams": 700.0
+    },
+    {
+      "raw": "100g Bacon",
+      "canonical": "bacon",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 100,
+        "unit": "g"
+      },
+      "grams": 100.0
+    },
+    {
+      "raw": "2 Medium onion, finely diced",
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 300.0
+    },
+    {
+      "raw": "2 Large carrots, finely diced",
+      "canonical": "carrot",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "1 Stalk celery, finely diced",
+      "canonical": "celery",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "stalk"
+      },
+      "grams": 40.0
+    },
+    {
+      "raw": "3 cloves garlic, minced",
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": {
+        "amount": 3,
+        "unit": "cloves"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "3 Tbsp tomato pureé (double concentrated)",
+      "canonical": "tomato puree",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "Tbsp"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "1/3 Bottle red wine (cheap)",
+      "canonical": "red wine",
+      "category": "other",
+      "quantity": {
+        "amount": 0.33,
+        "unit": "bottle"
+      },
+      "grams": 250.0
+    },
+    {
+      "raw": "1 can of tomatoes",
+      "canonical": "canned tomatoes",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 1,
+        "unit": "can"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "500 ml stock (beef or chicken)",
+      "canonical": "beef stock",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 500,
+        "unit": "ml"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "Thyme or rosemary",
+      "canonical": "thyme",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1 Bay leaf",
+      "canonical": "bay leaf",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "leaf"
+      },
+      "grams": 0.2
+    },
+    {
+      "raw": "Parmesan rind (Only if you have)",
+      "canonical": "parmesan rind",
+      "category": "dairy-eggs",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "4 sweet peppers, sliced into strips",
+      "canonical": "sweet pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 600.0
+    },
+    {
+      "raw": "3 garlic cloves, sliced",
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": {
+        "amount": 3,
+        "unit": "cloves"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "400g ripe tomatoes, roughly chopped",
+      "canonical": "tomato",
+      "category": "produce",
+      "quantity": {
+        "amount": 400,
+        "unit": "g"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "2 tablespoons capers",
+      "canonical": "capers",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 2,
+        "unit": "tablespoons"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "2 tablespoons red wine vinegar",
+      "canonical": "red wine vinegar",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tablespoons"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 teaspoon sugar",
+      "canonical": "sugar",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 1,
+        "unit": "teaspoon"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "3 tablespoons olive oil",
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "1 small handful fresh basil",
+      "canonical": "basil",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "handful"
+      },
+      "grams": null
+    },
+    {
+      "raw": "1.2kg pork shoulder, boneless, cut into 4 large pieces",
+      "canonical": "pork shoulder",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 1.2,
+        "unit": "kg"
+      },
+      "grams": 1200.0
+    },
+    {
+      "raw": "1 onion, finely diced",
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "2 carrots, finely diced",
+      "canonical": "carrot",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 120.0
+    },
+    {
+      "raw": "2 celery stalks, finely diced",
+      "canonical": "celery",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "stalks"
+      },
+      "grams": 80.0
+    },
+    {
+      "raw": "200ml dry white wine",
+      "canonical": "dry white wine",
+      "category": "other",
+      "quantity": {
+        "amount": 200,
+        "unit": "ml"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "1 can peeled tomatoes",
+      "canonical": "peeled tomatoes",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 1,
+        "unit": "can"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "500ml chicken stock",
+      "canonical": "chicken stock",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 500,
+        "unit": "ml"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "1 small handful fresh rosemary",
+      "canonical": "rosemary",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "handful"
+      },
+      "grams": null
+    },
+    {
+      "raw": "4 bay leaves",
+      "canonical": "bay leaf",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 4,
+        "unit": "leaves"
+      },
+      "grams": 0.8
+    },
+    {
+      "raw": "1 strip orange peel",
+      "canonical": "orange peel",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "strip"
+      },
+      "grams": null
+    },
+    {
+      "raw": "Pasta (pappardelle or rigatoni), to serve",
+      "canonical": "pasta",
+      "category": "dry-goods",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Grated Parmesan, to serve",
+      "canonical": "parmesan",
+      "category": "dairy-eggs",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "2 Sausages",
+      "canonical": "sausage",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 140.0
+    },
+    {
+      "raw": "3 Strips of bacon (optional)",
+      "canonical": "bacon",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 3,
+        "unit": "strips"
+      },
+      "grams": 60.0
+    },
+    {
+      "raw": "2 Medium size potatoes",
+      "canonical": "potato",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 340.0
+    },
+    {
+      "raw": "1 Medium size onion",
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "Ketchup for topping",
+      "canonical": "ketchup",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "800g pork shoulder, cut into 3cm cubes",
+      "canonical": "pork shoulder",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 800,
+        "unit": "g"
+      },
+      "grams": 800.0
+    },
+    {
+      "raw": "4 tablespoons olive oil",
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 4,
+        "unit": "tablespoons"
+      },
+      "grams": 60.0
+    },
+    {
+      "raw": "Juice of 1 lemon",
+      "canonical": "lemon juice",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "lemon"
+      },
+      "grams": 40.0
+    },
+    {
+      "raw": "4 pita breads, warmed",
+      "canonical": "pita bread",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 240.0
+    },
+    {
+      "raw": "2 tomatoes, sliced",
+      "canonical": "tomato",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 240.0
+    },
+    {
+      "raw": "Tzatziki",
+      "canonical": "tzatziki",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Lemon wedges",
+      "canonical": "lemon",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "400g Chicken",
+      "canonical": "chicken",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 400,
+        "unit": "g"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "Tahini",
+      "canonical": "tahini",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Honey",
+      "canonical": "honey",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Soy sauce",
+      "canonical": "soy sauce",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Vinegar",
+      "canonical": "vinegar",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Chili",
+      "canonical": "chili",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Garlic",
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Salt",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1 Butternut squash",
+      "canonical": "butternut squash",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 700.0
+    },
+    {
+      "raw": "1 Can chickpeas",
+      "canonical": "chickpeas",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 1,
+        "unit": "can"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "3 Cloves of garlic",
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": {
+        "amount": 3,
+        "unit": "cloves"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "Squeeze of lemon",
+      "canonical": "lemon",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Bulgur",
+      "canonical": "bulgur",
+      "category": "dry-goods",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1/2 Red onion",
+      "canonical": "red onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 0.5,
+        "unit": "count"
+      },
+      "grams": 75.0
+    },
+    {
+      "raw": "Parsley",
+      "canonical": "parsley",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "4 chicken thighs, boneless, skin on (about 500g)",
+      "canonical": "chicken thigh",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "1 teaspoon neutral oil",
+      "canonical": "neutral oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 1,
+        "unit": "teaspoon"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "3 tablespoons mirin",
+      "canonical": "mirin",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "3 tablespoons sake",
+      "canonical": "sake",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "Steamed greens, to serve",
+      "canonical": "greens",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Toasted sesame seeds, to serve",
+      "canonical": "sesame seeds",
+      "category": "dry-goods",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}
