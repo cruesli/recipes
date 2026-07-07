@@ -19,6 +19,10 @@ export interface RecipeData {
   ingredients: string[];
   /** Raw cuisine silhouette SVG for the photo-less card placeholder */
   silhouette?: string | null;
+  // Facet fields (only populated on /recipes; undefined elsewhere)
+  dietary?: string[];
+  kcalPerServing?: number | null;
+  proteinPerServing?: number | null;
 }
 
 export interface IngredientSection {
