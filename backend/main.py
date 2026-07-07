@@ -1,42 +1,18 @@
 import json
 import os
 from pathlib import Path
-from typing import Optional
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
-import openai 
+import openai
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.graph import RecipeKnowledgeGraph, load_graph
-from backend.models import (
-    FilterResponse,
-    IngredientNutritionResponse,
-    QueryRequest,
-    QueryResponse,
-    RecipeDetail,
-    RecipeSummary,
-    WikidataResponse,
-)
-from backend.normaliser import get_model, make_client
+from backend.models import QueryFiltersResponse, QueryRequest
+from backend.normaliser import _parse_response, get_model, make_client
 
 load_dotenv(Path.home() / ".env")
-
-_GRAPH_PATH = Path(__file__).parent / "graph.ttl"
-
-_kg: Optional[RecipeKnowledgeGraph] = None
-
-
-def get_kg() -> RecipeKnowledgeGraph:
-    global _kg
-    if _kg is None:
-        if _GRAPH_PATH.exists():
-            _kg = load_graph(_GRAPH_PATH)
-        else:
-            _kg = RecipeKnowledgeGraph()
-    return _kg
 
 
 def get_openai_client() -> openai.OpenAI:
@@ -162,80 +138,33 @@ def interpret_query(question: str, client: openai.OpenAI) -> dict:
         ],
     )
     text = response.choices[0].message.content.strip()
-    print(f"LLM raw response: {repr(text)}")  # debug
     try:
-        return json.loads(text)
+        # _parse_response strips markdown fences (Gemini wraps JSON in ```json ... ```)
+        result = _parse_response(text)
+        return result if isinstance(result, dict) else {}
     except (json.JSONDecodeError, ValueError):
         return {}
 
 
-app = FastAPI(title="Recipe Knowledge Graph API", version="1.0.0")
+app = FastAPI(title="Recipe NL Query Service", version="2.0.0")
 
+# CORS: production origin(s) + local dev, from env (comma-separated).
+_ALLOWED_ORIGINS = [
+    o.strip() for o in
+    os.getenv("ALLOWED_ORIGINS", "https://cruesli.github.io,http://localhost:4321").split(",")
+    if o.strip()
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
+    allow_origins=_ALLOWED_ORIGINS,
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
 
 
 @app.get("/health")
-def health(kg: RecipeKnowledgeGraph = Depends(get_kg)):
-    return {"status": "ok", "triples": len(kg.graph)}
-
-
-@app.get("/api/v1/recipes", response_model=list[RecipeSummary])
-def list_recipes(kg: RecipeKnowledgeGraph = Depends(get_kg)):
-    return kg.get_all_recipes()
-
-
-# /filter must be registered before /{slug} so FastAPI does not treat "filter" as a slug
-@app.get("/api/v1/recipes/filter", response_model=FilterResponse)
-def filter_recipes(
-    min_protein: Optional[float] = None,
-    max_kcal: Optional[float] = None,
-    max_time: Optional[int] = None,
-    cuisine: Optional[str] = None,
-    dietary: Optional[str] = None,
-    max_fat: Optional[float] = None,
-    max_carbs: Optional[float] = None,
-    max_sodium: Optional[float] = None,
-    min_fibre: Optional[float] = None,
-    origin_country: Optional[str] = None,
-    food_category: Optional[str] = None,
-    kg: RecipeKnowledgeGraph = Depends(get_kg),
-):
-    return kg.filter_recipes(
-        min_protein=min_protein, max_kcal=max_kcal, max_time=max_time,
-        cuisine=cuisine, dietary=dietary, max_fat=max_fat, max_carbs=max_carbs,
-        max_sodium=max_sodium, min_fibre=min_fibre,
-        origin_country=origin_country, food_category=food_category,
-    )
-
-
-@app.get("/api/v1/recipes/{slug}", response_model=RecipeDetail)
-def get_recipe(slug: str, kg: RecipeKnowledgeGraph = Depends(get_kg)):
-    detail = kg.get_recipe_by_slug(slug)
-    if detail is None:
-        raise HTTPException(status_code=404, detail=f"Recipe '{slug}' not found")
-    return detail
-
-
-@app.get("/api/v1/ingredients/{ingredient}/nutrition", response_model=IngredientNutritionResponse)
-def get_ingredient_nutrition(ingredient: str, kg: RecipeKnowledgeGraph = Depends(get_kg)):
-    result = kg.get_ingredient_nutrition(ingredient)
-    if result is None:
-        raise HTTPException(status_code=404, detail=f"Ingredient '{ingredient}' not found")
-    return result
-
-
-@app.get("/api/v1/ingredients/{ingredient}/wikidata", response_model=WikidataResponse)
-def get_ingredient_wikidata(ingredient: str, kg: RecipeKnowledgeGraph = Depends(get_kg)):
-    result = kg.get_ingredient_wikidata(ingredient)
-    if result is None:
-        raise HTTPException(status_code=404, detail=f"Ingredient '{ingredient}' not found")
-    return result
+def health():
+    return {"status": "ok", "model": get_model()}
 
 
 _KNOWN_FILTER_KEYS = frozenset({
@@ -243,19 +172,13 @@ _KNOWN_FILTER_KEYS = frozenset({
     "max_fat", "max_carbs", "max_sodium", "min_fibre",
     "origin_country", "food_category",
 })
- 
- 
-@app.post("/api/v1/query", response_model=QueryResponse)
+
+
+@app.post("/api/v1/query", response_model=QueryFiltersResponse)
 def nl_query(
     body: QueryRequest,
-    kg: RecipeKnowledgeGraph = Depends(get_kg),
     llm: openai.OpenAI = Depends(get_openai_client),
 ):
     raw_filters = interpret_query(body.question, llm)
     filters = {k: v for k, v in raw_filters.items() if k in _KNOWN_FILTER_KEYS}
-    result = kg.filter_recipes(**filters)
-    return QueryResponse(
-        question=body.question,
-        interpreted_filters=result.filters_applied,
-        results=result.results,
-    )
+    return QueryFiltersResponse(question=body.question, filters=filters)

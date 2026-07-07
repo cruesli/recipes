@@ -119,7 +119,7 @@ class QueryRequest(BaseModel):
     question: str
 
 
-class QueryResponse(BaseModel):
+class QueryFiltersResponse(BaseModel):
+    """Stateless NL-query result: extracted filters only, no graph matching."""
     question: str
-    interpreted_filters: Dict[str, Any]
-    results: List[RecipeSummary]
+    filters: Dict[str, Any]

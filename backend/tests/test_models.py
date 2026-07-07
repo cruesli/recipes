@@ -9,7 +9,7 @@ from backend.models import (
     WikidataResponse,
     FilterResponse,
     QueryRequest,
-    QueryResponse,
+    QueryFiltersResponse,
 )
 
 
@@ -268,24 +268,17 @@ def test_query_request():
     assert "high-protein" in q.question
 
 
-# --- QueryResponse ---
+# --- QueryFiltersResponse (stateless: filters only, no results) ---
 
-def test_query_response():
-    result = RecipeSummary(
-        slug="lebanese-chicken",
-        title="Lebanese Chicken, Hummus and Grilled Vegetables",
-        cuisine="middle-eastern",
-        total_time_minutes=20,
-    )
-    r = QueryResponse(
+def test_query_filters_response():
+    r = QueryFiltersResponse(
         question="Show me a high-protein recipe",
-        interpreted_filters={"min_protein_per_serving_g": 30, "max_total_time_minutes": 30},
-        results=[result],
+        filters={"min_protein": 30, "max_time": 30},
     )
-    assert r.interpreted_filters["min_protein_per_serving_g"] == 30
-    assert len(r.results) == 1
+    assert r.filters["min_protein"] == 30
+    assert r.question == "Show me a high-protein recipe"
 
 
-def test_query_response_empty_results():
-    r = QueryResponse(question="impossible query", interpreted_filters={}, results=[])
-    assert r.results == []
+def test_query_filters_response_empty():
+    r = QueryFiltersResponse(question="impossible query", filters={})
+    assert r.filters == {}
