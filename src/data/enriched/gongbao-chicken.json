@@ -1,0 +1,202 @@
+{
+  "slug": "gongbao-chicken",
+  "version": 1,
+  "servings": 3,
+  "nutritionPerServing": {
+    "kcal": 698,
+    "proteinG": 28.0,
+    "fatG": 52.6,
+    "carbsG": 35.8,
+    "fibreG": 3.3,
+    "sodiumMg": 732
+  },
+  "ingredients": [
+    {
+      "raw": "500g chicken thighs, boneless, skinless, cut into 2cm cubes",
+      "section": "Chicken and marinade",
+      "canonical": "chicken thigh",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 500,
+        "unit": "g"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "1 tablespoon Shaoxing wine",
+      "section": "Chicken and marinade",
+      "canonical": "shaoxing wine",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 1,
+        "unit": "tbsp"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "1 tablespoon light soy sauce",
+      "section": "Chicken and marinade",
+      "canonical": "light soy sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 1,
+        "unit": "tbsp"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "1 teaspoon cornstarch",
+      "section": "Chicken and marinade",
+      "canonical": "cornstarch",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "2 tablespoons Chinkiang black vinegar",
+      "section": "Sauce",
+      "canonical": "chinkiang black vinegar",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 tablespoon light soy sauce",
+      "section": "Sauce",
+      "canonical": "light soy sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 1,
+        "unit": "tbsp"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "1 tablespoon Shaoxing wine",
+      "section": "Sauce",
+      "canonical": "shaoxing wine",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 1,
+        "unit": "tbsp"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "2 teaspoons sugar",
+      "section": "Sauce",
+      "canonical": "sugar",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "teaspoons"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "1 teaspoon cornstarch",
+      "section": "Sauce",
+      "canonical": "cornstarch",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "2 tablespoons water",
+      "section": "Sauce",
+      "canonical": "water",
+      "category": "other",
+      "quantity": {
+        "amount": 2,
+        "unit": "tablespoons"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "12 dried Sichuan chiles, snipped, seeds shaken out",
+      "section": "Stir-fry",
+      "canonical": "dried Sichuan chile",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 12,
+        "unit": "count"
+      },
+      "grams": 18.0
+    },
+    {
+      "raw": "2 teaspoons whole Sichuan peppercorns",
+      "section": "Stir-fry",
+      "canonical": "Sichuan peppercorn",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "teaspoons"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "4 garlic cloves, sliced",
+      "section": "Stir-fry",
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "clove"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "1 thumb ginger, sliced",
+      "section": "Stir-fry",
+      "canonical": "ginger",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "thumb"
+      },
+      "grams": 25.0
+    },
+    {
+      "raw": "4 spring onions, white parts only, cut into 2cm pieces",
+      "section": "Stir-fry",
+      "canonical": "spring onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 72.0
+    },
+    {
+      "raw": "80g unsalted roasted peanuts",
+      "section": "Stir-fry",
+      "canonical": "peanut",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 80,
+        "unit": "g"
+      },
+      "grams": 80.0
+    },
+    {
+      "raw": "3 tablespoons neutral oil",
+      "section": "Stir-fry",
+      "canonical": "neutral oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    }
+  ]
+}

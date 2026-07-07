@@ -1,0 +1,198 @@
+{
+  "slug": "tahini-chicken-with-butternut-hummus-and-bulgur-salad",
+  "version": 1,
+  "servings": 2,
+  "nutritionPerServing": {
+    "kcal": 664,
+    "proteinG": 63.3,
+    "fatG": 6.8,
+    "carbsG": 89.1,
+    "fibreG": 17.2,
+    "sodiumMg": 822
+  },
+  "ingredients": [
+    {
+      "raw": "400g Chicken",
+      "section": "Chicken marinade",
+      "canonical": "chicken",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 400,
+        "unit": "g"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "Tahini",
+      "section": "Chicken marinade",
+      "canonical": "tahini",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Honey",
+      "section": "Chicken marinade",
+      "canonical": "honey",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Soy sauce",
+      "section": "Chicken marinade",
+      "canonical": "soy sauce",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Vinegar",
+      "section": "Chicken marinade",
+      "canonical": "vinegar",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Chili",
+      "section": "Chicken marinade",
+      "canonical": "chili",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Garlic",
+      "section": "Chicken marinade",
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Salt",
+      "section": "Chicken marinade",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1 Butternut squash",
+      "section": "Butternut squash hummus",
+      "canonical": "butternut squash",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 700.0
+    },
+    {
+      "raw": "1 Can chickpeas",
+      "section": "Butternut squash hummus",
+      "canonical": "chickpeas",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 1,
+        "unit": "can"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "3 Cloves of garlic",
+      "section": "Butternut squash hummus",
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": {
+        "amount": 3,
+        "unit": "cloves"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "Olive oil",
+      "section": "Butternut squash hummus",
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Squeeze of lemon",
+      "section": "Butternut squash hummus",
+      "canonical": "lemon",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Tahini",
+      "section": "Butternut squash hummus",
+      "canonical": "tahini",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Salt",
+      "section": "Butternut squash hummus",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Bulgur",
+      "section": "Bulgur Salad",
+      "canonical": "bulgur",
+      "category": "dry-goods",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1/2 Red onion",
+      "section": "Bulgur Salad",
+      "canonical": "red onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 0.5,
+        "unit": "count"
+      },
+      "grams": 75.0
+    },
+    {
+      "raw": "Parsley",
+      "section": "Bulgur Salad",
+      "canonical": "parsley",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Squeeze of lemon",
+      "section": "Bulgur Salad",
+      "canonical": "lemon",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Olive oil",
+      "section": "Bulgur Salad",
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Salt",
+      "section": "Bulgur Salad",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

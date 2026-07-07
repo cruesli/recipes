@@ -2,13 +2,21 @@ import { useState, useEffect } from 'react';
 import { Search, ChevronDown, ChevronRight } from 'lucide-react';
 import { RecipeCard } from './RecipeCard';
 import { PLANNER_ADD_TYPE, usePlanner, type RecipeData } from './usePlanner';
+import { matchesFacets, extractedToFacets } from '../lib/recipeFilter.mjs';
 
 interface Props {
   recipes: RecipeData[];
   basePath: string;
   previewLimit?: number;  // if set, limit to N cards when no search active
   viewAllHref?: string;   // show "View all N →" link when provided
+  facets?: boolean;       // /recipes only: dietary/time/nutrition facets + NL search
+  nlpApiUrl?: string | null;  // NL-query service base URL; null hides the search line
 }
+
+const toNum = (s: string): number | null => {
+  const n = parseFloat(s);
+  return Number.isFinite(n) ? n : null;
+};
 
 const EYEBROW: React.CSSProperties = {
   fontFamily: "'EB Garamond', Georgia, serif",
@@ -38,13 +46,84 @@ const INPUT: React.CSSProperties = {
   padding: '7px 10px',
 };
 
-export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewAllHref }: Props) {
+const FACET_LABEL: React.CSSProperties = {
+  display: 'inline-flex', alignItems: 'baseline', gap: '5px',
+  fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)',
+  textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--color-ink-muted)',
+};
+
+const FACET_NUM: React.CSSProperties = {
+  width: '3.5em', border: 'none', borderBottom: '1px solid var(--color-hairline)',
+  backgroundColor: 'transparent', color: 'var(--color-ink)',
+  fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)',
+  textAlign: 'center', outline: 'none', padding: '2px 0',
+};
+
+export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewAllHref, facets, nlpApiUrl }: Props) {
   const [collectionQuery, setCollectionQuery] = useState('');
   const [cuisineFilter, setCuisineFilter] = useState<string | null>(null);
   const [filterOpen, setFilterOpen] = useState(false);
   const [armedDay, setArmedDay] = useState<string | null>(null);
 
+  // Facet state (only used when `facets`)
+  const [dietary, setDietary] = useState('');       // '' | 'vegetarian' | 'vegan'
+  const [maxTime, setMaxTime] = useState('');
+  const [maxKcal, setMaxKcal] = useState('');
+  const [minProtein, setMinProtein] = useState('');
+
+  // NL search state
+  const [nlQuery, setNlQuery] = useState('');
+  const [nlStatus, setNlStatus] = useState<'idle' | 'pending' | 'error'>('idle');
+
   const { mealCount } = usePlanner();
+
+  function clearFacets() {
+    setCollectionQuery(''); setCuisineFilter(null);
+    setDietary(''); setMaxTime(''); setMaxKcal(''); setMinProtein('');
+  }
+
+  async function runNlSearch(e: React.FormEvent) {
+    e.preventDefault();
+    const question = nlQuery.trim();
+    if (!question || !nlpApiUrl) return;
+    setNlStatus('pending');
+    // Generous timeout — the free-tier service may be cold-starting (~30–60s).
+    const attempt = async (): Promise<Record<string, unknown>> => {
+      const ctrl = new AbortController();
+      const timer = setTimeout(() => ctrl.abort(), 60000);
+      try {
+        const res = await fetch(`${nlpApiUrl}/api/v1/query`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ question }),
+          signal: ctrl.signal,
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        return data.filters ?? {};
+      } finally {
+        clearTimeout(timer);
+      }
+    };
+    try {
+      let filters: Record<string, unknown>;
+      try {
+        filters = await attempt();
+      } catch {
+        filters = await attempt();  // one retry for cold start
+      }
+      const f = extractedToFacets(filters);
+      clearFacets();
+      if (f.cuisine) setCuisineFilter(f.cuisine);
+      if (f.dietary) setDietary(f.dietary);
+      if (f.maxTime != null) setMaxTime(String(f.maxTime));
+      if (f.maxKcal != null) setMaxKcal(String(f.maxKcal));
+      if (f.minProtein != null) setMinProtein(String(f.minProtein));
+      setNlStatus('idle');
+    } catch {
+      setNlStatus('error');
+    }
+  }
 
   // Sync armed day from PlannerDrawer
   useEffect(() => {
@@ -59,15 +138,19 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
     a.localeCompare(b)
   );
 
-  const collectionRecipes = recipes.filter((r) => {
-    const q = collectionQuery.toLowerCase();
-    const matchesQ = !q || r.title.toLowerCase().includes(q) || r.cuisine.toLowerCase().includes(q);
-    const matchesC = !cuisineFilter || r.cuisine.toLowerCase() === cuisineFilter.toLowerCase();
-    return matchesQ && matchesC;
-  });
+  const facetState = {
+    query: collectionQuery,
+    cuisine: cuisineFilter,
+    dietary,
+    maxTime: toNum(maxTime),
+    maxKcal: toNum(maxKcal),
+    minProtein: toNum(minProtein),
+  };
+  const collectionRecipes = recipes.filter((r) => matchesFacets(r, facetState));
 
   // When previewLimit is set and no active filter, cap the display (searching shows all matches)
-  const searchActive = collectionQuery.length > 0 || cuisineFilter !== null;
+  const facetsActive = dietary !== '' || maxTime !== '' || maxKcal !== '' || minProtein !== '';
+  const searchActive = collectionQuery.length > 0 || cuisineFilter !== null || facetsActive;
   const displayedRecipes = (previewLimit && !searchActive)
     ? collectionRecipes.slice(0, previewLimit)
     : collectionRecipes;
@@ -129,6 +212,30 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
           }}>
             All recipes
           </h2>
+
+          {/* NL search line — quiet ask-in-a-sentence; populates the facets below */}
+          {facets && nlpApiUrl && (
+            <form onSubmit={runNlSearch} style={{ marginBottom: 'var(--space-sm)' }}>
+              <input
+                type="text"
+                value={nlQuery}
+                onChange={(e) => setNlQuery(e.target.value)}
+                placeholder="Ask for something — quick, filling, vegetarian…"
+                aria-label="Ask for a recipe in your own words"
+                style={{
+                  width: '100%', boxSizing: 'border-box',
+                  border: 'none', borderBottom: '1px solid var(--color-hairline)',
+                  backgroundColor: 'transparent', color: 'var(--color-ink)',
+                  fontFamily: SERIF, fontSize: 'var(--text-body)', fontStyle: 'italic',
+                  padding: '6px 2px', outline: 'none',
+                }}
+              />
+              <p style={{ fontFamily: SERIF, fontSize: 'var(--text-eyebrow)', color: 'var(--color-ink-muted)', margin: 'var(--space-2xs) 0 0', minHeight: '1.1em' }}>
+                {nlStatus === 'pending' && 'Waking the kitchen…'}
+                {nlStatus === 'error' && 'Search is asleep — the filters below still work.'}
+              </p>
+            </form>
+          )}
 
           {/* Search + cuisine filter */}
           <div style={{ display: 'flex', gap: 'var(--space-xs)', marginBottom: 'var(--space-xs)', alignItems: 'stretch' }}>
@@ -196,6 +303,45 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
               )}
             </div>
           </div>
+
+          {/* Facet controls — dietary toggles + numeric bounds */}
+          {facets && (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-md)', alignItems: 'baseline', margin: '0 0 var(--space-sm)' }}>
+              <div style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'baseline' }}>
+                {([['', 'All'], ['vegetarian', 'Vegetarian'], ['vegan', 'Vegan']] as [string, string][]).map(([val, label]) => (
+                  <button
+                    key={val}
+                    onClick={() => setDietary(val)}
+                    style={{
+                      background: 'none', border: 'none', cursor: 'pointer', padding: '2px 0',
+                      fontFamily: SERIF, fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.18em',
+                      color: dietary === val ? 'var(--color-oxblood)' : 'var(--color-ink-muted)',
+                      borderBottom: dietary === val ? '1px solid var(--color-oxblood)' : '1px solid transparent',
+                    }}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+              <label style={FACET_LABEL}>Max time
+                <input type="number" inputMode="numeric" min="0" value={maxTime} onChange={(e) => setMaxTime(e.target.value)} className="onum" style={FACET_NUM} /> min
+              </label>
+              <label style={FACET_LABEL}>Max kcal
+                <input type="number" inputMode="numeric" min="0" value={maxKcal} onChange={(e) => setMaxKcal(e.target.value)} className="onum" style={FACET_NUM} />
+              </label>
+              <label style={FACET_LABEL}>Min protein
+                <input type="number" inputMode="numeric" min="0" value={minProtein} onChange={(e) => setMinProtein(e.target.value)} className="onum" style={FACET_NUM} /> g
+              </label>
+              {searchActive && (
+                <button
+                  onClick={clearFacets}
+                  style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px 0', fontFamily: SERIF, fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--color-ink-muted)' }}
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+          )}
 
           <p className="onum" style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', color: 'var(--color-ink-muted)', margin: 0 }}>
             {collectionRecipes.length} recipe{collectionRecipes.length !== 1 ? 's' : ''}

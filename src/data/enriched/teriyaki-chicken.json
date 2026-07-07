@@ -1,0 +1,105 @@
+{
+  "slug": "teriyaki-chicken",
+  "version": 1,
+  "servings": 2,
+  "nutritionPerServing": {
+    "kcal": 642,
+    "proteinG": 36.9,
+    "fatG": 44.4,
+    "carbsG": 25.4,
+    "fibreG": 0.2,
+    "sodiumMg": 1551
+  },
+  "ingredients": [
+    {
+      "raw": "4 chicken thighs, boneless, skin on (about 500g)",
+      "section": null,
+      "canonical": "chicken thigh",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "1 teaspoon neutral oil",
+      "section": null,
+      "canonical": "neutral oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 1,
+        "unit": "teaspoon"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "3 tablespoons soy sauce",
+      "section": null,
+      "canonical": "soy sauce",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "3 tablespoons mirin",
+      "section": null,
+      "canonical": "mirin",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "3 tablespoons sake",
+      "section": null,
+      "canonical": "sake",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "1 tablespoon sugar",
+      "section": null,
+      "canonical": "sugar",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tablespoon"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "Steamed rice, to serve",
+      "section": null,
+      "canonical": "steamed rice",
+      "category": "dry-goods",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Steamed greens, to serve",
+      "section": null,
+      "canonical": "greens",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Toasted sesame seeds, to serve",
+      "section": null,
+      "canonical": "sesame seeds",
+      "category": "dry-goods",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

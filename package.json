@@ -9,6 +9,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "test": "node --test scripts/*.test.mjs",
+    "ingest": "backend/.venv/bin/python -m backend.ingest",
     "astro": "astro"
   },
   "dependencies": {

@@ -1,0 +1,1097 @@
+{
+  "pork shoulder": {
+    "qid": "Q2255700",
+    "uri": "http://www.wikidata.org/entity/Q2255700",
+    "label": "pork shoulder",
+    "food_category": "pork",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "orange": {
+    "qid": "Q13191",
+    "uri": "http://www.wikidata.org/entity/Q13191",
+    "label": "orange",
+    "food_category": "common name",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "yellow onion": {
+    "qid": "Q8051898",
+    "uri": "http://www.wikidata.org/entity/Q8051898",
+    "label": "yellow onion",
+    "food_category": "onion",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "cinnamon stick": {
+    "qid": "Q30038886",
+    "uri": "http://www.wikidata.org/entity/Q30038886",
+    "label": "cinnamon stick",
+    "food_category": "ingredient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "garlic clove": {
+    "qid": "Q28966859",
+    "uri": "http://www.wikidata.org/entity/Q28966859",
+    "label": "garlic clove",
+    "food_category": "food ingredient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "bay leaf": {
+    "qid": "Q72444924",
+    "uri": "http://www.wikidata.org/entity/Q72444924",
+    "label": "bay oil",
+    "food_category": "essential oil",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "salt": {
+    "qid": "Q11254",
+    "uri": "http://www.wikidata.org/entity/Q11254",
+    "label": "table salt",
+    "food_category": "mixture",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "water": {
+    "qid": "Q283",
+    "uri": "http://www.wikidata.org/entity/Q283",
+    "label": "water",
+    "food_category": "type of chemical entity",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "neutral oil": {
+    "qid": "Q170885",
+    "uri": "http://www.wikidata.org/entity/Q170885",
+    "label": "essential oil",
+    "food_category": "mixture",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "chicken thigh": {
+    "qid": "Q102354615",
+    "uri": "http://www.wikidata.org/entity/Q102354615",
+    "label": "chicken thigh",
+    "food_category": "thigh",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "hummus": {
+    "qid": "Q241987",
+    "uri": "http://www.wikidata.org/entity/Q241987",
+    "label": "hummus",
+    "food_category": "type of food or dish",
+    "origin_country": "Near East",
+    "dietary_flags": []
+  },
+  "bell pepper": {
+    "qid": "Q1548030",
+    "uri": "http://www.wikidata.org/entity/Q1548030",
+    "label": "bell pepper",
+    "food_category": "Group",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "onion": {
+    "qid": "Q49391",
+    "uri": "http://www.wikidata.org/entity/Q49391",
+    "label": "Allium",
+    "food_category": "parivyaya",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "lemon": {
+    "qid": "Q1093742",
+    "uri": "http://www.wikidata.org/entity/Q1093742",
+    "label": "lemon",
+    "food_category": "fruit",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "spices": {
+    "qid": "Q42527",
+    "uri": "http://www.wikidata.org/entity/Q42527",
+    "label": "spice",
+    "food_category": "condiment",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "olive oil": {
+    "qid": "Q93165",
+    "uri": "http://www.wikidata.org/entity/Q93165",
+    "label": "olive oil",
+    "food_category": "non-drying oil",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "minced beef": {
+    "qid": "Q192628",
+    "uri": "http://www.wikidata.org/entity/Q192628",
+    "label": "beef",
+    "food_category": "meat",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "bacon": {
+    "qid": "Q11106",
+    "uri": "http://www.wikidata.org/entity/Q11106",
+    "label": "bacon",
+    "food_category": "pork",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "carrot": {
+    "qid": "Q81",
+    "uri": "http://www.wikidata.org/entity/Q81",
+    "label": "carrot",
+    "food_category": "food crop",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "celery": {
+    "qid": "Q23012379",
+    "uri": "http://www.wikidata.org/entity/Q23012379",
+    "label": "celery",
+    "food_category": "herb",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "garlic": {
+    "qid": "Q21546392",
+    "uri": "http://www.wikidata.org/entity/Q21546392",
+    "label": "garlic",
+    "food_category": "herbal medicinal product",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "tomato puree": {
+    "qid": "Q1114674",
+    "uri": "http://www.wikidata.org/entity/Q1114674",
+    "label": "tomato purée",
+    "food_category": "tomato dish",
+    "origin_country": "Italy",
+    "dietary_flags": []
+  },
+  "red wine": {
+    "qid": "Q1827",
+    "uri": "http://www.wikidata.org/entity/Q1827",
+    "label": "red wine",
+    "food_category": "wine",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "tomato": {
+    "qid": "Q23501",
+    "uri": "http://www.wikidata.org/entity/Q23501",
+    "label": "tomato",
+    "food_category": "food crop",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "stock": {
+    "qid": "Q275068",
+    "uri": "http://www.wikidata.org/entity/Q275068",
+    "label": "broth",
+    "food_category": "type of food or dish",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "thyme": {
+    "qid": "Q3215980",
+    "uri": "http://www.wikidata.org/entity/Q3215980",
+    "label": "thyme",
+    "food_category": "crude drug",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "parmesan rind": {
+    "qid": "Q155922",
+    "uri": "http://www.wikidata.org/entity/Q155922",
+    "label": "Parmesan",
+    "food_category": "cheese",
+    "origin_country": "Italy",
+    "dietary_flags": []
+  },
+  "sausage": {
+    "qid": "Q131419",
+    "uri": "http://www.wikidata.org/entity/Q131419",
+    "label": "sausage",
+    "food_category": "human food",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "potato": {
+    "qid": "Q16587531",
+    "uri": "http://www.wikidata.org/entity/Q16587531",
+    "label": "potato",
+    "food_category": "staple food",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "ketchup": {
+    "qid": "Q178143",
+    "uri": "http://www.wikidata.org/entity/Q178143",
+    "label": "ketchup",
+    "food_category": "tomato sauce",
+    "origin_country": "Ukrainian Soviet Socialist Republic",
+    "dietary_flags": []
+  },
+  "chicken": {
+    "qid": "Q864693",
+    "uri": "http://www.wikidata.org/entity/Q864693",
+    "label": "chicken as food",
+    "food_category": "poultry meat",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "tahini": {
+    "qid": "Q383389",
+    "uri": "http://www.wikidata.org/entity/Q383389",
+    "label": "tehina",
+    "food_category": "spread",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "honey": {
+    "qid": "Q10987",
+    "uri": "http://www.wikidata.org/entity/Q10987",
+    "label": "honey",
+    "food_category": "organic matter",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "soy sauce": {
+    "qid": "Q229385",
+    "uri": "http://www.wikidata.org/entity/Q229385",
+    "label": "soy sauce",
+    "food_category": "sauce",
+    "origin_country": "China",
+    "dietary_flags": []
+  },
+  "vinegar": {
+    "qid": "Q41354",
+    "uri": "http://www.wikidata.org/entity/Q41354",
+    "label": "vinegar",
+    "food_category": "aqueous solution",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "chili": {
+    "qid": "Q165199",
+    "uri": "http://www.wikidata.org/entity/Q165199",
+    "label": "chili pepper",
+    "food_category": "organisms known by a particular common name",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "butternut squash": {
+    "qid": "Q4169287",
+    "uri": "http://www.wikidata.org/entity/Q4169287",
+    "label": "butternut squash",
+    "food_category": "cultivar",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "chickpeas": {
+    "qid": "Q21156930",
+    "uri": "http://www.wikidata.org/entity/Q21156930",
+    "label": "chickpea",
+    "food_category": "bean",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "bulgur": {
+    "qid": "Q250432",
+    "uri": "http://www.wikidata.org/entity/Q250432",
+    "label": "bulgur",
+    "food_category": "seed",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "red onion": {
+    "qid": "Q622350",
+    "uri": "http://www.wikidata.org/entity/Q622350",
+    "label": "red onion",
+    "food_category": "taxon",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "parsley": {
+    "qid": "Q65522500",
+    "uri": "http://www.wikidata.org/entity/Q65522500",
+    "label": "parsley",
+    "food_category": "spice",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "pepper": {
+    "qid": "Q1548030",
+    "uri": "http://www.wikidata.org/entity/Q1548030",
+    "label": "bell pepper",
+    "food_category": "Group",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "corn salad": {
+    "qid": "Q94642761",
+    "uri": "http://www.wikidata.org/entity/Q94642761",
+    "label": "corn salad",
+    "food_category": "dish",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "pine nuts": {
+    "qid": "Q212933",
+    "uri": "http://www.wikidata.org/entity/Q212933",
+    "label": "pine nut",
+    "food_category": "nut",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "balsamic vinegar": {
+    "qid": "Q170037",
+    "uri": "http://www.wikidata.org/entity/Q170037",
+    "label": "balsamic vinegar",
+    "food_category": "condiment",
+    "origin_country": "Italy",
+    "dietary_flags": []
+  },
+  "red chilli": null,
+  "oregano": {
+    "qid": "Q134283",
+    "uri": "http://www.wikidata.org/entity/Q134283",
+    "label": "Origanum vulgare",
+    "food_category": "taxon",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "shrimp": {
+    "qid": "Q1517781",
+    "uri": "http://www.wikidata.org/entity/Q1517781",
+    "label": "shrimp",
+    "food_category": "organisms known by a particular common name",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "lime juice": {
+    "qid": "Q72487476",
+    "uri": "http://www.wikidata.org/entity/Q72487476",
+    "label": "lime oil",
+    "food_category": "essential oil",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "serrano chile": {
+    "qid": "Q617583",
+    "uri": "http://www.wikidata.org/entity/Q617583",
+    "label": "serrano chile",
+    "food_category": "cultivar",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "cilantro": {
+    "qid": "Q41611",
+    "uri": "http://www.wikidata.org/entity/Q41611",
+    "label": "Coriandrum sativum",
+    "food_category": "taxon",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "cucumber": {
+    "qid": "Q23425",
+    "uri": "http://www.wikidata.org/entity/Q23425",
+    "label": "Cucumis sativus",
+    "food_category": "taxon",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "avocado": {
+    "qid": "Q961769",
+    "uri": "http://www.wikidata.org/entity/Q961769",
+    "label": "avocado",
+    "food_category": "tropical fruit",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "tostadas": {
+    "qid": "Q3280441",
+    "uri": "http://www.wikidata.org/entity/Q3280441",
+    "label": "tostada",
+    "food_category": "dish",
+    "origin_country": "Mexico",
+    "dietary_flags": []
+  },
+  "pork shank": null,
+  "black peppercorn": {
+    "qid": "Q22915010",
+    "uri": "http://www.wikidata.org/entity/Q22915010",
+    "label": "black pepper",
+    "food_category": "food ingredient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "allspice berry": {
+    "qid": "Q1963621",
+    "uri": "http://www.wikidata.org/entity/Q1963621",
+    "label": "allspice berry",
+    "food_category": "food ingredient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "leek": {
+    "qid": "Q1807269",
+    "uri": "http://www.wikidata.org/entity/Q1807269",
+    "label": "leek",
+    "food_category": "organisms known by a particular common name",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "rutabaga": {
+    "qid": "Q104733765",
+    "uri": "http://www.wikidata.org/entity/Q104733765",
+    "label": "rutabaga",
+    "food_category": "winter vegetable",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "celeriac": {
+    "qid": "Q103765549",
+    "uri": "http://www.wikidata.org/entity/Q103765549",
+    "label": "celeriac root",
+    "food_category": "root vegetable",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "yellow split peas": {
+    "qid": "Q103449274",
+    "uri": "http://www.wikidata.org/entity/Q103449274",
+    "label": "pigeon pea",
+    "food_category": "bean",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "salt and black pepper": null,
+  "flatbread": {
+    "qid": "Q666242",
+    "uri": "http://www.wikidata.org/entity/Q666242",
+    "label": "flatbread",
+    "food_category": "bing",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "zucchini": {
+    "qid": "Q7533",
+    "uri": "http://www.wikidata.org/entity/Q7533",
+    "label": "zucchini",
+    "food_category": "taxon",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "passata": {
+    "qid": "Q1114674",
+    "uri": "http://www.wikidata.org/entity/Q1114674",
+    "label": "tomato purée",
+    "food_category": "tomato dish",
+    "origin_country": "Italy",
+    "dietary_flags": []
+  },
+  "feta": {
+    "qid": "Q182760",
+    "uri": "http://www.wikidata.org/entity/Q182760",
+    "label": "feta",
+    "food_category": "mixed milk cheese",
+    "origin_country": "Greece",
+    "dietary_flags": []
+  },
+  "skirt steak": {
+    "qid": "Q643995",
+    "uri": "http://www.wikidata.org/entity/Q643995",
+    "label": "skirt steak",
+    "food_category": "Plate steak",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "orange juice": {
+    "qid": "Q1470795",
+    "uri": "http://www.wikidata.org/entity/Q1470795",
+    "label": "fruit juice tanker",
+    "food_category": "ship type",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "ground cumin": {
+    "qid": "Q57328174",
+    "uri": "http://www.wikidata.org/entity/Q57328174",
+    "label": "cumin seed",
+    "food_category": "fruit",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "dried oregano": {
+    "qid": "Q68496350",
+    "uri": "http://www.wikidata.org/entity/Q68496350",
+    "label": "dried oregano",
+    "food_category": "Origanum vulgare",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "black pepper": {
+    "qid": "Q22915010",
+    "uri": "http://www.wikidata.org/entity/Q22915010",
+    "label": "black pepper",
+    "food_category": "food ingredient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "corn tortilla": {
+    "qid": "Q15660894",
+    "uri": "http://www.wikidata.org/entity/Q15660894",
+    "label": "corn tortilla",
+    "food_category": "tortilla",
+    "origin_country": "Mesoamerica",
+    "dietary_flags": []
+  },
+  "lime": {
+    "qid": "Q13195",
+    "uri": "http://www.wikidata.org/entity/Q13195",
+    "label": "lime",
+    "food_category": "common name",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "salsa verde": {
+    "qid": "Q20747642",
+    "uri": "http://www.wikidata.org/entity/Q20747642",
+    "label": "salsa verde",
+    "food_category": "sauce",
+    "origin_country": "Mexico",
+    "dietary_flags": []
+  },
+  "hoisin sauce": {
+    "qid": "Q404114",
+    "uri": "http://www.wikidata.org/entity/Q404114",
+    "label": "hoisin sauce",
+    "food_category": "sauce",
+    "origin_country": "People's Republic of China",
+    "dietary_flags": []
+  },
+  "light soy sauce": {
+    "qid": "Q8529545",
+    "uri": "http://www.wikidata.org/entity/Q8529545",
+    "label": "light soy sauce",
+    "food_category": "soy sauce",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "dark soy sauce": {
+    "qid": "Q8484030",
+    "uri": "http://www.wikidata.org/entity/Q8484030",
+    "label": "dark soy sauce",
+    "food_category": "soy sauce",
+    "origin_country": "People's Republic of China",
+    "dietary_flags": []
+  },
+  "shaoxing wine": {
+    "qid": "Q175245",
+    "uri": "http://www.wikidata.org/entity/Q175245",
+    "label": "Shaoxing wine",
+    "food_category": "Huangjiu",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "red fermented bean curd": null,
+  "sugar": {
+    "qid": "Q11002",
+    "uri": "http://www.wikidata.org/entity/Q11002",
+    "label": "sugar",
+    "food_category": "excipient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "five-spice powder": {
+    "qid": "Q1051492",
+    "uri": "http://www.wikidata.org/entity/Q1051492",
+    "label": "five-spice powder",
+    "food_category": "pentad",
+    "origin_country": "China",
+    "dietary_flags": []
+  },
+  "white pepper": {
+    "qid": "Q744814",
+    "uri": "http://www.wikidata.org/entity/Q744814",
+    "label": "white pepper",
+    "food_category": "food ingredient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "marinade": {
+    "qid": "Q66246606",
+    "uri": "http://www.wikidata.org/entity/Q66246606",
+    "label": "pickled fish",
+    "food_category": "fish dish",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "smoked paprika": {
+    "qid": "Q3127593",
+    "uri": "http://www.wikidata.org/entity/Q3127593",
+    "label": "paprika",
+    "food_category": "food ingredient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "chili powder": {
+    "qid": "Q1072946",
+    "uri": "http://www.wikidata.org/entity/Q1072946",
+    "label": "chili powder",
+    "food_category": "food",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "red bell pepper": {
+    "qid": "Q106446932",
+    "uri": "http://www.wikidata.org/entity/Q106446932",
+    "label": "red bell pepper",
+    "food_category": "bell pepper",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "yellow bell pepper": null,
+  "green bell pepper": {
+    "qid": "Q67865843",
+    "uri": "http://www.wikidata.org/entity/Q67865843",
+    "label": "green bell pepper",
+    "food_category": "bell pepper",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "flour tortilla": {
+    "qid": "Q204251",
+    "uri": "http://www.wikidata.org/entity/Q204251",
+    "label": "wheat tortilla",
+    "food_category": "flatbread",
+    "origin_country": "Mexico",
+    "dietary_flags": []
+  },
+  "sour cream": {
+    "qid": "Q840171",
+    "uri": "http://www.wikidata.org/entity/Q840171",
+    "label": "sour cream",
+    "food_category": "dairy product",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "guacamole": {
+    "qid": "Q207968",
+    "uri": "http://www.wikidata.org/entity/Q207968",
+    "label": "guacamole",
+    "food_category": "dip",
+    "origin_country": "Mexico",
+    "dietary_flags": []
+  },
+  "lime wedge": {
+    "qid": "Q26877133",
+    "uri": "http://www.wikidata.org/entity/Q26877133",
+    "label": "lime wedge",
+    "food_category": "side dish",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "cornstarch": {
+    "qid": "Q3393961",
+    "uri": "http://www.wikidata.org/entity/Q3393961",
+    "label": "corn starch",
+    "food_category": "food ingredient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "chinkiang black vinegar": null,
+  "sichuan chile": null,
+  "sichuan peppercorn": {
+    "qid": "Q756800",
+    "uri": "http://www.wikidata.org/entity/Q756800",
+    "label": "Sichuan pepper",
+    "food_category": "food ingredient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "ginger": {
+    "qid": "Q15046077",
+    "uri": "http://www.wikidata.org/entity/Q15046077",
+    "label": "ginger",
+    "food_category": "rhizome",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "spring onion": {
+    "qid": "Q774278",
+    "uri": "http://www.wikidata.org/entity/Q774278",
+    "label": "scallion",
+    "food_category": "parivyaya",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "unsalted roasted peanut": null,
+  "beef chuck": null,
+  "lard": {
+    "qid": "Q72827",
+    "uri": "http://www.wikidata.org/entity/Q72827",
+    "label": "lard",
+    "food_category": "dripping",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "sweet hungarian paprika": null,
+  "hot hungarian paprika": null,
+  "caraway seeds": {
+    "qid": "Q21155816",
+    "uri": "http://www.wikidata.org/entity/Q21155816",
+    "label": "caraway seeds",
+    "food_category": "spice",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "tomato paste": {
+    "qid": "Q1499073",
+    "uri": "http://www.wikidata.org/entity/Q1499073",
+    "label": "tomato paste",
+    "food_category": "food ingredient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "beef stock": {
+    "qid": "Q96362190",
+    "uri": "http://www.wikidata.org/entity/Q96362190",
+    "label": "beef stock",
+    "food_category": "stock",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "pork loin steak": null,
+  "plain flour": {
+    "qid": "Q95388739",
+    "uri": "http://www.wikidata.org/entity/Q95388739",
+    "label": "all-purpose flour",
+    "food_category": "flour",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "egg": {
+    "qid": "Q93189",
+    "uri": "http://www.wikidata.org/entity/Q93189",
+    "label": "egg as food",
+    "food_category": "animal-based food",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "panko breadcrumbs": null,
+  "dashi": {
+    "qid": "Q851746",
+    "uri": "http://www.wikidata.org/entity/Q851746",
+    "label": "dashi",
+    "food_category": "broth",
+    "origin_country": "Japan",
+    "dietary_flags": []
+  },
+  "mirin": {
+    "qid": "Q1045910",
+    "uri": "http://www.wikidata.org/entity/Q1045910",
+    "label": "mirin",
+    "food_category": "condiment",
+    "origin_country": "Japan",
+    "dietary_flags": []
+  },
+  "hot steamed rice": null,
+  "pork belly": {
+    "qid": "Q1365868",
+    "uri": "http://www.wikidata.org/entity/Q1365868",
+    "label": "pork belly",
+    "food_category": "pork",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "shallot": {
+    "qid": "Q67206407",
+    "uri": "http://www.wikidata.org/entity/Q67206407",
+    "label": "shallot",
+    "food_category": "bulb",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "shaoxing rice wine": null,
+  "rock sugar": {
+    "qid": "Q849816",
+    "uri": "http://www.wikidata.org/entity/Q849816",
+    "label": "rock candy",
+    "food_category": "confection",
+    "origin_country": "Iran",
+    "dietary_flags": []
+  },
+  "star anise": {
+    "qid": "Q4075018",
+    "uri": "http://www.wikidata.org/entity/Q4075018",
+    "label": "badian oil",
+    "food_category": "essential oil",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "dried shiitake mushroom": {
+    "qid": "Q320999",
+    "uri": "http://www.wikidata.org/entity/Q320999",
+    "label": "Lentinula edodes",
+    "food_category": "taxon",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "soft-boiled egg": {
+    "qid": "Q11716216",
+    "uri": "http://www.wikidata.org/entity/Q11716216",
+    "label": "soft-boiled egg",
+    "food_category": "boiled egg",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "steamed rice": {
+    "qid": "Q103921799",
+    "uri": "http://www.wikidata.org/entity/Q103921799",
+    "label": "steamed rice",
+    "food_category": "cooked rice",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "pickled greens": {
+    "qid": "Q20134",
+    "uri": "http://www.wikidata.org/entity/Q20134",
+    "label": "leaf vegetable",
+    "food_category": "vegetable",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "sweet pepper": {
+    "qid": "Q1548030",
+    "uri": "http://www.wikidata.org/entity/Q1548030",
+    "label": "bell pepper",
+    "food_category": "Group",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "capers": {
+    "qid": "Q3229775",
+    "uri": "http://www.wikidata.org/entity/Q3229775",
+    "label": "caper",
+    "food_category": "bud",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "red wine vinegar": {
+    "qid": "Q68431797",
+    "uri": "http://www.wikidata.org/entity/Q68431797",
+    "label": "red wine vinegar",
+    "food_category": "wine vinegar",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "basil": {
+    "qid": "Q38859",
+    "uri": "http://www.wikidata.org/entity/Q38859",
+    "label": "basil",
+    "food_category": "taxon",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "dry white wine": null,
+  "peeled tomatoes": {
+    "qid": "Q12798512",
+    "uri": "http://www.wikidata.org/entity/Q12798512",
+    "label": "peeled tomato",
+    "food_category": "canned tomato",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "chicken stock": {
+    "qid": "Q96362076",
+    "uri": "http://www.wikidata.org/entity/Q96362076",
+    "label": "chicken stock",
+    "food_category": "broth",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "rosemary": null,
+  "orange peel": {
+    "qid": "Q102035949",
+    "uri": "http://www.wikidata.org/entity/Q102035949",
+    "label": "orange peel",
+    "food_category": "peel",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "pasta": {
+    "qid": "Q178",
+    "uri": "http://www.wikidata.org/entity/Q178",
+    "label": "pasta",
+    "food_category": "dish",
+    "origin_country": "Kingdom of Italy",
+    "dietary_flags": []
+  },
+  "parmesan": {
+    "qid": "Q155922",
+    "uri": "http://www.wikidata.org/entity/Q155922",
+    "label": "Parmesan",
+    "food_category": "cheese",
+    "origin_country": "Italy",
+    "dietary_flags": []
+  },
+  "lemon juice": {
+    "qid": "Q1375049",
+    "uri": "http://www.wikidata.org/entity/Q1375049",
+    "label": "lemon juice",
+    "food_category": "lemon and lime juice",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "pita bread": {
+    "qid": "Q211340",
+    "uri": "http://www.wikidata.org/entity/Q211340",
+    "label": "pita",
+    "food_category": "flatbread",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "tzatziki": {
+    "qid": "Q836538",
+    "uri": "http://www.wikidata.org/entity/Q836538",
+    "label": "tzatziki",
+    "food_category": "food",
+    "origin_country": "Greece",
+    "dietary_flags": []
+  },
+  "lemon wedges": {
+    "qid": "Q26877136",
+    "uri": "http://www.wikidata.org/entity/Q26877136",
+    "label": "lemon wedge",
+    "food_category": "side dish",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "sake": {
+    "qid": "Q170219",
+    "uri": "http://www.wikidata.org/entity/Q170219",
+    "label": "sake",
+    "food_category": "rice wine",
+    "origin_country": "Japan",
+    "dietary_flags": []
+  },
+  "steamed greens": null,
+  "sesame seeds": {
+    "qid": "Q12000036",
+    "uri": "http://www.wikidata.org/entity/Q12000036",
+    "label": "sesame seed",
+    "food_category": "food ingredient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "pine nut": {
+    "qid": "Q212933",
+    "uri": "http://www.wikidata.org/entity/Q212933",
+    "label": "pine nut",
+    "food_category": "nut",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "tostada": {
+    "qid": "Q3280441",
+    "uri": "http://www.wikidata.org/entity/Q3280441",
+    "label": "tostada",
+    "food_category": "dish",
+    "origin_country": "Mexico",
+    "dietary_flags": []
+  },
+  "yellow split pea": {
+    "qid": "Q2265406",
+    "uri": "http://www.wikidata.org/entity/Q2265406",
+    "label": "split pea",
+    "food_category": "split pulse",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "cumin": {
+    "qid": "Q57328174",
+    "uri": "http://www.wikidata.org/entity/Q57328174",
+    "label": "cumin seed",
+    "food_category": "fruit",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "white onion": {
+    "qid": "Q7995660",
+    "uri": "http://www.wikidata.org/entity/Q7995660",
+    "label": "white onion",
+    "food_category": "cultivar",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "reserved marinade": null,
+  "dried Sichuan chile": null,
+  "Sichuan peppercorn": {
+    "qid": "Q756800",
+    "uri": "http://www.wikidata.org/entity/Q756800",
+    "label": "Sichuan pepper",
+    "food_category": "food ingredient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "peanut": {
+    "qid": "Q3621199",
+    "uri": "http://www.wikidata.org/entity/Q3621199",
+    "label": "peanut",
+    "food_category": "food ingredient",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "sweet Hungarian paprika": null,
+  "hot Hungarian paprika": null,
+  "caraway seed": {
+    "qid": "Q21155816",
+    "uri": "http://www.wikidata.org/entity/Q21155816",
+    "label": "caraway seeds",
+    "food_category": "spice",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "panko breadcrumb": {
+    "qid": "Q1820454",
+    "uri": "http://www.wikidata.org/entity/Q1820454",
+    "label": "panko breadcrumb",
+    "food_category": "Japanese cuisine",
+    "origin_country": "Japan",
+    "dietary_flags": []
+  },
+  "spice": {
+    "qid": "Q42527",
+    "uri": "http://www.wikidata.org/entity/Q42527",
+    "label": "spice",
+    "food_category": "condiment",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "Shaoxing rice wine": null,
+  "canned tomatoes": {
+    "qid": "Q5032643",
+    "uri": "http://www.wikidata.org/entity/Q5032643",
+    "label": "canned tomato",
+    "food_category": "tomato",
+    "origin_country": null,
+    "dietary_flags": []
+  },
+  "greens": {
+    "qid": "Q20134",
+    "uri": "http://www.wikidata.org/entity/Q20134",
+    "label": "leaf vegetable",
+    "food_category": "type of vegetable",
+    "origin_country": null,
+    "dietary_flags": []
+  }
+}

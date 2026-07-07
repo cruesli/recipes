@@ -1,0 +1,130 @@
+{
+  "slug": "briam",
+  "version": 1,
+  "servings": 4,
+  "nutritionPerServing": {
+    "kcal": 643,
+    "proteinG": 11.2,
+    "fatG": 45.4,
+    "carbsG": 48.1,
+    "fibreG": 9.4,
+    "sodiumMg": 398
+  },
+  "ingredients": [
+    {
+      "raw": "4 medium potatoes, sliced into 5mm rounds",
+      "section": null,
+      "canonical": "potato",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 700.0
+    },
+    {
+      "raw": "3 zucchini, sliced into 5mm rounds",
+      "section": null,
+      "canonical": "zucchini",
+      "category": "produce",
+      "quantity": {
+        "amount": 3,
+        "unit": "count"
+      },
+      "grams": 600.0
+    },
+    {
+      "raw": "4 tomatoes, sliced",
+      "section": null,
+      "canonical": "tomato",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "200g passata or grated tomato",
+      "section": null,
+      "canonical": "passata",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 200,
+        "unit": "g"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "2 red onions, thinly sliced",
+      "section": null,
+      "canonical": "red onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 300.0
+    },
+    {
+      "raw": "4 garlic cloves, sliced",
+      "section": null,
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "clove"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "100ml olive oil",
+      "section": null,
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 100,
+        "unit": "ml"
+      },
+      "grams": 100.0
+    },
+    {
+      "raw": "2 teaspoons dried oregano",
+      "section": null,
+      "canonical": "dried oregano",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "tsp"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "1 small handful fresh parsley, chopped",
+      "section": null,
+      "canonical": "parsley",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "handful"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "Salt and black pepper",
+      "section": null,
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Crumbled feta, to serve (optional)",
+      "section": null,
+      "canonical": "feta",
+      "category": "dairy-eggs",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

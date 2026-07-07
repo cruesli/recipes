@@ -1,0 +1,141 @@
+{
+  "slug": "souvlaki",
+  "version": 1,
+  "servings": 4,
+  "nutritionPerServing": {
+    "kcal": 826,
+    "proteinG": 41.4,
+    "fatG": 52.8,
+    "carbsG": 46.1,
+    "fibreG": 6.0,
+    "sodiumMg": 954
+  },
+  "ingredients": [
+    {
+      "raw": "800g pork shoulder, cut into 3cm cubes",
+      "section": "Souvlaki",
+      "canonical": "pork shoulder",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 800,
+        "unit": "g"
+      },
+      "grams": 800.0
+    },
+    {
+      "raw": "4 tablespoons olive oil",
+      "section": "Souvlaki",
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 4,
+        "unit": "tablespoons"
+      },
+      "grams": 60.0
+    },
+    {
+      "raw": "Juice of 1 lemon",
+      "section": "Souvlaki",
+      "canonical": "lemon juice",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "lemon"
+      },
+      "grams": 40.0
+    },
+    {
+      "raw": "2 teaspoons dried oregano",
+      "section": "Souvlaki",
+      "canonical": "dried oregano",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "tsp"
+      },
+      "grams": 10.0
+    },
+    {
+      "raw": "4 garlic cloves, grated",
+      "section": "Souvlaki",
+      "canonical": "garlic clove",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "1 teaspoon salt",
+      "section": "Souvlaki",
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 teaspoon black pepper",
+      "section": "Souvlaki",
+      "canonical": "black pepper",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "4 pita breads, warmed",
+      "section": "To serve",
+      "canonical": "pita bread",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 240.0
+    },
+    {
+      "raw": "1 red onion, thinly sliced",
+      "section": "To serve",
+      "canonical": "red onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "2 tomatoes, sliced",
+      "section": "To serve",
+      "canonical": "tomato",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 240.0
+    },
+    {
+      "raw": "Tzatziki",
+      "section": "To serve",
+      "canonical": "tzatziki",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Lemon wedges",
+      "section": "To serve",
+      "canonical": "lemon",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

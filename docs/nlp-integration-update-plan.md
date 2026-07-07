@@ -6,6 +6,23 @@ categorisation framework resolved in the July 2026 grilling session. Supersedes 
 original plan's Phase 3 skeleton where they overlap; the untouched Phase 3 items are
 carried forward at the end.
 
+> **STATUS (shipped, `feature/nlp-integration`).** Implemented **static-first**, which
+> changes N2/N3 from the shape below:
+> - **N1 — done.** Normaliser emits the 9-bucket shopping category + stated `{amount, unit}`;
+>   parser keeps section headers; graph stores the triples. Full 20-recipe ingest committed.
+> - **N2/N3 — rewritten.** No runtime `GET /recipes/{slug}`, no fetch/cache/hash layer. Ingest
+>   **exports** `src/data/enriched/*.json`, consumed at build time via `src/lib/enrichment.ts`.
+>   Degradation collapses to one rung: recipe/line missing from the export → day→recipe grouping.
+> - **N4 — done.** Buckets + canonical merge + scaled day notes + reorder bar + mirrored `.txt`
+>   live in `src/lib/shoppingList.mjs` (node-tested) and `MealPlannerIsland.tsx`.
+> - **N5 — done.** Nutrition panel on the recipe page; client-side facets + NL search on
+>   `/recipes`. The NL service (`POST /api/v1/query`) is **stateless** — returns filters only,
+>   applied client-side; deployed to Hugging Face Spaces, gated by `PUBLIC_NLP_API_URL`.
+> - **KG quality:** schema.org-aligned namespace, USDA raw/fresh + Atwater-energy fixes with a
+>   manual override map, QID pins (linking ~90%), per-run `reports/ingest-report.json`.
+>
+> The section below is the original plan, kept for the N1/N4 detail it still describes accurately.
+
 **Repos:** backend = `curesli/NLP-project` (Python / FastAPI / RDFLib);
 frontend = `cruesli/recipes` (Astro).
 

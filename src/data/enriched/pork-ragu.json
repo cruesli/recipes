@@ -1,0 +1,171 @@
+{
+  "slug": "pork-ragu",
+  "version": 1,
+  "servings": 6,
+  "nutritionPerServing": {
+    "kcal": 619,
+    "proteinG": 35.6,
+    "fatG": 41.6,
+    "carbsG": 14.2,
+    "fibreG": 3.1,
+    "sodiumMg": 503
+  },
+  "ingredients": [
+    {
+      "raw": "1.2kg pork shoulder, boneless, cut into 4 large pieces",
+      "section": null,
+      "canonical": "pork shoulder",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 1.2,
+        "unit": "kg"
+      },
+      "grams": 1200.0
+    },
+    {
+      "raw": "2 tablespoons olive oil",
+      "section": null,
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tbsp"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 onion, finely diced",
+      "section": null,
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "2 carrots, finely diced",
+      "section": null,
+      "canonical": "carrot",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 120.0
+    },
+    {
+      "raw": "2 celery stalks, finely diced",
+      "section": null,
+      "canonical": "celery",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "stalks"
+      },
+      "grams": 80.0
+    },
+    {
+      "raw": "4 garlic cloves, minced",
+      "section": null,
+      "canonical": "garlic clove",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "200ml dry white wine",
+      "section": null,
+      "canonical": "dry white wine",
+      "category": "other",
+      "quantity": {
+        "amount": 200,
+        "unit": "ml"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "1 can peeled tomatoes",
+      "section": null,
+      "canonical": "peeled tomatoes",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 1,
+        "unit": "can"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "500ml chicken stock",
+      "section": null,
+      "canonical": "chicken stock",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 500,
+        "unit": "ml"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "1 small handful fresh rosemary",
+      "section": null,
+      "canonical": "rosemary",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "handful"
+      },
+      "grams": null
+    },
+    {
+      "raw": "4 bay leaves",
+      "section": null,
+      "canonical": "bay leaf",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 4,
+        "unit": "leaves"
+      },
+      "grams": 0.8
+    },
+    {
+      "raw": "1 strip orange peel",
+      "section": null,
+      "canonical": "orange peel",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "strip"
+      },
+      "grams": null
+    },
+    {
+      "raw": "Salt and black pepper",
+      "section": null,
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Pasta (pappardelle or rigatoni), to serve",
+      "section": null,
+      "canonical": "pasta",
+      "category": "dry-goods",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Grated Parmesan, to serve",
+      "section": null,
+      "canonical": "parmesan",
+      "category": "dairy-eggs",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

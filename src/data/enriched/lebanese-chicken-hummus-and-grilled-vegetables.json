@@ -1,0 +1,97 @@
+{
+  "slug": "lebanese-chicken-hummus-and-grilled-vegetables",
+  "version": 1,
+  "servings": 3,
+  "nutritionPerServing": {
+    "kcal": 523,
+    "proteinG": 24.9,
+    "fatG": 42.0,
+    "carbsG": 27.9,
+    "fibreG": 7.8,
+    "sodiumMg": 420
+  },
+  "ingredients": [
+    {
+      "raw": "400g Chicken thighs",
+      "section": null,
+      "canonical": "chicken thigh",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 400,
+        "unit": "g"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "200g Hummus",
+      "section": null,
+      "canonical": "hummus",
+      "category": "other",
+      "quantity": {
+        "amount": 200,
+        "unit": "g"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "1 Bell pepper cut into chunks",
+      "section": null,
+      "canonical": "bell pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 190.0
+    },
+    {
+      "raw": "1 Onion cut into chunks",
+      "section": null,
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "2-3 garlic cloves thinly sliced",
+      "section": null,
+      "canonical": "garlic clove",
+      "category": "produce",
+      "quantity": {
+        "amount": 2.5,
+        "unit": "cloves"
+      },
+      "grams": 12.5
+    },
+    {
+      "raw": "1 Lemon cut in half",
+      "section": null,
+      "canonical": "lemon",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 110.0
+    },
+    {
+      "raw": "Spices for marinating chicken",
+      "section": null,
+      "canonical": "spice",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Olive oil",
+      "section": null,
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

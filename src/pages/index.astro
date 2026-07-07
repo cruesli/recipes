@@ -4,6 +4,7 @@ import { getCollection, getEntry } from "astro:content";
 import { WorldMap } from "../components/WorldMap";
 import { CollectionPlannerIsland } from "../components/CollectionPlannerIsland";
 import { silhouetteFor } from "../utils/silhouettes";
+import { deriveTotalTime } from "../lib/recipeTime.mjs";
 import Splash from "../components/Splash.astro";
 
 const recipes = await getCollection("recipes");
@@ -18,7 +19,7 @@ const allRecipes = recipes.map((r) => ({
   title: r.data.title,
   cuisine: r.data.cuisine,
   image: r.data.image ?? null,
-  totalTimeMinutes: r.data.totalTimeMinutes ?? null,
+  totalTimeMinutes: deriveTotalTime(r.data),
   servings: r.data.servings ?? null,
   ingredients: r.data.ingredients ?? [],
   silhouette: silhouetteFor(r.data.cuisine),

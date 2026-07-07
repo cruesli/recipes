@@ -1,0 +1,163 @@
+{
+  "slug": "betasuppe",
+  "version": 1,
+  "servings": 6,
+  "nutritionPerServing": {
+    "kcal": 787,
+    "proteinG": 41.9,
+    "fatG": 34.1,
+    "carbsG": 79.6,
+    "fibreG": 8.3,
+    "sodiumMg": 611
+  },
+  "ingredients": [
+    {
+      "raw": "1 pork shank, about 1kg, fresh or lightly salted",
+      "section": null,
+      "canonical": "pork shank",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 1000.0
+    },
+    {
+      "raw": "2 litres water",
+      "section": null,
+      "canonical": "water",
+      "category": "other",
+      "quantity": {
+        "amount": 2,
+        "unit": "l"
+      },
+      "grams": 2000.0
+    },
+    {
+      "raw": "2 bay leaves",
+      "section": null,
+      "canonical": "bay leaf",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 1.0
+    },
+    {
+      "raw": "1 teaspoon whole black peppercorns",
+      "section": null,
+      "canonical": "black peppercorn",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 teaspoon whole allspice berries",
+      "section": null,
+      "canonical": "allspice berry",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "tsp"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 leek, sliced",
+      "section": null,
+      "canonical": "leek",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "1 small rutabaga (kålrot), peeled and diced into 2cm cubes",
+      "section": null,
+      "canonical": "rutabaga",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "3 carrots, diced into 2cm cubes",
+      "section": null,
+      "canonical": "carrot",
+      "category": "produce",
+      "quantity": {
+        "amount": 3,
+        "unit": "count"
+      },
+      "grams": 360.0
+    },
+    {
+      "raw": "1 small celeriac, peeled and diced into 2cm cubes",
+      "section": null,
+      "canonical": "celeriac",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "100g yellow split peas, rinsed",
+      "section": null,
+      "canonical": "yellow split pea",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 100,
+        "unit": "g"
+      },
+      "grams": 100.0
+    },
+    {
+      "raw": "4 potatoes, peeled and diced into 2cm cubes",
+      "section": null,
+      "canonical": "potato",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 700.0
+    },
+    {
+      "raw": "Salt and black pepper",
+      "section": null,
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1 small handful fresh parsley, chopped",
+      "section": null,
+      "canonical": "parsley",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "handful"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "Flatbread or rye bread, to serve",
+      "section": null,
+      "canonical": "flatbread",
+      "category": "dry-goods",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

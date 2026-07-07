@@ -8,6 +8,10 @@ import {
   usePlanner,
   type RecipeData,
 } from './usePlanner';
+import { CATEGORY_LABELS, normaliseCategory } from '../lib/enrichment';
+import { DEFAULT_BUCKET_ORDER } from '../lib/shoppingList.mjs';
+
+const SERIF = "'EB Garamond', Georgia, serif";
 
 interface Props {
   recipes: RecipeData[];
@@ -34,10 +38,13 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
   const {
     meals,
     shoppingList,
+    shoppingView,
+    bucketOrder,
+    checkedIds,
     listReady,
     loaded,
-    grouped,
     checkedCount,
+    totalRows,
     canGenerate,
     selectRecipe,
     addCustom,
@@ -46,8 +53,22 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
     updateServings,
     generateList,
     toggleItem,
+    reorderBuckets,
+    resetBucketOrder,
     downloadList,
   } = usePlanner();
+
+  // Tap-to-arm target for the bucket reorder bar (touch + keyboard path)
+  const [armedBucket, setArmedBucket] = useState<string | null>(null);
+
+  // Move one category to just before another in the persisted bucket order
+  function moveBucketBefore(cat: string, targetCat: string) {
+    if (cat === targetCat) return;
+    const order = [...bucketOrder];
+    order.splice(order.indexOf(cat), 1);
+    order.splice(order.indexOf(targetCat), 0, cat);
+    reorderBuckets(order);
+  }
 
   const [openDay, setOpenDay] = useState<string | null>(null);
   const [search, setSearch] = useState('');
@@ -467,13 +488,13 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
             </div>
 
             {/* Progress */}
-            {shoppingList.length > 0 && (
+            {totalRows > 0 && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: 'var(--space-xs) 0', borderTop: '1px solid var(--color-hairline)', borderBottom: '1px solid var(--color-hairline)', marginBottom: 'var(--space-lg)' }}>
-                <span className="onum" style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)' }}>
-                  {checkedCount} of {shoppingList.length} checked
+                <span className="onum" style={{ fontFamily: SERIF, fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)' }}>
+                  {checkedCount} of {totalRows} checked
                 </span>
-                {checkedCount === shoppingList.length && shoppingList.length > 0 && (
-                  <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-olive)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                {checkedCount === totalRows && totalRows > 0 && (
+                  <span style={{ fontFamily: SERIF, fontSize: 'var(--text-meta)', color: 'var(--color-olive)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Check size={14} /> All done!
                   </span>
                 )}
@@ -481,74 +502,108 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
             )}
 
             {shoppingList.length === 0 ? (
-              <p style={{ fontFamily: "'EB Garamond', Georgia, serif", color: 'var(--color-ink-muted)', fontSize: 'var(--text-meta)', fontStyle: 'italic', padding: 'var(--space-lg) 0' }}>
+              <p style={{ fontFamily: SERIF, color: 'var(--color-ink-muted)', fontSize: 'var(--text-meta)', fontStyle: 'italic', padding: 'var(--space-lg) 0' }}>
                 {DAYS.some((d) => (meals[d] ?? []).length > 0)
                   ? 'Nothing to shop for — every meal this week is a custom dish.'
                   : 'Plan a meal and its ingredients gather here.'}
               </p>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xl)', paddingBottom: 'var(--space-3xl)' }}>
-                {DAYS.filter((d) => grouped[d]).map((day) => (
-                  <div key={day}>
-                    {/* Day header */}
+
+                {/* Bucket reorder bar — quiet text chips; oxblood tick marks the drag target */}
+                {shoppingView.buckets.length > 1 && (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', gap: 'var(--space-2xs) var(--space-md)' }}>
+                    {shoppingView.buckets.map((bucket) => (
+                      <button
+                        key={bucket.category}
+                        draggable
+                        onDragStart={() => setArmedBucket(bucket.category)}
+                        onDragOver={(e) => e.preventDefault()}
+                        onDrop={() => { if (armedBucket) moveBucketBefore(armedBucket, bucket.category); setArmedBucket(null); }}
+                        onDragEnd={() => setArmedBucket(null)}
+                        onClick={() => {
+                          if (!armedBucket) setArmedBucket(bucket.category);
+                          else if (armedBucket === bucket.category) setArmedBucket(null);
+                          else { moveBucketBefore(armedBucket, bucket.category); setArmedBucket(null); }
+                        }}
+                        style={{
+                          display: 'flex', alignItems: 'center', gap: '4px',
+                          background: 'none', border: 'none', cursor: 'grab', padding: '2px 0',
+                          fontFamily: SERIF, fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.18em',
+                          color: armedBucket === bucket.category ? 'var(--color-oxblood)' : 'var(--color-ink-muted)',
+                        }}
+                      >
+                        {armedBucket && armedBucket !== bucket.category && <span style={{ color: 'var(--color-oxblood)' }}>▸</span>}
+                        {CATEGORY_LABELS[normaliseCategory(bucket.category)]}
+                      </button>
+                    ))}
+                    {bucketOrder.join() !== DEFAULT_BUCKET_ORDER.join() && (
+                      <button onClick={resetBucketOrder} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px 0', fontFamily: SERIF, fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--color-ink-muted)', fontStyle: 'italic' }}>
+                        Reset order
+                      </button>
+                    )}
+                  </div>
+                )}
+
+                {/* Category buckets — merged canonical lines with scaled day notes */}
+                {shoppingView.buckets.map((bucket) => (
+                  <div key={bucket.category}>
+                    <div style={{ paddingBottom: 'var(--space-xs)', borderBottom: '1px solid var(--color-hairline)' }}>
+                      <span style={{ ...EYEBROW }}>{CATEGORY_LABELS[normaliseCategory(bucket.category)]}</span>
+                    </div>
+                    {bucket.lines.map((line) => {
+                      const checked = checkedIds.has(line.id);
+                      return (
+                        <label key={line.id} style={{ display: 'flex', alignItems: 'baseline', gap: '12px', padding: 'var(--space-xs) 0', borderBottom: '1px solid var(--color-hairline)', cursor: 'pointer' }}>
+                          <span
+                            onClick={() => toggleItem(line.id)}
+                            style={{ flexShrink: 0, alignSelf: 'center', width: '16px', height: '16px', border: checked ? 'none' : '1.5px solid var(--color-hairline)', backgroundColor: checked ? 'var(--color-oxblood)' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                          >
+                            {checked && <Check size={10} color="var(--color-paper)" />}
+                          </span>
+                          <span onClick={() => toggleItem(line.id)} style={{ fontFamily: SERIF, fontSize: 'var(--text-body)', textTransform: 'capitalize', color: checked ? 'var(--color-ink-muted)' : 'var(--color-ink)', textDecoration: checked ? 'line-through' : 'none', opacity: checked ? 0.55 : 1 }}>
+                            {line.canonical}
+                          </span>
+                          {line.note && (
+                            <span className="onum" style={{ marginLeft: 'auto', paddingLeft: 'var(--space-sm)', fontFamily: SERIF, fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', textAlign: 'right' }}>
+                              {line.note}
+                            </span>
+                          )}
+                        </label>
+                      );
+                    })}
+                  </div>
+                ))}
+
+                {/* Degraded remainder — classic day → recipe grouping */}
+                {shoppingView.degraded.map(({ day, meals: dayMeals }) => (
+                  <div key={`deg-${day}`}>
                     <div style={{ paddingBottom: 'var(--space-xs)', borderBottom: '1px solid var(--color-hairline)' }}>
                       <span style={{ ...EYEBROW }}>{day}</span>
                     </div>
-
-                    {/* Meal blocks */}
-                    {grouped[day].map(({ meal, sections }) => (
-                      <div key={meal.id} style={{ marginTop: 'var(--space-sm)' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-sm)' }}>
-                          <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink)' }}>{meal.title}</span>
-                          {meal.image && (
-                            <img
-                              src={`${basePath}${meal.image}`}
-                              alt={meal.title}
-                              style={{ width: '24px', height: '24px', borderRadius: 'var(--radius-sm)', objectFit: 'cover', marginLeft: 'auto' }}
-                            />
-                          )}
-                        </div>
-
-                        {/* Sections + items */}
-                        {sections.map((sec, si) => (
+                    {dayMeals.map((meal, mi) => (
+                      <div key={mi} style={{ marginTop: 'var(--space-sm)' }}>
+                        <span style={{ fontFamily: SERIF, fontSize: 'var(--text-meta)', color: 'var(--color-ink)' }}>{meal.title}</span>
+                        {meal.sections.map((sec, si) => (
                           <div key={si}>
                             {sec.header && (
-                              <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-ink-muted)', margin: 'var(--space-sm) 0 0', fontWeight: 600 }}>
+                              <p style={{ fontFamily: SERIF, fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.15em', color: 'var(--color-ink-muted)', margin: 'var(--space-sm) 0 0', fontWeight: 600 }}>
                                 {sec.header}
                               </p>
                             )}
-                            {sec.items.map((item) => (
-                              <label
-                                key={item.id}
-                                style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: 'var(--space-xs) 0', borderBottom: '1px solid var(--color-hairline)', cursor: 'pointer' }}
-                              >
-                                <span
-                                  onClick={() => toggleItem(item.id)}
-                                  style={{
-                                    flexShrink: 0,
-                                    width: '16px', height: '16px',
-                                    border: item.checked ? 'none' : '1.5px solid var(--color-hairline)',
-                                    backgroundColor: item.checked ? 'var(--color-oxblood)' : 'transparent',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                  }}
-                                >
-                                  {item.checked && <Check size={10} color="var(--color-paper)" />}
-                                </span>
-                                <span
-                                  onClick={() => toggleItem(item.id)}
-                                  className="onum"
-                                  style={{
-                                    fontFamily: "'EB Garamond', Georgia, serif",
-                                    fontSize: 'var(--text-body)',
-                                    color: item.checked ? 'var(--color-ink-muted)' : 'var(--color-ink)',
-                                    textDecoration: item.checked ? 'line-through' : 'none',
-                                    opacity: item.checked ? 0.55 : 1,
-                                  }}
-                                >
-                                  {item.text}
-                                </span>
-                              </label>
-                            ))}
+                            {sec.items.map((item) => {
+                              const checked = checkedIds.has(item.id);
+                              return (
+                                <label key={item.id} style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: 'var(--space-xs) 0', borderBottom: '1px solid var(--color-hairline)', cursor: 'pointer' }}>
+                                  <span onClick={() => toggleItem(item.id)} style={{ flexShrink: 0, width: '16px', height: '16px', border: checked ? 'none' : '1.5px solid var(--color-hairline)', backgroundColor: checked ? 'var(--color-oxblood)' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                    {checked && <Check size={10} color="var(--color-paper)" />}
+                                  </span>
+                                  <span onClick={() => toggleItem(item.id)} className="onum" style={{ fontFamily: SERIF, fontSize: 'var(--text-body)', color: checked ? 'var(--color-ink-muted)' : 'var(--color-ink)', textDecoration: checked ? 'line-through' : 'none', opacity: checked ? 0.55 : 1 }}>
+                                    {item.text}
+                                  </span>
+                                </label>
+                              );
+                            })}
                           </div>
                         ))}
                       </div>

@@ -1,0 +1,160 @@
+{
+  "slug": "pasta-bolognese",
+  "version": 1,
+  "servings": 4,
+  "nutritionPerServing": {
+    "kcal": 742,
+    "proteinG": 42.4,
+    "fatG": 48.5,
+    "carbsG": 27.2,
+    "fibreG": 5.0,
+    "sodiumMg": 2952
+  },
+  "ingredients": [
+    {
+      "raw": "700g Minced beef",
+      "section": null,
+      "canonical": "minced beef",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 700,
+        "unit": "g"
+      },
+      "grams": 700.0
+    },
+    {
+      "raw": "100g Bacon",
+      "section": null,
+      "canonical": "bacon",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 100,
+        "unit": "g"
+      },
+      "grams": 100.0
+    },
+    {
+      "raw": "2 Medium onion, finely diced",
+      "section": null,
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 300.0
+    },
+    {
+      "raw": "2 Large carrots, finely diced",
+      "section": null,
+      "canonical": "carrot",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 200.0
+    },
+    {
+      "raw": "1 Stalk celery, finely diced",
+      "section": null,
+      "canonical": "celery",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "stalk"
+      },
+      "grams": 40.0
+    },
+    {
+      "raw": "3 cloves garlic, minced",
+      "section": null,
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": {
+        "amount": 3,
+        "unit": "cloves"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "3 Tbsp tomato pureé (double concentrated)",
+      "section": null,
+      "canonical": "tomato puree",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "Tbsp"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "1/3 Bottle red wine (cheap)",
+      "section": null,
+      "canonical": "red wine",
+      "category": "other",
+      "quantity": {
+        "amount": 0.33,
+        "unit": "bottle"
+      },
+      "grams": 250.0
+    },
+    {
+      "raw": "1 can of tomatoes",
+      "section": null,
+      "canonical": "canned tomatoes",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 1,
+        "unit": "can"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "500 ml stock (beef or chicken)",
+      "section": null,
+      "canonical": "beef stock",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 500,
+        "unit": "ml"
+      },
+      "grams": 500.0
+    },
+    {
+      "raw": "Thyme or rosemary",
+      "section": null,
+      "canonical": "thyme",
+      "category": "produce",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "1 Bay leaf",
+      "section": null,
+      "canonical": "bay leaf",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "leaf"
+      },
+      "grams": 0.2
+    },
+    {
+      "raw": "Salt and pepper",
+      "section": null,
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Parmesan rind (Only if you have)",
+      "section": null,
+      "canonical": "parmesan rind",
+      "category": "dairy-eggs",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

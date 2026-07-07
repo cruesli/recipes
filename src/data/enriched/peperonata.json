@@ -1,0 +1,114 @@
+{
+  "slug": "peperonata",
+  "version": 1,
+  "servings": 4,
+  "nutritionPerServing": {
+    "kcal": 183,
+    "proteinG": 2.5,
+    "fatG": 11.9,
+    "carbsG": 17.7,
+    "fibreG": 5.1,
+    "sodiumMg": 209
+  },
+  "ingredients": [
+    {
+      "raw": "4 sweet peppers, sliced into strips",
+      "section": null,
+      "canonical": "sweet pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 600.0
+    },
+    {
+      "raw": "1 red onion, thinly sliced",
+      "section": null,
+      "canonical": "red onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "count"
+      },
+      "grams": 150.0
+    },
+    {
+      "raw": "3 garlic cloves, sliced",
+      "section": null,
+      "canonical": "garlic",
+      "category": "produce",
+      "quantity": {
+        "amount": 3,
+        "unit": "cloves"
+      },
+      "grams": 15.0
+    },
+    {
+      "raw": "400g ripe tomatoes, roughly chopped",
+      "section": null,
+      "canonical": "tomato",
+      "category": "produce",
+      "quantity": {
+        "amount": 400,
+        "unit": "g"
+      },
+      "grams": 400.0
+    },
+    {
+      "raw": "2 tablespoons capers",
+      "section": null,
+      "canonical": "capers",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 2,
+        "unit": "tablespoons"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "2 tablespoons red wine vinegar",
+      "section": null,
+      "canonical": "red wine vinegar",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 2,
+        "unit": "tablespoons"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "1 teaspoon sugar",
+      "section": null,
+      "canonical": "sugar",
+      "category": "dry-goods",
+      "quantity": {
+        "amount": 1,
+        "unit": "teaspoon"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "3 tablespoons olive oil",
+      "section": null,
+      "canonical": "olive oil",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "1 small handful fresh basil",
+      "section": null,
+      "canonical": "basil",
+      "category": "produce",
+      "quantity": {
+        "amount": 1,
+        "unit": "handful"
+      },
+      "grams": null
+    }
+  ]
+}

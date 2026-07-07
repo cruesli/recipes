@@ -1,0 +1,174 @@
+{
+  "slug": "goulash",
+  "version": 1,
+  "servings": 6,
+  "nutritionPerServing": {
+    "kcal": 929,
+    "proteinG": 51.6,
+    "fatG": 60.8,
+    "carbsG": 50.6,
+    "fibreG": 11.4,
+    "sodiumMg": 933
+  },
+  "ingredients": [
+    {
+      "raw": "1.2kg beef chuck, cut into 4cm cubes",
+      "section": null,
+      "canonical": "beef chuck",
+      "category": "meat-poultry",
+      "quantity": {
+        "amount": 1.2,
+        "unit": "kg"
+      },
+      "grams": 1200.0
+    },
+    {
+      "raw": "3 tablespoons lard or neutral oil",
+      "section": null,
+      "canonical": "lard",
+      "category": "oils-condiments",
+      "quantity": {
+        "amount": 3,
+        "unit": "tablespoons"
+      },
+      "grams": 45.0
+    },
+    {
+      "raw": "4 large onions, finely diced",
+      "section": null,
+      "canonical": "onion",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 880.0
+    },
+    {
+      "raw": "4 garlic cloves, minced",
+      "section": null,
+      "canonical": "garlic clove",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 20.0
+    },
+    {
+      "raw": "4 tablespoons sweet Hungarian paprika",
+      "section": null,
+      "canonical": "sweet Hungarian paprika",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 4,
+        "unit": "tablespoons"
+      },
+      "grams": 60.0
+    },
+    {
+      "raw": "1 teaspoon hot Hungarian paprika (optional)",
+      "section": null,
+      "canonical": "hot Hungarian paprika",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "teaspoon"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "1 teaspoon caraway seeds, lightly crushed",
+      "section": null,
+      "canonical": "caraway seed",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 1,
+        "unit": "teaspoon"
+      },
+      "grams": 5.0
+    },
+    {
+      "raw": "2 tablespoons tomato paste",
+      "section": null,
+      "canonical": "tomato paste",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 2,
+        "unit": "tablespoons"
+      },
+      "grams": 30.0
+    },
+    {
+      "raw": "2 red bell peppers, diced",
+      "section": null,
+      "canonical": "red bell pepper",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 380.0
+    },
+    {
+      "raw": "2 ripe tomatoes, diced",
+      "section": null,
+      "canonical": "tomato",
+      "category": "produce",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 330.0
+    },
+    {
+      "raw": "1.5 litres beef stock or water",
+      "section": null,
+      "canonical": "beef stock",
+      "category": "canned-jarred",
+      "quantity": {
+        "amount": 1.5,
+        "unit": "litres"
+      },
+      "grams": 1500.0
+    },
+    {
+      "raw": "4 medium potatoes, peeled and cut into 3cm chunks",
+      "section": null,
+      "canonical": "potato",
+      "category": "produce",
+      "quantity": {
+        "amount": 4,
+        "unit": "count"
+      },
+      "grams": 800.0
+    },
+    {
+      "raw": "2 bay leaves",
+      "section": null,
+      "canonical": "bay leaf",
+      "category": "spices-seasonings",
+      "quantity": {
+        "amount": 2,
+        "unit": "count"
+      },
+      "grams": 1.0
+    },
+    {
+      "raw": "Salt and black pepper",
+      "section": null,
+      "canonical": "salt",
+      "category": "spices-seasonings",
+      "quantity": null,
+      "grams": null
+    },
+    {
+      "raw": "Sour cream and parsley, to serve",
+      "section": null,
+      "canonical": "sour cream",
+      "category": "dairy-eggs",
+      "quantity": null,
+      "grams": null
+    }
+  ]
+}

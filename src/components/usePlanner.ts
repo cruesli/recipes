@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { migrateWeek, addMealIn, moveMealIn, newMealId, MAX_MEALS_PER_DAY } from '../lib/plannerModel.mjs';
 import { scaleIngredient } from '../lib/quantity.mjs';
+import { buildShoppingView, DEFAULT_BUCKET_ORDER } from '../lib/shoppingList.mjs';
+import { getEnriched, CATEGORY_LABELS, normaliseCategory } from '../lib/enrichment';
 
 export const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 export { MAX_MEALS_PER_DAY };
@@ -19,6 +21,10 @@ export interface RecipeData {
   ingredients: string[];
   /** Raw cuisine silhouette SVG for the photo-less card placeholder */
   silhouette?: string | null;
+  // Facet fields (only populated on /recipes; undefined elsewhere)
+  dietary?: string[];
+  kcalPerServing?: number | null;
+  proteinPerServing?: number | null;
 }
 
 export interface IngredientSection {
@@ -38,26 +44,79 @@ export interface PlannedMeal {
 
 export type Week = Partial<Record<string, PlannedMeal[]>>;
 
-export interface ShoppingItem {
-  id: string;
-  text: string;
-  day: string;
-  recipeTitle: string;
-  sectionHeader: string | null;
-  checked: boolean;
+export interface StatedQuantity {
+  amount: number;
+  unit: string;
 }
 
-export interface SectionGroup {
+export interface ShoppingItem {
+  id: string;
+  text: string;              // servings-scaled display text (degraded fallback)
+  raw: string;               // original unscaled line — the join key to the export
+  day: string;
+  mealId: string;
+  recipeTitle: string;
+  recipeSlug: string | null;
+  sectionHeader: string | null;
+  ratio: number;
+  // KG enrichment (null when the recipe/line isn't in the export → degraded)
+  canonical: string | null;
+  category: string | null;
+  quantity: StatedQuantity | null;
+}
+
+// Bucket-view types (mirror src/lib/shoppingList.mjs output)
+export interface MergedLine {
+  id: string;
+  canonical: string;
+  category: string;
+  note: string;
+}
+export interface CategoryBucket {
+  category: string;
+  lines: MergedLine[];
+}
+export interface DegradedSection {
   header: string | null;
   items: ShoppingItem[];
 }
-
-export interface MealGroup {
-  meal: PlannedMeal;
-  sections: SectionGroup[];
+export interface DegradedMeal {
+  title: string;
+  sections: DegradedSection[];
+}
+export interface DegradedDay {
+  day: string;
+  meals: DegradedMeal[];
+}
+export interface ShoppingView {
+  buckets: CategoryBucket[];
+  degraded: DegradedDay[];
+  hasEnriched: boolean;
 }
 
 const STORAGE_KEY = 'recipes:week';
+const BUCKET_ORDER_KEY = 'recipes:bucketOrder';
+
+function loadBucketOrder(): string[] {
+  if (typeof window === 'undefined') return DEFAULT_BUCKET_ORDER;
+  try {
+    const raw = localStorage.getItem(BUCKET_ORDER_KEY);
+    if (!raw) return DEFAULT_BUCKET_ORDER;
+    const saved = JSON.parse(raw) as string[];
+    // keep only known slugs, then append any defaults the saved order is missing
+    const known = saved.filter((s) => DEFAULT_BUCKET_ORDER.includes(s));
+    return [...known, ...DEFAULT_BUCKET_ORDER.filter((s) => !known.includes(s))];
+  } catch {
+    return DEFAULT_BUCKET_ORDER;
+  }
+}
+
+function saveBucketOrder(order: string[]): void {
+  if (typeof window === 'undefined') return;
+  try {
+    localStorage.setItem(BUCKET_ORDER_KEY, JSON.stringify(order));
+  } catch {}
+}
 
 function loadWeek(): Week {
   if (typeof window === 'undefined') return {};
@@ -91,21 +150,18 @@ export function parseIngredients(raw: string[]): IngredientSection[] {
   return sections;
 }
 
-// TODO(nlp-plan): KG enrichment, category buckets, merged day notes — see
-// nlp-integration-update-plan.md
-function enrichShoppingItems(items: ShoppingItem[]): ShoppingItem[] {
-  return items;
-}
-
 export function usePlanner() {
   const [meals, setMeals] = useState<Week>({});
   const [shoppingList, setShoppingList] = useState<ShoppingItem[]>([]);
+  const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
+  const [bucketOrder, setBucketOrder] = useState<string[]>(DEFAULT_BUCKET_ORDER);
   const [listReady, setListReady] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const saved = loadWeek();
     if (Object.keys(saved).length > 0) setMeals(saved);
+    setBucketOrder(loadBucketOrder());
     setLoaded(true);
   }, []);
 
@@ -179,6 +235,7 @@ export function usePlanner() {
 
   function resetList() {
     setShoppingList([]);
+    setCheckedIds(new Set());
     setListReady(false);
   }
 
@@ -190,51 +247,62 @@ export function usePlanner() {
         // Each raw line scales by its own meal's servings ratio
         const ratio =
           meal.servings !== null && meal.baseServings ? meal.servings / meal.baseServings : 1;
+        // Join the meal's raw lines against the recipe's enriched export by raw text
+        const enriched = meal.recipeId ? getEnriched(meal.recipeId) : null;
+        const byRaw = new Map<string, ReturnType<typeof getEnriched> extends null ? never : any>();
+        enriched?.ingredients.forEach((ing) => byRaw.set(ing.raw.trim(), ing));
         meal.sections.forEach((sec) => {
-          sec.items.forEach((text) => {
+          sec.items.forEach((raw) => {
+            const e = byRaw.get(raw.trim());
             items.push({
               id: String(counter++),
-              text: scaleIngredient(text, ratio),
+              text: scaleIngredient(raw, ratio),
+              raw,
               day,
+              mealId: meal.id,
               recipeTitle: meal.title,
+              recipeSlug: meal.recipeId,
               sectionHeader: sec.header,
-              checked: false,
+              ratio,
+              canonical: e?.canonical ?? null,
+              category: e?.category ?? null,
+              quantity: e?.quantity ?? null,
             });
           });
         });
       });
     });
-    setShoppingList(enrichShoppingItems(items));
+    setShoppingList(items);
+    setCheckedIds(new Set());
     setListReady(true);
   }
 
   function toggleItem(id: string) {
-    setShoppingList((prev) => prev.map((i) => (i.id === id ? { ...i, checked: !i.checked } : i)));
-  }
-
-  // Day → meal → section grouping. Items were generated in DAYS × meals order,
-  // so a cursor pairs them back up unambiguously (duplicate recipes included).
-  const grouped: Record<string, MealGroup[]> = {};
-  if (shoppingList.length > 0) {
-    let cursor = 0;
-    DAYS.forEach((day) => {
-      (meals[day] ?? []).forEach((meal) => {
-        const count = meal.sections.reduce((n, s) => n + s.items.length, 0);
-        if (count === 0) return;
-        const mealItems = shoppingList.slice(cursor, cursor + count);
-        cursor += count;
-        const sections: SectionGroup[] = [];
-        mealItems.forEach((item) => {
-          const last = sections[sections.length - 1];
-          if (last && last.header === item.sectionHeader) last.items.push(item);
-          else sections.push({ header: item.sectionHeader, items: [item] });
-        });
-        (grouped[day] ??= []).push({ meal, sections });
-      });
+    setCheckedIds((prev) => {
+      const next = new Set(prev);
+      next.has(id) ? next.delete(id) : next.add(id);
+      return next;
     });
   }
 
+  // Derived bucket view (enriched buckets + degraded day→recipe groups)
+  const shoppingView = useMemo(
+    () => buildShoppingView(shoppingList, bucketOrder) as ShoppingView,
+    [shoppingList, bucketOrder]
+  );
+
+  // Bucket reorder — persisted, dynamic (re-sorts the derived view only)
+  function reorderBuckets(next: string[]) {
+    setBucketOrder(next);
+    saveBucketOrder(next);
+  }
+  function resetBucketOrder() {
+    setBucketOrder(DEFAULT_BUCKET_ORDER);
+    saveBucketOrder(DEFAULT_BUCKET_ORDER);
+  }
+
   function downloadList() {
+    const mark = (id: string) => (checkedIds.has(id) ? '[x]' : '[ ]');
     const lines: string[] = ['SHOPPING LIST', ''];
     lines.push('WEEKLY MENU');
     lines.push('─'.repeat(40));
@@ -248,14 +316,23 @@ export function usePlanner() {
         });
       }
     });
-    lines.push('', 'INGREDIENTS', '─'.repeat(40));
-    DAYS.forEach((day) => {
-      (grouped[day] ?? []).forEach(({ meal, sections }) => {
+    // Enriched buckets, in the user's order, with merged day-note lines
+    shoppingView.buckets.forEach((bucket) => {
+      const label = CATEGORY_LABELS[normaliseCategory(bucket.category)];
+      lines.push('', label.toUpperCase(), '─'.repeat(40));
+      bucket.lines.forEach((line) => {
+        const name = line.canonical.charAt(0).toUpperCase() + line.canonical.slice(1);
+        lines.push(`  ${mark(line.id)} ${name}${line.note ? `  — ${line.note}` : ''}`);
+      });
+    });
+    // Degraded remainder keeps the classic day → recipe format
+    shoppingView.degraded.forEach(({ day, meals: dayMeals }) => {
+      dayMeals.forEach((meal) => {
         lines.push('', `${day.toUpperCase()} — ${meal.title}`);
-        sections.forEach((sec) => {
+        meal.sections.forEach((sec) => {
           if (sec.header) lines.push(`  ${sec.header}:`);
           sec.items.forEach((item) => {
-            lines.push(`  ${item.checked ? '[x]' : '[ ]'} ${item.text}`);
+            lines.push(`  ${mark(item.id)} ${item.text}`);
           });
         });
       });
@@ -269,7 +346,13 @@ export function usePlanner() {
     URL.revokeObjectURL(url);
   }
 
-  const checkedCount = shoppingList.filter((i) => i.checked).length;
+  const totalRows =
+    shoppingView.buckets.reduce((n, b) => n + b.lines.length, 0) +
+    shoppingView.degraded.reduce(
+      (n, d) => n + d.meals.reduce((m, ml) => m + ml.sections.reduce((s, sec) => s + sec.items.length, 0), 0),
+      0
+    );
+  const checkedCount = checkedIds.size;
   const filledDays = DAYS.filter((d) => (meals[d] ?? []).length > 0);
   const mealCount = DAYS.reduce((n, d) => n + (meals[d]?.length ?? 0), 0);
   const canGenerate = mealCount > 0;
@@ -277,10 +360,13 @@ export function usePlanner() {
   return {
     meals,
     shoppingList,
+    shoppingView,
+    bucketOrder,
+    checkedIds,
     listReady,
     loaded,
-    grouped,
     checkedCount,
+    totalRows,
     filledDays,
     mealCount,
     canGenerate,
@@ -292,6 +378,8 @@ export function usePlanner() {
     resetList,
     generateList,
     toggleItem,
+    reorderBuckets,
+    resetBucketOrder,
     downloadList,
   };
 }
