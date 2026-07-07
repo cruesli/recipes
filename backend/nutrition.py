@@ -81,6 +81,29 @@ def _search(ingredient: str, session: requests.Session) -> dict:
     return {}
 
 
+def per_serving_totals(ing_nutritions: list, servings: Optional[int]) -> Optional[dict]:
+    """Per-serving macro totals from (NutritionPer100g, grams|None) pairs.
+
+    Unquantified ingredients count as 100g — the same approximation the graph
+    has always used. Returns None when there is nothing to compute.
+    """
+    if not ing_nutritions or not servings:
+        return None
+    totals = {"protein": 0.0, "kcal": 0.0, "fat": 0.0,
+              "carbs": 0.0, "sodium": 0.0, "fibre": 0.0}
+    for n, qty in ing_nutritions:
+        factor = (qty / 100) if qty is not None else 1.0
+        totals["protein"] += factor * n.protein_per_100g
+        totals["kcal"]    += factor * n.kcal_per_100g
+        totals["fat"]     += factor * n.fat_per_100g
+        totals["carbs"]   += factor * n.carbs_per_100g
+        if n.sodium_mg_per_100g is not None:
+            totals["sodium"] += factor * n.sodium_mg_per_100g
+        if n.fibre_per_100g is not None:
+            totals["fibre"] += factor * n.fibre_per_100g
+    return {k: v / servings for k, v in totals.items()}
+
+
 def _has_nonzero_macros(food: dict) -> bool:
     nutrients = {n["nutrientId"]: n.get("value", 0.0) for n in food.get("foodNutrients", []) if "nutrientId" in n}
     macro_ids = [NUTRIENT_IDS["protein"], NUTRIENT_IDS["fat"], NUTRIENT_IDS["carbohydrates"]]

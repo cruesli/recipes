@@ -9,6 +9,7 @@ from dotenv import load_dotenv
 
 from backend.categories import coerce_category
 from backend.entity_linker import fetch_properties, link_ingredient
+from backend.export import export_recipes
 from backend.graph import RecipeKnowledgeGraph, save_graph
 from backend.models import NutritionPer100g, Recipe, WikidataEntity
 from backend.normaliser import make_client, normalise_all
@@ -82,6 +83,7 @@ def run_ingest(
     cache_dir: Optional[Path] = None,
     data_dir: Optional[Path] = None,
     report_path: Optional[Path] = None,
+    export_dir: Optional[Path] = None,
 ) -> None:
     load_dotenv(Path.home() / ".env")
 
@@ -285,6 +287,18 @@ def run_ingest(
     }
     report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    # static JSON consumed by the Astro build
+    print("Exporting enriched recipe JSON...")
+    export_recipes(
+        recipes,
+        normalised_map=normalised_map,
+        nutrition_map=nutrition_map,
+        quantity_map=quantity_map,
+        category_map=category_map,
+        stated_quantity_map=stated_quantity_map,
+        export_dir=export_dir,
+    )
 
 
 if __name__ == "__main__":

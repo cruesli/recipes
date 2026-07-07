@@ -4,6 +4,7 @@ from typing import Dict, List, Optional
 
 from rdflib import XSD, Graph, Literal, Namespace, RDF, URIRef
 
+from backend.nutrition import per_serving_totals
 from backend.models import (
     EnrichedIngredient,
     FilterResponse,
@@ -102,24 +103,11 @@ class RecipeKnowledgeGraph:
                 self._add_nutrition_triples(nutr_node, nutrition)
                 
         # approx per-serving nutrition stored on recipe node for filtering
-        if ing_nutritions and recipe.servings:
-            s = recipe.servings
-            totals = {"protein": 0.0, "kcal": 0.0, "fat": 0.0,
-                      "carbs": 0.0, "sodium": 0.0, "fibre": 0.0}
-            for n, qty in ing_nutritions:
-                factor = (qty / 100) if qty is not None else 1.0
-                totals["protein"] += factor * n.protein_per_100g
-                totals["kcal"]    += factor * n.kcal_per_100g
-                totals["fat"]     += factor * n.fat_per_100g
-                totals["carbs"]   += factor * n.carbs_per_100g
-                if n.sodium_mg_per_100g is not None:
-                    totals["sodium"] += factor * n.sodium_mg_per_100g
-                if n.fibre_per_100g is not None:
-                    totals["fibre"] += factor * n.fibre_per_100g
- 
+        totals = per_serving_totals(ing_nutritions, recipe.servings)
+        if totals:
             def _store(prop, value):
-                self.graph.add((r, prop, Literal(value / s, datatype=XSD.decimal)))
- 
+                self.graph.add((r, prop, Literal(value, datatype=XSD.decimal)))
+
             _store(RKG.approxProteinPerServing, totals["protein"])
             _store(RKG.approxKcalPerServing,    totals["kcal"])
             _store(RKG.approxFatPerServing,     totals["fat"])
