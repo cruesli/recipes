@@ -408,3 +408,95 @@ def test_run_ingest_writes_n1_fields_to_graph(recipes_dir, tmp_path, cache_dir):
     ttl = out.read_text()
     assert "meat-poultry" in ttl
     assert "statedAmount" in ttl
+
+
+# --- entity QID pinning ---
+
+def _entity(qid, label):
+    return WikidataEntity(qid=qid, uri=f"http://www.wikidata.org/entity/{qid}", label=label)
+
+
+def test_run_ingest_pinned_qid_skips_search(recipes_dir, tmp_path, cache_dir):
+    _write_recipe(recipes_dir, "soup", ["Water"])
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    (data_dir / "entity_overrides.json").write_text(json.dumps({"water": "Q283"}))
+    out = tmp_path / "graph.ttl"
+
+    mock_link = MagicMock(return_value=None)
+    mock_props = MagicMock(return_value=_entity("Q283", "water"))
+    with patch("backend.ingest.normalise_all", MagicMock(return_value=[_nd_full("water")])), \
+         patch("backend.ingest.link_ingredient", mock_link), \
+         patch("backend.ingest.fetch_properties", mock_props), \
+         patch("backend.ingest.fetch_nutrition", return_value=None):
+        run_ingest(recipes_dir, out, llm_client=MagicMock(), cache_dir=cache_dir, data_dir=data_dir)
+
+    mock_link.assert_not_called()
+    assert mock_props.call_args.args[0] == "Q283"
+    assert "Q283" in out.read_text()
+
+
+def test_run_ingest_null_override_forces_unlink(recipes_dir, tmp_path, cache_dir):
+    _write_recipe(recipes_dir, "soup", ["Spices"])
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    (data_dir / "entity_overrides.json").write_text(json.dumps({"spices": None}))
+    out = tmp_path / "graph.ttl"
+
+    mock_link = MagicMock(return_value=_entity("Q999", "wrong"))
+    with patch("backend.ingest.normalise_all", MagicMock(return_value=[_nd_full("spices")])), \
+         patch("backend.ingest.link_ingredient", mock_link), \
+         patch("backend.ingest.fetch_nutrition", return_value=None):
+        run_ingest(recipes_dir, out, llm_client=MagicMock(), cache_dir=cache_dir, data_dir=data_dir)
+
+    mock_link.assert_not_called()
+    assert "wikidataQid" not in out.read_text()
+
+
+def test_run_ingest_pinned_qid_uses_cache_when_it_matches(recipes_dir, tmp_path, cache_dir):
+    _write_recipe(recipes_dir, "soup", ["Water"])
+    data_dir = tmp_path / "data"
+    data_dir.mkdir()
+    (data_dir / "entity_overrides.json").write_text(json.dumps({"water": "Q283"}))
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    (cache_dir / "entities.json").write_text(json.dumps({"water": _entity("Q283", "water").model_dump()}))
+
+    mock_props = MagicMock()
+    with patch("backend.ingest.normalise_all", MagicMock(return_value=[_nd_full("water")])), \
+         patch("backend.ingest.link_ingredient", return_value=None), \
+         patch("backend.ingest.fetch_properties", mock_props), \
+         patch("backend.ingest.fetch_nutrition", return_value=None):
+        run_ingest(recipes_dir, tmp_path / "graph.ttl", llm_client=MagicMock(),
+                   cache_dir=cache_dir, data_dir=data_dir)
+
+    mock_props.assert_not_called()
+
+
+# --- ingest report ---
+
+def test_run_ingest_writes_report(recipes_dir, tmp_path, cache_dir):
+    _write_recipe(recipes_dir, "soup", ["400g Chicken thighs"])
+    report_path = tmp_path / "report.json"
+    nutrition = NutritionPer100g(
+        protein_per_100g=17.4, fat_per_100g=9.6, carbs_per_100g=0.0, kcal_per_100g=177.0,
+    )
+    with patch("backend.ingest.normalise_all", MagicMock(return_value=[
+            _nd_full("chicken thigh", 400.0, "meat-poultry", {"amount": 400, "unit": "g"})])), \
+         patch("backend.ingest.link_ingredient", return_value=_entity("Q192628", "chicken thigh")), \
+         patch("backend.ingest.fetch_nutrition", return_value=nutrition):
+        run_ingest(recipes_dir, tmp_path / "graph.ttl", llm_client=MagicMock(),
+                   cache_dir=cache_dir, report_path=report_path)
+
+    report = json.loads(report_path.read_text())
+    assert report["summary"]["recipes"] == 1
+    assert report["summary"]["linked"] == 1
+    ing = report["ingredients"][0]
+    assert ing["canonical"] == "chicken thigh"
+    assert ing["qid"] == "Q192628"
+    assert ing["linkSource"] == "network"
+    assert ing["usda"]["found"] is True
+    assert ing["usda"]["kcalPer100g"] == 177.0
+    line = report["lines"][0]
+    assert line["raw"] == "400g Chicken thighs"
+    assert line["category"] == "meat-poultry"
+    assert line["quantity"] == {"amount": 400, "unit": "g"}

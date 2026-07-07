@@ -17,7 +17,8 @@ from backend.models import (
 )
 from backend.graph import RecipeKnowledgeGraph, load_graph, save_graph
 
-EX = Namespace("http://example.org/recipe-kg/")
+RKG = Namespace("https://cruesli.github.io/recipes/kg/")
+SCHEMA = Namespace("https://schema.org/")
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -152,50 +153,50 @@ def kg_two_recipes(recipe_tahini, recipe_pasta, normalised_map, entity_map, nutr
 
 
 def test_recipe_node_has_rdf_type(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    assert (recipe_node, RDF.type, EX.Recipe) in kg.graph
+    recipe_node = RKG["recipe_tahini-chicken"]
+    assert (recipe_node, RDF.type, SCHEMA.Recipe) in kg.graph
 
 
 def test_recipe_node_has_title(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    titles = list(kg.graph.objects(recipe_node, EX.title))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    titles = list(kg.graph.objects(recipe_node, SCHEMA.name))
     assert len(titles) == 1
     assert str(titles[0]) == "Tahini Chicken"
 
 
 def test_recipe_node_has_slug(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    slugs = list(kg.graph.objects(recipe_node, EX.slug))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    slugs = list(kg.graph.objects(recipe_node, RKG.slug))
     assert str(slugs[0]) == "tahini-chicken"
 
 
 def test_recipe_node_has_cuisine(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    cuisines = list(kg.graph.objects(recipe_node, EX.cuisine))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    cuisines = list(kg.graph.objects(recipe_node, SCHEMA.recipeCuisine))
     assert str(cuisines[0]) == "middle-eastern"
 
 
 def test_recipe_node_has_food_type(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    food_types = list(kg.graph.objects(recipe_node, EX.foodType))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    food_types = list(kg.graph.objects(recipe_node, RKG.foodType))
     assert str(food_types[0]) == "Main"
 
 
 def test_recipe_node_has_servings(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    servings = list(kg.graph.objects(recipe_node, EX.servings))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    servings = list(kg.graph.objects(recipe_node, SCHEMA.recipeYield))
     assert int(servings[0]) == 2
 
 
 def test_recipe_node_has_total_time(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    times = list(kg.graph.objects(recipe_node, EX.totalTimeMinutes))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    times = list(kg.graph.objects(recipe_node, RKG.totalTimeMinutes))
     assert int(times[0]) == 45
 
 
 def test_recipe_node_has_tags(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    tags = {str(t) for t in kg.graph.objects(recipe_node, EX.tag)}
+    recipe_node = RKG["recipe_tahini-chicken"]
+    tags = {str(t) for t in kg.graph.objects(recipe_node, SCHEMA.keywords)}
     assert tags == {"Quick", "Healthy"}
 
 
@@ -203,7 +204,7 @@ def test_recipe_without_optional_fields_still_added():
     minimal = Recipe(slug="minimal", title="Minimal", cuisine="italian")
     g = RecipeKnowledgeGraph()
     g.add_recipe(minimal, {}, {}, {})
-    assert (EX["recipe_minimal"], RDF.type, EX.Recipe) in g.graph
+    assert (RKG["recipe_minimal"], RDF.type, SCHEMA.Recipe) in g.graph
 
 
 # ---------------------------------------------------------------------------
@@ -212,28 +213,28 @@ def test_recipe_without_optional_fields_still_added():
 
 
 def test_recipe_has_ingredient_links(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    ingredients = list(kg.graph.objects(recipe_node, EX.hasIngredient))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    ingredients = list(kg.graph.objects(recipe_node, RKG.hasIngredient))
     assert len(ingredients) == 2
 
 
 def test_ingredient_node_has_raw_string(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    ing_nodes = list(kg.graph.objects(recipe_node, EX.hasIngredient))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    ing_nodes = list(kg.graph.objects(recipe_node, RKG.hasIngredient))
     raw_strings = set()
     for ing in ing_nodes:
-        for raw in kg.graph.objects(ing, EX.rawString):
+        for raw in kg.graph.objects(ing, RKG.rawString):
             raw_strings.add(str(raw))
     assert "400g Chicken thighs" in raw_strings
     assert "2 tbsp Tahini" in raw_strings
 
 
 def test_ingredient_node_has_normalised_name(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    ing_nodes = list(kg.graph.objects(recipe_node, EX.hasIngredient))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    ing_nodes = list(kg.graph.objects(recipe_node, RKG.hasIngredient))
     normalised = set()
     for ing in ing_nodes:
-        for n in kg.graph.objects(ing, EX.normalisedName):
+        for n in kg.graph.objects(ing, RKG.normalisedName):
             normalised.add(str(n))
     assert "chicken thigh" in normalised
     assert "tahini" in normalised
@@ -245,46 +246,46 @@ def test_ingredient_node_has_normalised_name(kg):
 
 
 def test_ingredient_has_wikidata_qid(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
+    recipe_node = RKG["recipe_tahini-chicken"]
     qids = set()
-    for ing in kg.graph.objects(recipe_node, EX.hasIngredient):
-        for qid in kg.graph.objects(ing, EX.wikidataQid):
+    for ing in kg.graph.objects(recipe_node, RKG.hasIngredient):
+        for qid in kg.graph.objects(ing, RKG.wikidataQid):
             qids.add(str(qid))
     assert "Q192628" in qids
 
 
 def test_ingredient_has_wikidata_uri(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
+    recipe_node = RKG["recipe_tahini-chicken"]
     uris = set()
-    for ing in kg.graph.objects(recipe_node, EX.hasIngredient):
-        for uri in kg.graph.objects(ing, EX.wikidataUri):
+    for ing in kg.graph.objects(recipe_node, RKG.hasIngredient):
+        for uri in kg.graph.objects(ing, RKG.wikidataUri):
             uris.add(str(uri))
     assert "http://www.wikidata.org/entity/Q192628" in uris
 
 
 def test_ingredient_has_food_category(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
+    recipe_node = RKG["recipe_tahini-chicken"]
     categories = set()
-    for ing in kg.graph.objects(recipe_node, EX.hasIngredient):
-        for cat in kg.graph.objects(ing, EX.foodCategory):
+    for ing in kg.graph.objects(recipe_node, RKG.hasIngredient):
+        for cat in kg.graph.objects(ing, RKG.foodCategory):
             categories.add(str(cat))
     assert "poultry" in categories
 
 
 def test_ingredient_has_origin_country(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
+    recipe_node = RKG["recipe_tahini-chicken"]
     countries = set()
-    for ing in kg.graph.objects(recipe_node, EX.hasIngredient):
-        for c in kg.graph.objects(ing, EX.originCountry):
+    for ing in kg.graph.objects(recipe_node, RKG.hasIngredient):
+        for c in kg.graph.objects(ing, RKG.originCountry):
             countries.add(str(c))
     assert "United States" in countries
 
 
 def test_ingredient_has_dietary_flags(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
+    recipe_node = RKG["recipe_tahini-chicken"]
     flags = set()
-    for ing in kg.graph.objects(recipe_node, EX.hasIngredient):
-        for f in kg.graph.objects(ing, EX.dietaryFlag):
+    for ing in kg.graph.objects(recipe_node, RKG.hasIngredient):
+        for f in kg.graph.objects(ing, RKG.dietaryFlag):
             flags.add(str(f))
     assert "vegan" in flags
     assert "vegetarian" in flags
@@ -294,9 +295,9 @@ def test_ingredient_without_entity_has_no_wikidata_triples():
     recipe = Recipe(slug="plain", title="Plain", cuisine="italian", ingredients=["500g Pasta"])
     g = RecipeKnowledgeGraph()
     g.add_recipe(recipe, {"500g Pasta": "pasta"}, {}, {})
-    recipe_node = EX["recipe_plain"]
-    for ing in g.graph.objects(recipe_node, EX.hasIngredient):
-        qids = list(g.graph.objects(ing, EX.wikidataQid))
+    recipe_node = RKG["recipe_plain"]
+    for ing in g.graph.objects(recipe_node, RKG.hasIngredient):
+        qids = list(g.graph.objects(ing, RKG.wikidataQid))
         assert qids == []
 
 
@@ -306,64 +307,64 @@ def test_ingredient_without_entity_has_no_wikidata_triples():
 
 
 def test_ingredient_links_to_nutrition_node(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    for ing in kg.graph.objects(recipe_node, EX.hasIngredient):
-        has_nutrition = list(kg.graph.objects(ing, EX.hasNutrition))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    for ing in kg.graph.objects(recipe_node, RKG.hasIngredient):
+        has_nutrition = list(kg.graph.objects(ing, RKG.hasNutrition))
         assert len(has_nutrition) == 1
 
 
 def test_nutrition_node_has_protein(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
+    recipe_node = RKG["recipe_tahini-chicken"]
     proteins = []
-    for ing in kg.graph.objects(recipe_node, EX.hasIngredient):
-        for nutr in kg.graph.objects(ing, EX.hasNutrition):
-            for p in kg.graph.objects(nutr, EX.proteinPer100g):
+    for ing in kg.graph.objects(recipe_node, RKG.hasIngredient):
+        for nutr in kg.graph.objects(ing, RKG.hasNutrition):
+            for p in kg.graph.objects(nutr, RKG.proteinPer100g):
                 proteins.append(float(p))
     assert any(p == pytest.approx(17.4) for p in proteins)
 
 
 def test_nutrition_node_has_fat(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    for ing in kg.graph.objects(recipe_node, EX.hasIngredient):
-        norm = list(kg.graph.objects(ing, EX.normalisedName))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    for ing in kg.graph.objects(recipe_node, RKG.hasIngredient):
+        norm = list(kg.graph.objects(ing, RKG.normalisedName))
         if norm and str(norm[0]) == "chicken thigh":
-            for nutr in kg.graph.objects(ing, EX.hasNutrition):
-                fats = list(kg.graph.objects(nutr, EX.fatPer100g))
+            for nutr in kg.graph.objects(ing, RKG.hasNutrition):
+                fats = list(kg.graph.objects(nutr, RKG.fatPer100g))
                 assert float(fats[0]) == pytest.approx(9.6)
 
 
 def test_nutrition_node_has_carbs(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    for ing in kg.graph.objects(recipe_node, EX.hasIngredient):
-        norm = list(kg.graph.objects(ing, EX.normalisedName))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    for ing in kg.graph.objects(recipe_node, RKG.hasIngredient):
+        norm = list(kg.graph.objects(ing, RKG.normalisedName))
         if norm and str(norm[0]) == "chicken thigh":
-            for nutr in kg.graph.objects(ing, EX.hasNutrition):
-                carbs = list(kg.graph.objects(nutr, EX.carbsPer100g))
+            for nutr in kg.graph.objects(ing, RKG.hasNutrition):
+                carbs = list(kg.graph.objects(nutr, RKG.carbsPer100g))
                 assert float(carbs[0]) == pytest.approx(0.0)
 
 
 def test_nutrition_node_has_kcal(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    for ing in kg.graph.objects(recipe_node, EX.hasIngredient):
-        norm = list(kg.graph.objects(ing, EX.normalisedName))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    for ing in kg.graph.objects(recipe_node, RKG.hasIngredient):
+        norm = list(kg.graph.objects(ing, RKG.normalisedName))
         if norm and str(norm[0]) == "chicken thigh":
-            for nutr in kg.graph.objects(ing, EX.hasNutrition):
-                kcals = list(kg.graph.objects(nutr, EX.kcalPer100g))
+            for nutr in kg.graph.objects(ing, RKG.hasNutrition):
+                kcals = list(kg.graph.objects(nutr, RKG.kcalPer100g))
                 assert float(kcals[0]) == pytest.approx(177.0)
 
 
 def test_nutrition_node_has_optional_fields(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
+    recipe_node = RKG["recipe_tahini-chicken"]
     fibre_found = False
     sodium_found = False
     cholesterol_found = False
-    for ing in kg.graph.objects(recipe_node, EX.hasIngredient):
-        for nutr in kg.graph.objects(ing, EX.hasNutrition):
-            if list(kg.graph.objects(nutr, EX.fibrePer100g)):
+    for ing in kg.graph.objects(recipe_node, RKG.hasIngredient):
+        for nutr in kg.graph.objects(ing, RKG.hasNutrition):
+            if list(kg.graph.objects(nutr, RKG.fibrePer100g)):
                 fibre_found = True
-            if list(kg.graph.objects(nutr, EX.sodiumMgPer100g)):
+            if list(kg.graph.objects(nutr, RKG.sodiumMgPer100g)):
                 sodium_found = True
-            if list(kg.graph.objects(nutr, EX.cholesterolMgPer100g)):
+            if list(kg.graph.objects(nutr, RKG.cholesterolMgPer100g)):
                 cholesterol_found = True
     assert fibre_found
     assert sodium_found
@@ -374,9 +375,9 @@ def test_ingredient_without_nutrition_has_no_nutrition_node():
     recipe = Recipe(slug="plain", title="Plain", cuisine="italian", ingredients=["500g Pasta"])
     g = RecipeKnowledgeGraph()
     g.add_recipe(recipe, {"500g Pasta": "pasta"}, {}, {})
-    recipe_node = EX["recipe_plain"]
-    for ing in g.graph.objects(recipe_node, EX.hasIngredient):
-        nutrs = list(g.graph.objects(ing, EX.hasNutrition))
+    recipe_node = RKG["recipe_plain"]
+    for ing in g.graph.objects(recipe_node, RKG.hasIngredient):
+        nutrs = list(g.graph.objects(ing, RKG.hasNutrition))
         assert nutrs == []
 
 
@@ -741,39 +742,39 @@ def kg_with_quantities(recipe_tahini, normalised_map, entity_map, nutrition_map,
 
 
 def test_ingredient_has_quantity_g_when_provided(kg_with_quantities):
-    recipe_node = EX["recipe_tahini-chicken"]
+    recipe_node = RKG["recipe_tahini-chicken"]
     qtys = set()
-    for ing in kg_with_quantities.graph.objects(recipe_node, EX.hasIngredient):
-        for qty in kg_with_quantities.graph.objects(ing, EX.quantityG):
+    for ing in kg_with_quantities.graph.objects(recipe_node, RKG.hasIngredient):
+        for qty in kg_with_quantities.graph.objects(ing, RKG.quantityG):
             qtys.add(float(qty))
     assert 400.0 in qtys
     assert 30.0 in qtys
 
 
 def test_ingredient_has_no_quantity_g_without_map(kg):
-    recipe_node = EX["recipe_tahini-chicken"]
-    for ing in kg.graph.objects(recipe_node, EX.hasIngredient):
-        assert list(kg.graph.objects(ing, EX.quantityG)) == []
+    recipe_node = RKG["recipe_tahini-chicken"]
+    for ing in kg.graph.objects(recipe_node, RKG.hasIngredient):
+        assert list(kg.graph.objects(ing, RKG.quantityG)) == []
 
 
 def test_approx_protein_per_serving_uses_quantity_weight(kg_with_quantities):
     # chicken: 400g * (17.4/100) = 69.6; tahini: 30g * (17.0/100) = 5.1; total/2 = 37.35
-    recipe_node = EX["recipe_tahini-chicken"]
-    vals = list(kg_with_quantities.graph.objects(recipe_node, EX.approxProteinPerServing))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    vals = list(kg_with_quantities.graph.objects(recipe_node, RKG.approxProteinPerServing))
     assert float(vals[0]) == pytest.approx(37.35)
 
 
 def test_approx_kcal_per_serving_uses_quantity_weight(kg_with_quantities):
     # chicken: 400g * (177.0/100) = 708.0; tahini: 30g * (595.0/100) = 178.5; total/2 = 443.25
-    recipe_node = EX["recipe_tahini-chicken"]
-    vals = list(kg_with_quantities.graph.objects(recipe_node, EX.approxKcalPerServing))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    vals = list(kg_with_quantities.graph.objects(recipe_node, RKG.approxKcalPerServing))
     assert float(vals[0]) == pytest.approx(443.25)
 
 
 def test_approx_protein_fallback_factor_one_without_quantities(kg):
     # factor=1.0 for both: (17.4 + 17.0) / 2 = 17.2
-    recipe_node = EX["recipe_tahini-chicken"]
-    vals = list(kg.graph.objects(recipe_node, EX.approxProteinPerServing))
+    recipe_node = RKG["recipe_tahini-chicken"]
+    vals = list(kg.graph.objects(recipe_node, RKG.approxProteinPerServing))
     assert float(vals[0]) == pytest.approx(17.2)
 
 
@@ -819,13 +820,13 @@ def test_load_graph_preserves_quantity_g(kg_with_quantities, tmp_path):
 
 def test_get_all_recipes_skips_recipe_node_missing_slug(kg):
     from rdflib import Literal
-    from backend.graph import EX
+    from backend.graph import RKG
     # Inject a recipe node that is missing the slug triple
-    broken = EX["recipe_broken"]
-    kg.graph.add((broken, EX["type"], EX.Recipe))  # uses rdf:type indirectly via subjects
+    broken = RKG["recipe_broken"]
+    kg.graph.add((broken, RKG["type"], SCHEMA.Recipe))  # uses rdf:type indirectly via subjects
     # Actually add rdf:type so the iterator sees it but omit slug/title/cuisine
     from rdflib import RDF
-    kg.graph.add((broken, RDF.type, EX.Recipe))
+    kg.graph.add((broken, RDF.type, SCHEMA.Recipe))
     # No slug, title, or cuisine → should be silently skipped
     summaries = kg.get_all_recipes()
     slugs = {s.slug for s in summaries}
@@ -894,36 +895,36 @@ def kg_n1(recipe_tahini, normalised_map, entity_map, nutrition_map, category_map
 
 
 def _ing(kg, idx):
-    return EX[f"ing_tahini-chicken_{idx}"]
+    return RKG[f"ing_tahini-chicken_{idx}"]
 
 
 def test_ingredient_has_shopping_category(kg_n1):
-    vals = list(kg_n1.graph.objects(_ing(kg_n1, 0), EX.shoppingCategory))
+    vals = list(kg_n1.graph.objects(_ing(kg_n1, 0), RKG.shoppingCategory))
     assert [str(v) for v in vals] == ["meat-poultry"]
 
 
 def test_ingredient_has_stated_amount_and_unit(kg_n1):
-    amount = list(kg_n1.graph.objects(_ing(kg_n1, 0), EX.statedAmount))
-    unit = list(kg_n1.graph.objects(_ing(kg_n1, 0), EX.statedUnit))
+    amount = list(kg_n1.graph.objects(_ing(kg_n1, 0), RKG.statedAmount))
+    unit = list(kg_n1.graph.objects(_ing(kg_n1, 0), RKG.statedUnit))
     assert float(amount[0]) == 400.0
     assert str(unit[0]) == "g"
 
 
 def test_null_stated_quantity_has_no_triples(kg_n1):
-    assert list(kg_n1.graph.objects(_ing(kg_n1, 1), EX.statedAmount)) == []
-    assert list(kg_n1.graph.objects(_ing(kg_n1, 1), EX.statedUnit)) == []
+    assert list(kg_n1.graph.objects(_ing(kg_n1, 1), RKG.statedAmount)) == []
+    assert list(kg_n1.graph.objects(_ing(kg_n1, 1), RKG.statedUnit)) == []
 
 
 def test_ingredient_has_section_header(kg_n1):
-    vals = list(kg_n1.graph.objects(_ing(kg_n1, 0), EX.sectionHeader))
+    vals = list(kg_n1.graph.objects(_ing(kg_n1, 0), RKG.sectionHeader))
     assert [str(v) for v in vals] == ["Marinade"]
 
 
 def test_ingredient_without_section_has_no_header_triple(kg_n1):
-    assert list(kg_n1.graph.objects(_ing(kg_n1, 1), EX.sectionHeader)) == []
+    assert list(kg_n1.graph.objects(_ing(kg_n1, 1), RKG.sectionHeader)) == []
 
 
 def test_add_recipe_without_n1_maps_still_works(recipe_tahini, normalised_map, entity_map, nutrition_map):
     g = RecipeKnowledgeGraph()
     g.add_recipe(recipe_tahini, normalised_map, entity_map, nutrition_map)
-    assert list(g.graph.objects(EX["ing_tahini-chicken_0"], EX.shoppingCategory)) == []
+    assert list(g.graph.objects(RKG["ing_tahini-chicken_0"], RKG.shoppingCategory)) == []

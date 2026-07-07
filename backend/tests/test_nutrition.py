@@ -285,3 +285,63 @@ def test_exponential_backoff_increases_delay():
 
     assert len(sleep_calls) == 2
     assert sleep_calls[1] > sleep_calls[0]
+
+
+# --- description scoring: prefer raw/fresh over processed variants ---
+
+import json
+
+DEHYDRATED_CARROT = {
+    "fdcId": 1, "description": "Carrots, dehydrated", "dataType": "SR Legacy",
+    "foodNutrients": [{"nutrientId": 1003, "value": 8.1}],
+}
+RAW_CARROT = {
+    "fdcId": 2, "description": "Carrots, mature, raw", "dataType": "SR Legacy",
+    "foodNutrients": [{"nutrientId": 1003, "value": 0.9}],
+}
+
+
+def test_pick_best_prefers_raw_over_dehydrated():
+    assert _pick_best([DEHYDRATED_CARROT, RAW_CARROT], query="carrot")["fdcId"] == 2
+
+
+def test_pick_best_keeps_processed_variant_when_query_asks_for_it():
+    assert _pick_best([DEHYDRATED_CARROT, RAW_CARROT], query="dehydrated carrot")["fdcId"] == 1
+
+
+def test_pick_best_datatype_outranks_description_score():
+    branded_raw = {
+        "fdcId": 3, "description": "Carrots, raw", "dataType": "Branded",
+        "foodNutrients": [{"nutrientId": 1003, "value": 0.9}],
+    }
+    assert _pick_best([DEHYDRATED_CARROT, branded_raw], query="carrot")["fdcId"] == 1
+
+
+def test_pick_best_without_query_keeps_original_order():
+    assert _pick_best([DEHYDRATED_CARROT, RAW_CARROT])["fdcId"] == 2  # raw bonus still applies
+
+
+# --- manual nutrition overrides ---
+
+def test_fetch_nutrition_uses_override_without_network(monkeypatch, tmp_path):
+    f = tmp_path / "nutrition_overrides.json"
+    f.write_text(json.dumps({
+        "carrot": {"protein_per_100g": 0.9, "fat_per_100g": 0.2,
+                   "carbs_per_100g": 9.6, "kcal_per_100g": 41.0},
+    }))
+    monkeypatch.setattr("backend.nutrition._OVERRIDES_PATH", f)
+    s = MagicMock(spec=requests.Session)
+    n = fetch_nutrition("carrot", s)
+    assert n.kcal_per_100g == 41.0
+    s.get.assert_not_called()
+
+
+def test_fetch_nutrition_override_misses_fall_through_to_search(monkeypatch, tmp_path):
+    f = tmp_path / "nutrition_overrides.json"
+    f.write_text(json.dumps({"carrot": {"protein_per_100g": 0.9, "fat_per_100g": 0.2,
+                                        "carbs_per_100g": 9.6, "kcal_per_100g": 41.0}}))
+    monkeypatch.setattr("backend.nutrition._OVERRIDES_PATH", f)
+    s = _session(_mock_response({"foods": [SR_LEGACY_FOOD]}))
+    n = fetch_nutrition("chicken thigh", s)
+    assert n is not None
+    s.get.assert_called_once()
