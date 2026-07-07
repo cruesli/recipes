@@ -6,6 +6,7 @@ import { cuisineLabel, getDescendants, type CuisineItem } from "../../utils/cuis
 import { withBase } from "../../utils/withBase";
 import { RecipeCard } from "../../components/RecipeCard";
 import { silhouetteFor } from "../../utils/silhouettes";
+import { deriveTotalTime } from "../../lib/recipeTime.mjs";
 import manifest from "../../generated/silhouettes/manifest.json";
 
 export async function getStaticPaths() {
@@ -148,7 +149,7 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
             eyebrow={r.data.tags?.[0]}
             title={r.data.title}
             meta={[
-              r.data.totalTimeMinutes ? `${r.data.totalTimeMinutes} min` : null,
+              deriveTotalTime(r.data) ? `${deriveTotalTime(r.data)} min` : null,
               r.data.servings ? `${r.data.servings} servings` : null,
               r.data.tags?.[1],
             ]}

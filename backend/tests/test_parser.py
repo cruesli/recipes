@@ -187,3 +187,20 @@ def test_sections_all_none_without_headers(tmp_path):
     )
     recipe = parse_recipe(path)
     assert recipe.ingredient_sections == [None, None]
+
+
+# --- total time derivation (mirror of frontend deriveTotalTime) ---
+
+def test_total_time_explicit_wins(tmp_path):
+    path = write_recipe(tmp_path, "r", "title: T\ncuisine: c\ntotalTimeMinutes: 45\nprepTimeMinutes: 10\ncookTimeMinutes: 20\n")
+    assert parse_recipe(path).total_time_minutes == 45
+
+
+def test_total_time_derived_from_prep_and_cook(tmp_path):
+    path = write_recipe(tmp_path, "r", "title: T\ncuisine: c\nprepTimeMinutes: 20\ncookTimeMinutes: 150\n")
+    assert parse_recipe(path).total_time_minutes == 170
+
+
+def test_total_time_none_when_absent(tmp_path):
+    path = write_recipe(tmp_path, "r", "title: T\ncuisine: c\n")
+    assert parse_recipe(path).total_time_minutes is None

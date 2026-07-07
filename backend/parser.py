@@ -35,6 +35,16 @@ def _clean_ingredients(raw) -> List[str]:
     return _clean_ingredient_lines(raw)[0]
 
 
+def _derive_total_time(fm) -> Optional[int]:
+    """Prefer explicit totalTimeMinutes, else sum prep + cook (mirror of the frontend)."""
+    if fm.get("totalTimeMinutes") is not None:
+        return fm["totalTimeMinutes"]
+    prep, cook = fm.get("prepTimeMinutes"), fm.get("cookTimeMinutes")
+    if prep is not None or cook is not None:
+        return (prep or 0) + (cook or 0)
+    return None
+
+
 def parse_recipe(path: Path) -> Recipe:
     post = frontmatter.load(str(path))
     fm = post.metadata
@@ -47,7 +57,7 @@ def parse_recipe(path: Path) -> Recipe:
         food_type=fm.get("foodType"),
         tags=[t for t in fm.get("tags", []) if t],
         servings=fm.get("servings"),
-        total_time_minutes=fm.get("totalTimeMinutes"),
+        total_time_minutes=_derive_total_time(fm),
         image=fm.get("image"),
         ingredients=ingredients,
         ingredient_sections=sections,

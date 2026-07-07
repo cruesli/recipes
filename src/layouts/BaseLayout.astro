@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import { ClientRouter } from "astro:transitions";
 import "../styles/global.css";
 import { PlannerDrawer } from "../components/PlannerDrawer";
+import { deriveTotalTime } from "../lib/recipeTime.mjs";
 
 interface Props {
   title?: string;
@@ -27,7 +28,7 @@ const allRecipes = recipes.map((r) => ({
   title: r.data.title,
   cuisine: r.data.cuisine,
   image: r.data.image ?? null,
-  totalTimeMinutes: r.data.totalTimeMinutes ?? null,
+  totalTimeMinutes: deriveTotalTime(r.data),
   servings: r.data.servings ?? null,
   ingredients: r.data.ingredients ?? [],
 }));

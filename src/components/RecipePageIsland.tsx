@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { Clock, Users, ChefHat, ArrowLeft, Check, Minus, Plus } from 'lucide-react';
 import { scaleIngredient } from '../lib/quantity.mjs';
+import type { NutritionPerServing } from '../lib/enrichment';
 
 export interface RecipePageProps {
   title: string;
@@ -16,6 +17,8 @@ export interface RecipePageProps {
   ingredients: string[];
   /** Plain-text steps, one per array entry */
   steps: string[];
+  /** Per-serving macros from the KG export; null when not in the graph */
+  nutrition: NutritionPerServing | null;
   basePath: string;
 }
 
@@ -47,7 +50,7 @@ const PLATE_HAIRLINE: React.CSSProperties = {
 
 export function RecipePageIsland({
   title, intro, cuisine, totalTimeMinutes, servings: defaultServings,
-  image, foodType, tags, ingredients, steps, basePath,
+  image, foodType, tags, ingredients, steps, nutrition, basePath,
 }: RecipePageProps) {
   const [servings, setServings] = useState(defaultServings);
   const [completed, setCompleted] = useState<Set<number>>(new Set());
@@ -237,21 +240,37 @@ export function RecipePageIsland({
               ))}
             </div>
 
-            {/* Nutrition placeholder */}
+            {/* Nutrition — per-serving macros from the KG export (estimated).
+                Per-serving values don't change with the servings stepper. */}
             <div>
               <p style={{ ...EYEBROW, marginBottom: 'var(--space-sm)' }}>Nutrition</p>
               <hr style={HAIRLINE} />
-              {['Calories', 'Protein', 'Carbohydrates', 'Fat'].map((label) => (
+              {(nutrition
+                ? ([
+                    ['Calories', `${nutrition.kcal}`],
+                    ['Protein', `${nutrition.proteinG} g`],
+                    ['Carbohydrates', `${nutrition.carbsG} g`],
+                    ['Fat', `${nutrition.fatG} g`],
+                    ...(nutrition.fibreG != null ? [['Fibre', `${nutrition.fibreG} g`]] : []),
+                    ...(nutrition.sodiumMg != null ? [['Sodium', `${nutrition.sodiumMg} mg`]] : []),
+                  ] as [string, string][])
+                : ([
+                    ['Calories', '—'],
+                    ['Protein', '—'],
+                    ['Carbohydrates', '—'],
+                    ['Fat', '—'],
+                  ] as [string, string][])
+              ).map(([label, value]) => (
                 <div
                   key={label}
                   style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: 'var(--space-xs) 0', borderBottom: '1px solid var(--color-hairline)' }}
                 >
                   <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink)' }}>{label}</span>
-                  <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)' }}>—</span>
+                  <span className="onum" style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)' }}>{value}</span>
                 </div>
               ))}
               <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', color: 'var(--color-ink-muted)', marginTop: 'var(--space-sm)', fontStyle: 'italic' }}>
-                Nutrition data coming soon.
+                {nutrition ? 'Estimated per serving from ingredient data.' : 'Nutrition data coming soon.'}
               </p>
             </div>
           </div>

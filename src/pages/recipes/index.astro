@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import { CollectionPlannerIsland } from "../../components/CollectionPlannerIsland";
 import { silhouetteFor } from "../../utils/silhouettes";
+import { deriveTotalTime } from "../../lib/recipeTime.mjs";
 
 const recipes = await getCollection("recipes");
 recipes.sort((a, b) => a.data.title.localeCompare(b.data.title));
@@ -12,7 +13,7 @@ const allRecipes = recipes.map((r) => ({
   title: r.data.title,
   cuisine: r.data.cuisine,
   image: r.data.image ?? null,
-  totalTimeMinutes: r.data.totalTimeMinutes ?? null,
+  totalTimeMinutes: deriveTotalTime(r.data),
   servings: r.data.servings ?? null,
   ingredients: r.data.ingredients ?? [],
   silhouette: silhouetteFor(r.data.cuisine),

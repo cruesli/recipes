@@ -2,6 +2,8 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import { RecipePageIsland } from "../../components/RecipePageIsland";
+import { deriveTotalTime } from "../../lib/recipeTime.mjs";
+import { getEnriched } from "../../lib/enrichment";
 
 export async function getStaticPaths() {
   const recipes = await getCollection("recipes");
@@ -35,6 +37,9 @@ const steps: string[] = recipe.body
   .filter(Boolean);
 
 const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+// Per-serving nutrition from the KG export (null when this recipe isn't in it)
+const nutrition = getEnriched(slug!)?.nutritionPerServing ?? null;
 ---
 
 <BaseLayout title={d.title}>
@@ -42,13 +47,14 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
     title={d.title}
     intro={d.intro ?? null}
     cuisine={d.cuisine}
-    totalTimeMinutes={d.totalTimeMinutes ?? null}
+    totalTimeMinutes={deriveTotalTime(d)}
     servings={d.servings ?? 4}
     image={d.image ?? null}
     foodType={d.foodType ?? null}
     tags={d.tags ?? []}
     ingredients={ingredients}
     steps={steps}
+    nutrition={nutrition}
     basePath={basePath}
     client:load
   />
