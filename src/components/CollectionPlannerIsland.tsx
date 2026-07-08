@@ -253,6 +253,8 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
               />
             </div>
 
+            {/* Country filter — /recipes only; the home page filters by country via the map */}
+            {facets && (
             <div style={{ position: 'relative', flexShrink: 0 }}>
               <button
                 onClick={() => { if (cuisineFilter) setCuisineFilter(null); else setFilterOpen((o) => !o); }}
@@ -269,7 +271,7 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
                 {cuisineFilter ? (
                   <>× {cuisineFilter}</>
                 ) : (
-                  <>Filter <ChevronDown size={11} style={{ marginLeft: '2px' }} /></>
+                  <>Country <ChevronDown size={11} style={{ marginLeft: '2px' }} /></>
                 )}
               </button>
 
@@ -302,6 +304,7 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
                 </div>
               )}
             </div>
+            )}
           </div>
 
           {/* Facet controls — dietary toggles + numeric bounds */}
