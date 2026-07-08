@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { Plus, Minus, X, ChevronDown, Search, ShoppingCart, Check, Download } from 'lucide-react';
+import { Plus, Minus, X, ChevronDown, ChevronRight, Search, ShoppingCart, Check, Download } from 'lucide-react';
 import {
   DAYS,
   MAX_MEALS_PER_DAY,
@@ -42,6 +42,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
     shoppingView,
     bucketOrder,
     checkedIds,
+    collapsedBuckets,
     listReady,
     loaded,
     checkedCount,
@@ -54,6 +55,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
     updateServings,
     generateList,
     toggleItem,
+    toggleBucketCollapse,
     reorderBuckets,
     resetBucketOrder,
     downloadList,
@@ -547,12 +549,32 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                 )}
 
                 {/* Category buckets — merged canonical lines with scaled day notes */}
-                {shoppingView.buckets.map((bucket) => (
+                {shoppingView.buckets.map((bucket) => {
+                  const collapsed = collapsedBuckets.has(bucket.category);
+                  const remaining = bucket.lines.filter((l) => !checkedIds.has(l.id)).length;
+                  return (
                   <div key={bucket.category}>
-                    <div style={{ paddingBottom: 'var(--space-xs)', borderBottom: '1px solid var(--color-hairline)' }}>
+                    {/* Header doubles as the collapse toggle; collapsed shows what's left */}
+                    <button
+                      onClick={() => toggleBucketCollapse(bucket.category)}
+                      aria-expanded={!collapsed}
+                      style={{
+                        display: 'flex', alignItems: 'baseline', gap: '8px', width: '100%',
+                        background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left',
+                        padding: '0 0 var(--space-xs)', borderBottom: '1px solid var(--color-hairline)',
+                      }}
+                    >
                       <span style={{ ...EYEBROW }}>{CATEGORY_LABELS[normaliseCategory(bucket.category)]}</span>
-                    </div>
-                    {bucket.lines.map((line) => {
+                      {collapsed && (
+                        <span className="onum" style={{ fontFamily: SERIF, fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)' }}>
+                          · {remaining > 0 ? `${remaining} left` : 'done'}
+                        </span>
+                      )}
+                      {collapsed
+                        ? <ChevronRight size={13} style={{ marginLeft: 'auto', alignSelf: 'center', color: 'var(--color-ink-muted)' }} />
+                        : <ChevronDown size={13} style={{ marginLeft: 'auto', alignSelf: 'center', color: 'var(--color-ink-muted)' }} />}
+                    </button>
+                    {!collapsed && bucket.lines.map((line) => {
                       const checked = checkedIds.has(line.id);
                       return (
                         <label key={line.id} style={{ display: 'flex', alignItems: 'baseline', gap: '12px', padding: 'var(--space-xs) 0', borderBottom: '1px solid var(--color-hairline)', cursor: 'pointer' }}>
@@ -574,7 +596,8 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                       );
                     })}
                   </div>
-                ))}
+                  );
+                })}
 
                 {/* Degraded remainder — classic day → recipe grouping */}
                 {shoppingView.degraded.map(({ day, meals: dayMeals }) => (
