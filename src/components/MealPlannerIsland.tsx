@@ -3,6 +3,7 @@ import { Plus, Minus, X, ChevronDown, Search, ShoppingCart, Check, Download } fr
 import {
   DAYS,
   MAX_MEALS_PER_DAY,
+  MAX_SERVINGS,
   PLANNER_ADD_TYPE as ADD_TYPE,
   PLANNER_MOVE_TYPE as MOVE_TYPE,
   usePlanner,
@@ -250,7 +251,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                               custom
                             </span>
                           )}
-                          {/* Servings stepper — recipe meals only, bounds 1–12 */}
+                          {/* Servings stepper — recipe meals only, bounds 1–MAX_SERVINGS */}
                           {meal.baseServings !== null && meal.servings !== null && (
                             <span
                               onClick={(e) => e.stopPropagation()}
@@ -269,9 +270,9 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                               </span>
                               <button
                                 onClick={() => updateServings(day, meal.id, (meal.servings ?? 1) + 1)}
-                                disabled={(meal.servings ?? 1) >= 12}
+                                disabled={(meal.servings ?? 1) >= MAX_SERVINGS}
                                 aria-label={`More servings for ${meal.title}`}
-                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex', lineHeight: 1, opacity: (meal.servings ?? 1) >= 12 ? 0.3 : 1 }}
+                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex', lineHeight: 1, opacity: (meal.servings ?? 1) >= MAX_SERVINGS ? 0.3 : 1 }}
                               >
                                 <Plus size={12} />
                               </button>
