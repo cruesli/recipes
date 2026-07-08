@@ -73,7 +73,7 @@ export function RecipeCard({ href, imageSrc, silhouette, eyebrow, title, meta, d
           fontSize: 'var(--text-card)',
           lineHeight: 1.2,
           color: 'var(--color-ink)',
-          margin: '0 0 var(--space-sm)',
+          margin: '0 0 var(--space-2xs)',
           display: '-webkit-box',
           WebkitLineClamp: 2,
           WebkitBoxOrient: 'vertical',
