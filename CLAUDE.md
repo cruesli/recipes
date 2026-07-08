@@ -132,7 +132,10 @@ accurate and self-consistent when you touch them.
 - **Shopping list (enriched):** `usePlanner.generateList` joins each meal's raw lines to the
   export; `shoppingList.mjs` builds category buckets + canonical-merged lines with scaled day
   notes. Checked state is a `Set` keyed by `c:<canonical>` (survives bucket reorder); `bucketOrder`
-  persists to `localStorage`.
+  persists to `localStorage`. The generated list + checked marks + collapsed buckets persist as
+  one `localStorage` session (survives mid-shop reloads; any week edit or regenerate resets it).
+  Buckets collapse via their header (collapsed shows "· N left"); reordering re-sorts live during
+  drag, with an oxblood outline marking the held chip.
 
 ## NLP / KG integration (shipped — see `nlp-integration-update-plan.md`)
 
