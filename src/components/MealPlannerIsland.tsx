@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import { Plus, Minus, X, ChevronDown, Search, ShoppingCart, Check, Download } from 'lucide-react';
+import { Plus, Minus, X, ChevronDown, ChevronRight, Search, ShoppingCart, Check, Download } from 'lucide-react';
 import {
   DAYS,
   MAX_MEALS_PER_DAY,
+  MAX_SERVINGS,
   PLANNER_ADD_TYPE as ADD_TYPE,
   PLANNER_MOVE_TYPE as MOVE_TYPE,
   usePlanner,
@@ -41,6 +42,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
     shoppingView,
     bucketOrder,
     checkedIds,
+    collapsedBuckets,
     listReady,
     loaded,
     checkedCount,
@@ -53,6 +55,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
     updateServings,
     generateList,
     toggleItem,
+    toggleBucketCollapse,
     reorderBuckets,
     resetBucketOrder,
     downloadList,
@@ -61,13 +64,13 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
   // Tap-to-arm target for the bucket reorder bar (touch + keyboard path)
   const [armedBucket, setArmedBucket] = useState<string | null>(null);
 
-  // Move one category to just before another in the persisted bucket order
-  function moveBucketBefore(cat: string, targetCat: string) {
+  // Move one category next to another in the persisted bucket order; no-op
+  // when already in place so live dragover doesn't churn state.
+  function moveBucketNextTo(cat: string, targetCat: string, after = false) {
     if (cat === targetCat) return;
-    const order = [...bucketOrder];
-    order.splice(order.indexOf(cat), 1);
-    order.splice(order.indexOf(targetCat), 0, cat);
-    reorderBuckets(order);
+    const order = bucketOrder.filter((c) => c !== cat);
+    order.splice(order.indexOf(targetCat) + (after ? 1 : 0), 0, cat);
+    if (order.join() !== bucketOrder.join()) reorderBuckets(order);
   }
 
   const [openDay, setOpenDay] = useState<string | null>(null);
@@ -250,7 +253,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                               custom
                             </span>
                           )}
-                          {/* Servings stepper — recipe meals only, bounds 1–12 */}
+                          {/* Servings stepper — recipe meals only, bounds 1–MAX_SERVINGS */}
                           {meal.baseServings !== null && meal.servings !== null && (
                             <span
                               onClick={(e) => e.stopPropagation()}
@@ -269,9 +272,9 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                               </span>
                               <button
                                 onClick={() => updateServings(day, meal.id, (meal.servings ?? 1) + 1)}
-                                disabled={(meal.servings ?? 1) >= 12}
+                                disabled={(meal.servings ?? 1) >= MAX_SERVINGS}
                                 aria-label={`More servings for ${meal.title}`}
-                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex', lineHeight: 1, opacity: (meal.servings ?? 1) >= 12 ? 0.3 : 1 }}
+                                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-oxblood)', padding: '2px', display: 'flex', lineHeight: 1, opacity: (meal.servings ?? 1) >= MAX_SERVINGS ? 0.3 : 1 }}
                               >
                                 <Plus size={12} />
                               </button>
@@ -510,7 +513,9 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xl)', paddingBottom: 'var(--space-3xl)' }}>
 
-                {/* Bucket reorder bar — quiet text chips; oxblood tick marks the drag target */}
+                {/* Bucket reorder bar — quiet text chips; the held chip gets an oxblood
+                    outline (outline never reflows the bar) and the order re-sorts live
+                    under the drag, list included. Tap-to-arm covers touch + keyboard. */}
                 {shoppingView.buckets.length > 1 && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', gap: 'var(--space-2xs) var(--space-md)' }}>
                     {shoppingView.buckets.map((bucket) => (
@@ -518,22 +523,29 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                         key={bucket.category}
                         draggable
                         onDragStart={() => setArmedBucket(bucket.category)}
-                        onDragOver={(e) => e.preventDefault()}
-                        onDrop={() => { if (armedBucket) moveBucketBefore(armedBucket, bucket.category); setArmedBucket(null); }}
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          if (!armedBucket || armedBucket === bucket.category) return;
+                          // Live preview: place before/after by cursor side of the chip's midline
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          moveBucketNextTo(armedBucket, bucket.category, e.clientX > rect.left + rect.width / 2);
+                        }}
+                        onDrop={() => setArmedBucket(null)}
                         onDragEnd={() => setArmedBucket(null)}
                         onClick={() => {
                           if (!armedBucket) setArmedBucket(bucket.category);
                           else if (armedBucket === bucket.category) setArmedBucket(null);
-                          else { moveBucketBefore(armedBucket, bucket.category); setArmedBucket(null); }
+                          else { moveBucketNextTo(armedBucket, bucket.category); setArmedBucket(null); }
                         }}
                         style={{
                           display: 'flex', alignItems: 'center', gap: '4px',
                           background: 'none', border: 'none', cursor: 'grab', padding: '2px 0',
+                          outline: armedBucket === bucket.category ? '1px solid var(--color-oxblood)' : 'none',
+                          outlineOffset: '3px',
                           fontFamily: SERIF, fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.18em',
                           color: armedBucket === bucket.category ? 'var(--color-oxblood)' : 'var(--color-ink-muted)',
                         }}
                       >
-                        {armedBucket && armedBucket !== bucket.category && <span style={{ color: 'var(--color-oxblood)' }}>▸</span>}
                         {CATEGORY_LABELS[normaliseCategory(bucket.category)]}
                       </button>
                     ))}
@@ -542,16 +554,40 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                         Reset order
                       </button>
                     )}
+                    {/* Reserved line — the tap-path hint appears without shifting the bar */}
+                    <p style={{ width: '100%', minHeight: '1.1em', margin: 0, fontFamily: SERIF, fontSize: 'var(--text-eyebrow)', fontStyle: 'italic', color: 'var(--color-ink-muted)' }}>
+                      {armedBucket ? 'Tap another category to place it before that one.' : ''}
+                    </p>
                   </div>
                 )}
 
                 {/* Category buckets — merged canonical lines with scaled day notes */}
-                {shoppingView.buckets.map((bucket) => (
+                {shoppingView.buckets.map((bucket) => {
+                  const collapsed = collapsedBuckets.has(bucket.category);
+                  const remaining = bucket.lines.filter((l) => !checkedIds.has(l.id)).length;
+                  return (
                   <div key={bucket.category}>
-                    <div style={{ paddingBottom: 'var(--space-xs)', borderBottom: '1px solid var(--color-hairline)' }}>
+                    {/* Header doubles as the collapse toggle; collapsed shows what's left */}
+                    <button
+                      onClick={() => toggleBucketCollapse(bucket.category)}
+                      aria-expanded={!collapsed}
+                      style={{
+                        display: 'flex', alignItems: 'baseline', gap: '8px', width: '100%',
+                        background: 'none', border: 'none', cursor: 'pointer', textAlign: 'left',
+                        padding: '0 0 var(--space-xs)', borderBottom: '1px solid var(--color-hairline)',
+                      }}
+                    >
                       <span style={{ ...EYEBROW }}>{CATEGORY_LABELS[normaliseCategory(bucket.category)]}</span>
-                    </div>
-                    {bucket.lines.map((line) => {
+                      {collapsed && (
+                        <span className="onum" style={{ fontFamily: SERIF, fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)' }}>
+                          · {remaining > 0 ? `${remaining} left` : 'done'}
+                        </span>
+                      )}
+                      {collapsed
+                        ? <ChevronRight size={13} style={{ marginLeft: 'auto', alignSelf: 'center', color: 'var(--color-ink-muted)' }} />
+                        : <ChevronDown size={13} style={{ marginLeft: 'auto', alignSelf: 'center', color: 'var(--color-ink-muted)' }} />}
+                    </button>
+                    {!collapsed && bucket.lines.map((line) => {
                       const checked = checkedIds.has(line.id);
                       return (
                         <label key={line.id} style={{ display: 'flex', alignItems: 'baseline', gap: '12px', padding: 'var(--space-xs) 0', borderBottom: '1px solid var(--color-hairline)', cursor: 'pointer' }}>
@@ -573,7 +609,8 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                       );
                     })}
                   </div>
-                ))}
+                  );
+                })}
 
                 {/* Degraded remainder — classic day → recipe grouping */}
                 {shoppingView.degraded.map(({ day, meals: dayMeals }) => (

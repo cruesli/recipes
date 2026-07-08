@@ -6,6 +6,7 @@ import { getEnriched, CATEGORY_LABELS, normaliseCategory } from '../lib/enrichme
 
 export const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 export { MAX_MEALS_PER_DAY };
+export const MAX_SERVINGS = 24;
 
 // dataTransfer types: the key itself discriminates add vs move during dragover
 export const PLANNER_ADD_TYPE = 'application/x-planner-add';
@@ -96,6 +97,34 @@ export interface ShoppingView {
 
 const STORAGE_KEY = 'recipes:week';
 const BUCKET_ORDER_KEY = 'recipes:bucketOrder';
+const SESSION_KEY = 'recipes:shoppingSession';
+
+// One shopping session — generated list + progress; survives mid-shop reloads
+interface ShoppingSession {
+  items: ShoppingItem[];
+  checked: string[];
+  collapsed: string[];
+}
+
+function loadSession(): ShoppingSession | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem(SESSION_KEY);
+    if (!raw) return null;
+    const s = JSON.parse(raw) as ShoppingSession;
+    return Array.isArray(s.items) && s.items.length > 0 ? s : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveSession(session: ShoppingSession | null): void {
+  if (typeof window === 'undefined') return;
+  try {
+    if (!session || session.items.length === 0) localStorage.removeItem(SESSION_KEY);
+    else localStorage.setItem(SESSION_KEY, JSON.stringify(session));
+  } catch {}
+}
 
 function loadBucketOrder(): string[] {
   if (typeof window === 'undefined') return DEFAULT_BUCKET_ORDER;
@@ -154,6 +183,7 @@ export function usePlanner() {
   const [meals, setMeals] = useState<Week>({});
   const [shoppingList, setShoppingList] = useState<ShoppingItem[]>([]);
   const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
+  const [collapsedBuckets, setCollapsedBuckets] = useState<Set<string>>(new Set());
   const [bucketOrder, setBucketOrder] = useState<string[]>(DEFAULT_BUCKET_ORDER);
   const [listReady, setListReady] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -162,6 +192,13 @@ export function usePlanner() {
     const saved = loadWeek();
     if (Object.keys(saved).length > 0) setMeals(saved);
     setBucketOrder(loadBucketOrder());
+    const session = loadSession();
+    if (session) {
+      setShoppingList(session.items);
+      setCheckedIds(new Set(session.checked));
+      setCollapsedBuckets(new Set(session.collapsed));
+      setListReady(true);
+    }
     setLoaded(true);
   }, []);
 
@@ -170,6 +207,12 @@ export function usePlanner() {
     if (!loaded) return;
     saveWeek(meals);
   }, [meals, loaded]);
+
+  // Persist the shopping session (list + checks + collapsed buckets)
+  useEffect(() => {
+    if (!loaded) return;
+    saveSession({ items: shoppingList, checked: [...checkedIds], collapsed: [...collapsedBuckets] });
+  }, [shoppingList, checkedIds, collapsedBuckets, loaded]);
 
   // Returns false when the day is already full (caller may show a note)
   function selectRecipe(day: string, recipe: RecipeData): boolean {
@@ -223,9 +266,9 @@ export function usePlanner() {
     resetList();
   }
 
-  // Per-meal-instance servings, bounds 1–12; the generated list is a snapshot
+  // Per-meal-instance servings, bounds 1–MAX_SERVINGS; the generated list is a snapshot
   function updateServings(day: string, mealId: string, servings: number) {
-    const clamped = Math.min(12, Math.max(1, Math.round(servings)));
+    const clamped = Math.min(MAX_SERVINGS, Math.max(1, Math.round(servings)));
     setMeals((prev) => ({
       ...prev,
       [day]: (prev[day] ?? []).map((m) => (m.id === mealId ? { ...m, servings: clamped } : m)),
@@ -236,6 +279,7 @@ export function usePlanner() {
   function resetList() {
     setShoppingList([]);
     setCheckedIds(new Set());
+    setCollapsedBuckets(new Set());
     setListReady(false);
   }
 
@@ -274,6 +318,7 @@ export function usePlanner() {
     });
     setShoppingList(items);
     setCheckedIds(new Set());
+    setCollapsedBuckets(new Set());
     setListReady(true);
   }
 
@@ -281,6 +326,14 @@ export function usePlanner() {
     setCheckedIds((prev) => {
       const next = new Set(prev);
       next.has(id) ? next.delete(id) : next.add(id);
+      return next;
+    });
+  }
+
+  function toggleBucketCollapse(category: string) {
+    setCollapsedBuckets((prev) => {
+      const next = new Set(prev);
+      next.has(category) ? next.delete(category) : next.add(category);
       return next;
     });
   }
@@ -363,6 +416,7 @@ export function usePlanner() {
     shoppingView,
     bucketOrder,
     checkedIds,
+    collapsedBuckets,
     listReady,
     loaded,
     checkedCount,
@@ -378,6 +432,7 @@ export function usePlanner() {
     resetList,
     generateList,
     toggleItem,
+    toggleBucketCollapse,
     reorderBuckets,
     resetBucketOrder,
     downloadList,
