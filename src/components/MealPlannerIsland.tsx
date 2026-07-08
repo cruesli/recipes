@@ -64,13 +64,13 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
   // Tap-to-arm target for the bucket reorder bar (touch + keyboard path)
   const [armedBucket, setArmedBucket] = useState<string | null>(null);
 
-  // Move one category to just before another in the persisted bucket order
-  function moveBucketBefore(cat: string, targetCat: string) {
+  // Move one category next to another in the persisted bucket order; no-op
+  // when already in place so live dragover doesn't churn state.
+  function moveBucketNextTo(cat: string, targetCat: string, after = false) {
     if (cat === targetCat) return;
-    const order = [...bucketOrder];
-    order.splice(order.indexOf(cat), 1);
-    order.splice(order.indexOf(targetCat), 0, cat);
-    reorderBuckets(order);
+    const order = bucketOrder.filter((c) => c !== cat);
+    order.splice(order.indexOf(targetCat) + (after ? 1 : 0), 0, cat);
+    if (order.join() !== bucketOrder.join()) reorderBuckets(order);
   }
 
   const [openDay, setOpenDay] = useState<string | null>(null);
@@ -513,7 +513,9 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-xl)', paddingBottom: 'var(--space-3xl)' }}>
 
-                {/* Bucket reorder bar — quiet text chips; oxblood tick marks the drag target */}
+                {/* Bucket reorder bar — quiet text chips; the held chip gets an oxblood
+                    outline (outline never reflows the bar) and the order re-sorts live
+                    under the drag, list included. Tap-to-arm covers touch + keyboard. */}
                 {shoppingView.buckets.length > 1 && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', gap: 'var(--space-2xs) var(--space-md)' }}>
                     {shoppingView.buckets.map((bucket) => (
@@ -521,22 +523,29 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                         key={bucket.category}
                         draggable
                         onDragStart={() => setArmedBucket(bucket.category)}
-                        onDragOver={(e) => e.preventDefault()}
-                        onDrop={() => { if (armedBucket) moveBucketBefore(armedBucket, bucket.category); setArmedBucket(null); }}
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          if (!armedBucket || armedBucket === bucket.category) return;
+                          // Live preview: place before/after by cursor side of the chip's midline
+                          const rect = e.currentTarget.getBoundingClientRect();
+                          moveBucketNextTo(armedBucket, bucket.category, e.clientX > rect.left + rect.width / 2);
+                        }}
+                        onDrop={() => setArmedBucket(null)}
                         onDragEnd={() => setArmedBucket(null)}
                         onClick={() => {
                           if (!armedBucket) setArmedBucket(bucket.category);
                           else if (armedBucket === bucket.category) setArmedBucket(null);
-                          else { moveBucketBefore(armedBucket, bucket.category); setArmedBucket(null); }
+                          else { moveBucketNextTo(armedBucket, bucket.category); setArmedBucket(null); }
                         }}
                         style={{
                           display: 'flex', alignItems: 'center', gap: '4px',
                           background: 'none', border: 'none', cursor: 'grab', padding: '2px 0',
+                          outline: armedBucket === bucket.category ? '1px solid var(--color-oxblood)' : 'none',
+                          outlineOffset: '3px',
                           fontFamily: SERIF, fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.18em',
                           color: armedBucket === bucket.category ? 'var(--color-oxblood)' : 'var(--color-ink-muted)',
                         }}
                       >
-                        {armedBucket && armedBucket !== bucket.category && <span style={{ color: 'var(--color-oxblood)' }}>▸</span>}
                         {CATEGORY_LABELS[normaliseCategory(bucket.category)]}
                       </button>
                     ))}
@@ -545,6 +554,10 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                         Reset order
                       </button>
                     )}
+                    {/* Reserved line — the tap-path hint appears without shifting the bar */}
+                    <p style={{ width: '100%', minHeight: '1.1em', margin: 0, fontFamily: SERIF, fontSize: 'var(--text-eyebrow)', fontStyle: 'italic', color: 'var(--color-ink-muted)' }}>
+                      {armedBucket ? 'Tap another category to place it before that one.' : ''}
+                    </p>
                   </div>
                 )}
 
