@@ -18,11 +18,13 @@ service provides only natural-language search.
   separation rules, homepage/browse architecture, what's rejected). Treat it as binding; if
   something seems wrong, ask rather than silently "improving" it.
 - **`recipe-site-update-plan-v3.md`** — the most recent frontend roadmap (Phases 13–16:
-  chapter plates, oxblood ink plate, splash rework, voice & finish). Earlier phases are
-  shipped; v3 is shipped. Update checkboxes when you complete work.
-- **`nlp-integration-update-plan.md`** — the active backend + integration roadmap (N1–N5:
-  pipeline changes, API contract, frontend framework, shopping-list rework, carried-forward
-  features). This is the current focus of work.
+  chapter plates, oxblood ink plate, splash rework, voice & finish). Shipped.
+- **`nlp-integration-update-plan.md`** — the backend + integration roadmap (N1–N5:
+  pipeline changes, shopping-list rework, nutrition/facets/NL search). Shipped static-first.
+
+All roadmap docs are shipped and merged to `main`. Current work is **ad-hoc refinement
+batches** from household review sessions (two shipped July 2026: planner/shopping-list
+polish, map reframing) — small phase-per-commit batches on a feature branch, no plan doc.
 
 These files mirror an external knowledge base the maintainer syncs by hand — keep them
 accurate and self-consistent when you touch them.
@@ -54,6 +56,9 @@ accurate and self-consistent when you touch them.
   range and conflicts with React 19 on a plain install.
 - `npm run dev` / `npm run build` / `npm run preview`. **`npm run build` must pass** before a
   change is considered done.
+- `npm test` — `node --test scripts/*.test.mjs` (the pure `src/lib` helpers).
+- `prebuild` (runs on every dev/build) regenerates `src/generated/silhouettes/` (gitignored)
+  via `scripts/generate-silhouettes.mjs` — never edit those assets by hand.
 
 **Backend**
 - `npm run ingest` (or `python -m backend.ingest`) — runs the full pipeline (parse → normalise
@@ -79,7 +84,9 @@ accurate and self-consistent when you touch them.
   `CATEGORY_ORDER/LABELS`) — the single seam for the nutrition panel, facets, and shopping list.
 - `src/lib/` — pure, node-tested helpers (`scripts/*.test.mjs`): `quantity.mjs`,
   `plannerModel.mjs`, `recipeTime.mjs` (`deriveTotalTime`), `recipeFilter.mjs` (facet matching +
-  NL→facet mapping), `shoppingList.mjs` (bucket/merge logic), plus `enrichment.ts`.
+  NL→facet mapping), `shoppingList.mjs` (bucket/merge logic), `regionGeometry.mjs` (shared map
+  projection + feature keying — `WorldMap.tsx` and the prebuild scripts must stay in agreement
+  through it), plus `enrichment.ts`.
 - `src/styles/global.css` — `@theme` design tokens (colour / type scale / spacing scale / radius)
   + base styles. `src/data/seasonal.ts`. `src/utils/` (cuisines, slug display, base path).
 
@@ -90,10 +97,10 @@ accurate and self-consistent when you touch them.
   pre-stripped).
 - `entity_linker.py` — Wikidata `wbsearchentities` + SPARQL → QID, food category, origin,
   dietary flags.
-- `nutrition.py` — USDA FoodData Central API → full nutrient profile per ingredient.
+- `nutrition.py` — USDA FoodData Central API → full nutrient profile per ingredient, with
+  raw/fresh scoring + Atwater energy fallback; overrides win.
 - `graph.py` — RDFLib knowledge graph (`rkg:` namespace at `cruesli.github.io/recipes/kg/`,
   reusing `schema.org` terms where natural). `per_serving_totals` is the shared nutrition math.
-- `nutrition.py` — USDA lookup with raw/fresh scoring + Atwater energy fallback; overrides win.
 - `export.py` — writes `src/data/enriched/*.json` from the ingest maps.
 - `ingest.py` — orchestrates the pipeline; serialises `graph.ttl`, JSON export, and the report.
 - `main.py` — **stateless** FastAPI: `GET /health`, `POST /api/v1/query` → `{question, filters}`.
@@ -129,6 +136,11 @@ accurate and self-consistent when you touch them.
   match) falls back to the classic day→recipe shopping grouping and the "coming soon" nutrition
   placeholder. The only runtime dependency is NL search, gated by `PUBLIC_NLP_API_URL` (unset or
   asleep → the search line hides / degrades; facets below still work).
+- **World map framing:** `PROJECTION_CONFIG` in `regionGeometry.mjs` (scale 150, centre 27°E)
+  spans Mexico (117°W) to the dateline so New Zealand stays in frame — re-check both landmarks
+  before changing it. Panning is clamped to the projected world square (`translateExtent`).
+  `generate-silhouettes.mjs` drops remote territories (Svalbard, Jan Mayen, French Guiana) from
+  every generated plate via its explicit `REMOTE_TERRITORIES` bbox list; the map keeps them.
 - **Shopping list (enriched):** `usePlanner.generateList` joins each meal's raw lines to the
   export; `shoppingList.mjs` builds category buckets + canonical-merged lines with scaled day
   notes. Checked state is a `Set` keyed by `c:<canonical>` (survives bucket reorder); `bucketOrder`
@@ -159,6 +171,8 @@ The deployed query service is stateless; re-ingest + rebuild is the update path 
   acceptance check before moving on. Keep diffs small.
 - Backend changes: run the ingest pipeline and verify graph output before moving to API work.
   Run `pytest` where tests exist.
+- `client:only` islands (the map) never paint in headless-Chrome screenshots — verify map
+  changes by extracting the hydrated SVG from `--dump-dom` output instead.
 - Respect the design-context's out-of-scope items unless explicitly asked.
 
 ## Maintainer
