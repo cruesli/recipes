@@ -330,6 +330,15 @@ export function usePlanner() {
     });
   }
 
+  // Drop checked rows from the session — declutters ingredients already at home.
+  // Enriched rows check by merged id (c:<canonical>), degraded rows by item id.
+  function removeChecked() {
+    setShoppingList((prev) =>
+      prev.filter((it) => !checkedIds.has(it.canonical ? `c:${it.canonical}` : it.id))
+    );
+    setCheckedIds(new Set());
+  }
+
   function toggleBucketCollapse(category: string) {
     setCollapsedBuckets((prev) => {
       const next = new Set(prev);
@@ -432,6 +441,7 @@ export function usePlanner() {
     resetList,
     generateList,
     toggleItem,
+    removeChecked,
     toggleBucketCollapse,
     reorderBuckets,
     resetBucketOrder,

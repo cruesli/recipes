@@ -30,6 +30,39 @@ const pathGen = geoPath(projection);
 const outDir = path.join(root, 'src/generated/silhouettes');
 mkdirSync(outDir, { recursive: true });
 
+// Remote territories dropped from every generated asset — they stretch a
+// plate's frame far past the cuisine's heartland. The world map keeps them.
+// Boxes are [lonMin, latMin, lonMax, latMax]; a polygon is dropped when its
+// outer ring's centre falls inside one. (French Guiana's west edge stays east
+// of Suriname's centre at −55.9°.)
+const REMOTE_TERRITORIES = {
+  svalbard: [9, 74, 36, 81.5],
+  'jan-mayen': [-10, 70.5, -7, 71.5],
+  'french-guiana': [-54.9, 1.5, -51, 6.5],
+};
+
+const ringCentre = (ring) => {
+  let lon = 0, lat = 0;
+  for (const [x, y] of ring) { lon += x; lat += y; }
+  return [lon / ring.length, lat / ring.length];
+};
+
+const isRemote = (poly) => {
+  const [lon, lat] = ringCentre(poly[0]);
+  return Object.values(REMOTE_TERRITORIES).some(
+    ([x0, y0, x1, y1]) => lon >= x0 && lon <= x1 && lat >= y0 && lat <= y1
+  );
+};
+
+const strippedSlugs = new Set();
+function stripRemote(geometry, slug) {
+  if (geometry.type !== 'MultiPolygon') return geometry;
+  const kept = geometry.coordinates.filter((poly) => !isRemote(poly));
+  if (kept.length === geometry.coordinates.length || kept.length === 0) return geometry;
+  strippedSlugs.add(slug);
+  return { ...geometry, coordinates: kept };
+}
+
 const round = (n) => Math.round(n * 100) / 100;
 const manifest = {};
 const missing = [];
@@ -41,7 +74,7 @@ for (const { slug } of cuisines) {
     missing.push(slug);
     continue;
   }
-  const merged = topojson.merge(topology, geoms);
+  const merged = stripRemote(topojson.merge(topology, geoms), slug);
   const d = pathGen(merged);
   const [[x0, y0], [x1, y1]] = pathGen.bounds(merged);
   const bbox = { x: round(x0), y: round(y0), width: round(x1 - x0), height: round(y1 - y0) };
@@ -63,10 +96,10 @@ for (const region of cuisines.filter((c) => !c.parent)) {
   if (!leaves.length || !bbox) continue;
   const leafPaths = leaves
     .filter((l) => groups.get(l.slug)?.length)
-    .map((l) => ({ slug: l.slug, d: pathGen(topojson.merge(topology, groups.get(l.slug))) }));
+    .map((l) => ({ slug: l.slug, d: pathGen(stripRemote(topojson.merge(topology, groups.get(l.slug)), l.slug)) }));
   const inert = (groups.get(region.slug) ?? [])
     .filter((g) => slugForFeature(mapping, g) === region.slug)
-    .map((g) => pathGen(topojson.feature(topology, g)));
+    .map((g) => pathGen(stripRemote(topojson.feature(topology, g).geometry, region.slug)));
   const plate = {
     viewBox: `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`,
     leaves: leafPaths,
@@ -81,5 +114,8 @@ writeFileSync(path.join(outDir, 'manifest.json'), JSON.stringify(manifest, null,
 if (missing.length) {
   console.error('silhouettes: no geometry for slugs:', missing.join(', '));
   process.exit(1);
+}
+if (strippedSlugs.size) {
+  console.log(`silhouettes: remote territories dropped from: ${[...strippedSlugs].sort().join(', ')}`);
 }
 console.log(`silhouettes: ${Object.keys(manifest).length} generated, ${plates} region plates`);

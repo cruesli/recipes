@@ -34,6 +34,13 @@ const baseProjection = geoMercator()
   .center(PROJECTION_CONFIG.center as [number, number])
   .scale(PROJECTION_CONFIG.scale);
 
+// Pan bounds = the projected world square (the sphere/graticule frame), so the
+// map can never be dragged off-screen. ±85.06° is Mercator's square cutoff.
+const WORLD_EXTENT: [[number, number], [number, number]] = [
+  baseProjection([-180, 85.06]) as [number, number],
+  baseProjection([180, -85.06]) as [number, number],
+];
+
 interface Props {
   recipeCuisines: string[];
   cuisinesData: CuisineItem[];
@@ -83,7 +90,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
   const [position, setPosition] = useState<Position>(
     snapshot
       ? { zoom: snapshot.zoom, coordinates: snapshot.coordinates }
-      : { zoom: 1, coordinates: [15, 25] }
+      : { zoom: 1, coordinates: PROJECTION_CONFIG.center as [number, number] }
   );
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const [hoveredLabel, setHoveredLabel] = useState<string | null>(null);
@@ -328,6 +335,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
           }}
           minZoom={1}
           maxZoom={8}
+          translateExtent={WORLD_EXTENT}
           zoom={position.zoom}
           center={position.coordinates}
           onMoveEnd={({ zoom, coordinates }: { zoom: number; coordinates: [number, number] }) => {
