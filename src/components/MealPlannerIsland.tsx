@@ -55,6 +55,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
     updateServings,
     generateList,
     toggleItem,
+    removeChecked,
     toggleBucketCollapse,
     reorderBuckets,
     resetBucketOrder,
@@ -500,6 +501,15 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                   <span style={{ fontFamily: SERIF, fontSize: 'var(--text-meta)', color: 'var(--color-olive)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Check size={14} /> All done!
                   </span>
+                )}
+                {/* Drop checked rows — for ingredients already in the pantry */}
+                {checkedCount > 0 && (
+                  <button
+                    onClick={removeChecked}
+                    style={{ marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: SERIF, fontSize: 'var(--text-meta)', fontStyle: 'italic', color: 'var(--color-ink-muted)' }}
+                  >
+                    Remove checked
+                  </button>
                 )}
               </div>
             )}
