@@ -40,4 +40,6 @@ export function featuresBySlug(geometries, mapping, cuisines) {
 // translate = centre) — the generator must match it exactly.
 export const MAP_WIDTH = 800;
 export const MAP_HEIGHT = 600;
-export const PROJECTION_CONFIG = { scale: 170, center: [15, 25] };
+// scale/center chosen so the default frame spans Mexico (117°W) to New Zealand
+// (178°E) — at scale 170 the frame ended at ~150°E and clipped NZ/east Australia
+export const PROJECTION_CONFIG = { scale: 150, center: [27, 25] };
