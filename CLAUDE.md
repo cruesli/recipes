@@ -23,8 +23,10 @@ service provides only natural-language search.
   pipeline changes, shopping-list rework, nutrition/facets/NL search). Shipped static-first.
 
 All roadmap docs are shipped and merged to `main`. Current work is **ad-hoc refinement
-batches** from household review sessions (two shipped July 2026: planner/shopping-list
-polish, map reframing) — small phase-per-commit batches on a feature branch, no plan doc.
+batches** from household review sessions (three shipped July 2026: planner/shopping-list
+polish, map reframing, splash rework — cocotte redraw, travelling steam wisps, draw-in
+entrance, held dismiss, brand-link re-show) — small phase-per-commit batches on a feature
+branch, no plan doc.
 
 These files mirror an external knowledge base the maintainer syncs by hand — keep them
 accurate and self-consistent when you touch them.
