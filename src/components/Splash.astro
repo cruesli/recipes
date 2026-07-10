@@ -30,27 +30,53 @@ const { photo } = Astro.props;
   <div class="splash-content">
     <h1 class="splash-title">Magnus &amp; Tessern's Recipes</h1>
 
-    <!-- The pot: hairline ink line drawing (4.2 L round cocotte — generic,
-         no brand marks); steam is the one oxblood element -->
+    <!-- The pot: hairline ink line drawing (4.2 L round cocotte — generic, no
+         brand marks). Steam wisps are dash segments travelling their paths with
+         a gradient dissolve; inverse clip-paths (rect minus pot silhouette,
+         evenodd) hide them behind the lid so they emerge from the rim seam.
+         Line work draws itself in on load: body → lid → details. -->
     <figure class="splash-pot" aria-hidden="true">
       <svg viewBox="0 0 132 132" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <g class="pot-steam" stroke="var(--color-oxblood)">
-          <path class="steam steam--1" d="M34,80 C29,72 38,64 33,54 C29,46 36,37 32,26" />
-          <path class="steam steam--2" d="M78,77 C73,68 82,60 77,50 C73,42 80,33 76,22" />
-          <path class="steam steam--3" d="M98,80 C103,72 94,64 99,53 C104,45 96,36 101,26" />
+        <defs>
+          <linearGradient id="splash-steam-grad" gradientUnits="userSpaceOnUse" x1="0" y1="88" x2="0" y2="18">
+            <stop offset="0" style="stop-color: var(--color-oxblood)" stop-opacity="0.8" />
+            <stop offset="0.6" style="stop-color: var(--color-oxblood)" stop-opacity="0.5" />
+            <stop offset="1" style="stop-color: var(--color-oxblood)" stop-opacity="0" />
+          </linearGradient>
+          <!-- Two clips (nested = intersection): knob block overlaps the lid
+               region, so it lives in its own clip to keep evenodd parity clean -->
+          <clipPath id="splash-steam-clip-a">
+            <path clip-rule="evenodd" d="M0,0 H132 V132 H0 Z M20,78 L21.5,73.5 C33,64 47,61.3 66,61.3 C85,61.3 99,64 110.5,73.5 L112,78 Z M24,78 C23.5,87 23.5,96 24.6,103 C26,112.5 33,118.8 66,118.8 C99,118.8 106,112.5 107.4,103 C108.5,96 108.5,87 108,78 Z" />
+          </clipPath>
+          <clipPath id="splash-steam-clip-b">
+            <path clip-rule="evenodd" d="M0,0 H132 V132 H0 Z M56,57.5 C56.5,52.5 60,50.8 66,50.8 C72,50.8 75.5,52.5 76,57.5 L76,64 L56,64 Z" />
+          </clipPath>
+        </defs>
+        <g clip-path="url(#splash-steam-clip-a)">
+          <g clip-path="url(#splash-steam-clip-b)">
+            <g class="pot-steam" stroke="url(#splash-steam-grad)">
+              <path class="steam steam--1" pathLength="1" d="M32,84 C40,72 25,63 32,51 C39,40 27,32 34,21" />
+              <path class="steam steam--2" pathLength="1" d="M66,80 C72,66 59,57 66,45 C73,34 61,27 66,17" />
+              <path class="steam steam--3" pathLength="1" d="M101,82 C95,73 107,65 101,54 C96,45 105,37 100,27" />
+            </g>
+          </g>
         </g>
         <g class="pot-lid" stroke="currentColor">
-          <path d="M57,63 C57,58.5 61,56.5 66,56.5 C71,56.5 75,58.5 75,63" />
-          <path d="M57,63 L75,63" />
-          <path d="M61,63 L62.5,68.6" />
-          <path d="M71,63 L69.5,68.6" />
-          <path d="M18,84 C24,72 44,68 66,68 C88,68 108,72 114,84" />
-          <path d="M14,84 L118,84" />
+          <path class="pot-detail" pathLength="1" d="M56,57.5 C56.5,52.5 60,50.8 66,50.8 C72,50.8 75.5,52.5 76,57.5" />
+          <path class="pot-detail" pathLength="1" d="M56,57.5 L76,57.5" />
+          <path class="pot-detail" pathLength="1" d="M61,57.5 L62.2,61.4" />
+          <path class="pot-detail" pathLength="1" d="M71,57.5 L69.8,61.4" />
+          <path pathLength="1" d="M21.5,73.5 C33,64 47,61.3 66,61.3 C85,61.3 99,64 110.5,73.5" />
+          <path class="pot-detail" pathLength="1" d="M33,69 C44,65.2 54,64 66,64 C78,64 88,65.2 99,69" />
+          <path pathLength="1" d="M20,78 L21.5,73.5" />
+          <path pathLength="1" d="M112,78 L110.5,73.5" />
+          <path pathLength="1" d="M20,78 L112,78" />
         </g>
         <g class="pot-body" stroke="currentColor">
-          <path d="M18,86 C16.5,92 16,98 17,105 C18.5,117 30,124 66,124 C102,124 113.5,117 115,105 C116,98 115.5,92 114,86" />
-          <path d="M17,91.5 C8,90.5 5.5,98 16.5,100.8" />
-          <path d="M115,91.5 C124,90.5 126.5,98 115.5,100.8" />
+          <path pathLength="1" d="M24,78 C23.5,87 23.5,96 24.6,103 C26,112.5 33,118.8 66,118.8 C99,118.8 106,112.5 107.4,103 C108.5,96 108.5,87 108,78" />
+          <path pathLength="1" d="M23.8,80.8 C11.5,81.6 10.5,90.6 23.9,91.2" />
+          <path pathLength="1" d="M108.2,80.8 C120.5,81.6 121.5,90.6 108.1,91.2" />
+          <path class="pot-ground" pathLength="1" d="M46,124.5 L86,124.5" />
         </g>
       </svg>
     </figure>
@@ -281,35 +307,52 @@ const { photo } = Astro.props;
     width: clamp(110px, 16vw, 150px);
     margin: 0 auto var(--space-lg);
     color: var(--color-ink);
-    animation: splashFadeUp 0.9s ease both;
-    animation-delay: 0.3s;
   }
 
   .splash-pot svg { display: block; width: 100%; height: auto; }
 
-  .splash-pot path,
-  .splash-pot ellipse {
-    stroke-width: 1.25px;
-    vector-effect: non-scaling-stroke;
+  /* Plain user-unit strokes (no non-scaling-stroke): dash maths must be
+     spec-uniform for the draw-in and steam-travel animations */
+  .splash-pot path { stroke-width: 1.1px; }
+
+  /* Entrance: line work draws itself in — body, then lid contours, then
+     details. dasharray "1 2" (pathLength=1): offset 1.02 hides the path with
+     no wrap-around cap dot; offset 0 shows it fully. */
+  .pot-lid path,
+  .pot-body path {
+    stroke-dasharray: 1 2;
+    stroke-dashoffset: 0;
+    animation: potDraw 1s cubic-bezier(0.6, 0, 0.3, 1) 0.35s both;
   }
 
-  /* Idle: wisps drift up from under the lid rim and fade; pot body static */
+  .pot-lid path { animation-delay: 0.55s; }
+  path.pot-detail { animation-delay: 0.85s; }
+  path.pot-ground { opacity: 0.3; animation-delay: 1.05s; }
+
+  @keyframes potDraw {
+    from { stroke-dashoffset: 1.02; }
+    to   { stroke-dashoffset: 0; }
+  }
+
+  /* Idle: each wisp is a dash segment born at the rim seam, travelling up its
+     path and dissolving into the gradient; pot body static. Staggered delays
+     + unequal durations keep the three wisps drifting out of phase. */
   .steam {
-    opacity: 0;
-    animation: steamRise 4.2s ease-in-out infinite;
+    stroke-dasharray: 0.42 1.1;
+    stroke-dashoffset: 0.45;
+    animation: steamTravel 6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
-  .steam--2 { animation-delay: 1.4s; }
-  .steam--3 { animation-delay: 2.8s; }
+  .steam--1 { animation-duration: 5.6s; animation-delay: 1.9s; }
+  .steam--2 { animation-duration: 6.6s; animation-delay: 3.6s; }
+  .steam--3 { animation-duration: 6.1s; animation-delay: 5s; }
 
-  @keyframes steamRise {
-    0%   { opacity: 0; transform: translateY(7px); }
-    22%  { opacity: 0.55; }
-    70%  { opacity: 0; transform: translateY(-13px); }
-    100% { opacity: 0; transform: translateY(-13px); }
+  @keyframes steamTravel {
+    from { stroke-dashoffset: 0.45; }
+    to   { stroke-dashoffset: -1.02; }
   }
 
-  /* Dismiss burst: lid rattle-hop + stronger puff, concurrent with the
+  /* Dismiss burst: lid rattle-hop + steam puff, concurrent with the
      scroll-away (never gating it) */
   .pot-lid {
     transform-box: fill-box;
@@ -320,7 +363,12 @@ const { photo } = Astro.props;
     animation: lidRattle 0.5s ease-out;
   }
 
-  :global(.splash--dismissing) .steam {
+  .pot-steam {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+  }
+
+  :global(.splash--dismissing) .pot-steam {
     animation: steamPuff 0.5s ease-out forwards;
   }
 
@@ -333,8 +381,8 @@ const { photo } = Astro.props;
   }
 
   @keyframes steamPuff {
-    0%   { opacity: 0.6; transform: translateY(0) scale(1); }
-    100% { opacity: 0; transform: translateY(-24px) scale(1.3); }
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-14px) scale(1.06); }
   }
 
   .splash-season {
@@ -388,13 +436,14 @@ const { photo } = Astro.props;
   @media (prefers-reduced-motion: reduce) {
     .splash-blob,
     .splash-title,
-    .splash-pot,
     .splash-season,
     .splash-cue,
-    .pot-lid {
+    .pot-lid,
+    .pot-steam,
+    .splash-pot path {
       animation: none;
     }
-    .splash-title, .splash-pot, .splash-season, .splash-cue { opacity: 1; }
+    .splash-title, .splash-season, .splash-cue { opacity: 1; }
     .steam { display: none; }
   }
 </style>

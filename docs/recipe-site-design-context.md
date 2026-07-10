@@ -151,9 +151,12 @@ at `--text-display` is the splash (no tagline; header-brand duplication accepted
 running header), with the self-updating "in season" line and scroll cue, over the CSS living
 texture (drifting warm blobs — first thing to drop if the composition gets busy). **The pot:**
 a single-weight hairline ink line drawing (engraving style, proportions of a 4.2 L round
-cocotte — two handles, domed lid, knob; generic, no brand marks) composed as a figure with the
-title; 2–3 steam wisps loop slowly at idle (~4 s, pot body static; steam may be the one oxblood
-element). On dismiss: a ~500 ms lid rattle-hop + stronger puff playing **during** the
+cocotte — ear handles, low-domed lid with concentric ridge, mushroom knob, overhanging rim;
+generic, no brand marks) composed as a figure with the title. The line work **draws itself in**
+on load (body → lid → details, ~1.8 s total). At idle, 3 oxblood steam wisps rise as dash
+segments travelling sinuous paths with a gradient dissolve (~5.5–6.5 s each, staggered out of
+phase; pot body static); inverse clip-paths occlude them behind the lid so they emerge from
+the rim seam. On dismiss: a ~500 ms lid rattle-hop + steam puff playing **during** the
 scroll-away, never gating it. Reduced motion: static pot, no steam, instant dismiss. CSS only.
 **No featured-recipe hero.**
 
