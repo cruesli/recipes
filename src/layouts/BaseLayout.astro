@@ -102,6 +102,29 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
     )}
 
     <script>
+      // Brand link brings the splash back: clear the wiped flag on any page; on
+      // the home page re-show it in place (via the hook Splash.astro puts on the
+      // element). Capture phase: must beat the ClientRouter's own click handler,
+      // which stops propagation on cross-page navigations.
+      document.addEventListener(
+        "click",
+        (e) => {
+          const brand = (e.target as Element | null)?.closest?.("a.brand");
+          if (!brand) return;
+          sessionStorage.removeItem("splash-wiped");
+          const splash = document.querySelector("[data-splash]") as
+            | (HTMLElement & { _splashShow?: () => void })
+            | null;
+          if (splash?._splashShow) {
+            e.preventDefault();
+            splash._splashShow();
+          }
+        },
+        { capture: true }
+      );
+    </script>
+
+    <script>
       // Reverse morph (Phase 10 T4): arriving at the home map with a snapshot
       // present, fly the cuisine silhouette back onto the restored framing.
       // Module script — runs once, listeners persist across router swaps.
