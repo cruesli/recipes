@@ -38,11 +38,15 @@ const { photo } = Astro.props;
     <figure class="splash-pot" aria-hidden="true">
       <svg viewBox="0 0 132 132" fill="none" stroke-linecap="round" stroke-linejoin="round">
         <defs>
+          <!-- Washed-ink steam: diluted ink stops + a whisper of blur -->
           <linearGradient id="splash-steam-grad" gradientUnits="userSpaceOnUse" x1="0" y1="88" x2="0" y2="18">
-            <stop offset="0" style="stop-color: var(--color-oxblood)" stop-opacity="0.8" />
-            <stop offset="0.6" style="stop-color: var(--color-oxblood)" stop-opacity="0.5" />
-            <stop offset="1" style="stop-color: var(--color-oxblood)" stop-opacity="0" />
+            <stop offset="0" style="stop-color: var(--color-ink)" stop-opacity="0.55" />
+            <stop offset="0.6" style="stop-color: var(--color-ink)" stop-opacity="0.34" />
+            <stop offset="1" style="stop-color: var(--color-ink)" stop-opacity="0" />
           </linearGradient>
+          <filter id="splash-steam-soften" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="0.3" />
+          </filter>
           <!-- Two clips (nested = intersection): knob block overlaps the lid
                region, so it lives in its own clip to keep evenodd parity clean -->
           <clipPath id="splash-steam-clip-a">
@@ -54,7 +58,7 @@ const { photo } = Astro.props;
         </defs>
         <g clip-path="url(#splash-steam-clip-a)">
           <g clip-path="url(#splash-steam-clip-b)">
-            <g class="pot-steam" stroke="url(#splash-steam-grad)">
+            <g class="pot-steam" stroke="url(#splash-steam-grad)" filter="url(#splash-steam-soften)">
               <path class="steam steam--1" pathLength="1" d="M32,84 C40,72 25,63 32,51 C39,40 27,32 34,21" />
               <path class="steam steam--2" pathLength="1" d="M66,80 C72,66 59,57 66,45 C73,34 61,27 66,17" />
               <path class="steam steam--3" pathLength="1" d="M101,82 C95,73 107,65 101,54 C96,45 105,37 100,27" />
@@ -96,42 +100,65 @@ const { photo } = Astro.props;
 </section>
 
 <script>
+  type SplashEl = HTMLElement & { _splashInit?: boolean; _splashShow?: () => void };
+
   function initSplash() {
-    const splash = document.querySelector('[data-splash]') as HTMLElement | null;
-    if (!splash) return;
+    const found = document.querySelector('[data-splash]');
+    if (!found) return;
+    const el = found as SplashEl;
 
     // Prevent double-init on the same DOM element (astro:page-load + immediate call)
-    if ((splash as HTMLElement & { _splashInit?: boolean })._splashInit) return;
-    (splash as HTMLElement & { _splashInit?: boolean })._splashInit = true;
+    if (el._splashInit) return;
+    el._splashInit = true;
 
-    if (sessionStorage.getItem('splash-wiped')) {
-      // Same-session return: hide immediately, no flash
-      splash.style.display = 'none';
-      return;
-    }
+    // Same-session return: hidden, but stays armed so the brand link can re-show it
+    let active = !sessionStorage.getItem('splash-wiped');
+    if (!active) el.style.display = 'none';
 
-    const el = splash;
     let touchStartY = 0;
     let touchDelta = 0;
     let isTouching = false;
+    let slideTimer = 0;
+    let hideTimer = 0;
+
+    function show() {
+      sessionStorage.removeItem('splash-wiped');
+      clearTimeout(slideTimer);
+      clearTimeout(hideTimer);
+      el.classList.remove('splash--dismissing');
+      el.style.transition = 'none';
+      el.style.transform = '';
+      el.style.opacity = '';
+      el.style.pointerEvents = '';
+      el.style.display = ''; // display toggle restarts the entrance animations
+      window.scrollTo(0, 0);
+      active = true;
+    }
+    el._splashShow = show;
 
     function dismiss() {
+      if (!active) return;
+      active = false;
       sessionStorage.setItem('splash-wiped', '1');
       // Reduced motion: instant, no scroll-away, no burst
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         el.style.display = 'none';
         return;
       }
-      el.classList.add('splash--dismissing'); // lid rattle-hop + puff, concurrent
-      el.style.transition = 'transform 0.5s cubic-bezier(0.45, 0, 0.2, 1), opacity 0.45s ease';
-      el.style.transform = 'translateY(-100%)';
-      el.style.opacity = '0';
+      el.classList.add('splash--dismissing'); // lid rattle-hop + steam puff
       el.style.pointerEvents = 'none';
-      el.addEventListener('transitionend', () => { el.style.display = 'none'; }, { once: true });
+      // Hold ~500 ms so the burst plays out, then scroll away
+      slideTimer = window.setTimeout(() => {
+        el.style.transition = 'transform 0.5s cubic-bezier(0.45, 0, 0.2, 1), opacity 0.45s ease';
+        el.style.transform = 'translateY(-100%)';
+        el.style.opacity = '0';
+        hideTimer = window.setTimeout(() => { if (!active) el.style.display = 'none'; }, 600);
+      }, 500);
     }
 
     // Touch: follow finger, dismiss if swiped up far enough
     el.addEventListener('touchstart', (e) => {
+      if (!active) return;
       isTouching = true;
       touchStartY = (e as TouchEvent).touches[0].clientY;
       touchDelta = 0;
@@ -139,6 +166,7 @@ const { photo } = Astro.props;
     }, { passive: true });
 
     el.addEventListener('touchmove', (e) => {
+      if (!active) return;
       const dy = touchStartY - (e as TouchEvent).touches[0].clientY;
       if (dy > 0) {
         touchDelta = dy;
@@ -149,6 +177,7 @@ const { photo } = Astro.props;
 
     el.addEventListener('touchend', () => {
       isTouching = false;
+      if (!active) return;
       if (touchDelta > 60) {
         dismiss();
       } else {
@@ -165,23 +194,20 @@ const { photo } = Astro.props;
 
     // Scroll to dismiss: listen for both scroll (scrollY) and wheel (fires before scrollY
     // updates — more reliable when a position:fixed overlay prevents the document from
-    // actually scrolling far enough to change scrollY).
-    function onScroll() {
-      if (isTouching) return;
-      if (window.scrollY > 8) { cleanup(); dismiss(); }
-    }
-    function onWheel(e: WheelEvent) {
-      if (isTouching) return;
-      if (e.deltaY > 0) { cleanup(); dismiss(); }
-    }
-    function cleanup() {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('wheel', onWheel as EventListener);
-    }
-
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('wheel', onWheel, { passive: true });
+    // actually scrolling far enough to change scrollY). Guarded by `active` rather than
+    // removed, so a re-shown splash dismisses again without rebinding.
+    window.addEventListener('scroll', () => {
+      if (isTouching || !active) return;
+      if (window.scrollY > 8) dismiss();
+    }, { passive: true });
+    window.addEventListener('wheel', (e) => {
+      if (isTouching || !active) return;
+      if ((e as WheelEvent).deltaY > 0) dismiss();
+    }, { passive: true });
   }
+
+  // (The brand-link re-show listener lives in BaseLayout — it must exist on
+  // every page, and this script only loads on pages that include the splash.)
 
   // Run on ClientRouter navigations (fires on initial load too in Astro 5)
   document.addEventListener('astro:page-load', initSplash);
@@ -296,7 +322,7 @@ const { photo } = Astro.props;
     font-weight: 500;
     font-size: var(--text-display);
     line-height: 1.08;
-    color: var(--color-ink);
+    color: var(--color-oxblood);
     margin: 0 0 var(--space-lg);
     animation: splashFadeUp 0.9s ease both;
     animation-delay: 0.08s;
@@ -306,7 +332,7 @@ const { photo } = Astro.props;
   .splash-pot {
     width: clamp(110px, 16vw, 150px);
     margin: 0 auto var(--space-lg);
-    color: var(--color-ink);
+    color: var(--color-oxblood);
   }
 
   .splash-pot svg { display: block; width: 100%; height: auto; }
@@ -314,6 +340,7 @@ const { photo } = Astro.props;
   /* Plain user-unit strokes (no non-scaling-stroke): dash maths must be
      spec-uniform for the draw-in and steam-travel animations */
   .splash-pot path { stroke-width: 1.1px; }
+  .pot-steam path { stroke-width: 0.9px; }
 
   /* Entrance: line work draws itself in — body, then lid contours, then
      details. dasharray "1 2" (pathLength=1): offset 1.02 hides the path with
