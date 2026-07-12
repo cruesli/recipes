@@ -134,17 +134,10 @@ export function RecipePageIsland({
             {timeLabel && <MetaItem label="Total time" value={timeLabel} />}
             {foodType && <MetaItem label="Type" value={foodType} />}
 
-            {/* Tags */}
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginLeft: 'auto' }}>
-              {tags.filter(Boolean).slice(0, 3).map((tag) => (
-                <span
-                  key={tag}
-                  style={{ fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.18em', padding: '3px 8px', border: '1px solid var(--color-hairline)', color: 'var(--color-olive)', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 600 }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {/* Tags — quiet muted text, never pills (olive is hover/seasonal-only) */}
+            <p style={{ margin: '0 0 0 auto', fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--color-ink-muted)', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 600 }}>
+              {tags.filter(Boolean).slice(0, 3).join(' · ')}
+            </p>
           </div>
         </div>
       </div>

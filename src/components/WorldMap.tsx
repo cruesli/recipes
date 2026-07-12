@@ -581,7 +581,7 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
           margin: 0,
         }}
       >
-        ⌘ + scroll to zoom
+        ⌘/Ctrl + scroll to zoom
       </p>
 
       {/* ── +/− zoom buttons (bottom-right) ──────────────────── */}

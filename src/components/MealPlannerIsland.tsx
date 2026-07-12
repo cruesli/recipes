@@ -498,7 +498,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                   {checkedCount} of {totalRows} checked
                 </span>
                 {checkedCount === totalRows && totalRows > 0 && (
-                  <span style={{ fontFamily: SERIF, fontSize: 'var(--text-meta)', color: 'var(--color-olive)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                  <span style={{ fontFamily: SERIF, fontSize: 'var(--text-meta)', color: 'var(--color-oxblood)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <Check size={14} /> All done!
                   </span>
                 )}
