@@ -179,7 +179,8 @@ steam, instant dismiss. CSS only.
 
 **Cuisine pages — chapter openers.** Each `/cuisines/[slug]` opens as a book chapter, top to
 bottom: muted "← Back to the map" (→ `/#map`; the map restores the at-click framing via the
-consume-once snapshot) → oxblood tick + "Cuisine" eyebrow → **h1 title** (`--text-title`;
+consume-once snapshot; a leaf page reached **from a region plate** re-points this link to
+"← Back to {Region}" via a consume-once hop marker — direct visits keep the map link) → oxblood tick + "Cuisine" eyebrow → **h1 title** (`--text-title`;
 escalate toward display only if it reads weak) → muted oldstyle recipe count → **the chapter
 plate** → `--space-3xl` gap → recipe grid. The plate is the cuisine silhouette in solid sage,
 sized by **area budget** (`max-height: clamp(240px, 34vh, 420px)` and max-width ~60% of the
@@ -197,8 +198,9 @@ drawer); narrowing goes via the map's country mode or the grid.
 cuisine filter. The real "browse everything" page; cuisine pages remain the browse-by-place route.
 
 **Global meal-planner drawer** — a viewport-pinned (`position: fixed; right: 0`) push-drawer
-present on **all browse surfaces** (home, `/recipes`, cuisine pages) and **excluded on
-`/meal-planner`**:
+present on **all browse surfaces** (home, `/recipes`, cuisine pages) **and recipe pages**,
+**excluded on `/meal-planner`**. On a recipe page there are no cards to arm-and-pick, so a
+day's **+ button adds the open recipe directly** to that day (full day = quiet inline note):
 - **Closed:** a slim tab **flush to the viewport edge**, with a vertical day-mark stack (oxblood =
   planned), a rotated "Meal planner" eyebrow, and a chevron. An oxblood divider sets it off — no
   tint fill.
@@ -227,15 +229,16 @@ recipe-page scaler and the list.
 **Grid behaviour:** fixed 3 columns on browse pages (squeeze when the planner pushes), 1 column
 < 768px; browse frame `--max-wide: 1120px`; reading/detail layouts keep their widths.
 
-**Header (sticky):** brand, nav (Home, Meal Planner). **No search field** — the disabled
-placeholder was removed (home + `/recipes` already carry search); NLP search returns to the
-header only when `PUBLIC_NLP_API_URL` is live.
+**Header (sticky):** brand, nav (Home, Collection, Meal Planner); wraps to two lines under
+~560px so narrow phones never get a horizontally scrolling page. **No search field** — the
+disabled placeholder was removed (home + `/recipes` already carry search); NLP search returns
+to the header only when `PUBLIC_NLP_API_URL` is live.
 
 **Footer:** name · About · © year, hairline top border.
 
 **Standalone pages:** **`/about`** — a single-screen colophon (English): who cooks here, what
 the site is, a line on how it's built. **404** — eyebrow, a dry one-liner in the site's voice,
-links to Home and the map. Empty states (empty cuisine, empty planner day, no search matches)
+links to the collection and the map. Empty states (empty cuisine, empty planner day, no search matches)
 carry site-voice copy, not default-app English.
 
 ---

@@ -126,9 +126,10 @@ accurate and self-consistent when you touch them.
 - **One planner, shared:** all planner state/logic lives in `usePlanner` (week + `localStorage` +
   shopping list). `PlannerDrawer` and `meal-planner.astro` both consume it — don't duplicate it.
 - **Global planner drawer:** `position: fixed; right: 0`, present on every browse surface (home,
-  `/recipes`, cuisine pages), **excluded on `/meal-planner`**. Open = push content left via
-  animated page padding; closed = slim tab flush to the viewport edge. Watch that it doesn't
-  overlap the sticky header or fight the splash's 100vh on first paint.
+  `/recipes`, cuisine pages) and on recipe pages (where a day's + adds the open recipe directly
+  via BaseLayout's `currentRecipeId` prop), **excluded on `/meal-planner`**. Open = push content
+  left via animated page padding; closed = slim tab flush to the viewport edge. Watch that it
+  doesn't overlap the sticky header or fight the splash's 100vh on first paint.
 - **Collection:** home shows a 6-card preview → `/recipes` is the full grid. Fixed 3 columns
   (squeeze when the drawer pushes), 1 column < 768px; browse frame `--max-wide: 1120px`.
 - **Enrichment as progressive enhancement (static-first):** nutrition, categories, and stated
