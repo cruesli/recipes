@@ -69,7 +69,7 @@ import { SEASONAL_ITEMS, SEASON_LABEL } from '../data/seasonal';
 
     <p class="splash-season">
       <span class="splash-season-label">{SEASON_LABEL}:</span>
-      {SEASONAL_ITEMS.join(' · ')}
+      <span class="splash-season-items">{SEASONAL_ITEMS.join(' · ')}</span>
     </p>
   </div>
 
@@ -82,6 +82,8 @@ import { SEASONAL_ITEMS, SEASON_LABEL } from '../data/seasonal';
 </section>
 
 <script>
+  import { seasonalFor } from '../data/seasonal';
+
   type SplashEl = HTMLElement & { _splashInit?: boolean; _splashShow?: () => void };
 
   function initSplash() {
@@ -92,6 +94,11 @@ import { SEASONAL_ITEMS, SEASON_LABEL } from '../data/seasonal';
     // Prevent double-init on the same DOM element (astro:page-load + immediate call)
     if (el._splashInit) return;
     el._splashInit = true;
+
+    // Self-updating season line: the baked-in list is from build time — re-derive
+    // from the visitor's clock so a stale build can't show last season's produce
+    const items = el.querySelector('.splash-season-items');
+    if (items) items.textContent = seasonalFor(new Date().getMonth()).join(' · ');
 
     // Same-session return: hidden, but stays armed so the brand link can re-show it
     let active = !sessionStorage.getItem('splash-wiped');
