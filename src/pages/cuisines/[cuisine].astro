@@ -170,9 +170,23 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
   const leafOf = (e: Event) =>
     (e.target as Element).closest?.("[data-leaf-href]") as SVGPathElement | null;
 
+  // Stash the region → leaf hop (consume-once) so the leaf page's back link
+  // returns to the region chapter instead of the full map
+  const HOP_KEY = "cuisine:back";
+
+  function goToLeaf(el: SVGPathElement) {
+    try {
+      sessionStorage.setItem(HOP_KEY, JSON.stringify({
+        href: location.pathname,
+        label: document.querySelector(".cuisine-title")?.textContent?.trim() ?? "the region",
+      }));
+    } catch { /* private mode: back link stays "Back to the map" */ }
+    navigate(el.getAttribute("data-leaf-href")!);
+  }
+
   document.addEventListener("click", (e) => {
     const el = leafOf(e);
-    if (el) navigate(el.getAttribute("data-leaf-href")!);
+    if (el) goToLeaf(el);
   });
 
   document.addEventListener("keydown", (e) => {
@@ -180,8 +194,27 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
     const el = leafOf(e);
     if (!el) return;
     e.preventDefault();
-    navigate(el.getAttribute("data-leaf-href")!);
+    goToLeaf(el);
   });
+
+  // Arriving from a region plate: re-point the back link at the region chapter
+  const rewriteBackLink = () => {
+    let raw: string | null = null;
+    try {
+      raw = sessionStorage.getItem(HOP_KEY);
+      if (raw) sessionStorage.removeItem(HOP_KEY);
+    } catch { return; }
+    if (!raw) return;
+    try {
+      const { href, label } = JSON.parse(raw);
+      const back = document.querySelector("a.back-to-map");
+      if (back && href && href !== location.pathname) {
+        back.setAttribute("href", href);
+        back.textContent = `← Back to ${label}`;
+      }
+    } catch { /* corrupt marker: keep the map link */ }
+  };
+  document.addEventListener("astro:page-load", rewriteBackLink);
 
   // Small viewports: region plates are decorative — drop focus/ARIA as well
   // (CSS already kills pointer events under 768px)
