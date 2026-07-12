@@ -201,8 +201,10 @@ hr { border: none; border-top: 1px solid var(--color-hairline); margin: var(--sp
 .worldmap-container path:focus-visible { outline: 2px solid var(--color-oxblood); outline-offset: 0; }
 .worldmap-container button:focus-visible { outline: 2px solid var(--color-oxblood); outline-offset: 2px; }
 
-/* ── Country-shape morph (map → cuisine header) ──────────────── */
+/* ── Country-shape morph (map → chapter backdrop) ────────────── */
+/* Longer than the old plate morph: the shape now travels to near-viewport
+   size, so the zoom-in needs a beat more air */
 ::view-transition-group(cuisine-shape) {
-  animation-duration: 400ms;
-  animation-timing-function: ease-out;
+  animation-duration: 550ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
 }
