@@ -134,11 +134,13 @@ export function WorldMap({ recipeCuisines, cuisinesData, basePath }: Props) {
     return () => window.removeEventListener('pageshow', onPageShow);
   }, []);
 
-  // Fetch topology once on mount (needed for region merge)
+  // Fetch topology once on mount (needed for region merge); on failure the
+  // map stays in the plain-countries loading state rather than rejecting
   useEffect(() => {
     fetch(geoUrl)
       .then((r) => r.json())
-      .then(setTopology);
+      .then(setTopology)
+      .catch((err) => console.error('worldmap: topology fetch failed', err));
   }, []);
 
   // Reverse morph handshake: once the restored framing has painted, tell the

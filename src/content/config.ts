@@ -33,19 +33,6 @@ const recipes = defineCollection({
   }),
 });
 
-const mealPlans = defineCollection({
-  type: "data",
-  schema: z.object({
-    weekStart: z.string(),
-    days: z.record(
-      z.object({
-        recipeSlug: z.string().nullable(),
-        notes: z.string().optional(),
-      })
-    ),
-  }),
-});
-
 const meta = defineCollection({
   type: "data",
   // Union: cuisines.json | country-regions.json
@@ -72,6 +59,5 @@ const meta = defineCollection({
 
 export const collections = {
   recipes,
-  "meal-plans": mealPlans,
   meta,
 };

@@ -279,10 +279,15 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
     .region-plate path { pointer-events: none; }
   }
 
+  /* Same fixed 3-column browse grid as home + /recipes (1 column < 768px) */
   .recipe-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 0 var(--space-lg);
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2xl) var(--space-lg);
+  }
+
+  @media (max-width: 768px) {
+    .recipe-grid { grid-template-columns: 1fr; }
   }
 
   .empty-note {

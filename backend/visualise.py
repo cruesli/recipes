@@ -17,9 +17,9 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from rdflib import Graph, Namespace, RDF
 
-ROOT = Path(__file__).parent.parent
-TTL_PATH = ROOT / "graph.ttl"
-OUT_PATH = ROOT / "graph.png"
+BACKEND = Path(__file__).parent
+TTL_PATH = BACKEND / "graph.ttl"  # written there by the ingest pipeline
+OUT_PATH = BACKEND / "graph.png"
 
 RKG = Namespace("https://cruesli.github.io/recipes/kg/")
 SCHEMA = Namespace("https://schema.org/")

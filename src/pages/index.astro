@@ -52,7 +52,7 @@ const cuisinesData =
   <section class="map-section" id="map">
     <div class="container">
       <div class="section-tick"></div>
-      <p class="section-label">Explore</p>
+      <p class="eyebrow section-eyebrow">Explore</p>
       <h2 class="section-heading">Around the world</h2>
     </div>
     <!-- Server-rendered frame: reserves the map's height pre-hydration so anchor
@@ -75,17 +75,13 @@ const cuisinesData =
     padding-bottom: var(--space-4xl);
   }
 
+  .section-eyebrow { margin: 0 0 var(--space-xs); }
+
   .section-heading {
-    font-family: 'EB Garamond', Georgia, serif;
+    font-family: var(--font-family-serif);
     font-size: var(--text-section);
     font-weight: 500;
     color: var(--color-ink);
     margin: 0 0 var(--space-xl);
-  }
-
-  .map-hint {
-    font-size: var(--text-meta);
-    color: var(--color-ink-muted);
-    margin: calc(-1 * var(--space-md)) 0 var(--space-lg);
   }
 </style>

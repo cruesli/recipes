@@ -79,8 +79,7 @@ accurate and self-consistent when you touch them.
   `localStorage` week + shopping list), `PlannerDrawer.tsx` (global pinned drawer),
   `CollectionPlannerIsland.tsx` (home/`/recipes` collection), `MealPlannerIsland.tsx` (planner
   page), `RecipePageIsland.tsx`, `WorldMap.tsx`, `Splash.astro`.
-- `src/content/recipes/*.md` — recipe content collection. `src/content/meta/`,
-  `src/content/meal-plans/`.
+- `src/content/recipes/*.md` — recipe content collection. `src/content/meta/`.
 - `src/data/enriched/*.json` — **generated** per-recipe KG export (nutrition + per-line
   category/quantity); do not hand-edit. Consumed via `src/lib/enrichment.ts` (`getEnriched`,
   `CATEGORY_ORDER/LABELS`) — the single seam for the nutrition panel, facets, and shopping list.

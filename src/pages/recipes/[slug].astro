@@ -4,6 +4,7 @@ import { getCollection } from "astro:content";
 import { RecipePageIsland } from "../../components/RecipePageIsland";
 import { deriveTotalTime } from "../../lib/recipeTime.mjs";
 import { getEnriched } from "../../lib/enrichment";
+import { displayFromSlug } from "../../utils/displayFromSlug";
 
 export async function getStaticPaths() {
   const recipes = await getCollection("recipes");
@@ -19,16 +20,8 @@ if (!recipe) throw new Error(`Recipe not found: ${slug}`);
 
 const d = recipe.data;
 
-// Ingredients: already parsed by content schema into string[]
-const rawIngredients = d.ingredients as unknown;
-const ingredients: string[] = Array.isArray(rawIngredients)
-  ? (rawIngredients as string[])
-  : typeof rawIngredients === "string"
-  ? (rawIngredients as string)
-      .split(/\r?\n/)
-      .map((l: string) => l.trim().replace(/^-+\s*/, ""))
-      .filter(Boolean)
-  : [];
+// Ingredients: the content schema already normalises string input to string[]
+const ingredients: string[] = d.ingredients ?? [];
 
 // Steps: parse numbered list items from raw markdown body
 const steps: string[] = recipe.body
@@ -46,7 +39,7 @@ const nutrition = getEnriched(slug!)?.nutritionPerServing ?? null;
   <RecipePageIsland
     title={d.title}
     intro={d.intro ?? null}
-    cuisine={d.cuisine}
+    cuisine={displayFromSlug(d.cuisine)}
     totalTimeMinutes={deriveTotalTime(d)}
     servings={d.servings ?? 4}
     image={d.image ?? null}

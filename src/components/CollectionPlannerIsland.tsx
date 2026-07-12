@@ -403,7 +403,10 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
                   silhouette={r.silhouette}
                   eyebrow={r.cuisine}
                   title={r.title}
-                  meta={[r.totalTimeMinutes ? `${r.totalTimeMinutes} min` : null]}
+                  meta={[
+                    r.totalTimeMinutes ? `${r.totalTimeMinutes} min` : null,
+                    r.servings ? `${r.servings} servings` : null,
+                  ]}
                   draggable
                   onDragStart={(e) => handleDragStart(e, r)}
                   onClick={armedDay ? (e) => handleCardClick(e, r) : undefined}

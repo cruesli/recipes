@@ -24,11 +24,12 @@ function formatFraction(decimal) {
   return s === '0' ? '' : s;
 }
 
-/** "1 ½", "¾", "1.2", "1/2" → number */
+/** "1 ½", "¾", "1.2", "1/2", "1 1/2" → number */
 export function parseQuantity(str) {
   if (str.includes('/')) {
-    const parts = str.split('/');
-    return parseFloat(parts[0]) / parseFloat(parts[1]);
+    // optional leading whole part before an ASCII fraction ("1 1/2")
+    const m = str.match(/^\s*(?:(\d+)\s+)?(\d+)\s*\/\s*(\d+)/);
+    if (m) return (m[1] ? parseFloat(m[1]) : 0) + parseFloat(m[2]) / parseFloat(m[3]);
   }
   let value = 0;
   let digits = '';

@@ -1,31 +1,13 @@
 ---
 import { SEASONAL_ITEMS, SEASON_LABEL } from '../data/seasonal';
-
-interface Props {
-  photo?: string;  // Optional path to full-bleed atmospheric photo
-}
-
-const { photo } = Astro.props;
 ---
 
-<section class={`splash${photo ? ' splash--photo' : ''}`} aria-label="Welcome" data-splash>
+<section class="splash" aria-label="Welcome" data-splash>
 
-  <!-- Living texture: drifting warm blobs (hidden in photo mode) -->
-  {!photo && (
-    <>
-      <div class="splash-blob splash-blob--1" aria-hidden="true"></div>
-      <div class="splash-blob splash-blob--2" aria-hidden="true"></div>
-      <div class="splash-blob splash-blob--3" aria-hidden="true"></div>
-    </>
-  )}
-
-  <!-- Photo mode background -->
-  {photo && (
-    <>
-      <div class="splash-photo" style={`background-image: url('${photo}')`} aria-hidden="true"></div>
-      <div class="splash-photo-overlay" aria-hidden="true"></div>
-    </>
-  )}
+  <!-- Living texture: drifting warm blobs -->
+  <div class="splash-blob splash-blob--1" aria-hidden="true"></div>
+  <div class="splash-blob splash-blob--2" aria-hidden="true"></div>
+  <div class="splash-blob splash-blob--3" aria-hidden="true"></div>
 
   <div class="splash-content">
     <h1 class="splash-title">Magnus &amp; Tessern's Recipes</h1>
@@ -227,35 +209,6 @@ const { photo } = Astro.props;
     overflow: hidden;
     background: var(--color-paper);
   }
-
-  /* ── Photo mode ────────────────────────────────────────────── */
-  .splash--photo { background: #1a1410; }
-
-  .splash-photo {
-    position: absolute;
-    inset: 0;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0.75;
-  }
-
-  .splash-photo-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to bottom,
-      rgba(18, 12, 8, 0.15) 0%,
-      rgba(18, 12, 8, 0.45) 55%,
-      rgba(18, 12, 8, 0.72) 100%
-    );
-  }
-
-  .splash--photo .splash-title     { color: #FAF8F2; }
-  .splash--photo .splash-pot       { color: rgba(250, 248, 242, 0.85); }
-  .splash--photo .splash-season    { color: rgba(250, 248, 242, 0.58); }
-  .splash--photo .splash-season-label { color: rgba(250, 248, 242, 0.82); }
-  .splash--photo .splash-cue       { color: rgba(250, 248, 242, 0.45); }
 
   /* ── Living texture ────────────────────────────────────────── */
   .splash-blob {
