@@ -1,5 +1,5 @@
 {
-  "generated": "2026-07-07T18:41:03",
+  "generated": "2026-07-12T23:06:29",
   "summary": {
     "recipes": 20,
     "uniqueRawLines": 219,
@@ -1216,8 +1216,8 @@
       "originCountry": null,
       "usda": {
         "found": true,
-        "source": "search",
-        "kcalPer100g": 263.0
+        "source": "override",
+        "kcalPer100g": 254.0
       }
     },
     {
