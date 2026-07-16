@@ -185,15 +185,19 @@ snapshot; a leaf page reached **from a region backdrop** re-points this link to 
 all set against **the chapter backdrop** *(July 2026 amendment — replaces the area-budget
 plate: the stamp-above-the-grid never delivered the "zoom into the country" arrival)*. The
 backdrop is the cuisine silhouette at near-viewport size (width `min(aspect × 88vh, 112vw)`),
-anchored right and allowed to **bleed modestly off the page edge** — never so far the country
-stops being recognizable; a full-width shell with `overflow: clip` keeps the page from
-scrolling sideways. It is set in **faded sage** — `color-mix` on paper (solid silhouettes
+**viewport-fixed and centred** (biased slightly above vertical centre, `top: 42%`) — the land
+stands still while the recipes scroll over it; wide shapes may bleed modestly off both edges
+(never so far the country stops being recognizable; fixed elements can't cause sideways
+scroll). It is set in **faded sage** — `color-mix` on paper (solid silhouettes
 ~42%; region backdrops: live leaves ~50%, inert land ~34%), *not* opacity, so hover keeps its
 own contrast — and **dissolves toward the bottom** (mask) so the first grid rows roll over the
 land: the recipes read as lying inside the country. The count carries a
 `clamp(150px, 30vh, 340px)` "chapter cover" gap before the grid so the land gets a clear beat.
-The browse frame rides above with `pointer-events: none` (children re-enable), so **region
-backdrops keep the cuisines inside clickable**: live leaves keep the map's exact grammar
+Pointer discipline: everything in the backdrop is `pointer-events: none` **except the live
+leaves** (painted area only — the faded land never eats clicks meant for cards or footer);
+the browse frame and grid boxes pass events through (children re-enable), so **region
+backdrops keep the cuisines inside clickable** where the land is exposed — chiefly the cover
+band, which is where leaf-choosing happens: live leaves keep the map's exact grammar
 (olive-mix hover, click → the leaf cuisine page, keyboard + ARIA), inert member land
 decorative. **The full-region grid is always the default and is never filtered by the
 backdrop** — leaf selection is strictly optional navigation. Region → leaf hops morph

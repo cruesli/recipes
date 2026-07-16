@@ -236,30 +236,41 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
 </script>
 
 <style>
-  /* Chapter shell: full-width positioning context. `overflow: clip` swallows
-     the backdrop's edge bleed (no sideways page scroll) and its overrun below
-     short grids; min-height guarantees a full "chapter cover" beat even for
-     two-recipe cuisines. */
+  /* Chapter shell: min-height guarantees a full "chapter cover" beat even
+     for two-recipe cuisines. Pointer-inert so the shell's own box never
+     eats clicks meant for the backdrop's leaves. */
   .chapter-shell {
     position: relative;
-    overflow: clip;
     min-height: 92vh;
+    pointer-events: none;
   }
 
   /* The chapter backdrop — replaces the area-budget plate: near-viewport,
-     softly faded sage, anchored right and allowed to bleed a little off the
-     edge (never so far the country stops being recognizable). The bottom
-     dissolves under the grid via the mask. Faded tones come from color-mix
-     (not opacity) so leaf hover keeps its own contrast. */
+     softly faded sage, viewport-fixed and centred so the land stands still
+     while the recipes scroll over it. Wide shapes may bleed a little off
+     both edges (fixed elements never cause sideways scroll). The bottom
+     dissolves via the mask so the lower viewport stays calm under the grid.
+     Faded tones come from color-mix (not opacity) so leaf hover keeps its
+     own contrast. Negative z keeps it under everything, footer included. */
   .chapter-backdrop {
-    position: absolute;
-    top: -6vh;
-    right: -6vw;
+    position: fixed;
+    /* centred horizontally; biased slightly above vertical centre so more
+       land (and its clickable leaves) sits in the clear band above the grid,
+       and the shape fades before it hugs the viewport bottom */
+    top: 42%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* z0: above static flow (so leaves are hit-testable — negative z would sit
+       under the whole in-flow page), below the z1 browse frame */
+    z-index: 0;
     width: min(calc(var(--plate-ar, 1) * 88vh), 112vw);
     color: color-mix(in srgb, var(--color-map-active) 42%, var(--color-paper));
     mask-image: linear-gradient(to bottom, black 55%, transparent 97%);
     -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 97%);
     view-transition-name: cuisine-shape;
+    /* inert except the live leaves — the faded land must never eat clicks
+       meant for content that scrolls over it (cards, footer) */
+    pointer-events: none;
   }
 
   .cuisine-silhouette :global(svg) {
@@ -336,6 +347,7 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
     cursor: pointer;
     transition: fill 0.2s ease;
     outline: none;
+    pointer-events: auto; /* painted area only — the one clickable part of the backdrop */
   }
 
   .plate-leaf:hover,
@@ -348,20 +360,23 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
   @media (max-width: 767px) {
     .chapter-shell { min-height: 70vh; }
     .chapter-backdrop {
-      top: -2vh;
-      right: -10vw;
       width: min(calc(var(--plate-ar, 1) * 52vh), 135vw);
     }
     .region-plate path { pointer-events: none; }
     .cuisine-count { margin-bottom: clamp(90px, 18vh, 200px); }
   }
 
-  /* Same fixed 3-column browse grid as home + /recipes (1 column < 768px) */
+  /* Same fixed 3-column browse grid as home + /recipes (1 column < 768px).
+     The grid box is pass-through so land in the gutters/row gaps stays
+     clickable under the fixed backdrop; cards re-enable. */
   .recipe-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: var(--space-2xl) var(--space-lg);
+    pointer-events: none;
   }
+
+  .recipe-grid :global(a.recipe-card) { pointer-events: auto; }
 
   @media (max-width: 768px) {
     .recipe-grid { grid-template-columns: 1fr; }
