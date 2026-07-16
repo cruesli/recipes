@@ -40,3 +40,9 @@ test('parse/format round-trips', () => {
   assert.equal(parseQuantity('1/2'), 0.5);
   assert.equal(formatQuantity(2.25), '2 ¼');
 });
+
+test('ASCII mixed fractions parse whole + fraction', () => {
+  assert.equal(parseQuantity('1 1/2'), 1.5);
+  assert.equal(parseQuantity('2 3/4'), 2.75);
+  assert.equal(scaleIngredient('1 1/2 dl cream', 2), '3 dl cream');
+});

@@ -24,7 +24,7 @@ restraint, cream paper, type-led layout, photography treated as precious and use
 - **Calm first, function fast**: a brief splash, then straight into the tools.
 - **Oxblood is the single working accent** (ticks, eyebrows, links, actions — and its one
   monumental use, the ingredient plate). **Sage is the place/material family**: map fills →
-  cuisine chapter plates → card placeholder silhouettes. **Olive is the interaction colour
+  chapter backdrops → card placeholder silhouettes. **Olive is the interaction colour
   only** (map/plate hovers) — never structural, and on record as failing text contrast as a fill.
 - **Light mode only** — a cookbook is paper.
 
@@ -41,15 +41,15 @@ restraint, cream paper, type-led layout, photography treated as precious and use
 | `--color-ink-muted` | `rgba(41,47,23,0.58)` | Secondary text / meta | |
 | `--color-hairline` | `rgba(41,47,23,0.12)` | Minimal dividers where needed | Used sparingly, not as section separators |
 | `--color-oxblood` | `#7E2625` | **The working accent** | Ticks, eyebrows, links, planner marks, primary actions, the ingredient plate |
-| `--color-olive` | `#868B59` | Interaction colour (hover) + seasonal accent | Map + chapter-plate hovers; never a fill (paper-on-olive ≈ 3.4:1, fails) |
+| `--color-olive` | `#868B59` | Interaction colour (hover) + seasonal accent | Map + backdrop-leaf hovers; never a fill (paper-on-olive ≈ 3.4:1, fails) |
 | `--color-map-land` | `#E5DECE` | Tan: land without recipes | Map + inert land inside region plates |
-| `--color-map-active` | `#ACAA8C` | Sage: land with recipes | Map fills, cuisine chapter plates |
+| `--color-map-active` | `#ACAA8C` | Sage: land with recipes | Map fills; chapter backdrops via color-mix on paper |
 | `--color-plate-text` | `var(--color-paper)` | Primary text on the ingredient plate | |
 | `--color-plate-muted` | paper at ~0.7 | Muted/meta text on the plate | Section sub-headers, meta |
 | `--color-plate-hairline` | paper at ~0.18–0.20 | Row dividers on the plate | |
 
 **Usage rule:** one white + one oxblood printed plate; space + oxblood ticks separate sections;
-oxblood carries structure; sage is the place/material family (atlas, chapter plates, placeholder
+oxblood carries structure; sage is the place/material family (atlas, chapter backdrops, placeholder
 silhouettes); olive is hover-only. (Evolution notes: the earlier "hairlines do the work / oxblood
 is rare" rule was retired — the build read too boxy. The absolute one-white rule was amended
 July 2026 with the single ink-plate exception; sage-wash and parchment tints for that panel were
@@ -177,28 +177,42 @@ steam, instant dismiss. CSS only.
    +/− buttons for plain-mouse. Click triggers the shape morph (see Motion).
 3. Footer.
 
-**Cuisine pages — chapter openers.** Each `/cuisines/[slug]` opens as a book chapter, top to
-bottom: muted "← Back to the map" (→ `/#map`; the map restores the at-click framing via the
-consume-once snapshot) → oxblood tick + "Cuisine" eyebrow → **h1 title** (`--text-title`;
-escalate toward display only if it reads weak) → muted oldstyle recipe count → **the chapter
-plate** → `--space-3xl` gap → recipe grid. The plate is the cuisine silhouette in solid sage,
-sized by **area budget** (`max-height: clamp(240px, 34vh, 420px)` and max-width ~60% of the
-frame; natural aspect via viewBox), inside `--max-wide` — never full-bleed (the world map earns
-full-bleed; chapter plates live within book margins). **Region plates render the cuisines
-inside**: a miniature country-mode map of the region — live leaves sage with the map's exact
-grammar (olive hover, click → the leaf cuisine page, keyboard + ARIA), inert member land tan
-and decorative. **The full-region grid is always the default and is never filtered by the
-plate** — leaf selection is strictly optional navigation. Region-plate → leaf-page hops
-crossfade (morph only if nearly free). **Mobile (<768px):** the plate stays (capped ~36–40vh)
-but region plates are decorative — no tap targets (fat-finger honesty; same precedent as the
-drawer); narrowing goes via the map's country mode or the grid.
+**Cuisine pages — chapter openers.** Each `/cuisines/[slug]` opens as a book chapter: muted
+"← Back to the map" (→ `/#map`; the map restores the at-click framing via the consume-once
+snapshot; a leaf page reached **from a region backdrop** re-points this link to "← Back to
+{Region}" via a consume-once hop marker — direct visits keep the map link) → oxblood tick +
+"Cuisine" eyebrow → **h1 title** (`--text-title`) → muted oldstyle recipe count → recipe grid,
+all set against **the chapter backdrop** *(July 2026 amendment — replaces the area-budget
+plate: the stamp-above-the-grid never delivered the "zoom into the country" arrival)*. The
+backdrop is the cuisine silhouette at near-viewport size (width `min(aspect × 88vh, 112vw)`),
+**viewport-fixed and centred** (biased slightly above vertical centre, `top: 42%`) — the land
+stands still while the recipes scroll over it; wide shapes may bleed modestly off both edges
+(never so far the country stops being recognizable; fixed elements can't cause sideways
+scroll). It is set in **faded sage** — `color-mix` on paper (solid silhouettes
+~42%; region backdrops: live leaves ~50%, inert land ~34%), *not* opacity, so hover keeps its
+own contrast — and **dissolves toward the bottom** (mask) so the first grid rows roll over the
+land: the recipes read as lying inside the country. The count carries a
+`clamp(150px, 30vh, 340px)` "chapter cover" gap before the grid so the land gets a clear beat.
+Pointer discipline: everything in the backdrop is `pointer-events: none` **except the live
+leaves** (painted area only — the faded land never eats clicks meant for cards or footer);
+the browse frame and grid boxes pass events through (children re-enable), so **region
+backdrops keep the cuisines inside clickable** where the land is exposed — chiefly the cover
+band, which is where leaf-choosing happens: live leaves keep the map's exact grammar
+(olive-mix hover, click → the leaf cuisine page, keyboard + ARIA), inert member land
+decorative. **The full-region grid is always the default and is never filtered by the
+backdrop** — leaf selection is strictly optional navigation. Region → leaf hops morph
+backdrop-to-backdrop for free (shared view-transition name). **Mobile (<768px):** the
+backdrop stays (capped ~52vh, wider bleed tolerated) but is decorative — no tap targets
+(fat-finger honesty; same precedent as the drawer); narrowing goes via the map's country
+mode or the grid.
 
 **`/recipes` (full collection)** — the uncapped editorial grid of every recipe, with search +
 cuisine filter. The real "browse everything" page; cuisine pages remain the browse-by-place route.
 
 **Global meal-planner drawer** — a viewport-pinned (`position: fixed; right: 0`) push-drawer
-present on **all browse surfaces** (home, `/recipes`, cuisine pages) and **excluded on
-`/meal-planner`**:
+present on **all browse surfaces** (home, `/recipes`, cuisine pages) **and recipe pages**,
+**excluded on `/meal-planner`**. On a recipe page there are no cards to arm-and-pick, so a
+day's **+ button adds the open recipe directly** to that day (full day = quiet inline note):
 - **Closed:** a slim tab **flush to the viewport edge**, with a vertical day-mark stack (oxblood =
   planned), a rotated "Meal planner" eyebrow, and a chevron. An oxblood divider sets it off — no
   tint fill.
@@ -227,15 +241,16 @@ recipe-page scaler and the list.
 **Grid behaviour:** fixed 3 columns on browse pages (squeeze when the planner pushes), 1 column
 < 768px; browse frame `--max-wide: 1120px`; reading/detail layouts keep their widths.
 
-**Header (sticky):** brand, nav (Home, Meal Planner). **No search field** — the disabled
-placeholder was removed (home + `/recipes` already carry search); NLP search returns to the
-header only when `PUBLIC_NLP_API_URL` is live.
+**Header (sticky):** brand, nav (Home, Collection, Meal Planner); wraps to two lines under
+~560px so narrow phones never get a horizontally scrolling page. **No search field** — the
+disabled placeholder was removed (home + `/recipes` already carry search); NLP search returns
+to the header only when `PUBLIC_NLP_API_URL` is live.
 
 **Footer:** name · About · © year, hairline top border.
 
 **Standalone pages:** **`/about`** — a single-screen colophon (English): who cooks here, what
 the site is, a line on how it's built. **404** — eyebrow, a dry one-liner in the site's voice,
-links to Home and the map. Empty states (empty cuisine, empty planner day, no search matches)
+links to the collection and the map. Empty states (empty cuisine, empty planner day, no search matches)
 carry site-voice copy, not default-app English.
 
 ---
@@ -247,11 +262,12 @@ carry site-voice copy, not default-app English.
   `<ClientRouter />` site-wide crossfade** (soft page transitions on every navigation).
 - **Country-shape morph (the flight tween is retired — the morph IS the flight):** clicking a
   live map shape spawns a fixed overlay of that shape (`view-transition-name: cuisine-shape`)
-  which the browser morphs into the cuisine **chapter plate**, ~400 ms ease-out — the arrival is
-  the destination. **Reverse morph** on return to the map (the plate flies back onto the restored
-  framing, injected at `astro:after-swap`); the plain crossfade is the contractual fallback when
-  anything is missing. **Reduced motion = instant navigation**; unsupported browsers get the
-  crossfade.
+  which the browser morphs into the **chapter backdrop**, ~550 ms decelerating — the shape
+  grows to near-viewport and fades as it lands, so the arrival IS the zoom into the country;
+  the chapter content rises in beneath it (~450 ms). **Reverse morph** on return to the map
+  (the backdrop flies back onto the restored framing, injected at `astro:after-swap`); the
+  plain crossfade is the contractual fallback when anything is missing. **Reduced motion =
+  instant navigation, no content rise**; unsupported browsers get the crossfade.
 - **Splash pot:** slow steam loop at idle; ~500 ms lid rattle-hop + puff on dismiss, concurrent
   with the scroll-away. Reduced motion: fully static.
 - Calm elsewhere. **Not** a fluid-everywhere treatment.
@@ -277,6 +293,9 @@ facets → `GET /api/v1/recipes/filter`.
 ## Explicitly rejected / out of scope
 
 - Boxed/scroll-capped collections; bordered or filled cards as default.
+- **A solid sage band enveloping the chapter opener** (tinted-zone violation) and a
+  **full-bleed zoomed-atlas chapter band** (spends the map's full-bleed card) — both
+  considered against the faded chapter backdrop and rejected (July 2026).
 - Warm-tint zone bands / a second background tone; candle `#F1ECDB`; **sage-wash or parchment
   tinted panels** (the oxblood ink plate is the sanctioned exception — a print device, not a zone).
 - **A second printed plate anywhere** without a new, explicit amendment.
@@ -330,6 +349,13 @@ facets → `GET /api/v1/recipes/filter`.
   input removed (NLP-gated return); empty-state copy pass in the site's voice; `global.css`
   dead-code sweep (legacy card/grid/badge + recipe-slider blocks); RecipeCard placeholder
   silhouettes; map caption-tick removed.
+- **Shipped (July 2026 refinement batches 4–6, in review on `feature/repo-sweep`):** repo
+  sweep (dead starter/unused code, mobile header overflow fix, mixed-fraction quantities);
+  assessment fixes (single-accent discipline on tags/"All done", month-keyed self-updating
+  in-season line, collection links + title dedup, drawer direct-add on recipe pages,
+  region-backdrop hop back link, minced-beef nutrition pin); **chapter backdrops** replacing
+  the area-budget plates — the map morph now lands on a near-viewport faded-sage country and
+  the grid rolls over it (the "zoom into the country" arrival).
 - **Later:** NLP wiring (incl. shopping-list category buckets); nutrition panel; oxblood-dot
   audit; paper grain; cross-device week sync (`nanostores` over `localStorage`); possible
   split-accent (olive separators + oxblood text); split `sub-saharan-africa` when recipes

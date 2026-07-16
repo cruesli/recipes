@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
-import { Clock, Users, ChefHat, ArrowLeft, Check, Minus, Plus } from 'lucide-react';
+import { ChefHat, ArrowLeft, Check, Minus, Plus } from 'lucide-react';
 import { scaleIngredient } from '../lib/quantity.mjs';
+import { parseIngredientSections } from '../lib/ingredientSections.mjs';
 import type { NutritionPerServing } from '../lib/enrichment';
 
 export interface RecipePageProps {
@@ -82,19 +83,8 @@ export function RecipePageIsland({
     }
   }
 
-  // Parse ingredients into sections
-  type Section = { header: string | null; items: string[] };
-  const sections: Section[] = [];
-  let cur: Section = { header: null, items: [] };
-  for (const line of ingredients) {
-    if (line.endsWith(':')) {
-      if (cur.items.length || cur.header !== null) sections.push(cur);
-      cur = { header: line.slice(0, -1), items: [] };
-    } else if (line.trim()) {
-      cur.items.push(line);
-    }
-  }
-  if (cur.items.length || cur.header !== null) sections.push(cur);
+  // Parse ingredients into sections (shared with the planner)
+  const sections = parseIngredientSections(ingredients);
 
   const timeLabel = totalTimeMinutes
     ? totalTimeMinutes >= 60
@@ -111,7 +101,7 @@ export function RecipePageIsland({
         {/* Back + title */}
         <div style={{ maxWidth: '900px', margin: '0 auto', padding: 'var(--space-xl) var(--space-lg) var(--space-lg)', width: '100%', flexShrink: 0 }}>
           <a
-            href={`${basePath}/`}
+            href={`${basePath}/recipes`}
             style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', color: 'var(--color-ink-muted)', textDecoration: 'none', marginBottom: 'var(--space-lg)', ...EYEBROW }}
           >
             <ArrowLeft size={13} />
@@ -144,17 +134,10 @@ export function RecipePageIsland({
             {timeLabel && <MetaItem label="Total time" value={timeLabel} />}
             {foodType && <MetaItem label="Type" value={foodType} />}
 
-            {/* Tags */}
-            <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginLeft: 'auto' }}>
-              {tags.filter(Boolean).slice(0, 3).map((tag) => (
-                <span
-                  key={tag}
-                  style={{ fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.18em', padding: '3px 8px', border: '1px solid var(--color-hairline)', color: 'var(--color-olive)', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 600 }}
-                >
-                  {tag}
-                </span>
-              ))}
-            </div>
+            {/* Tags — quiet muted text, never pills (olive is hover/seasonal-only) */}
+            <p style={{ margin: '0 0 0 auto', fontSize: 'var(--text-eyebrow)', textTransform: 'uppercase', letterSpacing: '0.18em', color: 'var(--color-ink-muted)', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 600 }}>
+              {tags.filter(Boolean).slice(0, 3).join(' · ')}
+            </p>
           </div>
         </div>
       </div>

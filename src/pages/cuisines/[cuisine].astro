@@ -89,20 +89,14 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
 ---
 
 <BaseLayout title={title}>
-  <div class="cuisine-frame">
-    <a class="back-to-map" href={withBase("/#map")}>← Back to the map</a>
-
-    <!-- Chapter opener: tick → eyebrow → title → count → the plate -->
-    <div class="section-tick"></div>
-    <p class="eyebrow cuisine-eyebrow">Cuisine</p>
-    <h1 class="cuisine-title">{title}</h1>
-    <p class="cuisine-count onum">
-      {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
-    </p>
-
+  <div class="chapter-shell">
+    <!-- Chapter backdrop: the arrival visual — near-viewport, softly faded
+         sage land behind the opener and the top of the grid. The morph flies
+         the clicked map shape into it, so the click reads as zooming into the
+         country; the recipes lie on the land as it fades out beneath them. -->
     {regionPlate ? (
       <div
-        class="cuisine-silhouette chapter-plate region-plate"
+        class="cuisine-silhouette chapter-backdrop region-plate"
         style={`--plate-ar: ${plateAspect.toFixed(4)}`}
       >
         <svg
@@ -132,33 +126,45 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
       </div>
     ) : silhouette && (
       <div
-        class="cuisine-silhouette chapter-plate"
+        class="cuisine-silhouette chapter-backdrop"
         aria-hidden="true"
         style={`--plate-ar: ${plateAspect.toFixed(4)}`}
         set:html={silhouette}
       />
     )}
 
-    {recipes.length > 0 ? (
-      <div class="recipe-grid">
-        {recipes.map((r) => (
-          <RecipeCard
-            href={withBase(`/recipes/${r.slug}`)}
-            imageSrc={r.data.image ? withBase(r.data.image) : null}
-            silhouette={silhouetteFor(r.data.cuisine)}
-            eyebrow={r.data.tags?.[0]}
-            title={r.data.title}
-            meta={[
-              deriveTotalTime(r.data) ? `${deriveTotalTime(r.data)} min` : null,
-              r.data.servings ? `${r.data.servings} servings` : null,
-              r.data.tags?.[1],
-            ]}
-          />
-        ))}
-      </div>
-    ) : (
-      <p class="empty-note">Nothing written down from this kitchen yet.</p>
-    )}
+    <div class="cuisine-frame">
+      <a class="back-to-map" href={withBase("/#map")}>← Back to the map</a>
+
+      <!-- Chapter opener: tick → eyebrow → title → count → (the land) → grid -->
+      <div class="section-tick"></div>
+      <p class="eyebrow cuisine-eyebrow">Cuisine</p>
+      <h1 class="cuisine-title">{title}</h1>
+      <p class="cuisine-count onum">
+        {recipes.length} {recipes.length === 1 ? "recipe" : "recipes"}
+      </p>
+
+      {recipes.length > 0 ? (
+        <div class="recipe-grid">
+          {recipes.map((r) => (
+            <RecipeCard
+              href={withBase(`/recipes/${r.slug}`)}
+              imageSrc={r.data.image ? withBase(r.data.image) : null}
+              silhouette={silhouetteFor(r.data.cuisine)}
+              eyebrow={r.data.tags?.[0]}
+              title={r.data.title}
+              meta={[
+                deriveTotalTime(r.data) ? `${deriveTotalTime(r.data)} min` : null,
+                r.data.servings ? `${r.data.servings} servings` : null,
+                r.data.tags?.[1],
+              ]}
+            />
+          ))}
+        </div>
+      ) : (
+        <p class="empty-note">Nothing written down from this kitchen yet.</p>
+      )}
+    </div>
   </div>
 </BaseLayout>
 
@@ -170,9 +176,23 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
   const leafOf = (e: Event) =>
     (e.target as Element).closest?.("[data-leaf-href]") as SVGPathElement | null;
 
+  // Stash the region → leaf hop (consume-once) so the leaf page's back link
+  // returns to the region chapter instead of the full map
+  const HOP_KEY = "cuisine:back";
+
+  function goToLeaf(el: SVGPathElement) {
+    try {
+      sessionStorage.setItem(HOP_KEY, JSON.stringify({
+        href: location.pathname,
+        label: document.querySelector(".cuisine-title")?.textContent?.trim() ?? "the region",
+      }));
+    } catch { /* private mode: back link stays "Back to the map" */ }
+    navigate(el.getAttribute("data-leaf-href")!);
+  }
+
   document.addEventListener("click", (e) => {
     const el = leafOf(e);
-    if (el) navigate(el.getAttribute("data-leaf-href")!);
+    if (el) goToLeaf(el);
   });
 
   document.addEventListener("keydown", (e) => {
@@ -180,8 +200,27 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
     const el = leafOf(e);
     if (!el) return;
     e.preventDefault();
-    navigate(el.getAttribute("data-leaf-href")!);
+    goToLeaf(el);
   });
+
+  // Arriving from a region plate: re-point the back link at the region chapter
+  const rewriteBackLink = () => {
+    let raw: string | null = null;
+    try {
+      raw = sessionStorage.getItem(HOP_KEY);
+      if (raw) sessionStorage.removeItem(HOP_KEY);
+    } catch { return; }
+    if (!raw) return;
+    try {
+      const { href, label } = JSON.parse(raw);
+      const back = document.querySelector("a.back-to-map");
+      if (back && href && href !== location.pathname) {
+        back.setAttribute("href", href);
+        back.textContent = `← Back to ${label}`;
+      }
+    } catch { /* corrupt marker: keep the map link */ }
+  };
+  document.addEventListener("astro:page-load", rewriteBackLink);
 
   // Small viewports: region plates are decorative — drop focus/ARIA as well
   // (CSS already kills pointer events under 768px)
@@ -197,11 +236,71 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
 </script>
 
 <style>
-  /* Browse frame (full-width layout, no sidebar) */
+  /* Chapter shell: min-height guarantees a full "chapter cover" beat even
+     for two-recipe cuisines. Pointer-inert so the shell's own box never
+     eats clicks meant for the backdrop's leaves. */
+  .chapter-shell {
+    position: relative;
+    min-height: 92vh;
+    pointer-events: none;
+  }
+
+  /* The chapter backdrop — replaces the area-budget plate: near-viewport,
+     softly faded sage, viewport-fixed and centred so the land stands still
+     while the recipes scroll over it. Wide shapes may bleed a little off
+     both edges (fixed elements never cause sideways scroll). The bottom
+     dissolves via the mask so the lower viewport stays calm under the grid.
+     Faded tones come from color-mix (not opacity) so leaf hover keeps its
+     own contrast. Negative z keeps it under everything, footer included. */
+  .chapter-backdrop {
+    position: fixed;
+    /* centred horizontally; biased slightly above vertical centre so more
+       land (and its clickable leaves) sits in the clear band above the grid,
+       and the shape fades before it hugs the viewport bottom */
+    top: 42%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* z0: above static flow (so leaves are hit-testable — negative z would sit
+       under the whole in-flow page), below the z1 browse frame */
+    z-index: 0;
+    width: min(calc(var(--plate-ar, 1) * 88vh), 112vw);
+    color: color-mix(in srgb, var(--color-map-active) 42%, var(--color-paper));
+    mask-image: linear-gradient(to bottom, black 55%, transparent 97%);
+    -webkit-mask-image: linear-gradient(to bottom, black 55%, transparent 97%);
+    view-transition-name: cuisine-shape;
+    /* inert except the live leaves — the faded land must never eat clicks
+       meant for content that scrolls over it (cards, footer) */
+    pointer-events: none;
+  }
+
+  .cuisine-silhouette :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Browse frame rides above the land; pointer-events pass through the empty
+     areas so region-backdrop leaves stay clickable behind it */
   .cuisine-frame {
+    position: relative;
+    z-index: 1;
     max-width: var(--max-wide);
     margin: 0 auto;
     padding: var(--space-md) var(--space-lg);
+    pointer-events: none;
+    animation: chapterRise 0.45s ease 0.1s both;
+  }
+
+  .cuisine-frame > * { pointer-events: auto; }
+
+  /* Arrival: content rises in just after the shape lands (C choreography) */
+  @keyframes chapterRise {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cuisine-frame { animation: none; }
   }
 
   .back-to-map {
@@ -225,30 +324,15 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
     margin: 0 0 var(--space-2xs);
   }
 
+  /* The count closes the opener; the big margin is the "chapter cover" beat —
+     the land gets a clear moment before the recipes roll over it */
   .cuisine-count {
     font-size: var(--text-meta);
     color: var(--color-ink-muted);
-    margin: 0 0 var(--space-xl);
+    margin: 0 0 clamp(150px, 30vh, 340px);
   }
 
-  /* The chapter plate: area budget (never full-bleed) — height capped by
-     --plate-max-h, width by 60% of the frame; the shape's own viewBox aspect
-     (--plate-ar, set inline) resolves which constraint binds. */
-  .chapter-plate {
-    --plate-max-h: clamp(240px, 34vh, 420px);
-    color: var(--color-map-active);
-    width: min(60%, calc(var(--plate-max-h) * var(--plate-ar, 1)));
-    margin: 0 0 var(--space-3xl);
-  }
-
-  .cuisine-silhouette :global(svg) {
-    display: block;
-    width: 100%;
-    height: auto;
-    view-transition-name: cuisine-shape;
-  }
-
-  /* Region plate: mini country-mode map — the map's stroke/fill grammar */
+  /* Region backdrop: mini country-mode map — map grammar in the faded key */
   .region-plate path {
     stroke: var(--color-paper);
     stroke-width: 1.25px;
@@ -256,33 +340,46 @@ const regionPlate = plateLeaves.some((l) => l.count > 0) ? plate : undefined;
     vector-effect: non-scaling-stroke;
   }
 
-  .plate-inert { fill: var(--color-map-land); }
+  .plate-inert { fill: color-mix(in srgb, var(--color-map-active) 34%, var(--color-paper)); }
 
   .plate-leaf {
-    fill: var(--color-map-active);
+    fill: color-mix(in srgb, var(--color-map-active) 50%, var(--color-paper));
     cursor: pointer;
     transition: fill 0.2s ease;
     outline: none;
+    pointer-events: auto; /* painted area only — the one clickable part of the backdrop */
   }
 
   .plate-leaf:hover,
-  .plate-leaf:focus-visible { fill: var(--color-olive); }
+  .plate-leaf:focus-visible { fill: color-mix(in srgb, var(--color-olive) 68%, var(--color-paper)); }
   .plate-leaf:focus-visible { outline: 2px solid var(--color-oxblood); }
 
-  /* Mobile keeps the arrival visual (tighter cap); region plates go decorative
-     — no tap targets (fat-finger honesty; the script strips focus/ARIA too) */
+  /* Mobile keeps the arrival visual (tighter caps); region backdrops go
+     decorative — no tap targets (fat-finger honesty; the script strips
+     focus/ARIA too) */
   @media (max-width: 767px) {
-    .chapter-plate {
-      --plate-max-h: 38vh;
-      width: min(100%, calc(var(--plate-max-h) * var(--plate-ar, 1)));
+    .chapter-shell { min-height: 70vh; }
+    .chapter-backdrop {
+      width: min(calc(var(--plate-ar, 1) * 52vh), 135vw);
     }
     .region-plate path { pointer-events: none; }
+    .cuisine-count { margin-bottom: clamp(90px, 18vh, 200px); }
   }
 
+  /* Same fixed 3-column browse grid as home + /recipes (1 column < 768px).
+     The grid box is pass-through so land in the gutters/row gaps stays
+     clickable under the fixed backdrop; cards re-enable. */
   .recipe-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 0 var(--space-lg);
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-2xl) var(--space-lg);
+    pointer-events: none;
+  }
+
+  .recipe-grid :global(a.recipe-card) { pointer-events: auto; }
+
+  @media (max-width: 768px) {
+    .recipe-grid { grid-template-columns: 1fr; }
   }
 
   .empty-note {

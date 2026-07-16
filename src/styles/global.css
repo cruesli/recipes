@@ -2,11 +2,9 @@
 
 @theme {
   --font-family-serif: 'EB Garamond', Georgia, serif;
-  --font-family-sans: 'Schibsted Grotesk', system-ui, -apple-system, sans-serif;
 
   /* Locked design tokens */
   --color-paper:     #FAF8F2;
-  --color-surface:   #F3EFE4;
   --color-stone:     #D4D0BF;
   --color-ink:       #292F17;
   --color-ink-muted: rgba(41, 47, 23, 0.58);
@@ -21,9 +19,7 @@
   --color-plate-muted:    rgba(250, 248, 242, 0.7);
   --color-plate-hairline: rgba(250, 248, 242, 0.19);
 
-  --radius-sm: 0.375rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 0.875rem;
+  --radius-sm: 0.375rem; /* tiny utility thumbnails only */
 
   /* ── Type scale (perfect fourth ×1.333; 1rem = 16px) ── */
   /* top three tiers fluid; --text-card and below fixed */
@@ -50,20 +46,8 @@
   --space-4xl: 6rem;    /* 96px */
 }
 
-/* Legacy aliases kept for gradual migration */
 :root {
-  --max: 980px;
-  --radius: var(--radius-md);
-
-  --color-bg:          var(--color-paper);
-  --color-card:        var(--color-surface);
-  --color-primary:     var(--color-oxblood);
-  --color-secondary:   var(--color-olive);
-  --color-text:        var(--color-ink);
-  --color-text-muted:  var(--color-ink-muted);
-  --color-border:      var(--color-hairline);
-  --color-border-hover: rgba(41, 47, 23, 0.25);
-  --border: var(--color-hairline);
+  --max: 980px; /* reading width: header inner, .container, detail layouts */
 }
 
 * { box-sizing: border-box; }
@@ -132,10 +116,9 @@ body {
 
 .brand:hover { opacity: 0.7; }
 
-.nav { display: flex; align-items: center; }
+.nav { display: flex; align-items: center; gap: var(--space-lg); }
 
 .nav a {
-  margin-left: var(--space-lg);
   text-decoration: none;
   color: var(--color-ink-muted);
   font-size: var(--text-meta);
@@ -145,19 +128,14 @@ body {
 
 .nav a:hover { color: var(--color-ink); }
 
+/* Narrow viewports: brand + nav don't fit on one line — wrap instead of
+   forcing the whole page wider than the screen */
+@media (max-width: 560px) {
+  .header-inner { flex-wrap: wrap; row-gap: var(--space-2xs); }
+}
+
 /* ── Layout ──────────────────────────────────────────────────── */
 .container { max-width: var(--max); margin: 0 auto; padding: var(--space-md) var(--space-lg); }
-
-/* ── Section label (eyebrow alias, kept for compat) ──────────── */
-.section-label {
-  font-family: 'EB Garamond', Georgia, serif;
-  font-weight: 600;
-  font-size: var(--text-eyebrow);
-  text-transform: uppercase;
-  letter-spacing: 0.24em;
-  color: var(--color-oxblood);
-  margin: 0 0 var(--space-xs) 0;
-}
 
 /* ── Section tick (48×2px oxblood bar above each section masthead) */
 .section-tick {
@@ -223,8 +201,10 @@ hr { border: none; border-top: 1px solid var(--color-hairline); margin: var(--sp
 .worldmap-container path:focus-visible { outline: 2px solid var(--color-oxblood); outline-offset: 0; }
 .worldmap-container button:focus-visible { outline: 2px solid var(--color-oxblood); outline-offset: 2px; }
 
-/* ── Country-shape morph (map → cuisine header) ──────────────── */
+/* ── Country-shape morph (map → chapter backdrop) ────────────── */
+/* Longer than the old plate morph: the shape now travels to near-viewport
+   size, so the zoom-in needs a beat more air */
 ::view-transition-group(cuisine-shape) {
-  animation-duration: 400ms;
-  animation-timing-function: ease-out;
+  animation-duration: 550ms;
+  animation-timing-function: cubic-bezier(0.2, 0, 0.2, 1);
 }

@@ -1,8 +1,9 @@
 import { useState, useEffect, useMemo } from 'react';
 import { migrateWeek, addMealIn, moveMealIn, newMealId, MAX_MEALS_PER_DAY } from '../lib/plannerModel.mjs';
+import { parseIngredientSections } from '../lib/ingredientSections.mjs';
 import { scaleIngredient } from '../lib/quantity.mjs';
 import { buildShoppingView, DEFAULT_BUCKET_ORDER } from '../lib/shoppingList.mjs';
-import { getEnriched, CATEGORY_LABELS, normaliseCategory } from '../lib/enrichment';
+import { getEnriched, CATEGORY_LABELS, normaliseCategory, type EnrichedIngredient } from '../lib/enrichment';
 
 export const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 export { MAX_MEALS_PER_DAY };
@@ -164,21 +165,6 @@ function saveWeek(meals: Week): void {
   } catch {}
 }
 
-export function parseIngredients(raw: string[]): IngredientSection[] {
-  const sections: IngredientSection[] = [];
-  let current: IngredientSection = { header: null, items: [] };
-  for (const line of raw) {
-    if (line.endsWith(':')) {
-      if (current.items.length > 0 || current.header !== null) sections.push(current);
-      current = { header: line.slice(0, -1), items: [] };
-    } else if (line.trim()) {
-      current.items.push(line);
-    }
-  }
-  if (current.items.length > 0 || current.header !== null) sections.push(current);
-  return sections;
-}
-
 export function usePlanner() {
   const [meals, setMeals] = useState<Week>({});
   const [shoppingList, setShoppingList] = useState<ShoppingItem[]>([]);
@@ -222,7 +208,7 @@ export function usePlanner() {
       recipeId: recipe.id,
       title: recipe.title,
       image: recipe.image,
-      sections: parseIngredients(recipe.ingredients),
+      sections: parseIngredientSections(recipe.ingredients),
       servings: recipe.servings ?? null,
       baseServings: recipe.servings ?? null,
     };
@@ -293,7 +279,7 @@ export function usePlanner() {
           meal.servings !== null && meal.baseServings ? meal.servings / meal.baseServings : 1;
         // Join the meal's raw lines against the recipe's enriched export by raw text
         const enriched = meal.recipeId ? getEnriched(meal.recipeId) : null;
-        const byRaw = new Map<string, ReturnType<typeof getEnriched> extends null ? never : any>();
+        const byRaw = new Map<string, EnrichedIngredient>();
         enriched?.ingredients.forEach((ing) => byRaw.set(ing.raw.trim(), ing));
         meal.sections.forEach((sec) => {
           sec.items.forEach((raw) => {

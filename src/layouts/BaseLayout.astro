@@ -10,13 +10,21 @@ interface Props {
   title?: string;
   description?: string;
   showPlanner?: boolean;
+  /** Recipe pages: lets the drawer's day + buttons add this recipe directly */
+  currentRecipeId?: string;
 }
 
+const siteName = "Magnus & Tessern's Recipes";
+
 const {
-  title = "Magnus & Tessern's Recipes",
+  title = siteName,
   description = "A household cookbook — the recipes Magnus & Tessern actually cook, written down.",
   showPlanner = true,
+  currentRecipeId,
 } = Astro.props;
+
+// Tab/social title: page — site; the bare site name when there's no page title
+const fullTitle = title === siteName ? siteName : `${title} — ${siteName}`;
 
 // Absolute URL for social cards (SVG mark; swap for a raster when one exists)
 const ogImage = new URL(withBase("/favicon.svg"), Astro.site).href;
@@ -41,12 +49,12 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title} — Recipes</title>
+    <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
     <!-- Social cards -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={title} />
+    <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta name="twitter:card" content="summary" />
@@ -66,7 +74,7 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
       </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Schibsted+Grotesk:wght@400;500&display=swap" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" />
     <ClientRouter />
   </head>
   <body>
@@ -97,6 +105,7 @@ const basePath = import.meta.env.BASE_URL.replace(/\/$/, '');
       <PlannerDrawer
         recipes={allRecipes}
         basePath={basePath}
+        currentRecipe={allRecipes.find((r) => r.id === currentRecipeId) ?? null}
         client:load
       />
     )}

@@ -23,10 +23,11 @@ service provides only natural-language search.
   pipeline changes, shopping-list rework, nutrition/facets/NL search). Shipped static-first.
 
 All roadmap docs are shipped and merged to `main`. Current work is **ad-hoc refinement
-batches** from household review sessions (three shipped July 2026: planner/shopping-list
-polish, map reframing, splash rework — cocotte redraw, travelling steam wisps, draw-in
-entrance, held dismiss, brand-link re-show) — small phase-per-commit batches on a feature
-branch, no plan doc.
+batches** from household review sessions (three merged July 2026: planner/shopping-list
+polish, map reframing, splash rework; batches 4–6 in review on `feature/repo-sweep`: repo
+sweep, assessment fixes, and the **chapter backdrops** — cuisine pages open on a
+near-viewport faded-sage country the grid rolls over, replacing the area-budget plates) —
+small phase-per-commit batches on a feature branch, no plan doc.
 
 These files mirror an external knowledge base the maintainer syncs by hand — keep them
 accurate and self-consistent when you touch them.
@@ -79,8 +80,7 @@ accurate and self-consistent when you touch them.
   `localStorage` week + shopping list), `PlannerDrawer.tsx` (global pinned drawer),
   `CollectionPlannerIsland.tsx` (home/`/recipes` collection), `MealPlannerIsland.tsx` (planner
   page), `RecipePageIsland.tsx`, `WorldMap.tsx`, `Splash.astro`.
-- `src/content/recipes/*.md` — recipe content collection. `src/content/meta/`,
-  `src/content/meal-plans/`.
+- `src/content/recipes/*.md` — recipe content collection. `src/content/meta/`.
 - `src/data/enriched/*.json` — **generated** per-recipe KG export (nutrition + per-line
   category/quantity); do not hand-edit. Consumed via `src/lib/enrichment.ts` (`getEnriched`,
   `CATEGORY_ORDER/LABELS`) — the single seam for the nutrition panel, facets, and shopping list.
@@ -127,9 +127,10 @@ accurate and self-consistent when you touch them.
 - **One planner, shared:** all planner state/logic lives in `usePlanner` (week + `localStorage` +
   shopping list). `PlannerDrawer` and `meal-planner.astro` both consume it — don't duplicate it.
 - **Global planner drawer:** `position: fixed; right: 0`, present on every browse surface (home,
-  `/recipes`, cuisine pages), **excluded on `/meal-planner`**. Open = push content left via
-  animated page padding; closed = slim tab flush to the viewport edge. Watch that it doesn't
-  overlap the sticky header or fight the splash's 100vh on first paint.
+  `/recipes`, cuisine pages) and on recipe pages (where a day's + adds the open recipe directly
+  via BaseLayout's `currentRecipeId` prop), **excluded on `/meal-planner`**. Open = push content
+  left via animated page padding; closed = slim tab flush to the viewport edge. Watch that it
+  doesn't overlap the sticky header or fight the splash's 100vh on first paint.
 - **Collection:** home shows a 6-card preview → `/recipes` is the full grid. Fixed 3 columns
   (squeeze when the drawer pushes), 1 column < 768px; browse frame `--max-wide: 1120px`.
 - **Enrichment as progressive enhancement (static-first):** nutrition, categories, and stated

@@ -55,6 +55,7 @@ rkg:recipe_aguachile a schema:Recipe ;
         rkg:ing_aguachile_8,
         rkg:ing_aguachile_9 ;
     rkg:slug "aguachile" ;
+    rkg:totalTimeMinutes 25 ;
     schema:keywords "Healthy",
         "No-Cook",
         "Quick" ;
@@ -85,6 +86,7 @@ rkg:recipe_betasuppe a schema:Recipe ;
         rkg:ing_betasuppe_8,
         rkg:ing_betasuppe_9 ;
     rkg:slug "betasuppe" ;
+    rkg:totalTimeMinutes 200 ;
     schema:keywords "Comfort",
         "Make-Ahead",
         "Slow-Cook" ;
@@ -112,6 +114,7 @@ rkg:recipe_briam a schema:Recipe ;
         rkg:ing_briam_8,
         rkg:ing_briam_9 ;
     rkg:slug "briam" ;
+    rkg:totalTimeMinutes 95 ;
     schema:keywords "One-Pan",
         "Vegan",
         "Vegetarian" ;
@@ -143,6 +146,7 @@ rkg:recipe_carne-asada-tacos a schema:Recipe ;
         rkg:ing_carne-asada-tacos_8,
         rkg:ing_carne-asada-tacos_9 ;
     rkg:slug "carne-asada-tacos" ;
+    rkg:totalTimeMinutes 35 ;
     schema:keywords "Grill",
         "Quick" ;
     schema:name "Carne asada tacos" ;
@@ -197,6 +201,7 @@ rkg:recipe_char-siu a schema:Recipe ;
         rkg:ing_char-siu_8,
         rkg:ing_char-siu_9 ;
     rkg:slug "char-siu" ;
+    rkg:totalTimeMinutes 70 ;
     schema:keywords "Grill",
         "Make-Ahead" ;
     schema:name "Char siu" ;
@@ -232,6 +237,7 @@ rkg:recipe_chicken-fajitas a schema:Recipe ;
         rkg:ing_chicken-fajitas_8,
         rkg:ing_chicken-fajitas_9 ;
     rkg:slug "chicken-fajitas" ;
+    rkg:totalTimeMinutes 30 ;
     schema:keywords "Family",
         "Quick" ;
     schema:name "Chicken fajitas" ;
@@ -264,6 +270,7 @@ rkg:recipe_gongbao-chicken a schema:Recipe ;
         rkg:ing_gongbao-chicken_8,
         rkg:ing_gongbao-chicken_9 ;
     rkg:slug "gongbao-chicken" ;
+    rkg:totalTimeMinutes 30 ;
     schema:keywords "Quick",
         "Spicy" ;
     schema:name "Gongbao chicken" ;
@@ -294,6 +301,7 @@ rkg:recipe_goulash a schema:Recipe ;
         rkg:ing_goulash_8,
         rkg:ing_goulash_9 ;
     rkg:slug "goulash" ;
+    rkg:totalTimeMinutes 170 ;
     schema:keywords "Comfort",
         "Make-Ahead",
         "Slow-Cook" ;
@@ -324,6 +332,7 @@ rkg:recipe_katsudon a schema:Recipe ;
         rkg:ing_katsudon_8,
         rkg:ing_katsudon_9 ;
     rkg:slug "katsudon" ;
+    rkg:totalTimeMinutes 35 ;
     schema:keywords "Comfort",
         "Quick" ;
     schema:name "Katsudon" ;
@@ -380,6 +389,7 @@ rkg:recipe_lu-rou-fan a schema:Recipe ;
         rkg:ing_lu-rou-fan_8,
         rkg:ing_lu-rou-fan_9 ;
     rkg:slug "lu-rou-fan" ;
+    rkg:totalTimeMinutes 110 ;
     schema:keywords "Comfort",
         "Make-Ahead" ;
     schema:name "Lu rou fan" ;
@@ -387,12 +397,12 @@ rkg:recipe_lu-rou-fan a schema:Recipe ;
     schema:recipeYield 4 .
 
 rkg:recipe_pasta-bolognese a schema:Recipe ;
-    rkg:approxCarbsPerServing 27.199785000000002 ;
-    rkg:approxFatPerServing 48.488578000000004 ;
+    rkg:approxCarbsPerServing 23.979785 ;
+    rkg:approxFatPerServing 47.263577999999995 ;
     rkg:approxFibrePerServing 4.985 ;
-    rkg:approxKcalPerServing 742.1485 ;
-    rkg:approxProteinPerServing 42.43592 ;
-    rkg:approxSodiumPerServing 2951.81445 ;
+    rkg:approxKcalPerServing 726.3985 ;
+    rkg:approxProteinPerServing 44.01092 ;
+    rkg:approxSodiumPerServing 897.3144500000001 ;
     rkg:foodType "Dinner" ;
     rkg:hasIngredient rkg:ing_pasta-bolognese_0,
         rkg:ing_pasta-bolognese_1,
@@ -435,6 +445,7 @@ rkg:recipe_peperonata a schema:Recipe ;
         rkg:ing_peperonata_7,
         rkg:ing_peperonata_8 ;
     rkg:slug "peperonata" ;
+    rkg:totalTimeMinutes 50 ;
     schema:keywords "Make-Ahead",
         "Vegan",
         "Vegetarian" ;
@@ -466,6 +477,7 @@ rkg:recipe_pork-ragu a schema:Recipe ;
         rkg:ing_pork-ragu_8,
         rkg:ing_pork-ragu_9 ;
     rkg:slug "pork-ragu" ;
+    rkg:totalTimeMinutes 200 ;
     schema:keywords "Comfort",
         "Make-Ahead",
         "Slow-Cook" ;
@@ -515,6 +527,7 @@ rkg:recipe_souvlaki a schema:Recipe ;
         rkg:ing_souvlaki_8,
         rkg:ing_souvlaki_9 ;
     rkg:slug "souvlaki" ;
+    rkg:totalTimeMinutes 30 ;
     schema:keywords "Grill",
         "Quick" ;
     schema:name "Souvlaki" ;
@@ -577,6 +590,7 @@ rkg:recipe_teriyaki-chicken a schema:Recipe ;
         rkg:ing_teriyaki-chicken_7,
         rkg:ing_teriyaki-chicken_8 ;
     rkg:slug "teriyaki-chicken" ;
+    rkg:totalTimeMinutes 30 ;
     schema:keywords "Healthy",
         "Quick" ;
     schema:name "Teriyaki chicken" ;
@@ -5663,15 +5677,13 @@ rkg:nutr_lu-rou-fan_9 a rkg:Nutrition ;
     rkg:sodiumMgPer100g 16.0 .
 
 rkg:nutr_pasta-bolognese_0 a rkg:Nutrition ;
-    rkg:carbsPer100g 1.84 ;
-    rkg:cholesterolMgPer100g 70.0 ;
-    rkg:fatPer100g 20.7 ;
-    rkg:fibrePer100g 0.0 ;
-    rkg:kcalPer100g 263.0 ;
-    rkg:proteinPer100g 16.3 ;
-    rkg:saturatedFatPer100g 7.18 ;
-    rkg:sodiumMgPer100g 1240.0 ;
-    rkg:sugarPer100g 0.0 .
+    rkg:carbsPer100g 0.0 ;
+    rkg:cholesterolMgPer100g 71.0 ;
+    rkg:fatPer100g 20.0 ;
+    rkg:kcalPer100g 254.0 ;
+    rkg:proteinPer100g 17.2 ;
+    rkg:saturatedFatPer100g 7.6 ;
+    rkg:sodiumMgPer100g 66.0 .
 
 rkg:nutr_pasta-bolognese_1 a rkg:Nutrition ;
     rkg:carbsPer100g 0.0 ;

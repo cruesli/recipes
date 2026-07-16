@@ -12,6 +12,8 @@ import {
 interface Props {
   recipes: RecipeData[];
   basePath: string;
+  /** Set on recipe pages: a day's + button adds this recipe directly (no arming) */
+  currentRecipe?: RecipeData | null;
 }
 
 const DRAWER_W = 340;
@@ -27,7 +29,7 @@ const EYEBROW: React.CSSProperties = {
   margin: 0,
 };
 
-export function PlannerDrawer({ recipes, basePath }: Props) {
+export function PlannerDrawer({ recipes, basePath, currentRecipe = null }: Props) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [drawerMode, setDrawerMode] = useState<'manual' | 'drag'>('manual');
   const [armedDay, setArmedDay] = useState<string | null>(null);
@@ -96,6 +98,11 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
     if (!drawerOpen) {
       setDrawerOpen(true);
       setDrawerMode('manual');
+    }
+    // Recipe pages: no cards to pick from — the + adds the open recipe directly
+    if (currentRecipe) {
+      if (!selectRecipe(day, currentRecipe)) flashNote(day, 'day is full');
+      return;
     }
     setArmedDay(armedDay === day ? null : day);
   }
@@ -395,7 +402,7 @@ export function PlannerDrawer({ recipes, basePath }: Props) {
                     <div style={{ display: 'flex', gap: '2px', flexShrink: 0 }}>
                       <button
                         onClick={() => armDay(day)}
-                        title={`Add recipe to ${day}`}
+                        title={currentRecipe ? `Add this recipe to ${day}` : `Add recipe to ${day}`}
                         style={{
                           background: 'none',
                           border: isArmed ? '1px solid var(--color-oxblood)' : '1px solid var(--color-hairline)',

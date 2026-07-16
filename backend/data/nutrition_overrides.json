@@ -1,5 +1,6 @@
 {
   "salt": {"protein_per_100g": 0.0, "fat_per_100g": 0.0, "carbs_per_100g": 0.0, "kcal_per_100g": 0.0, "sodium_mg_per_100g": 38758.0},
+  "minced beef": {"protein_per_100g": 17.2, "fat_per_100g": 20.0, "carbs_per_100g": 0.0, "kcal_per_100g": 254.0, "saturated_fat_per_100g": 7.6, "sodium_mg_per_100g": 66.0, "cholesterol_mg_per_100g": 71.0},
   "dashi": {"protein_per_100g": 0.5, "fat_per_100g": 0.0, "carbs_per_100g": 0.0, "kcal_per_100g": 3.0, "sodium_mg_per_100g": 300.0},
   "corn salad": {"protein_per_100g": 2.0, "fat_per_100g": 0.4, "carbs_per_100g": 3.6, "kcal_per_100g": 21.0, "fibre_per_100g": 1.8, "sodium_mg_per_100g": 4.0},
   "basil": {"protein_per_100g": 3.2, "fat_per_100g": 0.6, "carbs_per_100g": 2.7, "kcal_per_100g": 23.0, "fibre_per_100g": 1.6, "sodium_mg_per_100g": 4.0},
