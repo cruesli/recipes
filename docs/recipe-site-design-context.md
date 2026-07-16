@@ -349,7 +349,7 @@ facets → `GET /api/v1/recipes/filter`.
   input removed (NLP-gated return); empty-state copy pass in the site's voice; `global.css`
   dead-code sweep (legacy card/grid/badge + recipe-slider blocks); RecipeCard placeholder
   silhouettes; map caption-tick removed.
-- **Shipped (July 2026 refinement batches 4–6, in review on `feature/repo-sweep`):** repo
+- **Shipped (July 2026 refinement batches 4–6, merged):** repo
   sweep (dead starter/unused code, mobile header overflow fix, mixed-fraction quantities);
   assessment fixes (single-accent discipline on tags/"All done", month-keyed self-updating
   in-season line, collection links + title dedup, drawer direct-add on recipe pages,
