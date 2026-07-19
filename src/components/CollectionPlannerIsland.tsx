@@ -70,6 +70,7 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
   const [maxTime, setMaxTime] = useState('');
   const [maxKcal, setMaxKcal] = useState('');
   const [minProtein, setMinProtein] = useState('');
+  const [ingredient, setIngredient] = useState('');
 
   // NL search state
   const [nlQuery, setNlQuery] = useState('');
@@ -79,7 +80,7 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
 
   function clearFacets() {
     setCollectionQuery(''); setCuisineFilter(null);
-    setDietary(''); setMaxTime(''); setMaxKcal(''); setMinProtein('');
+    setDietary(''); setMaxTime(''); setMaxKcal(''); setMinProtein(''); setIngredient('');
   }
 
   async function runNlSearch(e: React.FormEvent) {
@@ -119,6 +120,7 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
       if (f.maxTime != null) setMaxTime(String(f.maxTime));
       if (f.maxKcal != null) setMaxKcal(String(f.maxKcal));
       if (f.minProtein != null) setMinProtein(String(f.minProtein));
+      if (f.ingredient) setIngredient(f.ingredient);
       setNlStatus('idle');
     } catch {
       setNlStatus('error');
@@ -145,11 +147,12 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
     maxTime: toNum(maxTime),
     maxKcal: toNum(maxKcal),
     minProtein: toNum(minProtein),
+    ingredient: ingredient || null,
   };
   const collectionRecipes = recipes.filter((r) => matchesFacets(r, facetState));
 
   // When previewLimit is set and no active filter, cap the display (searching shows all matches)
-  const facetsActive = dietary !== '' || maxTime !== '' || maxKcal !== '' || minProtein !== '';
+  const facetsActive = dietary !== '' || maxTime !== '' || maxKcal !== '' || minProtein !== '' || ingredient !== '';
   const searchActive = collectionQuery.length > 0 || cuisineFilter !== null || facetsActive;
   const displayedRecipes = (previewLimit && !searchActive)
     ? collectionRecipes.slice(0, previewLimit)
@@ -335,6 +338,21 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
               <label style={FACET_LABEL}>Min protein
                 <input type="number" inputMode="numeric" min="0" value={minProtein} onChange={(e) => setMinProtein(e.target.value)} className="onum" style={FACET_NUM} /> g
               </label>
+              <label style={FACET_LABEL}>With
+                <input
+                  type="text"
+                  list="cpi-ingredient-options"
+                  value={ingredient}
+                  onChange={(e) => setIngredient(e.target.value)}
+                  placeholder="ingredient…"
+                  style={{ ...FACET_NUM, width: '9em', textAlign: 'left', textTransform: 'none', letterSpacing: 'normal' }}
+                />
+              </label>
+              <datalist id="cpi-ingredient-options">
+                {[...new Set(recipes.flatMap((r) => r.canonicals ?? []))].sort().map((c) => (
+                  <option key={c} value={c} />
+                ))}
+              </datalist>
               {searchActive && (
                 <button
                   onClick={clearFacets}

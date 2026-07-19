@@ -28,6 +28,7 @@ export interface RecipeData {
   dietary?: string[];
   kcalPerServing?: number | null;
   proteinPerServing?: number | null;
+  canonicals?: string[];
 }
 
 export interface IngredientSection {
