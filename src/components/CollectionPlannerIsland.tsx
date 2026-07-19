@@ -355,6 +355,9 @@ export function CollectionPlannerIsland({ recipes, basePath, previewLimit, viewA
             {previewLimit && !searchActive && collectionRecipes.length > previewLimit && (
               <> · showing {previewLimit} of {collectionRecipes.length}</>
             )}
+            {facets && (
+              <> · <a href={`${basePath}/ingredients`} style={{ color: 'var(--color-oxblood)', textDecoration: 'none' }}>ingredient index</a></>
+            )}
           </p>
         </div>
 
