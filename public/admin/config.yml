@@ -27,6 +27,16 @@ collections:
             fields:
               - { name: "slug", label: "Slug", widget: "string", hint: "lowercase + hyphens, e.g. italian, tex-mex, bbq" }
               - { name: "label", label: "Label (optional)", widget: "string", required: false, hint: "e.g. BBQ, Tex-Mex" }
+      - label: "Pantry staples"
+        name: "staples"
+        file: "src/content/meta/staples.json"
+        format: "json"
+        fields:
+          - name: "staples"
+            label: "Staples (canonical ingredient names, lowercase)"
+            widget: "list"
+            allow_add: true
+            field: { name: "name", label: "Canonical name", widget: "string" }
   - name: "recipes"
     label: "Recipes"
     folder: "src/content/recipes"

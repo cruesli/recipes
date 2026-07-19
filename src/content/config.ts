@@ -35,7 +35,7 @@ const recipes = defineCollection({
 
 const meta = defineCollection({
   type: "data",
-  // Union: cuisines.json | country-regions.json
+  // Union: cuisines.json | country-regions.json | staples.json
   schema: z.union([
     z.object({
       cuisines: z.array(
@@ -53,6 +53,9 @@ const meta = defineCollection({
           region: z.string().nullable(),
         })
       ),
+    }),
+    z.object({
+      staples: z.array(z.string()),
     }),
   ]),
 });
