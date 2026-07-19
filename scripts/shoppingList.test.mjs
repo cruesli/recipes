@@ -112,3 +112,36 @@ test('days render in week order regardless of item order', () => {
   ]);
   assert.equal(view.buckets[0].lines[0].note, 'Mon: 2, Thu: 1');
 });
+
+test('staple canonicals divert from buckets to the staples list', () => {
+  const view = buildShoppingView(
+    [
+      item({ canonical: 'salt', category: 'spices-seasonings', quantity: { amount: 30, unit: 'g' } }),
+      item({ canonical: 'onion', category: 'produce', quantity: { amount: 1, unit: 'count' } }),
+    ],
+    DEFAULT_BUCKET_ORDER, undefined, ['salt']
+  );
+  assert.equal(view.buckets.length, 1);
+  assert.equal(view.buckets[0].category, 'produce');
+  assert.equal(view.staples.length, 1);
+  assert.equal(view.staples[0].canonical, 'salt');
+  assert.equal(view.staples[0].id, 'c:salt');
+});
+
+test('staples not in the plan are not listed; no staples param → empty list', () => {
+  const view = buildShoppingView(
+    [item({ canonical: 'onion', category: 'produce', quantity: { amount: 1, unit: 'count' } })],
+    DEFAULT_BUCKET_ORDER, undefined, ['salt']
+  );
+  assert.equal(view.staples.length, 0);
+  assert.equal(buildShoppingView([]).staples.length, 0);
+});
+
+test('degraded (un-enriched) lines are never treated as staples', () => {
+  const view = buildShoppingView(
+    [item({ canonical: null, text: 'salt', raw: 'salt' })],
+    DEFAULT_BUCKET_ORDER, undefined, ['salt']
+  );
+  assert.equal(view.staples.length, 0);
+  assert.equal(view.degraded.length, 1);
+});
