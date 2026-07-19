@@ -59,6 +59,7 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
     toggleBucketCollapse,
     reorderBuckets,
     resetBucketOrder,
+    restockStaple,
     downloadList,
   } = usePlanner();
 
@@ -657,6 +658,28 @@ export function MealPlannerIsland({ recipes, basePath }: Props) {
                     ))}
                   </div>
                 ))}
+
+                {/* Pantry footer — staples assumed at home; tap one to put it on the list */}
+                {shoppingView.staples.length > 0 && (
+                  <div style={{ borderTop: '1px solid var(--color-hairline)', paddingTop: 'var(--space-md)' }}>
+                    <p style={{ fontFamily: SERIF, fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', fontStyle: 'italic', margin: '0 0 var(--space-2xs)' }}>
+                      Assumed in the pantry — tap anything you're out of:
+                    </p>
+                    <p style={{ margin: 0, lineHeight: 1.8 }}>
+                      {shoppingView.staples.map((line, i) => (
+                        <span key={line.id}>
+                          {i > 0 && <span style={{ color: 'var(--color-ink-muted)' }}> · </span>}
+                          <button
+                            onClick={() => restockStaple(line.canonical)}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: SERIF, fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', textTransform: 'capitalize' }}
+                          >
+                            {line.canonical}
+                          </button>
+                        </span>
+                      ))}
+                    </p>
+                  </div>
+                )}
 
                 {/* Note for custom meals */}
                 {DAYS.some((d) => (meals[d] ?? []).some((m) => m.recipeId === null)) && (
