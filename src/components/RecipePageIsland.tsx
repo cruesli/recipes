@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { ChefHat, ArrowLeft, Check, Minus, Plus } from 'lucide-react';
 import { scaleIngredient } from '../lib/quantity.mjs';
 import { parseIngredientSections } from '../lib/ingredientSections.mjs';
+import { workBack, formatClock } from '../lib/recipeTime.mjs';
 import type { NutritionPerServing } from '../lib/enrichment';
 
 export interface RecipePageProps {
@@ -10,6 +11,9 @@ export interface RecipePageProps {
   intro: string | null;
   cuisine: string;
   totalTimeMinutes: number | null;
+  prepTimeMinutes: number | null;
+  cookTimeMinutes: number | null;
+  marinadeTimeMinutes: number | null;
   servings: number;
   image: string | null;
   foodType: string | null;
@@ -50,12 +54,14 @@ const PLATE_HAIRLINE: React.CSSProperties = {
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function RecipePageIsland({
-  title, intro, cuisine, totalTimeMinutes, servings: defaultServings,
+  title, intro, cuisine, totalTimeMinutes, prepTimeMinutes, cookTimeMinutes, marinadeTimeMinutes,
+  servings: defaultServings,
   image, foodType, tags, ingredients, steps, nutrition, basePath,
 }: RecipePageProps) {
   const [servings, setServings] = useState(defaultServings);
   const [completed, setCompleted] = useState<Set<number>>(new Set());
   const [keepAwake, setKeepAwake] = useState(false);
+  const [targetTime, setTargetTime] = useState('18:00');
   const wakeLockRef = useRef<any>(null);
 
   const ratio = defaultServings > 0 ? servings / defaultServings : 1;
@@ -86,11 +92,14 @@ export function RecipePageIsland({
   // Parse ingredients into sections (shared with the planner)
   const sections = parseIngredientSections(ingredients);
 
-  const timeLabel = totalTimeMinutes
-    ? totalTimeMinutes >= 60
-      ? `${Math.floor(totalTimeMinutes / 60)} h ${totalTimeMinutes % 60 ? (totalTimeMinutes % 60) + ' min' : ''}`.trim()
-      : `${totalTimeMinutes} min`
-    : null;
+  const fmtMin = (m: number) =>
+    m >= 60 ? `${Math.floor(m / 60)} h ${m % 60 ? (m % 60) + ' min' : ''}`.trim() : `${m} min`;
+
+  const timeLabel = totalTimeMinutes ? fmtMin(totalTimeMinutes) : null;
+
+  // Work-back schedule from the chosen "on the table" time
+  const [targetH, targetM] = targetTime.split(':').map(Number);
+  const plan = workBack(targetH * 60 + targetM, { prepTimeMinutes, cookTimeMinutes, marinadeTimeMinutes });
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--color-paper)', paddingTop: '60px' }}>
@@ -131,7 +140,12 @@ export function RecipePageIsland({
         <div style={{ flexShrink: 0, borderBottom: '1px solid var(--color-hairline)', backgroundColor: 'var(--color-paper)' }}>
           <div style={{ maxWidth: '900px', margin: '0 auto', padding: 'var(--space-lg) var(--space-lg)', display: 'flex', flexWrap: 'wrap', gap: 'var(--space-xl)', alignItems: 'center' }}>
             <MetaItem label="Cuisine" value={cuisine} />
-            {timeLabel && <MetaItem label="Total time" value={timeLabel} />}
+            {prepTimeMinutes != null && <MetaItem label="Prep" value={fmtMin(prepTimeMinutes)} />}
+            {cookTimeMinutes != null && <MetaItem label="Cook" value={fmtMin(cookTimeMinutes)} />}
+            {prepTimeMinutes == null && cookTimeMinutes == null && timeLabel && (
+              <MetaItem label="Total time" value={timeLabel} />
+            )}
+            {marinadeTimeMinutes != null && <MetaItem label="Marinade" value={fmtMin(marinadeTimeMinutes)} />}
             {foodType && <MetaItem label="Type" value={foodType} />}
 
             {/* Tags — quiet muted text, never pills (olive is hover/seasonal-only) */}
@@ -144,6 +158,28 @@ export function RecipePageIsland({
 
       {/* ── Content: ingredients + steps ── */}
       <div style={{ maxWidth: '900px', margin: '0 auto', padding: 'var(--space-2xl) var(--space-lg) var(--space-4xl)' }}>
+        {/* Work-back schedule — one calm line under the metadata bar */}
+        {plan && (
+          <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-body)', color: 'var(--color-ink)', margin: '0 0 var(--space-2xl)', display: 'flex', alignItems: 'baseline', gap: 'var(--space-xs)', flexWrap: 'wrap' }}>
+            <label style={{ display: 'flex', alignItems: 'baseline', gap: 'var(--space-xs)' }}>
+              <span style={{ color: 'var(--color-ink-muted)' }}>On the table at</span>
+              <input
+                type="time"
+                value={targetTime}
+                onChange={(e) => e.target.value && setTargetTime(e.target.value)}
+                className="onum"
+                style={{ border: 'none', borderBottom: '1px solid var(--color-hairline)', backgroundColor: 'transparent', color: 'var(--color-oxblood)', fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-body)', padding: '0 2px', outline: 'none' }}
+              />
+            </label>
+            <span style={{ color: 'var(--color-ink-muted)' }}>—</span>
+            {plan.marinadeFrom != null && (
+              <span>
+                marinate from <span className="onum">{plan.marinadeFrom < 0 ? 'the evening before' : formatClock(plan.marinadeFrom)}</span>,
+              </span>
+            )}
+            <span>start cooking by <span className="onum" style={{ fontWeight: 500 }}>{formatClock(plan.startBy)}</span>{plan.startBy < 0 ? ' the day before' : ''}.</span>
+          </p>
+        )}
         {/* Headnote — italic Garamond body, author's voice before the columns */}
         {intro && (
           <p style={{
