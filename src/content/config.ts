@@ -16,6 +16,8 @@ const recipes = defineCollection({
     // Most recipes carry prep + cook instead of a single total; deriveTotalTime unifies them
     prepTimeMinutes: z.number().int().nonnegative().optional(),
     cookTimeMinutes: z.number().int().nonnegative().optional(),
+    // Do-ahead soak (half the collection marinates); excluded from active time
+    marinadeTimeMinutes: z.number().int().nonnegative().optional(),
     season: z.string().optional(),
     image: z.string().optional(),
     ingredients: z
