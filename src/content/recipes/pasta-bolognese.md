@@ -9,7 +9,8 @@ tags:
   - Freezer-friendly
   - Pasta
 servings: 4
-totalTimeMinutes: 120
+prepTimeMinutes: 20
+cookTimeMinutes: 100
 image: /images/recipes/bolognese.jpg
 ingredients: |-
   - 700g Minced beef

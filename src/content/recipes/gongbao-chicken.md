@@ -10,6 +10,7 @@ tags:
 servings: 3
 prepTimeMinutes: 20
 cookTimeMinutes: 10
+marinadeTimeMinutes: 15
 ingredients: |-
   Chicken and marinade:
   - 500g chicken thighs, boneless, skinless, cut into 2cm cubes

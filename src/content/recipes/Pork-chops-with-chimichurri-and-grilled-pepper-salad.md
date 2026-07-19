@@ -11,6 +11,9 @@ tags:
   - Bright
   - ""
 servings: 2
+prepTimeMinutes: 15
+cookTimeMinutes: 25
+marinadeTimeMinutes: 60
 ingredients: |-
   Pork chops:
   - 400g pork shoulder

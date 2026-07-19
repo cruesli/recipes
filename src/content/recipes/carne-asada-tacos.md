@@ -10,6 +10,7 @@ tags:
 servings: 4
 prepTimeMinutes: 20
 cookTimeMinutes: 15
+marinadeTimeMinutes: 60
 ingredients: |-
   Carne asada:
   - 800g skirt or flank steak
