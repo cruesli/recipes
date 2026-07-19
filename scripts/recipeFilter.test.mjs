@@ -91,3 +91,21 @@ test('ignores unsupported keys and wrong types', () => {
 test('empty object for empty filters', () => {
   assert.deepEqual(extractedToFacets({}), {});
 });
+
+test('ingredient facet: substring match against canonicals', () => {
+  const r = { title: 'Carnitas', cuisine: 'mexican', canonicals: ['pork shoulder', 'orange'] };
+  assert.ok(matchesFacets(r, { ingredient: 'pork' }));
+  assert.ok(matchesFacets(r, { ingredient: 'Pork Shoulder' }));
+  assert.ok(!matchesFacets(r, { ingredient: 'chicken' }));
+});
+
+test('ingredient facet: recipes without canonicals fail the filter', () => {
+  const r = { title: 'Custom', cuisine: 'norwegian' };
+  assert.ok(!matchesFacets(r, { ingredient: 'pork' }));
+  assert.ok(matchesFacets(r, {}));
+});
+
+test('extractedToFacets maps ingredient', () => {
+  assert.deepEqual(extractedToFacets({ ingredient: 'pork shoulder' }), { ingredient: 'pork shoulder' });
+  assert.deepEqual(extractedToFacets({ ingredient: 7 }), {});
+});
