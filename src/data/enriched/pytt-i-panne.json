@@ -1,6 +1,6 @@
 {
   "slug": "pytt-i-panne",
-  "version": 1,
+  "version": 2,
   "servings": 1,
   "nutritionPerServing": {
     "kcal": 1265,
@@ -62,6 +62,33 @@
       "category": "oils-condiments",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "sausages"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 4,
+          "phrase": "ketchup"
+        }
+      ]
     }
   ]
 }

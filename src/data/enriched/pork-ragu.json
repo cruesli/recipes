@@ -1,6 +1,6 @@
 {
   "slug": "pork-ragu",
-  "version": 1,
+  "version": 2,
   "servings": 6,
   "nutritionPerServing": {
     "kcal": 619,
@@ -166,6 +166,120 @@
       "category": "dairy-eggs",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "1.2kg pork shoulder"
+        },
+        {
+          "line": 12,
+          "phrase": "salt and pepper"
+        },
+        {
+          "line": 1,
+          "phrase": "2 tablespoons olive oil"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 2,
+          "phrase": "1 onion"
+        },
+        {
+          "line": 3,
+          "phrase": "2 carrots"
+        },
+        {
+          "line": 4,
+          "phrase": "2 celery stalks"
+        },
+        {
+          "line": 5,
+          "phrase": "4 garlic cloves, minced"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 6,
+          "phrase": "200ml dry white wine"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 7,
+          "phrase": "2 tins crushed tomatoes"
+        },
+        {
+          "line": 8,
+          "phrase": "250ml chicken stock"
+        },
+        {
+          "line": 9,
+          "phrase": "1 small handful rosemary"
+        },
+        {
+          "line": 10,
+          "phrase": "4 bay leaves"
+        },
+        {
+          "line": 11,
+          "phrase": "1 strip orange peel"
+        },
+        {
+          "line": 0,
+          "phrase": "the pork"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the pork"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the pork"
+        },
+        {
+          "line": 9,
+          "phrase": "rosemary stalks"
+        },
+        {
+          "line": 10,
+          "phrase": "bay leaves"
+        },
+        {
+          "line": 11,
+          "phrase": "orange peel"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 13,
+          "phrase": "cooked pasta"
+        },
+        {
+          "line": 14,
+          "phrase": "grated Parmesan"
+        }
+      ]
     }
   ]
 }

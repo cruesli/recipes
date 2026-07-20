@@ -1,6 +1,6 @@
 {
   "slug": "Pork-chops-with-chimichurri-and-grilled-pepper-salad",
-  "version": 1,
+  "version": 2,
   "servings": 2,
   "nutritionPerServing": {
     "kcal": 877,
@@ -174,6 +174,145 @@
       "category": "spices-seasonings",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 1,
+          "phrase": "salt"
+        },
+        {
+          "line": 2,
+          "phrase": "Pepper"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the meat"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "meat"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 3,
+          "phrase": "the bell peppers"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 3,
+          "phrase": "the peppers"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 3,
+          "phrase": "the peppers"
+        },
+        {
+          "line": 4,
+          "phrase": "the salad"
+        },
+        {
+          "line": 6,
+          "phrase": "the onion"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 5,
+          "phrase": "the pine nuts"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 3,
+          "phrase": "the peppers"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 7,
+          "phrase": "the balsamic vinegar"
+        },
+        {
+          "line": 8,
+          "phrase": "salt and pepper"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 9,
+          "phrase": "the parsley"
+        },
+        {
+          "line": 10,
+          "phrase": "chilli"
+        },
+        {
+          "line": 11,
+          "phrase": "garlic"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 13,
+          "phrase": "the oregano"
+        },
+        {
+          "line": 15,
+          "phrase": "salt and pepper"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 12,
+          "phrase": "oil"
+        },
+        {
+          "line": 14,
+          "phrase": "balsamic vinegar"
+        }
+      ]
+    },
+    {
+      "refs": []
     }
   ]
 }

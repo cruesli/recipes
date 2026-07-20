@@ -1,6 +1,6 @@
 {
   "slug": "gongbao-chicken",
-  "version": 1,
+  "version": 2,
   "servings": 3,
   "nutritionPerServing": {
     "kcal": 698,
@@ -197,6 +197,87 @@
         "unit": "tablespoons"
       },
       "grams": 45.0
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "500g chicken cubes"
+        },
+        {
+          "line": 1,
+          "phrase": "1 tablespoon Shaoxing wine"
+        },
+        {
+          "line": 2,
+          "phrase": "1 tablespoon light soy"
+        },
+        {
+          "line": 3,
+          "phrase": "1 teaspoon cornstarch"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 8,
+          "phrase": "cornstarch"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 16,
+          "phrase": "3 tablespoons neutral oil"
+        },
+        {
+          "line": 10,
+          "phrase": "12 dried chiles"
+        },
+        {
+          "line": 11,
+          "phrase": "2 teaspoons Sichuan peppercorns"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the chicken"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 12,
+          "phrase": "4 sliced garlic cloves"
+        },
+        {
+          "line": 13,
+          "phrase": "1 thumb sliced ginger"
+        },
+        {
+          "line": 14,
+          "phrase": "4 spring onion whites"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 15,
+          "phrase": "80g peanuts"
+        }
+      ]
     }
   ]
 }

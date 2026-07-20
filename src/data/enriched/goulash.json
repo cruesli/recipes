@@ -1,6 +1,6 @@
 {
   "slug": "goulash",
-  "version": 1,
+  "version": 2,
   "servings": 6,
   "nutritionPerServing": {
     "kcal": 929,
@@ -169,6 +169,116 @@
       "category": "dairy-eggs",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "1.2kg beef cubes"
+        },
+        {
+          "line": 13,
+          "phrase": "salt"
+        },
+        {
+          "line": 1,
+          "phrase": "1 tablespoon lard"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 1,
+          "phrase": "remaining 2 tablespoons lard"
+        },
+        {
+          "line": 2,
+          "phrase": "4 finely diced onions"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 3,
+          "phrase": "4 minced garlic cloves"
+        },
+        {
+          "line": 4,
+          "phrase": "4 tablespoons sweet paprika"
+        },
+        {
+          "line": 5,
+          "phrase": "1 teaspoon hot paprika"
+        },
+        {
+          "line": 6,
+          "phrase": "1 teaspoon caraway"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 7,
+          "phrase": "2 tablespoons tomato paste"
+        },
+        {
+          "line": 8,
+          "phrase": "2 diced bell peppers"
+        },
+        {
+          "line": 9,
+          "phrase": "2 diced tomatoes"
+        },
+        {
+          "line": 12,
+          "phrase": "2 bay leaves"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the beef"
+        },
+        {
+          "line": 10,
+          "phrase": "1.5 litres stock"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 11,
+          "phrase": "4 chopped potatoes"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 13,
+          "phrase": "salt and pepper"
+        },
+        {
+          "line": 12,
+          "phrase": "the bay leaves"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 14,
+          "phrase": "sour cream"
+        }
+      ]
     }
   ]
 }

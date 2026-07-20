@@ -1,6 +1,6 @@
 {
   "slug": "teriyaki-chicken",
-  "version": 1,
+  "version": 2,
   "servings": 2,
   "nutritionPerServing": {
     "kcal": 642,
@@ -100,6 +100,83 @@
       "category": "dry-goods",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "4 chicken thighs"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 2,
+          "phrase": "3 tablespoons soy sauce"
+        },
+        {
+          "line": 3,
+          "phrase": "3 tablespoons mirin"
+        },
+        {
+          "line": 4,
+          "phrase": "3 tablespoons sake"
+        },
+        {
+          "line": 5,
+          "phrase": "1 tablespoon sugar"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 1,
+          "phrase": "1 teaspoon neutral oil"
+        },
+        {
+          "line": 0,
+          "phrase": "the chicken"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the chicken"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the chicken"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 6,
+          "phrase": "hot rice"
+        },
+        {
+          "line": 7,
+          "phrase": "steamed greens"
+        },
+        {
+          "line": 8,
+          "phrase": "sesame seeds"
+        }
+      ]
     }
   ]
 }

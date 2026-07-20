@@ -1,6 +1,6 @@
 {
   "slug": "katsudon",
-  "version": 1,
+  "version": 2,
   "servings": 2,
   "nutritionPerServing": {
     "kcal": 954,
@@ -158,6 +158,84 @@
         "unit": "portions"
       },
       "grams": 360.0
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "2 pork loin steaks"
+        },
+        {
+          "line": 4,
+          "phrase": "salt and pepper"
+        },
+        {
+          "line": 1,
+          "phrase": "50g flour"
+        },
+        {
+          "line": 2,
+          "phrase": "1 beaten egg"
+        },
+        {
+          "line": 3,
+          "phrase": "80g panko"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 5,
+          "phrase": "neutral oil"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 7,
+          "phrase": "200ml dashi"
+        },
+        {
+          "line": 8,
+          "phrase": "3 tablespoons soy sauce"
+        },
+        {
+          "line": 9,
+          "phrase": "2 tablespoons mirin"
+        },
+        {
+          "line": 10,
+          "phrase": "1 tablespoon sugar"
+        },
+        {
+          "line": 6,
+          "phrase": "1 sliced onion"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 11,
+          "phrase": "4 lightly beaten eggs"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 13,
+          "phrase": "hot rice"
+        },
+        {
+          "line": 12,
+          "phrase": "2 sliced spring onions"
+        }
+      ]
     }
   ]
 }
