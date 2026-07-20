@@ -6,6 +6,15 @@ import frontmatter
 
 from backend.models import Recipe
 
+_STEP_SPLIT = re.compile(r"\n(?=\d+\.)")
+_STEP_PREFIX = re.compile(r"^\d+\.\s*")
+
+
+def parse_steps(body: str) -> List[str]:
+    """Numbered steps from a recipe body — MUST mirror the frontend split in
+    src/pages/recipes/[slug].astro exactly, or exported refs misalign."""
+    return [s for s in (_STEP_PREFIX.sub("", c).strip() for c in _STEP_SPLIT.split(body)) if s]
+
 
 def _clean_ingredient_lines(raw) -> Tuple[List[str], List[Optional[str]]]:
     """Split raw ingredient input into item lines + a parallel section list."""
