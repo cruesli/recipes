@@ -38,6 +38,7 @@ const nutrition = getEnriched(slug!)?.nutritionPerServing ?? null;
 <BaseLayout title={d.title} currentRecipeId={recipe.slug}>
   <RecipePageIsland
     title={d.title}
+    slug={recipe.slug}
     intro={d.intro ?? null}
     cuisine={displayFromSlug(d.cuisine)}
     totalTimeMinutes={deriveTotalTime(d)}

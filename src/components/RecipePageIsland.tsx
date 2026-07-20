@@ -1,12 +1,14 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect, useMemo } from 'react';
 import { ChefHat, ArrowLeft, Check, Minus, Plus } from 'lucide-react';
 import { scaleIngredient } from '../lib/quantity.mjs';
 import { parseIngredientSections } from '../lib/ingredientSections.mjs';
 import { workBack, formatClock } from '../lib/recipeTime.mjs';
+import { buildStepSegments } from '../lib/stepAnnotations.mjs';
 import type { NutritionPerServing } from '../lib/enrichment';
 
 export interface RecipePageProps {
   title: string;
+  slug: string;
   /** Optional headnote (Norwegian); italic body above the columns */
   intro: string | null;
   cuisine: string;
@@ -51,10 +53,65 @@ const PLATE_HAIRLINE: React.CSSProperties = {
   margin: 0,
 };
 
+// ── Timers: persistence + chime ─────────────────────────────────────────────
+
+interface StepTimer {
+  id: string;        // `${slug}:${stepIndex}:${segIndex}`
+  slug: string;
+  stepIndex: number;
+  label: string;
+  endsAt: number;    // epoch ms
+  minutes: number;
+  chimed?: boolean;
+}
+
+const TIMERS_KEY = 'recipes:timers';
+
+function loadTimers(slug: string): StepTimer[] {
+  try {
+    const all = JSON.parse(localStorage.getItem(TIMERS_KEY) ?? '[]') as StepTimer[];
+    // keep this recipe's timers; drop anything finished over an hour ago
+    return all.filter((t) => t.slug === slug && t.endsAt > Date.now() - 3_600_000);
+  } catch { return []; }
+}
+
+function saveTimers(slug: string, timers: StepTimer[]) {
+  try {
+    const others = (JSON.parse(localStorage.getItem(TIMERS_KEY) ?? '[]') as StepTimer[])
+      .filter((t) => t.slug !== slug);
+    localStorage.setItem(TIMERS_KEY, JSON.stringify([...others, ...timers]));
+  } catch {}
+}
+
+function chime() {
+  try {
+    const ctx = new AudioContext();
+    [0, 0.35, 0.7].forEach((t, i) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.frequency.value = i === 2 ? 1174 : 880;
+      gain.gain.setValueAtTime(0.001, ctx.currentTime + t);
+      gain.gain.exponentialRampToValueAtTime(0.2, ctx.currentTime + t + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.3);
+      osc.start(ctx.currentTime + t); osc.stop(ctx.currentTime + t + 0.32);
+    });
+    setTimeout(() => ctx.close().catch(() => {}), 1500);
+  } catch {}
+}
+
+function fmtCountdown(ms: number) {
+  const s = Math.max(0, Math.round(ms / 1000));
+  const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), sec = s % 60;
+  return h > 0
+    ? `${h}:${String(m).padStart(2, '0')}:${String(sec).padStart(2, '0')}`
+    : `${m}:${String(sec).padStart(2, '0')}`;
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export function RecipePageIsland({
-  title, intro, cuisine, totalTimeMinutes, prepTimeMinutes, cookTimeMinutes, marinadeTimeMinutes,
+  title, slug, intro, cuisine, totalTimeMinutes, prepTimeMinutes, cookTimeMinutes, marinadeTimeMinutes,
   servings: defaultServings,
   image, foodType, tags, ingredients, steps, nutrition, basePath,
 }: RecipePageProps) {
@@ -63,6 +120,39 @@ export function RecipePageIsland({
   const [keepAwake, setKeepAwake] = useState(false);
   const [targetTime, setTargetTime] = useState('18:00');
   const wakeLockRef = useRef<any>(null);
+  const didMountTimers = useRef(false);
+
+  const [timers, setTimers] = useState<StepTimer[]>([]);
+  const [now, setNow] = useState(() => Date.now());
+
+  useEffect(() => { setTimers(loadTimers(slug)); }, [slug]);
+  useEffect(() => {
+    if (!didMountTimers.current) { didMountTimers.current = true; return; }
+    saveTimers(slug, timers);
+  }, [timers]);
+
+  // 1s tick while any timer is still counting down; stops once all are chimed
+  useEffect(() => {
+    if (!timers.some((t) => !t.chimed)) return;
+    const iv = setInterval(() => setNow(Date.now()), 1000);
+    return () => clearInterval(iv);
+  }, [timers]);
+
+  // chime once per timer on completion
+  useEffect(() => {
+    const due = timers.filter((t) => !t.chimed && t.endsAt <= now);
+    if (due.length === 0) return;
+    chime();
+    setTimers((prev) => prev.map((t) => (!t.chimed && t.endsAt <= now ? { ...t, chimed: true } : t)));
+  }, [now, timers]);
+
+  function toggleTimer(id: string, stepIndex: number, label: string, minutes: number) {
+    setTimers((prev) => {
+      const existing = prev.find((t) => t.id === id);
+      if (existing) return prev.filter((t) => t.id !== id); // tap again = clear
+      return [...prev, { id, slug, stepIndex, label, minutes, endsAt: Date.now() + minutes * 60_000 }];
+    });
+  }
 
   const ratio = defaultServings > 0 ? servings / defaultServings : 1;
 
@@ -101,8 +191,16 @@ export function RecipePageIsland({
   const [targetH, targetM] = targetTime.split(':').map(Number);
   const plan = workBack(targetH * 60 + targetM, { prepTimeMinutes, cookTimeMinutes, marinadeTimeMinutes });
 
+  // Step prose → ordered segments (plain text + tappable timers)
+  const stepSegments = useMemo(() => steps.map((step) => buildStepSegments(step)), [steps]);
+
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--color-paper)', paddingTop: '60px' }}>
+      <style>{`
+        @keyframes rp-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(126,38,37,0.5); } 50% { box-shadow: 0 0 0 6px rgba(126,38,37,0); } }
+        .rp-step-due { animation: rp-pulse 1.2s ease-in-out infinite; }
+        @media (prefers-reduced-motion: reduce) { .rp-step-due { animation: none; } }
+      `}</style>
 
       {/* ── Hero (100vh) ── */}
       <div style={{ height: 'calc(100vh - 60px)', display: 'flex', flexDirection: 'column' }}>
@@ -331,6 +429,7 @@ export function RecipePageIsland({
                   <button
                     onClick={() => toggleStep(i)}
                     aria-label={`Step ${i + 1}${completed.has(i) ? ' — done' : ''}`}
+                    className={timers.some((t) => t.stepIndex === i && t.endsAt <= now) ? 'rp-step-due' : undefined}
                     style={{
                       flexShrink: 0, width: '28px', height: '28px', borderRadius: '50%',
                       cursor: 'pointer', fontSize: 'var(--text-eyebrow)', fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 600,
@@ -352,7 +451,32 @@ export function RecipePageIsland({
                     transition: 'color 0.2s',
                     opacity: completed.has(i) ? 0.5 : 1,
                   }}>
-                    {step}
+                    {stepSegments[i].map((seg, si) => {
+                      if (seg.type !== 'timer') return <span key={si}>{seg.text}</span>;
+                      const id = `${slug}:${i}:${si}`;
+                      const running = timers.find((t) => t.id === id);
+                      const remaining = running ? running.endsAt - now : 0;
+                      return (
+                        <button
+                          key={si}
+                          onClick={() => toggleTimer(id, i, seg.text, seg.minutes)}
+                          title={running ? 'Tap to clear the timer' : `Start a ${seg.text} timer`}
+                          style={{
+                            background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+                            fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'inherit', lineHeight: 'inherit',
+                            color: 'var(--color-oxblood)',
+                            borderBottom: running ? 'none' : '1px dotted var(--color-oxblood)',
+                          }}
+                        >
+                          {seg.text}
+                          {running && (
+                            <span className="onum" style={{ marginLeft: '0.4em', fontWeight: 500 }}>
+                              {remaining > 0 ? `· ${fmtCountdown(remaining)}` : '· done'}
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
                   </p>
                 </li>
               ))}
