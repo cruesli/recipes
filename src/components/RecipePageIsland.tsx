@@ -4,7 +4,7 @@ import { scaleIngredient } from '../lib/quantity.mjs';
 import { parseIngredientSections } from '../lib/ingredientSections.mjs';
 import { workBack, formatClock } from '../lib/recipeTime.mjs';
 import { buildStepSegments } from '../lib/stepAnnotations.mjs';
-import type { NutritionPerServing } from '../lib/enrichment';
+import type { NutritionPerServing, EnrichedStep, EnrichedIngredient } from '../lib/enrichment';
 
 export interface RecipePageProps {
   title: string;
@@ -26,6 +26,10 @@ export interface RecipePageProps {
   steps: string[];
   /** Per-serving macros from the KG export; null when not in the graph */
   nutrition: NutritionPerServing | null;
+  /** LLM-linked ingredient references per step, index-aligned with `steps`; null when not in the graph */
+  enrichedSteps: EnrichedStep[] | null;
+  /** Same ingredient list as `ingredients`, enriched with scaled quantities; null when not in the graph */
+  enrichedIngredients: EnrichedIngredient[] | null;
   basePath: string;
 }
 
@@ -113,7 +117,7 @@ function fmtCountdown(ms: number) {
 export function RecipePageIsland({
   title, slug, intro, cuisine, totalTimeMinutes, prepTimeMinutes, cookTimeMinutes, marinadeTimeMinutes,
   servings: defaultServings,
-  image, foodType, tags, ingredients, steps, nutrition, basePath,
+  image, foodType, tags, ingredients, steps, nutrition, enrichedSteps, enrichedIngredients, basePath,
 }: RecipePageProps) {
   const [servings, setServings] = useState(defaultServings);
   const [completed, setCompleted] = useState<Set<number>>(new Set());
@@ -191,8 +195,17 @@ export function RecipePageIsland({
   const [targetH, targetM] = targetTime.split(':').map(Number);
   const plan = workBack(targetH * 60 + targetM, { prepTimeMinutes, cookTimeMinutes, marinadeTimeMinutes });
 
-  // Step prose → ordered segments (plain text + tappable timers)
-  const stepSegments = useMemo(() => steps.map((step) => buildStepSegments(step)), [steps]);
+  // Step prose → ordered segments (plain text + tappable timers + scaled amounts)
+  const stepSegments = useMemo(
+    () => steps.map((step, i) =>
+      buildStepSegments(step, {
+        refs: enrichedSteps?.[i]?.refs ?? null,
+        ingredients: enrichedIngredients,
+        ratio,
+      })
+    ),
+    [steps, enrichedSteps, enrichedIngredients, ratio]
+  );
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--color-paper)', paddingTop: '60px' }}>
@@ -452,6 +465,13 @@ export function RecipePageIsland({
                     opacity: completed.has(i) ? 0.5 : 1,
                   }}>
                     {stepSegments[i].map((seg, si) => {
+                      if (seg.type === 'amount') {
+                        return (
+                          <span key={si} className="onum" style={{ color: 'var(--color-ink-muted)' }}>
+                            {seg.text}
+                          </span>
+                        );
+                      }
                       if (seg.type !== 'timer') return <span key={si}>{seg.text}</span>;
                       const id = `${slug}:${i}:${si}`;
                       const running = timers.find((t) => t.id === id);

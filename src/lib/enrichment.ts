@@ -25,12 +25,22 @@ export interface EnrichedIngredient {
   grams: number | null;
 }
 
+export interface StepRef {
+  line: number;   // index into ingredients[]
+  phrase: string; // verbatim span in the step text
+}
+
+export interface EnrichedStep {
+  refs: StepRef[];
+}
+
 export interface EnrichedRecipe {
   slug: string;
   version: number;
   servings: number | null;
   nutritionPerServing: NutritionPerServing | null;
   ingredients: EnrichedIngredient[];
+  steps?: EnrichedStep[];
 }
 
 // Eagerly bundle every exported recipe at build time, keyed by slug.
