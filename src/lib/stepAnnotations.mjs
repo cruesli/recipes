@@ -4,12 +4,20 @@
 import { findDurations } from './stepTimers.mjs';
 import { formatPart } from './shoppingList.mjs';
 
-// End index of the first whole-word occurrence of `phrase` in `text`, or -1.
-// Word-bounded so a phrase never matches inside a larger word ("oil" ⊄ "broiler").
-function phraseEnd(text, phrase) {
+// First whole-word match of `phrase` in `text` → {start, end}, or null.
+function findPhrase(text, phrase) {
   const escaped = phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const m = new RegExp(`\\b${escaped}\\b`, 'i').exec(text);
-  return m ? m.index + m[0].length : -1;
+  return m ? { start: m.index, end: m.index + m[0].length } : null;
+}
+
+// True when the clause up to and including the phrase (ending at `end`) already
+// states a number — annotating would duplicate it (or contradict it, for
+// ingredients split across steps). The phrase is included because the linker
+// often emits the quantity as part of the phrase ("3 tablespoons soy sauce").
+function alreadyQuantified(text, end) {
+  const clause = text.slice(0, end).split(/[.,;:(]/).pop();
+  return /\d/.test(clause);
 }
 
 export function buildStepSegments(text, { refs = null, ingredients = null, ratio = 1 } = {}) {
@@ -19,9 +27,9 @@ export function buildStepSegments(text, { refs = null, ingredients = null, ratio
     for (const ref of refs) {
       const quantity = ingredients[ref.line]?.quantity;
       if (!quantity) continue;
-      const pos = phraseEnd(text, ref.phrase);
-      if (pos === -1) continue;
-      inserts.push({ pos, text: ` (${formatPart(quantity.amount * ratio, quantity.unit)})` });
+      const found = findPhrase(text, ref.phrase);
+      if (!found || alreadyQuantified(text, found.end)) continue;
+      inserts.push({ pos: found.end, text: ` (${formatPart(quantity.amount * ratio, quantity.unit)})` });
     }
   }
   // Merge timer spans and zero-width amount insertions into ordered segments

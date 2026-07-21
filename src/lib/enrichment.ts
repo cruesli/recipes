@@ -49,14 +49,16 @@ const _modules = import.meta.glob<EnrichedRecipe>("../data/enriched/*.json", {
   import: "default",
 });
 
+// Keyed on lowercase slug so mixed-case export filenames still match the
+// lowercased Astro route slug that callers pass.
 const _bySlug: Record<string, EnrichedRecipe> = {};
 for (const mod of Object.values(_modules)) {
-  _bySlug[mod.slug] = mod;
+  _bySlug[mod.slug.toLowerCase()] = mod;
 }
 
 /** Enriched data for a slug, or null when the recipe is not in the export. */
 export function getEnriched(slug: string): EnrichedRecipe | null {
-  return _bySlug[slug] ?? null;
+  return _bySlug[slug.toLowerCase()] ?? null;
 }
 
 // Shopping-category vocabulary — the closed enum from the backend. Unknown
