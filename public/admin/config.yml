@@ -124,3 +124,27 @@ collections:
                 fields:
                   - { name: "recipeSlug", label: "Recipe slug", widget: "string", required: false }
                   - { name: "notes", label: "Notes", widget: "string", required: false }
+
+  - name: "journal"
+    label: "Kitchen journal"
+    folder: "src/content/journal"
+    format: "json"
+    extension: "json"
+    create: true
+    identifier_field: slug
+    slug: "{{slug}}"
+    fields:
+      - { name: "slug", label: "Recipe slug", widget: "string", hint: "Must match the recipe filename, e.g. carnitas" }
+      - name: "entries"
+        label: "Notes"
+        widget: "list"
+        fields:
+          - { name: "date", label: "Date (YYYY-MM-DD)", widget: "string" }
+          - { name: "note", label: "Note", widget: "text" }
+          - name: "anchor"
+            label: "Anchor"
+            widget: "object"
+            fields:
+              - { name: "type", label: "Type", widget: "select", options: ["top", "ingredients", "step"], default: "step" }
+              - { name: "n", label: "Step number (for step anchors)", widget: "number", value_type: "int", required: false, min: 1 }
+          - { name: "seed", label: "Placement seed (any integer)", widget: "number", value_type: "int", default: 1 }

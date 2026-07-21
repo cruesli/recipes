@@ -62,7 +62,28 @@ const meta = defineCollection({
   ]),
 });
 
+// Kitchen journal — one JSON file per recipe slug; written by Decap or the
+// in-page annotate mode (git-gateway). Never touched by the ingest pipeline.
+const journal = defineCollection({
+  type: "data",
+  schema: z.object({
+    slug: z.string(),
+    entries: z.array(
+      z.object({
+        date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+        note: z.string(),
+        anchor: z.object({
+          type: z.enum(["top", "ingredients", "step"]),
+          n: z.number().int().positive().optional(), // 1-based step number
+        }),
+        seed: z.number().int(),
+      })
+    ),
+  }),
+});
+
 export const collections = {
   recipes,
   meta,
+  journal,
 };
