@@ -1,10 +1,14 @@
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect, useLayoutEffect, useMemo } from 'react';
 import { ChefHat, ArrowLeft, Check, Minus, Plus } from 'lucide-react';
 import { scaleIngredient } from '../lib/quantity.mjs';
 import { parseIngredientSections } from '../lib/ingredientSections.mjs';
 import { workBack, formatClock } from '../lib/recipeTime.mjs';
 import { buildStepSegments } from '../lib/stepAnnotations.mjs';
+import { layoutMarginNotes } from '../lib/marginalia.mjs';
 import type { NutritionPerServing, EnrichedStep, EnrichedIngredient } from '../lib/enrichment';
+
+export interface JournalAnchor { type: 'top' | 'ingredients' | 'step'; n?: number }
+export interface JournalEntry { date: string; note: string; anchor: JournalAnchor; seed: number }
 
 export interface RecipePageProps {
   title: string;
@@ -30,6 +34,8 @@ export interface RecipePageProps {
   enrichedSteps: EnrichedStep[] | null;
   /** Same ingredient list as `ingredients`, enriched with scaled quantities; null when not in the graph */
   enrichedIngredients: EnrichedIngredient[] | null;
+  /** Kitchen-journal marginalia entries for this recipe; empty when none exist */
+  journal: JournalEntry[];
   basePath: string;
 }
 
@@ -117,9 +123,18 @@ function fmtCountdown(ms: number) {
 export function RecipePageIsland({
   title, slug, intro, cuisine, totalTimeMinutes, prepTimeMinutes, cookTimeMinutes, marinadeTimeMinutes,
   servings: defaultServings,
-  image, foodType, tags, ingredients, steps, nutrition, enrichedSteps, enrichedIngredients, basePath,
+  image, foodType, tags, ingredients, steps, nutrition, enrichedSteps, enrichedIngredients, journal, basePath,
 }: RecipePageProps) {
   const [servings, setServings] = useState(defaultServings);
+
+  // Kitchen-journal marginalia: entries kept in state for a later task's optimistic writes
+  const [journalEntries, setJournalEntries] = useState(journal);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const stepLiRefs = useRef<(HTMLLIElement | null)[]>([]);
+  const plateRef = useRef<HTMLDivElement>(null);
+  const noteRefs = useRef(new Map<number, HTMLDivElement>());
+  const [noteLayout, setNoteLayout] = useState<Map<number, { top: number; dx: number }> | null>(null);
+
   const [completed, setCompleted] = useState<Set<number>>(new Set());
   const [keepAwake, setKeepAwake] = useState(false);
   const [targetTime, setTargetTime] = useState('18:00');
@@ -207,12 +222,53 @@ export function RecipePageIsland({
     [steps, enrichedSteps, enrichedIngredients, ratio]
   );
 
+  // Marginalia layout: measure anchor positions + note heights, then seeded-jitter +
+  // collision-resolve (pure engine lives in lib/marginalia.mjs). Re-measures on resize
+  // and whenever servings scaling may have reflowed the steps column.
+  useLayoutEffect(() => {
+    if (journalEntries.length === 0 || !contentRef.current) return;
+    const measure = () => {
+      const containerTop = contentRef.current!.getBoundingClientRect().top;
+      const anchorTopFor = (a: JournalAnchor): number => {
+        if (a.type === 'step' && a.n != null) {
+          const li = stepLiRefs.current[a.n - 1];
+          if (li) return li.getBoundingClientRect().top - containerTop;
+        }
+        if (a.type === 'ingredients' && plateRef.current) {
+          return plateRef.current.getBoundingClientRect().top - containerTop;
+        }
+        return 0; // 'top' and dangling step anchors
+      };
+      setNoteLayout(
+        layoutMarginNotes(
+          journalEntries.map((e, idx) => ({
+            id: idx,
+            anchorTop: anchorTopFor(e.anchor),
+            seed: e.seed,
+            height: noteRefs.current.get(idx)?.offsetHeight ?? 60,
+          }))
+        )
+      );
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [journalEntries, servings]);
+
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--color-paper)', paddingTop: '60px' }}>
       <style>{`
         @keyframes rp-pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(126,38,37,0.5); } 50% { box-shadow: 0 0 0 6px rgba(126,38,37,0); } }
         .rp-step-due { animation: rp-pulse 1.2s ease-in-out infinite; }
         @media (prefers-reduced-motion: reduce) { .rp-step-due { animation: none; } }
+
+        /* Kitchen-journal marginalia: right-gutter rail on wide screens, tucked inline below */
+        .rp-margin { display: none; }
+        .rp-note-inline { display: block; margin-top: var(--space-xs); }
+        @media (min-width: 1320px) {
+          .rp-margin { display: block; }
+          .rp-note-inline { display: none; }
+        }
       `}</style>
 
       {/* ── Hero (100vh) ── */}
@@ -305,13 +361,28 @@ export function RecipePageIsland({
             {intro}
           </p>
         )}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--space-3xl)', alignItems: 'start' }}>
+
+        {/* Narrow screens: top/ingredients-anchored notes surface once, above the columns
+            (step-anchored notes render inline under their own step instead — see below) */}
+        {journalEntries.some((e) => e.anchor.type !== 'step') && (
+          <div className="rp-note-inline" style={{ marginBottom: 'var(--space-xl)' }}>
+            {journalEntries
+              .filter((e) => e.anchor.type !== 'step')
+              .map((entry, idx) => (
+                <div key={idx} style={{ marginTop: idx === 0 ? 0 : 'var(--space-sm)' }}>
+                  <NoteBody entry={entry} />
+                </div>
+              ))}
+          </div>
+        )}
+
+        <div ref={contentRef} style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--space-3xl)', alignItems: 'start', position: 'relative' }}>
 
           {/* Left column: ingredients + nutrition */}
           <div>
             {/* Ingredients — the one sanctioned printed plate: solid oxblood,
                 paper type, print grammar (squared, flat, no border/shadow) */}
-            <div style={{ backgroundColor: 'var(--color-oxblood)', padding: 'var(--space-xl) var(--space-lg)', marginBottom: 'var(--space-2xl)' }}>
+            <div ref={plateRef} style={{ backgroundColor: 'var(--color-oxblood)', padding: 'var(--space-xl) var(--space-lg)', marginBottom: 'var(--space-2xl)' }}>
               <p style={{ ...EYEBROW, color: 'var(--color-plate-text)', marginBottom: 'var(--space-sm)' }}>Ingredients</p>
               <hr style={PLATE_HAIRLINE} />
 
@@ -437,6 +508,7 @@ export function RecipePageIsland({
               {steps.map((step, i) => (
                 <li
                   key={i}
+                  ref={(el) => { stepLiRefs.current[i] = el; }}
                   style={{ display: 'flex', gap: 'var(--space-lg)', paddingTop: i === 0 ? 0 : 'var(--space-lg)', borderTop: i === 0 ? 'none' : '1px solid var(--color-hairline)', marginTop: i === 0 ? 0 : 'var(--space-lg)' }}
                 >
                   <button
@@ -455,56 +527,105 @@ export function RecipePageIsland({
                   >
                     {completed.has(i) ? <Check size={13} /> : i + 1}
                   </button>
-                  <p style={{
-                    margin: 0, lineHeight: 1.7,
-                    fontFamily: "'EB Garamond', Georgia, serif",
-                    fontSize: 'var(--text-body)',
-                    color: completed.has(i) ? 'var(--color-ink-muted)' : 'var(--color-ink)',
-                    textDecoration: completed.has(i) ? 'line-through' : 'none',
-                    transition: 'color 0.2s',
-                    opacity: completed.has(i) ? 0.5 : 1,
-                  }}>
-                    {stepSegments[i].map((seg, si) => {
-                      if (seg.type === 'amount') {
-                        return (
-                          <span key={si} className="onum" style={{ color: 'var(--color-ink-muted)' }}>
-                            {seg.text}
-                          </span>
-                        );
-                      }
-                      if (seg.type !== 'timer') return <span key={si}>{seg.text}</span>;
-                      const id = `${slug}:${i}:${si}`;
-                      const running = timers.find((t) => t.id === id);
-                      const remaining = running ? running.endsAt - now : 0;
-                      return (
-                        <button
-                          key={si}
-                          onClick={() => toggleTimer(id, i, seg.text, seg.minutes)}
-                          title={running ? 'Tap to clear the timer' : `Start a ${seg.text} timer`}
-                          style={{
-                            background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-                            fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'inherit', lineHeight: 'inherit',
-                            color: 'var(--color-oxblood)',
-                            borderBottom: running ? 'none' : '1px dotted var(--color-oxblood)',
-                          }}
-                        >
-                          {seg.text}
-                          {running && (
-                            <span className="onum" style={{ marginLeft: '0.4em', fontWeight: 500 }}>
-                              {remaining > 0 ? `· ${fmtCountdown(remaining)}` : '· done'}
+                  {/* flex:1 wrapper — keeps inline journal notes stacked under the step text
+                      instead of becoming a third item in this flex row (see button above) */}
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{
+                      margin: 0, lineHeight: 1.7,
+                      fontFamily: "'EB Garamond', Georgia, serif",
+                      fontSize: 'var(--text-body)',
+                      color: completed.has(i) ? 'var(--color-ink-muted)' : 'var(--color-ink)',
+                      textDecoration: completed.has(i) ? 'line-through' : 'none',
+                      transition: 'color 0.2s',
+                      opacity: completed.has(i) ? 0.5 : 1,
+                    }}>
+                      {stepSegments[i].map((seg, si) => {
+                        if (seg.type === 'amount') {
+                          return (
+                            <span key={si} className="onum" style={{ color: 'var(--color-ink-muted)' }}>
+                              {seg.text}
                             </span>
-                          )}
-                        </button>
-                      );
-                    })}
-                  </p>
+                          );
+                        }
+                        if (seg.type !== 'timer') return <span key={si}>{seg.text}</span>;
+                        const id = `${slug}:${i}:${si}`;
+                        const running = timers.find((t) => t.id === id);
+                        const remaining = running ? running.endsAt - now : 0;
+                        return (
+                          <button
+                            key={si}
+                            onClick={() => toggleTimer(id, i, seg.text, seg.minutes)}
+                            title={running ? 'Tap to clear the timer' : `Start a ${seg.text} timer`}
+                            style={{
+                              background: 'none', border: 'none', cursor: 'pointer', padding: 0,
+                              fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'inherit', lineHeight: 'inherit',
+                              color: 'var(--color-oxblood)',
+                              borderBottom: running ? 'none' : '1px dotted var(--color-oxblood)',
+                            }}
+                          >
+                            {seg.text}
+                            {running && (
+                              <span className="onum" style={{ marginLeft: '0.4em', fontWeight: 500 }}>
+                                {remaining > 0 ? `· ${fmtCountdown(remaining)}` : '· done'}
+                              </span>
+                            )}
+                          </button>
+                        );
+                      })}
+                    </p>
+                    {journalEntries
+                      .filter((e) => e.anchor.type === 'step' && e.anchor.n === i + 1)
+                      .map((entry, ni) => (
+                        <div key={ni} className="rp-note-inline">
+                          <NoteBody entry={entry} />
+                        </div>
+                      ))}
+                  </div>
                 </li>
               ))}
             </ol>
           </div>
+
+          {/* Right-gutter margin rail — wide screens only; narrow screens use .rp-note-inline
+              instead (rendered above and within the columns). See .rp-margin toggle above. */}
+          {journalEntries.length > 0 && (
+            <div className="rp-margin" aria-label="Kitchen journal" style={{ position: 'absolute', left: '100%', top: 0, bottom: 0, width: '190px', paddingLeft: 'var(--space-lg)' }}>
+              {journalEntries.map((entry, idx) => {
+                const pos = noteLayout?.get(idx);
+                return (
+                  <div
+                    key={idx}
+                    ref={(el) => { if (el) noteRefs.current.set(idx, el); }}
+                    style={{
+                      position: 'absolute',
+                      top: pos?.top ?? 0,
+                      left: `calc(var(--space-lg) + ${pos?.dx ?? 0}px)`,
+                      width: '170px',
+                      visibility: pos ? 'visible' : 'hidden',
+                    }}
+                  >
+                    <NoteBody entry={entry} />
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
     </div>
+  );
+}
+
+function NoteBody({ entry }: { entry: JournalEntry }) {
+  return (
+    <>
+      <p className="onum" style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', color: 'var(--color-ink-muted)', margin: '0 0 2px' }}>
+        {entry.date}
+      </p>
+      <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontStyle: 'italic', fontSize: 'var(--text-meta)', lineHeight: 1.5, color: 'var(--color-ink-muted)', margin: 0 }}>
+        {entry.note}
+      </p>
+    </>
   );
 }
 

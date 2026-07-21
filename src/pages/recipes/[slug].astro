@@ -36,6 +36,10 @@ const enriched = getEnriched(slug!);
 const nutrition = enriched?.nutritionPerServing ?? null;
 const enrichedSteps = enriched?.steps ?? null;
 const enrichedIngredients = enriched?.ingredients ?? null;
+
+// Kitchen-journal marginalia for this recipe (empty when none exist)
+const journalEntries =
+  (await getCollection("journal")).find((j) => j.data.slug === slug)?.data.entries ?? [];
 ---
 
 <BaseLayout title={d.title} currentRecipeId={recipe.slug}>
@@ -57,6 +61,7 @@ const enrichedIngredients = enriched?.ingredients ?? null;
     nutrition={nutrition}
     enrichedSteps={enrichedSteps}
     enrichedIngredients={enrichedIngredients}
+    journal={journalEntries}
     basePath={basePath}
     client:load
   />
