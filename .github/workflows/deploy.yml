@@ -32,6 +32,13 @@ jobs:
 
       - name: Build with Astro
         run: npm run build
+        env:
+          # Annotate mode (in-page journal writing) → Netlify Identity + git-gateway.
+          # Reuses the same backend Decap /admin uses. Unset would leave it inert.
+          PUBLIC_ANNOTATE_ORIGIN: https://mtrecipes.netlify.app
+          # NL search: uncomment once the HF Space is (re)deployed with the ingredient
+          # dimension, e.g. https://<owner>-<space>.hf.space (verify <url>/health first).
+          # PUBLIC_NLP_API_URL: https://<owner>-<space>.hf.space
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
