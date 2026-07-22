@@ -21,13 +21,21 @@ service provides only natural-language search.
   chapter plates, oxblood ink plate, splash rework, voice & finish). Shipped.
 - **`nlp-integration-update-plan.md`** — the backend + integration roadmap (N1–N5:
   pipeline changes, shopping-list rework, nutrition/facets/NL search). Shipped static-first.
+- **`recipe-site-update-plan-v4.md`** — the kitchen-features batch (Phases A–J: pantry
+  staples + shopping footer, A–Z ingredient index + `ingredient` facet, prep/cook/marinade
+  times + a work-back "start by" line, tap-to-start step timers + inline scaled amounts,
+  committed journal marginalia + an in-page annotate mode, NL `ingredient` dimension).
 
-All roadmap docs are shipped and merged to `main`. Current work is **ad-hoc refinement
-batches** from household review sessions (six merged July 2026: planner/shopping-list
+The v1–v3 + nlp roadmaps are shipped and merged to `main`, followed by six **ad-hoc
+refinement batches** from household review sessions (merged July 2026: planner/shopping-list
 polish, map reframing, splash rework, repo sweep, assessment fixes, and the **chapter
-backdrops** — cuisine pages open on a viewport-fixed faded-sage country the recipes
-scroll over, replacing the area-budget plates) — small phase-per-commit batches on a
-feature branch, no plan doc.
+backdrops** — cuisine pages open on a viewport-fixed faded-sage country the recipes scroll
+over, replacing the area-budget plates). The most recent work is the planned
+**kitchen-features batch** (`recipe-site-update-plan-v4.md`, above) on `feature/update-v4`,
+one reviewable commit per phase. Two of its surfaces ship **gated OFF** in production until
+the maintainer enables the infra: the in-page **annotate mode** (`PUBLIC_ANNOTATE_ORIGIN`
+→ Netlify Identity + git-gateway on `mtrecipes.netlify.app`) and the NL **`ingredient`**
+dimension (needs the Hugging Face Space redeployed; already gated by `PUBLIC_NLP_API_URL`).
 
 These files mirror an external knowledge base the maintainer syncs by hand — keep them
 accurate and self-consistent when you touch them.
@@ -74,21 +82,30 @@ accurate and self-consistent when you touch them.
 
 **Frontend** (repo root)
 - `src/pages/` — `index.astro` (splash + collection preview + map), `recipes/index.astro` (full
-  collection), `recipes/[slug].astro` (recipe detail), `cuisines/[cuisine].astro`,
-  `meal-planner.astro` (full editable planner).
+  collection + facets/NL search), `recipes/[slug].astro` (recipe detail — step timers, inline
+  amounts, journal marginalia + annotate mode), `ingredients.astro` (A–Z back-of-book ingredient
+  index), `cuisines/[cuisine].astro`, `meal-planner.astro` (full editable planner).
 - `src/components/` — key ones: `RecipeCard.tsx` (shared card), `usePlanner.ts` (planner state +
   `localStorage` week + shopping list), `PlannerDrawer.tsx` (global pinned drawer),
   `CollectionPlannerIsland.tsx` (home/`/recipes` collection), `MealPlannerIsland.tsx` (planner
   page), `RecipePageIsland.tsx`, `WorldMap.tsx`, `Splash.astro`.
-- `src/content/recipes/*.md` — recipe content collection. `src/content/meta/`.
+- `src/content/recipes/*.md` — recipe content collection. `src/content/meta/` (cuisines,
+  country-regions, `staples.json` — the shared pantry list). `src/content/journal/<slug>.json` —
+  committed kitchen-journal marginalia (one file per recipe; written by Decap or the in-page
+  annotate mode via git-gateway; never touched by ingest).
 - `src/data/enriched/*.json` — **generated** per-recipe KG export (nutrition + per-line
   category/quantity); do not hand-edit. Consumed via `src/lib/enrichment.ts` (`getEnriched`,
   `CATEGORY_ORDER/LABELS`) — the single seam for the nutrition panel, facets, and shopping list.
 - `src/lib/` — pure, node-tested helpers (`scripts/*.test.mjs`): `quantity.mjs`,
-  `plannerModel.mjs`, `recipeTime.mjs` (`deriveTotalTime`), `recipeFilter.mjs` (facet matching +
-  NL→facet mapping), `shoppingList.mjs` (bucket/merge logic), `regionGeometry.mjs` (shared map
-  projection + feature keying — `WorldMap.tsx` and the prebuild scripts must stay in agreement
-  through it), plus `enrichment.ts`.
+  `plannerModel.mjs`, `recipeTime.mjs` (`deriveTotalTime` + `workBack` start-by math),
+  `recipeFilter.mjs` (facet matching incl. the `ingredient` facet + NL→facet mapping),
+  `shoppingList.mjs` (bucket/merge logic + staples partition), `ingredientIndex.mjs` (A–Z index),
+  `stepTimers.mjs` (duration regex), `stepAnnotations.mjs` (step prose → text/timer/amount
+  segments), `marginalia.mjs` (seeded jitter + collision layout for margin notes),
+  `regionGeometry.mjs` (shared map projection + feature keying — `WorldMap.tsx` and the prebuild
+  scripts must stay in agreement through it), plus `enrichment.ts`. Non-pure browser clients for
+  annotate mode (not node-tested): `identity.ts` (Netlify Identity/GoTrue) + `journalStore.ts`
+  (git-gateway journal writes), both gated by `PUBLIC_ANNOTATE_ORIGIN`.
 - `src/styles/global.css` — `@theme` design tokens (colour / type scale / spacing scale / radius)
   + base styles. `src/data/seasonal.ts`. `src/utils/` (cuisines, slug display, base path).
 
@@ -103,10 +120,14 @@ accurate and self-consistent when you touch them.
   raw/fresh scoring + Atwater energy fallback; overrides win.
 - `graph.py` — RDFLib knowledge graph (`rkg:` namespace at `cruesli.github.io/recipes/kg/`,
   reusing `schema.org` terms where natural). `per_serving_totals` is the shared nutrition math.
-- `export.py` — writes `src/data/enriched/*.json` from the ingest maps.
+- `step_linker.py` — LLM-links each step's prose to the ingredient lines it uses (phrase + line
+  index) for the inline-amount annotations; cached in `.cache/steplinks.json`.
+- `export.py` — writes `src/data/enriched/*.json` (**version 2**: adds per-step `steps[].refs`)
+  from the ingest maps.
 - `ingest.py` — orchestrates the pipeline; serialises `graph.ttl`, JSON export, and the report.
-- `main.py` — **stateless** FastAPI: `GET /health`, `POST /api/v1/query` → `{question, filters}`.
-  No graph. `Dockerfile`/`README.md` are the HF Spaces deploy (CPU torch, port 7860).
+- `main.py` — **stateless** FastAPI: `GET /health`, `POST /api/v1/query` → `{question, filters}`
+  (few-shot LLM → allow-listed filter object, incl. the `ingredient` dimension). No graph.
+  `Dockerfile`/`README.md` are the HF Spaces deploy (CPU torch, port 7860).
 - `models.py` — Pydantic models. `data/` + `reports/` + `.cache/` are committed.
 
 ## Design language (summary — defer to the design-context doc)
