@@ -34,7 +34,9 @@ _BASE_SYSTEM_PROMPT = (
     '- "dietary"        : dietary restriction — one of "vegan", "vegetarian", "halal", "kosher"\n'
     '- "origin_country" : country name — recipe must contain at least one ingredient from this country\n'
     '- "food_category"  : ingredient category — recipe must contain at least one ingredient of this type '
-    '(e.g. "seafood", "poultry", "legume")\n\n'
+    '(e.g. "seafood", "poultry", "legume")\n'
+    '- "ingredient"     : a specific ingredient the user wants to cook with '
+    '(canonical lowercase english name, e.g. "pork shoulder")\n\n'
     "Include only the fields explicitly mentioned or strongly implied. "
     "Return ONLY valid JSON, no other text."
 )
@@ -88,6 +90,11 @@ _EXAMPLES: list[tuple[str, dict]] = [
     ("something with mediterranean ingredients",    {"origin_country": "mediterranean"}),
     ("recipe using ingredients from asia",          {"origin_country": "asia"}),
     ("dish with south american flavours",           {"origin_country": "south america"}),
+    # --- ingredient ---
+    ("what can I make with pork shoulder",      {"ingredient": "pork shoulder"}),
+    ("something using cabbage",                 {"ingredient": "cabbage"}),
+    ("I have leftover chicken thighs",          {"ingredient": "chicken thigh"}),
+    ("quick dinner with rice",                  {"max_time": 30, "ingredient": "rice"}),
     # --- combos ---
     ("quick italian pasta dinner",              {"max_time": 30, "cuisine": "italian"}),
     ("high protein vegan recipe",               {"min_protein": 25, "dietary": "vegan"}),
@@ -170,7 +177,7 @@ def health():
 _KNOWN_FILTER_KEYS = frozenset({
     "min_protein", "max_kcal", "max_time", "cuisine", "dietary",
     "max_fat", "max_carbs", "max_sodium", "min_fibre",
-    "origin_country", "food_category",
+    "origin_country", "food_category", "ingredient",
 })
 
 
