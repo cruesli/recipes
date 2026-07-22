@@ -1,14 +1,23 @@
 import { useState, useRef, useEffect, useLayoutEffect, useMemo } from 'react';
-import { ChefHat, ArrowLeft, Check, Minus, Plus } from 'lucide-react';
+import { ChefHat, ArrowLeft, Check, Minus, Plus, Pencil } from 'lucide-react';
 import { scaleIngredient } from '../lib/quantity.mjs';
 import { parseIngredientSections } from '../lib/ingredientSections.mjs';
 import { workBack, formatClock } from '../lib/recipeTime.mjs';
 import { buildStepSegments } from '../lib/stepAnnotations.mjs';
 import { layoutMarginNotes } from '../lib/marginalia.mjs';
+import { annotateEnabled, loggedIn, login } from '../lib/identity';
+import { commitNote } from '../lib/journalStore';
 import type { NutritionPerServing, EnrichedStep, EnrichedIngredient } from '../lib/enrichment';
 
 export interface JournalAnchor { type: 'top' | 'ingredients' | 'step'; n?: number }
 export interface JournalEntry { date: string; note: string; anchor: JournalAnchor; seed: number }
+
+// Annotate mode: off → login (if needed) → arm (pick an anchor) → compose (write it)
+type AnnotateState =
+  | { mode: 'off' }
+  | { mode: 'login' }
+  | { mode: 'arm' }
+  | { mode: 'compose'; anchor: JournalAnchor };
 
 export interface RecipePageProps {
   title: string;
@@ -135,6 +144,11 @@ export function RecipePageIsland({
   const noteRefs = useRef(new Map<number, HTMLDivElement>());
   const [noteLayout, setNoteLayout] = useState<Map<number, { top: number; dx: number }> | null>(null);
 
+  // Annotate mode: off → login (if needed) → arm (pick anchor) → compose (write + commit)
+  const [annotate, setAnnotate] = useState<AnnotateState>({ mode: 'off' });
+  const [noteDraft, setNoteDraft] = useState('');
+  const [noteStatus, setNoteStatus] = useState<'idle' | 'saving' | 'error'>('idle');
+
   const [completed, setCompleted] = useState<Set<number>>(new Set());
   const [keepAwake, setKeepAwake] = useState(false);
   const [targetTime, setTargetTime] = useState('18:00');
@@ -255,6 +269,51 @@ export function RecipePageIsland({
     return () => window.removeEventListener('resize', measure);
   }, [journalEntries, servings]);
 
+  // Annotate mode: commit the draft note via git-gateway, then optimistically
+  // append to journalEntries (a rebuild will supersede this once it lands).
+  async function saveNote() {
+    if (annotate.mode !== 'compose') return;
+    const entry: JournalEntry = {
+      date: new Date().toISOString().slice(0, 10),
+      note: noteDraft.trim(),
+      anchor: annotate.anchor,
+      seed: Math.floor(Math.random() * 1_000_000),
+    };
+    setNoteStatus('saving');
+    try {
+      await commitNote(slug, entry);
+      setJournalEntries((prev) => [...prev, entry]); // optimistic — rebuild catches up
+      setAnnotate({ mode: 'off' });
+      setNoteDraft('');
+      setNoteStatus('idle');
+    } catch {
+      setNoteStatus('error');
+    }
+  }
+
+  // Compose form JSX — rendered at exactly one of three sites depending on
+  // annotate.anchor (step / ingredients / top). Reads only noteDraft/noteStatus,
+  // so it's safe to compute unconditionally; each call site guards the anchor match.
+  const composeForm = (
+    <div style={{ margin: 'var(--space-sm) 0' }}>
+      <textarea
+        value={noteDraft}
+        onChange={(e) => setNoteDraft(e.target.value)}
+        rows={3}
+        autoFocus
+        placeholder="Skriv i margen…"
+        style={{ width: '100%', boxSizing: 'border-box', border: '1px solid var(--color-hairline)', background: 'var(--color-paper)', fontFamily: "'EB Garamond', Georgia, serif", fontStyle: 'italic', fontSize: 'var(--text-meta)', padding: '8px 10px', outline: 'none', resize: 'vertical' }}
+      />
+      <div style={{ display: 'flex', gap: 'var(--space-sm)', alignItems: 'baseline', marginTop: 'var(--space-2xs)' }}>
+        <button onClick={saveNote} disabled={noteStatus === 'saving' || !noteDraft.trim()} style={{ border: 'none', background: 'var(--color-oxblood)', color: 'var(--color-paper)', fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', padding: '6px 14px', cursor: 'pointer' }}>
+          {noteStatus === 'saving' ? 'Writing…' : 'Write it in'}
+        </button>
+        <button onClick={() => { setAnnotate({ mode: 'off' }); setNoteDraft(''); }} style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)' }}>Cancel</button>
+        {noteStatus === 'error' && <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', fontStyle: 'italic', color: 'var(--color-ink-muted)' }}>Couldn't reach the book — try again.</span>}
+      </div>
+    </div>
+  );
+
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--color-paper)', paddingTop: '60px' }}>
       <style>{`
@@ -283,7 +342,14 @@ export function RecipePageIsland({
             <ArrowLeft size={13} />
             All recipes
           </a>
-          <h1 style={{ fontSize: 'var(--text-title)', color: 'var(--color-ink)', margin: 0, lineHeight: 1.1, fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 500 }}>
+          <h1
+            onClick={() => { if (annotate.mode === 'arm') setAnnotate({ mode: 'compose', anchor: { type: 'top' } }); }}
+            style={{
+              fontSize: 'var(--text-title)', color: 'var(--color-ink)', margin: 0, lineHeight: 1.1,
+              fontFamily: "'EB Garamond', Georgia, serif", fontWeight: 500,
+              ...(annotate.mode === 'arm' ? { cursor: 'pointer', outline: '1px dotted var(--color-oxblood)', outlineOffset: 3 } : {}),
+            }}
+          >
             {title}
           </h1>
         </div>
@@ -376,6 +442,8 @@ export function RecipePageIsland({
           </div>
         )}
 
+        {annotate.mode === 'compose' && annotate.anchor.type === 'top' && composeForm}
+
         <div ref={contentRef} style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: 'var(--space-3xl)', alignItems: 'start', position: 'relative' }}>
 
           {/* Left column: ingredients + nutrition */}
@@ -383,7 +451,17 @@ export function RecipePageIsland({
             {/* Ingredients — the one sanctioned printed plate: solid oxblood,
                 paper type, print grammar (squared, flat, no border/shadow) */}
             <div ref={plateRef} style={{ backgroundColor: 'var(--color-oxblood)', padding: 'var(--space-xl) var(--space-lg)', marginBottom: 'var(--space-2xl)' }}>
-              <p style={{ ...EYEBROW, color: 'var(--color-plate-text)', marginBottom: 'var(--space-sm)' }}>Ingredients</p>
+              <p
+                onClick={() => { if (annotate.mode === 'arm') setAnnotate({ mode: 'compose', anchor: { type: 'ingredients' } }); }}
+                style={{
+                  ...EYEBROW,
+                  color: 'var(--color-plate-text)',
+                  marginBottom: 'var(--space-sm)',
+                  ...(annotate.mode === 'arm' ? { cursor: 'pointer', outline: '1px dotted var(--color-oxblood)', outlineOffset: 3 } : {}),
+                }}
+              >
+                Ingredients
+              </p>
               <hr style={PLATE_HAIRLINE} />
 
               {/* Servings stepper — moved onto the plate (the mid-cooking surface) */}
@@ -441,6 +519,8 @@ export function RecipePageIsland({
               ))}
             </div>
 
+            {annotate.mode === 'compose' && annotate.anchor.type === 'ingredients' && composeForm}
+
             {/* Nutrition — per-serving macros from the KG export (estimated).
                 Per-serving values don't change with the servings stepper. */}
             <div>
@@ -481,28 +561,70 @@ export function RecipePageIsland({
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-xl)' }}>
               <p style={{ ...EYEBROW, margin: 0 }}>Instructions</p>
 
-              {/* Keep awake toggle */}
-              <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-                <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)' }}>Keep screen on</span>
-                <button
-                  onClick={toggleWakeLock}
-                  role="switch"
-                  aria-checked={keepAwake}
-                  style={{
-                    position: 'relative', width: '36px', height: '20px', borderRadius: '999px',
-                    border: 'none', cursor: 'pointer', padding: 0,
-                    backgroundColor: keepAwake ? 'var(--color-oxblood)' : 'var(--color-stone)',
-                    transition: 'background 0.2s', flexShrink: 0,
-                  }}
-                >
-                  <span style={{
-                    position: 'absolute', top: '3px', left: keepAwake ? '19px' : '3px',
-                    width: '14px', height: '14px', borderRadius: '50%', backgroundColor: 'var(--color-paper)',
-                    transition: 'left 0.2s',
-                  }} />
-                </button>
-              </label>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-md)' }}>
+                {/* Keep awake toggle */}
+                <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                  <span style={{ fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)' }}>Keep screen on</span>
+                  <button
+                    onClick={toggleWakeLock}
+                    role="switch"
+                    aria-checked={keepAwake}
+                    style={{
+                      position: 'relative', width: '36px', height: '20px', borderRadius: '999px',
+                      border: 'none', cursor: 'pointer', padding: 0,
+                      backgroundColor: keepAwake ? 'var(--color-oxblood)' : 'var(--color-stone)',
+                      transition: 'background 0.2s', flexShrink: 0,
+                    }}
+                  >
+                    <span style={{
+                      position: 'absolute', top: '3px', left: keepAwake ? '19px' : '3px',
+                      width: '14px', height: '14px', borderRadius: '50%', backgroundColor: 'var(--color-paper)',
+                      transition: 'left 0.2s',
+                    }} />
+                  </button>
+                </label>
+
+                {/* Margin note (annotate mode) — pencil affordance, gated by PUBLIC_ANNOTATE_ORIGIN */}
+                {annotateEnabled() && (
+                  <button
+                    onClick={() => {
+                      setNoteStatus('idle'); // clear any stale login/save error on open or close
+                      if (annotate.mode !== 'off') setAnnotate({ mode: 'off' });
+                      else setAnnotate(loggedIn() ? { mode: 'arm' } : { mode: 'login' });
+                    }}
+                    style={{ display: 'flex', alignItems: 'center', gap: '6px', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', color: annotate.mode !== 'off' ? 'var(--color-oxblood)' : 'var(--color-ink-muted)' }}
+                  >
+                    <Pencil size={13} /> {annotate.mode !== 'off' ? 'Close' : 'Margin note'}
+                  </button>
+                )}
+              </div>
             </div>
+
+            {annotate.mode === 'login' && (
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+                  const fd = new FormData(e.currentTarget);
+                  try {
+                    await login(String(fd.get('email')), String(fd.get('password')));
+                    setAnnotate({ mode: 'arm' });
+                    setNoteStatus('idle');
+                  } catch { setNoteStatus('error'); }
+                }}
+                style={{ display: 'flex', gap: 'var(--space-xs)', flexWrap: 'wrap', margin: '0 0 var(--space-lg)' }}
+              >
+                <input name="email" type="email" required placeholder="email" style={{ border: '1px solid var(--color-hairline)', background: 'var(--color-paper)', fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', padding: '7px 10px', outline: 'none' }} />
+                <input name="password" type="password" required placeholder="password" style={{ border: '1px solid var(--color-hairline)', background: 'var(--color-paper)', fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', padding: '7px 10px', outline: 'none' }} />
+                <button type="submit" style={{ border: 'none', background: 'var(--color-oxblood)', color: 'var(--color-paper)', fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-meta)', padding: '7px 14px', cursor: 'pointer' }}>Sign in</button>
+                {noteStatus === 'error' && <p style={{ width: '100%', fontFamily: "'EB Garamond', Georgia, serif", fontSize: 'var(--text-eyebrow)', fontStyle: 'italic', color: 'var(--color-ink-muted)', margin: 0 }}>That didn't work — check the details.</p>}
+              </form>
+            )}
+
+            {annotate.mode === 'arm' && (
+              <p style={{ fontFamily: "'EB Garamond', Georgia, serif", fontStyle: 'italic', fontSize: 'var(--text-meta)', color: 'var(--color-ink-muted)', margin: '0 0 var(--space-lg)' }}>
+                Tap a step number, the ingredient plate, or the title to place the note.
+              </p>
+            )}
 
             <ol style={{ listStyle: 'none', padding: 0, margin: 0 }}>
               {steps.map((step, i) => (
@@ -512,7 +634,10 @@ export function RecipePageIsland({
                   style={{ display: 'flex', gap: 'var(--space-lg)', paddingTop: i === 0 ? 0 : 'var(--space-lg)', borderTop: i === 0 ? 'none' : '1px solid var(--color-hairline)', marginTop: i === 0 ? 0 : 'var(--space-lg)' }}
                 >
                   <button
-                    onClick={() => toggleStep(i)}
+                    onClick={() => {
+                      if (annotate.mode === 'arm') setAnnotate({ mode: 'compose', anchor: { type: 'step', n: i + 1 } });
+                      else toggleStep(i);
+                    }}
                     aria-label={`Step ${i + 1}${completed.has(i) ? ' — done' : ''}`}
                     className={timers.some((t) => t.stepIndex === i && t.endsAt <= now) ? 'rp-step-due' : undefined}
                     style={{
@@ -523,6 +648,7 @@ export function RecipePageIsland({
                       color: completed.has(i) ? 'var(--color-paper)' : 'var(--color-ink-muted)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       transition: 'all 0.15s', marginTop: '2px',
+                      ...(annotate.mode === 'arm' ? { outline: '1px dotted var(--color-oxblood)', outlineOffset: 3 } : {}),
                     }}
                   >
                     {completed.has(i) ? <Check size={13} /> : i + 1}
@@ -580,6 +706,7 @@ export function RecipePageIsland({
                           <NoteBody entry={entry} />
                         </div>
                       ))}
+                    {annotate.mode === 'compose' && annotate.anchor.type === 'step' && annotate.anchor.n === i + 1 && composeForm}
                   </div>
                 </li>
               ))}
