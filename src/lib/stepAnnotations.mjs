@@ -16,10 +16,19 @@ function findPhrase(text, phrase) {
 // ingredients split across steps). The phrase is included because the linker
 // often emits the quantity as part of the phrase ("3 tablespoons soy sauce").
 function alreadyQuantified(text, end) {
-  const clause = text.slice(0, end).split(/[.,;:(]/).pop();
+  // Strip (…) asides first so a numeric aside ("(at least 4L)") stays opaque and
+  // can't leak past its close-paren into a later clause's digit test.
+  const upto = text.slice(0, end).replace(/\([^)]*\)/g, ' ');
+  const clause = upto.split(/[.,;:]/).pop();
   return /\d/.test(clause);
 }
 
+/**
+ * Split step prose into ordered segments: plain `text`, tappable `timer`s, and inline
+ * scaled `amount`s inserted after LLM-linked ingredient phrases.
+ * @param {string} text
+ * @param {{ refs?: { line: number, phrase: string }[] | null, ingredients?: { quantity: { amount: number, unit: string } | null }[] | null, ratio?: number }} [options]
+ */
 export function buildStepSegments(text, { refs = null, ingredients = null, ratio = 1 } = {}) {
   const timers = findDurations(text);
   const inserts = [];

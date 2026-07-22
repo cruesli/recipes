@@ -105,3 +105,12 @@ test('amount is suppressed when the phrase itself carries the quantity', () => {
   });
   assert.equal(segs.filter((s) => s.type === 'amount').length, 0);
 });
+
+test('a numeric parenthetical aside does not leak into a later clause', () => {
+  const ings = [{ raw: 'neutral oil', quantity: { amount: 15, unit: 'ml' } }];
+  const segs = buildStepSegments('Heat a big pot (at least 4L size) then add the oil', {
+    refs: [{ line: 0, phrase: 'oil' }], ingredients: ings,
+  });
+  // the "4" belongs to the pot aside, not to oil — the amount must still show
+  assert.equal(segs.map((s) => s.text).join(''), 'Heat a big pot (at least 4L size) then add the oil (15 ml)');
+});
