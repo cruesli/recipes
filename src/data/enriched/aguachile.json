@@ -1,6 +1,6 @@
 {
   "slug": "aguachile",
-  "version": 1,
+  "version": 2,
   "servings": 4,
   "nutritionPerServing": {
     "kcal": 185,
@@ -117,6 +117,88 @@
       "category": "other",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "500g shrimp"
+        },
+        {
+          "line": 1,
+          "phrase": "the juice of 4 limes"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 6,
+          "phrase": "1 thinly sliced red onion"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 1,
+          "phrase": "the juice of the remaining 4 limes"
+        },
+        {
+          "line": 2,
+          "phrase": "3 serrano chiles"
+        },
+        {
+          "line": 3,
+          "phrase": "1 small handful cilantro"
+        },
+        {
+          "line": 4,
+          "phrase": "2 garlic cloves"
+        },
+        {
+          "line": 5,
+          "phrase": "half the cucumber (diced)"
+        },
+        {
+          "line": 8,
+          "phrase": "1 teaspoon salt"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the shrimp"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the shrimp"
+        },
+        {
+          "line": 5,
+          "phrase": "the sliced cucumber"
+        },
+        {
+          "line": 6,
+          "phrase": "drained red onion"
+        },
+        {
+          "line": 7,
+          "phrase": "1 sliced avocado"
+        },
+        {
+          "line": 9,
+          "phrase": "tostadas"
+        }
+      ]
     }
   ]
 }

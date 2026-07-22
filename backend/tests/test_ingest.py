@@ -18,11 +18,12 @@ def _recipe(slug: str, ingredients: list) -> Recipe:
     return Recipe(slug=slug, title=slug.title(), cuisine="test", ingredients=ingredients)
 
 
-def _write_recipe(path: Path, slug: str, ingredients: list) -> None:
+def _write_recipe(path: Path, slug: str, ingredients: list, body: str = "") -> None:
     ing_yaml = "\n".join(f"  - {i}" for i in ingredients)
-    (path / f"{slug}.md").write_text(
-        f"---\ntitle: {slug}\ncuisine: test\ningredients:\n{ing_yaml}\n---\n"
-    )
+    content = f"---\ntitle: {slug}\ncuisine: test\ningredients:\n{ing_yaml}\n---\n"
+    if body:
+        content += body + "\n"
+    (path / f"{slug}.md").write_text(content)
 
 
 def _nd(name: str, qty=None):
@@ -235,6 +236,28 @@ def test_run_ingest_skips_api_calls_for_cached_entities(recipes_dir, tmp_path, c
 
     assert mock_link.call_count == 1
     assert mock_nutr.call_count == 1
+
+
+def test_run_ingest_caches_step_links_across_runs(recipes_dir, tmp_path, cache_dir):
+    # one recipe WITH numbered steps, one bodiless (no steps → linker skipped)
+    _write_recipe(recipes_dir, "soup", ["Salt"], body="1. Add the salt")
+    _write_recipe(recipes_dir, "plain", ["Water"])
+    out = tmp_path / "graph.ttl"
+    mock_steps = MagicMock(return_value=[[{"line": 0, "phrase": "salt"}]])
+    mock_normalise = MagicMock(side_effect=lambda batch, _client: [_nd(b.lower()) for b in batch])
+
+    with patch("backend.ingest.normalise_all", mock_normalise), \
+         patch("backend.ingest.link_ingredient", return_value=None), \
+         patch("backend.ingest.fetch_nutrition", return_value=None), \
+         patch("backend.ingest.link_steps", mock_steps):
+        run_ingest(recipes_dir, out, llm_client=MagicMock(), cache_dir=cache_dir)
+        # first run: only the step-bodied recipe hits the linker; cache is written
+        assert mock_steps.call_count == 1
+        assert (cache_dir / "steplinks.json").exists()
+        # second run, same cache — hash hit + empty body, so no new LLM call
+        run_ingest(recipes_dir, out, llm_client=MagicMock(), cache_dir=cache_dir)
+
+    assert mock_steps.call_count == 1
 
 
 def test_run_ingest_cached_entity_written_to_graph(recipes_dir, tmp_path, cache_dir):

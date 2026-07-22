@@ -27,6 +27,16 @@ collections:
             fields:
               - { name: "slug", label: "Slug", widget: "string", hint: "lowercase + hyphens, e.g. italian, tex-mex, bbq" }
               - { name: "label", label: "Label (optional)", widget: "string", required: false, hint: "e.g. BBQ, Tex-Mex" }
+      - label: "Pantry staples"
+        name: "staples"
+        file: "src/content/meta/staples.json"
+        format: "json"
+        fields:
+          - name: "staples"
+            label: "Staples (canonical ingredient names, lowercase)"
+            widget: "list"
+            allow_add: true
+            field: { name: "name", label: "Canonical name", widget: "string" }
   - name: "recipes"
     label: "Recipes"
     folder: "src/content/recipes"
@@ -52,6 +62,7 @@ collections:
       - { name: "totalTimeMinutes", label: "Total time (minutes)", widget: "number", value_type: "int", required: false, min: 1, hint: "Leave empty to use prep + cook below." }
       - { name: "prepTimeMinutes", label: "Prep time (minutes)", widget: "number", value_type: "int", required: false, min: 0 }
       - { name: "cookTimeMinutes", label: "Cook time (minutes)", widget: "number", value_type: "int", required: false, min: 0 }
+      - { name: "marinadeTimeMinutes", label: "Marinade time (minutes)", widget: "number", value_type: "int", required: false, min: 0, hint: "Do-ahead soak; 480 for overnight." }
       - { name: "season", label: "Season", widget: "string", required: false }
       - { name: "image", label: "Image", widget: "image", required: false }
       - { name: "ingredients", label: "Ingredients", widget: "markdown"}
@@ -113,3 +124,27 @@ collections:
                 fields:
                   - { name: "recipeSlug", label: "Recipe slug", widget: "string", required: false }
                   - { name: "notes", label: "Notes", widget: "string", required: false }
+
+  - name: "journal"
+    label: "Kitchen journal"
+    folder: "src/content/journal"
+    format: "json"
+    extension: "json"
+    create: true
+    identifier_field: slug
+    slug: "{{slug}}"
+    fields:
+      - { name: "slug", label: "Recipe slug", widget: "string", hint: "Must match the recipe filename, e.g. carnitas" }
+      - name: "entries"
+        label: "Notes"
+        widget: "list"
+        fields:
+          - { name: "date", label: "Date (YYYY-MM-DD)", widget: "string" }
+          - { name: "note", label: "Note", widget: "text" }
+          - name: "anchor"
+            label: "Anchor"
+            widget: "object"
+            fields:
+              - { name: "type", label: "Type", widget: "select", options: ["top", "ingredients", "step"], default: "step" }
+              - { name: "n", label: "Step number (for step anchors)", widget: "number", value_type: "int", required: false, min: 1 }
+          - { name: "seed", label: "Placement seed (any integer)", widget: "number", value_type: "int", default: 1 }

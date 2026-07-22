@@ -1,6 +1,6 @@
 {
   "slug": "pasta-bolognese",
-  "version": 1,
+  "version": 2,
   "servings": 4,
   "nutritionPerServing": {
     "kcal": 726,
@@ -155,6 +155,117 @@
       "category": "dairy-eggs",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the meat"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 3,
+          "phrase": "the carrots"
+        },
+        {
+          "line": 2,
+          "phrase": "onion"
+        },
+        {
+          "line": 4,
+          "phrase": "celery"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 12,
+          "phrase": "salt"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 5,
+          "phrase": "garlic"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 6,
+          "phrase": "the tomato paste"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 7,
+          "phrase": "red wine"
+        },
+        {
+          "line": 6,
+          "phrase": "the tomato paste"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 8,
+          "phrase": "the tomatoes"
+        },
+        {
+          "line": 9,
+          "phrase": "stock"
+        },
+        {
+          "line": 10,
+          "phrase": "herbs"
+        },
+        {
+          "line": 13,
+          "phrase": "parmesan rind"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 10,
+          "phrase": "the herbs"
+        },
+        {
+          "line": 13,
+          "phrase": "parmesan rind"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 12,
+          "phrase": "salt and pepper"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": []
     }
   ]
 }

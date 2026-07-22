@@ -1,6 +1,6 @@
 {
   "slug": "lebanese-chicken-hummus-and-grilled-vegetables",
-  "version": 1,
+  "version": 2,
   "servings": 3,
   "nutritionPerServing": {
     "kcal": 523,
@@ -92,6 +92,87 @@
       "category": "oils-condiments",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "chicken"
+        },
+        {
+          "line": 6,
+          "phrase": "spices"
+        },
+        {
+          "line": 7,
+          "phrase": "olive oil"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 7,
+          "phrase": "olive oil"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the chicken"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the chicken"
+        },
+        {
+          "line": 2,
+          "phrase": "the peppers"
+        },
+        {
+          "line": 3,
+          "phrase": "onion"
+        },
+        {
+          "line": 5,
+          "phrase": "lemon"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 5,
+          "phrase": "the lemon"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 4,
+          "phrase": "the garlic"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the chicken"
+        }
+      ]
     }
   ]
 }

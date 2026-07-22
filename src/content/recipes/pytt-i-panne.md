@@ -7,7 +7,8 @@ tags:
   - Freezer-friendly
   - Cabin-food
 servings: 1
-totalTimeMinutes: 15
+prepTimeMinutes: 5
+cookTimeMinutes: 10
 image: /images/recipes/pytt-i-panne.png
 ingredients: |-
   - 2 Sausages

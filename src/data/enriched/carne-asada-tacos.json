@@ -1,6 +1,6 @@
 {
   "slug": "carne-asada-tacos",
-  "version": 1,
+  "version": 2,
   "servings": 4,
   "nutritionPerServing": {
     "kcal": 946,
@@ -172,6 +172,56 @@
       "category": "canned-jarred",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "800g skirt steak"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 10,
+          "phrase": "12 corn tortillas"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 11,
+          "phrase": "diced white onion"
+        },
+        {
+          "line": 12,
+          "phrase": "cilantro"
+        },
+        {
+          "line": 13,
+          "phrase": "lime"
+        },
+        {
+          "line": 14,
+          "phrase": "the salsa"
+        }
+      ]
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "slug": "betasuppe",
-  "version": 1,
+  "version": 2,
   "servings": 6,
   "nutritionPerServing": {
     "kcal": 787,
@@ -158,6 +158,103 @@
       "category": "dry-goods",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "1kg pork shank"
+        },
+        {
+          "line": 1,
+          "phrase": "2 litres water"
+        },
+        {
+          "line": 2,
+          "phrase": "2 bay leaves"
+        },
+        {
+          "line": 3,
+          "phrase": "1 teaspoon peppercorns"
+        },
+        {
+          "line": 4,
+          "phrase": "1 teaspoon allspice berries"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 9,
+          "phrase": "100g rinsed yellow split peas"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 5,
+          "phrase": "1 sliced leek"
+        },
+        {
+          "line": 6,
+          "phrase": "the diced rutabaga"
+        },
+        {
+          "line": 7,
+          "phrase": "3 diced carrots"
+        },
+        {
+          "line": 8,
+          "phrase": "1 diced celeriac"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 10,
+          "phrase": "4 diced potatoes"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the pork shank"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 2,
+          "phrase": "the bay leaves"
+        },
+        {
+          "line": 11,
+          "phrase": "black pepper"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 12,
+          "phrase": "fresh parsley"
+        },
+        {
+          "line": 13,
+          "phrase": "flatbread or rye bread"
+        }
+      ]
     }
   ]
 }

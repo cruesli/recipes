@@ -10,6 +10,7 @@ tags:
 servings: 4
 prepTimeMinutes: 15
 cookTimeMinutes: 15
+marinadeTimeMinutes: 60
 ingredients: |-
   Souvlaki:
   - 800g pork shoulder, cut into 3cm cubes

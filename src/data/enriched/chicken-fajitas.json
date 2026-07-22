@@ -1,6 +1,6 @@
 {
   "slug": "chicken-fajitas",
-  "version": 1,
+  "version": 2,
   "servings": 4,
   "nutritionPerServing": {
     "kcal": 750,
@@ -218,6 +218,136 @@
       "category": "produce",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 1,
+          "phrase": "2 tablespoons olive oil"
+        },
+        {
+          "line": 2,
+          "phrase": "juice of 2 limes"
+        },
+        {
+          "line": 3,
+          "phrase": "4 minced garlic cloves"
+        },
+        {
+          "line": 4,
+          "phrase": "2 teaspoons cumin"
+        },
+        {
+          "line": 5,
+          "phrase": "2 teaspoons smoked paprika"
+        },
+        {
+          "line": 6,
+          "phrase": "1 teaspoon chili powder"
+        },
+        {
+          "line": 7,
+          "phrase": "1 teaspoon oregano"
+        },
+        {
+          "line": 8,
+          "phrase": "1 teaspoon salt"
+        },
+        {
+          "line": 9,
+          "phrase": "1 teaspoon black pepper"
+        },
+        {
+          "line": 0,
+          "phrase": "600g sliced chicken thighs"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 14,
+          "phrase": "1 tablespoon neutral oil"
+        },
+        {
+          "line": 13,
+          "phrase": "2 sliced onions"
+        },
+        {
+          "line": 10,
+          "phrase": "all 3 sliced peppers"
+        },
+        {
+          "line": 11,
+          "phrase": "all 3 sliced peppers"
+        },
+        {
+          "line": 12,
+          "phrase": "all 3 sliced peppers"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 14,
+          "phrase": "remaining 1 tablespoon oil"
+        },
+        {
+          "line": 0,
+          "phrase": "the chicken"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 13,
+          "phrase": "the peppers"
+        },
+        {
+          "line": 10,
+          "phrase": "the peppers"
+        },
+        {
+          "line": 11,
+          "phrase": "the peppers"
+        },
+        {
+          "line": 12,
+          "phrase": "the peppers"
+        },
+        {
+          "line": 0,
+          "phrase": "the chicken"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 15,
+          "phrase": "warm tortillas"
+        },
+        {
+          "line": 16,
+          "phrase": "sour cream"
+        },
+        {
+          "line": 17,
+          "phrase": "guacamole"
+        },
+        {
+          "line": 18,
+          "phrase": "lime wedges"
+        },
+        {
+          "line": 19,
+          "phrase": "fresh cilantro"
+        }
+      ]
     }
   ]
 }

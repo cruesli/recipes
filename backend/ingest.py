@@ -1,3 +1,4 @@
+import hashlib
 import json
 from datetime import datetime
 from pathlib import Path
@@ -14,7 +15,8 @@ from backend.graph import RecipeKnowledgeGraph, save_graph
 from backend.models import NutritionPer100g, Recipe, WikidataEntity
 from backend.normaliser import make_client, normalise_all
 from backend.nutrition import fetch_nutrition
-from backend.parser import load_all_recipes
+from backend.parser import load_all_recipes, parse_steps
+from backend.step_linker import link_steps
 
 _BATCH_SIZE = 50
 _DEFAULT_CACHE_DIR = Path(__file__).parent / ".cache"
@@ -149,6 +151,32 @@ def run_ingest(
     # unique normalised names (preserving order)
     unique_normalised: List[str] = list(dict.fromkeys(n["name"] for n in normalised_list))
     print(f"  {len(unique_normalised)} unique normalised names")
+
+    # step linking (per recipe, cached on steps+ingredients hash)
+    print("Linking steps to ingredients...")
+    steplinks_cache_path = cache_dir / "steplinks.json"
+    steplinks_cache = _load_cache(steplinks_cache_path)
+    step_links_map: Dict[str, list] = {}
+    for recipe in recipes:
+        steps = parse_steps(recipe.body)
+        if not steps:
+            step_links_map[recipe.slug] = []
+            continue
+        digest = hashlib.sha256(
+            ("\n".join(recipe.ingredients) + "\0" + "\n".join(steps)).encode("utf-8")
+        ).hexdigest()
+        cached = steplinks_cache.get(recipe.slug)
+        if cached and cached.get("hash") == digest:
+            step_links_map[recipe.slug] = cached["links"]
+            print(f"  {recipe.slug}: cached")
+            continue
+        if llm_client is None:
+            llm_client = make_client()
+        links = link_steps(recipe.ingredients, steps, llm_client)
+        steplinks_cache[recipe.slug] = {"hash": digest, "links": links}
+        _save_cache(steplinks_cache_path, steplinks_cache)
+        step_links_map[recipe.slug] = links
+        print(f"  {recipe.slug}: {sum(len(r) for r in links)} refs")
 
     # entity linking
     print("Linking entities to Wikidata...")
@@ -302,6 +330,7 @@ def run_ingest(
         quantity_map=quantity_map,
         category_map=category_map,
         stated_quantity_map=stated_quantity_map,
+        step_links_map=step_links_map,
         export_dir=export_dir,
     )
 

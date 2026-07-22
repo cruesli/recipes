@@ -1,6 +1,6 @@
 {
   "slug": "tahini-chicken-with-butternut-hummus-and-bulgur-salad",
-  "version": 1,
+  "version": 2,
   "servings": 2,
   "nutritionPerServing": {
     "kcal": 664,
@@ -193,6 +193,139 @@
       "category": "spices-seasonings",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "chicken"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 8,
+          "phrase": "butternut squash"
+        },
+        {
+          "line": 10,
+          "phrase": "the garlic cloves"
+        },
+        {
+          "line": 11,
+          "phrase": "olive oil"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 9,
+          "phrase": "chickpeas"
+        },
+        {
+          "line": 15,
+          "phrase": "bulgur"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 8,
+          "phrase": "butternut squash"
+        },
+        {
+          "line": 0,
+          "phrase": "the chicken"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 8,
+          "phrase": "butternut squash"
+        },
+        {
+          "line": 6,
+          "phrase": "garlic"
+        },
+        {
+          "line": 9,
+          "phrase": "chickpeas"
+        },
+        {
+          "line": 13,
+          "phrase": "Tahini"
+        },
+        {
+          "line": 11,
+          "phrase": "olive oil"
+        },
+        {
+          "line": 12,
+          "phrase": "a squeeze of lemon"
+        },
+        {
+          "line": 14,
+          "phrase": "salt"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 17,
+          "phrase": "parsley"
+        },
+        {
+          "line": 16,
+          "phrase": "red onion"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 15,
+          "phrase": "bulgur"
+        },
+        {
+          "line": 16,
+          "phrase": "the onion"
+        },
+        {
+          "line": 17,
+          "phrase": "parsley"
+        },
+        {
+          "line": 19,
+          "phrase": "olive oil"
+        },
+        {
+          "line": 18,
+          "phrase": "a squeeze of lemon"
+        },
+        {
+          "line": 20,
+          "phrase": "salt"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the chicken"
+        }
+      ]
     }
   ]
 }

@@ -16,6 +16,8 @@ const recipes = defineCollection({
     // Most recipes carry prep + cook instead of a single total; deriveTotalTime unifies them
     prepTimeMinutes: z.number().int().nonnegative().optional(),
     cookTimeMinutes: z.number().int().nonnegative().optional(),
+    // Do-ahead soak (half the collection marinates); excluded from active time
+    marinadeTimeMinutes: z.number().int().nonnegative().optional(),
     season: z.string().optional(),
     image: z.string().optional(),
     ingredients: z
@@ -35,7 +37,7 @@ const recipes = defineCollection({
 
 const meta = defineCollection({
   type: "data",
-  // Union: cuisines.json | country-regions.json
+  // Union: cuisines.json | country-regions.json | staples.json
   schema: z.union([
     z.object({
       cuisines: z.array(
@@ -54,10 +56,34 @@ const meta = defineCollection({
         })
       ),
     }),
+    z.object({
+      staples: z.array(z.string()),
+    }),
   ]),
+});
+
+// Kitchen journal — one JSON file per recipe slug; written by Decap or the
+// in-page annotate mode (git-gateway). Never touched by the ingest pipeline.
+const journal = defineCollection({
+  type: "data",
+  schema: z.object({
+    slug: z.string(),
+    entries: z.array(
+      z.object({
+        date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+        note: z.string(),
+        anchor: z.object({
+          type: z.enum(["top", "ingredients", "step"]),
+          n: z.number().int().positive().optional(), // 1-based step number
+        }),
+        seed: z.number().int(),
+      })
+    ),
+  }),
 });
 
 export const collections = {
   recipes,
   meta,
+  journal,
 };

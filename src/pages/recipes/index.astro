@@ -18,7 +18,8 @@ function dietaryFor(tags: string[]): string[] {
 }
 
 const allRecipes = recipes.map((r) => {
-  const n = getEnriched(r.slug)?.nutritionPerServing ?? null;
+  const e = getEnriched(r.slug);
+  const n = e?.nutritionPerServing ?? null;
   return {
     id: r.slug,
     title: r.data.title,
@@ -31,6 +32,7 @@ const allRecipes = recipes.map((r) => {
     dietary: dietaryFor(r.data.tags ?? []),
     kcalPerServing: n?.kcal ?? null,
     proteinPerServing: n?.proteinG ?? null,
+    canonicals: [...new Set((e?.ingredients ?? []).map((i) => i.canonical).filter((c): c is string => c !== null))],
   };
 });
 

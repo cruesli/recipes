@@ -1,0 +1,52 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { getEnriched } from "../lib/enrichment";
+import { buildIngredientIndex } from "../lib/ingredientIndex.mjs";
+import staplesMeta from "../content/meta/staples.json";
+
+const recipes = await getCollection("recipes");
+const indexInput = recipes.map((r) => ({
+  slug: r.slug,
+  title: r.data.title,
+  cuisine: r.data.cuisine,
+  canonicals: (getEnriched(r.slug)?.ingredients ?? [])
+    .map((i) => i.canonical)
+    .filter((c): c is string => c !== null),
+}));
+const groups = buildIngredientIndex(indexInput, staplesMeta.staples);
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, "");
+---
+
+<BaseLayout title="Ingredient index">
+  <div style="max-width: 720px; margin: 0 auto; padding: calc(60px + var(--space-2xl)) var(--space-lg) var(--space-4xl);">
+    <div class="section-tick"></div>
+    <p class="eyebrow" style="margin: 0 0 var(--space-xs);">
+      The index
+    </p>
+    <h1 style="font-size: var(--text-section); font-weight: 500; color: var(--color-ink); margin: 0 0 var(--space-2xl);">
+      Ingredients
+    </h1>
+
+    {groups.map((group) => (
+      <section style="margin-bottom: var(--space-xl);">
+        <h2 class="eyebrow" style="margin: 0 0 var(--space-xs);">
+          {group.letter}
+        </h2>
+        <hr style="margin: 0 0 var(--space-sm);" />
+        {group.entries.map((entry) => (
+          <p style="font-size: var(--text-body); color: var(--color-ink); margin: 0 0 var(--space-2xs); line-height: 1.6;">
+            <span style="text-transform: capitalize;">{entry.canonical}</span>
+            <span style="color: var(--color-ink-muted);"> — </span>
+            {entry.recipes.map((r, i) => (
+              <>
+                {i > 0 && <span style="color: var(--color-ink-muted);"> · </span>}
+                <a href={`${basePath}/recipes/${r.slug}`} style="color: var(--color-oxblood); text-decoration: none;">{r.title}</a>
+              </>
+            ))}
+          </p>
+        ))}
+      </section>
+    ))}
+  </div>
+</BaseLayout>

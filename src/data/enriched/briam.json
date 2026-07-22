@@ -1,6 +1,6 @@
 {
   "slug": "briam",
-  "version": 1,
+  "version": 2,
   "servings": 4,
   "nutritionPerServing": {
     "kcal": 643,
@@ -125,6 +125,79 @@
       "category": "dairy-eggs",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "4 sliced potatoes"
+        },
+        {
+          "line": 1,
+          "phrase": "3 sliced zucchini"
+        },
+        {
+          "line": 4,
+          "phrase": "2 sliced red onions"
+        },
+        {
+          "line": 5,
+          "phrase": "4 sliced garlic cloves"
+        },
+        {
+          "line": 6,
+          "phrase": "100ml olive oil"
+        },
+        {
+          "line": 7,
+          "phrase": "2 teaspoons oregano"
+        },
+        {
+          "line": 8,
+          "phrase": "half the parsley"
+        },
+        {
+          "line": 9,
+          "phrase": "salt and black pepper"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 2,
+          "phrase": "4 sliced tomatoes"
+        },
+        {
+          "line": 3,
+          "phrase": "200g passata"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the potatoes"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 8,
+          "phrase": "the rest of the parsley"
+        },
+        {
+          "line": 10,
+          "phrase": "crumbled feta"
+        }
+      ]
     }
   ]
 }

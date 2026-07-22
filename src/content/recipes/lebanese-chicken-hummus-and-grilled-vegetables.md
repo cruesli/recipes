@@ -9,7 +9,9 @@ tags:
   - Healthy
   - ""
 servings: 3
-totalTimeMinutes: 20
+prepTimeMinutes: 10
+cookTimeMinutes: 10
+marinadeTimeMinutes: 20
 image: /images/recipes/img_6623.webp
 ingredients: |-
   - 400g Chicken thighs

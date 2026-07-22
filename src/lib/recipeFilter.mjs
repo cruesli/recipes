@@ -3,8 +3,8 @@
 
 /**
  * Does a recipe pass the active facets?
- * recipe: { title, cuisine, totalTimeMinutes, dietary[], kcalPerServing, proteinPerServing }
- * f (all optional): { query, cuisine, dietary, maxTime, maxKcal, minProtein }
+ * recipe: { title, cuisine, totalTimeMinutes, dietary[], kcalPerServing, proteinPerServing, canonicals[] }
+ * f (all optional): { query, cuisine, dietary, maxTime, maxKcal, minProtein, ingredient }
  *
  * Nutrition facets do NOT penalise recipes with unknown nutrition — a recipe
  * missing from the KG export still browses normally.
@@ -17,6 +17,11 @@ export function matchesFacets(recipe, f = {}) {
     }
   }
   if (f.cuisine && recipe.cuisine.toLowerCase() !== f.cuisine.toLowerCase()) return false;
+
+  if (f.ingredient) {
+    const q = f.ingredient.toLowerCase();
+    if (!(recipe.canonicals ?? []).some((c) => c.toLowerCase().includes(q))) return false;
+  }
 
   if (f.dietary && f.dietary !== 'all') {
     if (!(recipe.dietary ?? []).includes(f.dietary)) return false;
@@ -34,11 +39,12 @@ export function matchesFacets(recipe, f = {}) {
   return true;
 }
 
-// The five extracted filter keys the facet UI surfaces. Other keys the LLM may
+// The extracted filter keys the facet UI surfaces. Other keys the LLM may
 // return (max_sodium, origin_country, …) have no control and are ignored.
 export function extractedToFacets(filters = {}) {
   const out = {};
   if (typeof filters.cuisine === 'string') out.cuisine = filters.cuisine;
+  if (typeof filters.ingredient === 'string') out.ingredient = filters.ingredient;
   if (filters.dietary === 'vegan' || filters.dietary === 'vegetarian') out.dietary = filters.dietary;
   if (typeof filters.max_time === 'number') out.maxTime = filters.max_time;
   if (typeof filters.max_kcal === 'number') out.maxKcal = filters.max_kcal;

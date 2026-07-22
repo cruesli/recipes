@@ -1,6 +1,6 @@
 // Pure shopping-list merge logic (node-tested). Turns enriched shopping items
-// into category buckets with merged, day-noted lines; unenriched items degrade
-// to the classic day→recipe grouping. No React, no DOM.
+// into category buckets with merged, day-noted lines; staple canonicals divert
+// to a separate list; unenriched items degrade to the classic day→recipe grouping. No React, no DOM.
 
 export const DEFAULT_BUCKET_ORDER = [
   'produce', 'meat-poultry', 'fish-seafood', 'dairy-eggs', 'dry-goods',
@@ -111,11 +111,16 @@ function groupDegraded(items, days) {
   return out;
 }
 
-export function buildShoppingView(items, bucketOrder = DEFAULT_BUCKET_ORDER, days = WEEK) {
+export function buildShoppingView(items, bucketOrder = DEFAULT_BUCKET_ORDER, days = WEEK, staples = []) {
+  const stapleSet = new Set(staples.map((s) => s.toLowerCase()));
   const enriched = items.filter((i) => i.canonical);
   const degraded = items.filter((i) => !i.canonical);
+  const merged = mergeEnriched(enriched, days);
+  const stapleLines = merged.filter((l) => stapleSet.has(l.canonical.toLowerCase()));
+  const bucketLines = merged.filter((l) => !stapleSet.has(l.canonical.toLowerCase()));
   return {
-    buckets: buildBuckets(mergeEnriched(enriched, days), bucketOrder),
+    buckets: buildBuckets(bucketLines, bucketOrder),
+    staples: stapleLines,
     degraded: groupDegraded(degraded, days),
     hasEnriched: enriched.length > 0,
   };

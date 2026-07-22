@@ -1,6 +1,6 @@
 {
   "slug": "souvlaki",
-  "version": 1,
+  "version": 2,
   "servings": 4,
   "nutritionPerServing": {
     "kcal": 826,
@@ -136,6 +136,83 @@
       "category": "produce",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 1,
+          "phrase": "4 tablespoons olive oil"
+        },
+        {
+          "line": 2,
+          "phrase": "the juice of 1 lemon"
+        },
+        {
+          "line": 3,
+          "phrase": "2 teaspoons dried oregano"
+        },
+        {
+          "line": 4,
+          "phrase": "4 grated garlic cloves"
+        },
+        {
+          "line": 5,
+          "phrase": "1 teaspoon salt"
+        },
+        {
+          "line": 6,
+          "phrase": "1 teaspoon black pepper"
+        },
+        {
+          "line": 0,
+          "phrase": "800g pork cubes"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the pork"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the skewers"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 8,
+          "phrase": "red onion"
+        },
+        {
+          "line": 9,
+          "phrase": "tomato"
+        },
+        {
+          "line": 10,
+          "phrase": "tzatziki"
+        },
+        {
+          "line": 11,
+          "phrase": "lemon"
+        },
+        {
+          "line": 7,
+          "phrase": "pita"
+        }
+      ]
     }
   ]
 }

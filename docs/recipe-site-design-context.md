@@ -122,6 +122,15 @@ lg 1.5 / xl 2 / 2xl 3 / 3xl 4 / 4xl 6` (rem). Named by position so values can be
   hairlines); the eyebrow is paper. The future nutrition panel stays on paper — the plate never
   grows into a dark column. On photo-less recipes the plate stands as the page's sole strong
   visual (accepted; resolves as photos land).
+- **Cook aids (recipe detail):** quiet enhancements that add no new chrome or colour. **Step
+  timers** and **inline scaled amounts** live *inside* the step prose — a timer is a
+  dotted-underline oxblood phrase that becomes a live countdown on tap; an inline amount is a
+  muted oldstyle "(30 g)" after an LLM-linked ingredient (suppressed when the prose already
+  states the quantity). **Kitchen-journal marginalia** are committed notes in ink-muted italic
+  `--text-meta` under a small date eyebrow, seeded-jittered in the right gutter (tucked inline
+  below 1320px, never overlapping) so they read as hand-written margin notes — a quiet pencil,
+  not a second accent. The **annotate mode** that writes them (env-gated, maintainer-only) reuses
+  the page's oxblood-primary + hairline-field grammar; inline, no modal.
 
 ## Cuisine taxonomy (two-tier)
 
@@ -356,10 +365,19 @@ facets → `GET /api/v1/recipes/filter`.
   region-backdrop hop back link, minced-beef nutrition pin); **chapter backdrops** replacing
   the area-budget plates — the map morph now lands on a near-viewport faded-sage country and
   the grid rolls over it (the "zoom into the country" arrival).
-- **Later:** NLP wiring (incl. shopping-list category buckets); nutrition panel; oxblood-dot
-  audit; paper grain; cross-device week sync (`nanostores` over `localStorage`); possible
-  split-accent (olive separators + oxblood text); split `sub-saharan-africa` when recipes
-  warrant it.
+- **Shipped (kitchen-features batch, plan v4, `feature/update-v4`):** shared **pantry staples**
+  list (partitioned out of the shopping list into a quiet "from the pantry" footer) plus a reverse
+  **`ingredient` facet** and an **A–Z ingredient index** (`/ingredients`, back-of-book); recipe
+  **prep/cook/marinade** time fields with a work-back **"start by"** line; tap-to-start **step
+  timers** and **inline scaled amounts** woven into the step prose (LLM step-linking, enriched
+  export v2); committed **journal marginalia** in the right gutter, an in-page **annotate mode**
+  (Netlify Identity + git-gateway), and the NL **`ingredient`** dimension — the last two ship
+  **gated OFF** in production pending maintainer infra (`PUBLIC_ANNOTATE_ORIGIN` / HF Space
+  redeploy).
+- **Later:** oxblood-dot audit; paper grain; cross-device week **planner** sync (`nanostores`
+  over `localStorage`) — still Later, and distinct from the now-shipped committed kitchen journal,
+  which is shared *content*, not planner-state sync; possible split-accent (olive separators +
+  oxblood text); split `sub-saharan-africa` when recipes warrant it.
 
 ## Open copy & decisions
 

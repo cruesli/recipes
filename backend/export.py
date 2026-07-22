@@ -10,6 +10,7 @@ from typing import Dict, List, Optional
 
 from backend.models import NutritionPer100g, Recipe
 from backend.nutrition import per_serving_totals
+from backend.parser import parse_steps
 
 _DEFAULT_EXPORT_DIR = Path(__file__).parent.parent / "src" / "data" / "enriched"
 
@@ -48,6 +49,7 @@ def _recipe_json(
     quantity_map: Dict[str, Optional[float]],
     category_map: Dict[str, str],
     stated_quantity_map: Dict[str, Optional[dict]],
+    step_links_map: Optional[Dict[str, list]] = None,
 ) -> dict:
     ingredients = []
     for idx, raw in enumerate(recipe.ingredients):
@@ -60,12 +62,18 @@ def _recipe_json(
             "quantity": stated_quantity_map.get(raw),
             "grams": quantity_map.get(raw),
         })
+    steps = parse_steps(recipe.body)
+    links = (step_links_map or {}).get(recipe.slug) or []
+    # align refs length to the step count (LLM may under/over-generate)
+    links = (links + [[] for _ in steps])[: len(steps)]
+    step_objs = [{"refs": refs} for refs in links]
     return {
         "slug": recipe.slug,
-        "version": 1,
+        "version": 2,
         "servings": recipe.servings,
         "nutritionPerServing": _nutrition_json(recipe, normalised_map, nutrition_map, quantity_map),
         "ingredients": ingredients,
+        "steps": step_objs,
     }
 
 
@@ -77,6 +85,7 @@ def export_recipes(
     quantity_map: Dict[str, Optional[float]],
     category_map: Dict[str, str],
     stated_quantity_map: Dict[str, Optional[dict]],
+    step_links_map: Optional[Dict[str, list]] = None,
     export_dir: Optional[Path] = None,
 ) -> None:
     if export_dir is None:
@@ -92,7 +101,7 @@ def export_recipes(
     for recipe in recipes:
         data = _recipe_json(
             recipe, normalised_map, nutrition_map, quantity_map,
-            category_map, stated_quantity_map,
+            category_map, stated_quantity_map, step_links_map,
         )
         path = export_dir / f"{recipe.slug}.json"
         path.write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")

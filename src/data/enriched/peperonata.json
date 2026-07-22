@@ -1,6 +1,6 @@
 {
   "slug": "peperonata",
-  "version": 1,
+  "version": 2,
   "servings": 4,
   "nutritionPerServing": {
     "kcal": 183,
@@ -109,6 +109,60 @@
         "unit": "handful"
       },
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "4 mixed sweet peppers, sliced"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 1,
+          "phrase": "the red onion"
+        },
+        {
+          "line": 2,
+          "phrase": "the sliced garlic cloves"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 3,
+          "phrase": "3 ripe tomatoes, roughly chopped"
+        },
+        {
+          "line": 4,
+          "phrase": "2 tablespoons capers"
+        },
+        {
+          "line": 5,
+          "phrase": "2 tablespoons red wine vinegar"
+        },
+        {
+          "line": 6,
+          "phrase": "1 teaspoon sugar"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 8,
+          "phrase": "1 small handful fresh basil"
+        },
+        {
+          "line": 5,
+          "phrase": "vinegar"
+        }
+      ]
     }
   ]
 }

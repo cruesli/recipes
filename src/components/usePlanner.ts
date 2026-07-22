@@ -4,6 +4,7 @@ import { parseIngredientSections } from '../lib/ingredientSections.mjs';
 import { scaleIngredient } from '../lib/quantity.mjs';
 import { buildShoppingView, DEFAULT_BUCKET_ORDER } from '../lib/shoppingList.mjs';
 import { getEnriched, CATEGORY_LABELS, normaliseCategory, type EnrichedIngredient } from '../lib/enrichment';
+import staplesMeta from '../content/meta/staples.json';
 
 export const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 export { MAX_MEALS_PER_DAY };
@@ -27,6 +28,7 @@ export interface RecipeData {
   dietary?: string[];
   kcalPerServing?: number | null;
   proteinPerServing?: number | null;
+  canonicals?: string[];
 }
 
 export interface IngredientSection {
@@ -92,6 +94,7 @@ export interface DegradedDay {
 }
 export interface ShoppingView {
   buckets: CategoryBucket[];
+  staples: MergedLine[];
   degraded: DegradedDay[];
   hasEnriched: boolean;
 }
@@ -105,6 +108,7 @@ interface ShoppingSession {
   items: ShoppingItem[];
   checked: string[];
   collapsed: string[];
+  restocked: string[];
 }
 
 function loadSession(): ShoppingSession | null {
@@ -113,7 +117,8 @@ function loadSession(): ShoppingSession | null {
     const raw = localStorage.getItem(SESSION_KEY);
     if (!raw) return null;
     const s = JSON.parse(raw) as ShoppingSession;
-    return Array.isArray(s.items) && s.items.length > 0 ? s : null;
+    if (!(Array.isArray(s.items) && s.items.length > 0)) return null;
+    return { ...s, restocked: Array.isArray(s.restocked) ? s.restocked : [] };
   } catch {
     return null;
   }
@@ -170,6 +175,7 @@ export function usePlanner() {
   const [shoppingList, setShoppingList] = useState<ShoppingItem[]>([]);
   const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
   const [collapsedBuckets, setCollapsedBuckets] = useState<Set<string>>(new Set());
+  const [restocked, setRestocked] = useState<string[]>([]);
   const [bucketOrder, setBucketOrder] = useState<string[]>(DEFAULT_BUCKET_ORDER);
   const [listReady, setListReady] = useState(false);
   const [loaded, setLoaded] = useState(false);
@@ -183,6 +189,7 @@ export function usePlanner() {
       setShoppingList(session.items);
       setCheckedIds(new Set(session.checked));
       setCollapsedBuckets(new Set(session.collapsed));
+      setRestocked(session.restocked);
       setListReady(true);
     }
     setLoaded(true);
@@ -197,8 +204,8 @@ export function usePlanner() {
   // Persist the shopping session (list + checks + collapsed buckets)
   useEffect(() => {
     if (!loaded) return;
-    saveSession({ items: shoppingList, checked: [...checkedIds], collapsed: [...collapsedBuckets] });
-  }, [shoppingList, checkedIds, collapsedBuckets, loaded]);
+    saveSession({ items: shoppingList, checked: [...checkedIds], collapsed: [...collapsedBuckets], restocked });
+  }, [shoppingList, checkedIds, collapsedBuckets, restocked, loaded]);
 
   // Returns false when the day is already full (caller may show a note)
   function selectRecipe(day: string, recipe: RecipeData): boolean {
@@ -266,6 +273,7 @@ export function usePlanner() {
     setShoppingList([]);
     setCheckedIds(new Set());
     setCollapsedBuckets(new Set());
+    setRestocked([]);
     setListReady(false);
   }
 
@@ -305,6 +313,7 @@ export function usePlanner() {
     setShoppingList(items);
     setCheckedIds(new Set());
     setCollapsedBuckets(new Set());
+    setRestocked([]);
     setListReady(true);
   }
 
@@ -334,10 +343,21 @@ export function usePlanner() {
   }
 
   // Derived bucket view (enriched buckets + degraded day→recipe groups)
-  const shoppingView = useMemo(
-    () => buildShoppingView(shoppingList, bucketOrder) as ShoppingView,
-    [shoppingList, bucketOrder]
+  const effectiveStaples = useMemo(
+    () => staplesMeta.staples.filter((s) => !restocked.includes(s)),
+    [restocked]
   );
+  const shoppingView = useMemo(
+    () => buildShoppingView(shoppingList, bucketOrder, undefined, effectiveStaples) as ShoppingView,
+    [shoppingList, bucketOrder, effectiveStaples]
+  );
+
+  // Restock = "we're out" — move a pantry staple back into its bucket for this session
+  function restockStaple(canonical: string) {
+    setRestocked((prev) =>
+      prev.includes(canonical) ? prev.filter((c) => c !== canonical) : [...prev, canonical]
+    );
+  }
 
   // Bucket reorder — persisted, dynamic (re-sorts the derived view only)
   function reorderBuckets(next: string[]) {
@@ -373,6 +393,10 @@ export function usePlanner() {
         lines.push(`  ${mark(line.id)} ${name}${line.note ? `  — ${line.note}` : ''}`);
       });
     });
+    if (shoppingView.staples.length > 0) {
+      lines.push('', 'ASSUMED IN THE PANTRY', '─'.repeat(40));
+      lines.push('  ' + shoppingView.staples.map((l) => l.canonical).join(' · '));
+    }
     // Degraded remainder keeps the classic day → recipe format
     shoppingView.degraded.forEach(({ day, meals: dayMeals }) => {
       dayMeals.forEach((meal) => {
@@ -431,6 +455,7 @@ export function usePlanner() {
     toggleBucketCollapse,
     reorderBuckets,
     resetBucketOrder,
+    restockStaple,
     downloadList,
   };
 }

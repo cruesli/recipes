@@ -1,6 +1,6 @@
 {
   "slug": "char-siu",
-  "version": 1,
+  "version": 2,
   "servings": 4,
   "nutritionPerServing": {
     "kcal": 769,
@@ -153,6 +153,50 @@
         "unit": "tbsp"
       },
       "grams": 30.0
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "1kg pork shoulder strips"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the pork"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 11,
+          "phrase": "2 tablespoons reserved marinade"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the oven"
+        },
+        {
+          "line": 11,
+          "phrase": "glaze"
+        }
+      ]
+    },
+    {
+      "refs": []
     }
   ]
 }

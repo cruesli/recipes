@@ -110,6 +110,23 @@ def test_nl_query_whitelists_unknown_keys():
     assert data["filters"] == {"cuisine": "italian"}
 
 
+def test_nl_query_passes_ingredient_filter():
+    # A specific ingredient the user wants to cook with is allow-listed; junk keys drop.
+    mock = MagicMock()
+    mock.chat.completions.create.return_value = MagicMock(
+        choices=[MagicMock(message=MagicMock(
+            content=json.dumps({"ingredient": "pork shoulder", "bogus": 1})
+        ))]
+    )
+    app.dependency_overrides[get_openai_client] = lambda: mock
+    try:
+        with TestClient(app) as c:
+            data = c.post("/api/v1/query", json={"question": "what can I make with pork shoulder"}).json()
+    finally:
+        app.dependency_overrides.clear()
+    assert data["filters"] == {"ingredient": "pork shoulder"}
+
+
 def test_nl_query_parses_markdown_fenced_json():
     # Gemini wraps JSON in ```json ... ``` fences — these must still parse.
     mock = MagicMock()

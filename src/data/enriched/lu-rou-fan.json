@@ -1,6 +1,6 @@
 {
   "slug": "lu-rou-fan",
-  "version": 1,
+  "version": 2,
   "servings": 4,
   "nutritionPerServing": {
     "kcal": 771,
@@ -180,6 +180,103 @@
       "category": "canned-jarred",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "600g pork belly, diced"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 1,
+          "phrase": "6 shallots, sliced"
+        },
+        {
+          "line": 2,
+          "phrase": "4 garlic cloves, minced"
+        },
+        {
+          "line": 3,
+          "phrase": "1 thumb ginger, sliced"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 7,
+          "phrase": "2 tablespoons rock sugar"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 6,
+          "phrase": "3 tablespoons Shaoxing wine"
+        },
+        {
+          "line": 4,
+          "phrase": "4 tablespoons dark soy sauce"
+        },
+        {
+          "line": 5,
+          "phrase": "2 tablespoons light soy sauce"
+        },
+        {
+          "line": 8,
+          "phrase": "1 teaspoon five-spice powder"
+        },
+        {
+          "line": 9,
+          "phrase": "1 star anise"
+        },
+        {
+          "line": 10,
+          "phrase": "1 cinnamon stick"
+        },
+        {
+          "line": 11,
+          "phrase": "4 diced shiitake mushrooms"
+        },
+        {
+          "line": 13,
+          "phrase": "500ml water"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 12,
+          "phrase": "4 soft-boiled eggs"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 14,
+          "phrase": "steamed rice"
+        },
+        {
+          "line": 12,
+          "phrase": "an egg"
+        },
+        {
+          "line": 15,
+          "phrase": "pickled greens"
+        }
+      ]
     }
   ]
 }

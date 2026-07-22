@@ -1,6 +1,6 @@
 {
   "slug": "carnitas",
-  "version": 1,
+  "version": 2,
   "servings": 15,
   "nutritionPerServing": {
     "kcal": 446,
@@ -106,6 +106,122 @@
       "category": "oils-condiments",
       "quantity": null,
       "grams": null
+    }
+  ],
+  "steps": [
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "Pork"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 8,
+          "phrase": "oil"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "pork cubes"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "meat"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 6,
+          "phrase": "salt"
+        },
+        {
+          "line": 7,
+          "phrase": "water"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 1,
+          "phrase": "the orange"
+        },
+        {
+          "line": 2,
+          "phrase": "the onion"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 4,
+          "phrase": "the garlic"
+        },
+        {
+          "line": 5,
+          "phrase": "bay leaves"
+        },
+        {
+          "line": 3,
+          "phrase": "cinnamon stick"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 7,
+          "phrase": "water"
+        },
+        {
+          "line": 0,
+          "phrase": "the meat"
+        }
+      ]
+    },
+    {
+      "refs": []
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "The meat"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the meat pieces"
+        }
+      ]
+    },
+    {
+      "refs": [
+        {
+          "line": 0,
+          "phrase": "the meat"
+        }
+      ]
+    },
+    {
+      "refs": []
     }
   ]
 }

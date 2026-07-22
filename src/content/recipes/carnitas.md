@@ -8,7 +8,8 @@ tags:
   - Meal-prep
   - Amazing
 servings: 15
-totalTimeMinutes: 300
+prepTimeMinutes: 30
+cookTimeMinutes: 270
 image: /images/recipes/carnitas-main.webp
 ingredients: |
   - 2.5 kg Pork shoulder

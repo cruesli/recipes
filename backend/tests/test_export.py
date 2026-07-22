@@ -95,7 +95,7 @@ def test_export_writes_one_file_per_recipe(recipe, maps, tmp_path):
 def test_export_top_level_shape(recipe, maps, tmp_path):
     data = _export(recipe, maps, tmp_path)
     assert data["slug"] == "tahini-chicken"
-    assert data["version"] == 1
+    assert data["version"] == 2
     assert data["servings"] == 2
 
 
@@ -140,3 +140,39 @@ def test_export_removes_stale_files(recipe, maps, tmp_path):
     export_recipes([recipe], export_dir=out, **maps)
     assert not (out / "gone-recipe.json").exists()
     assert (out / "tahini-chicken.json").exists()
+
+
+# --- step refs (v2) ---
+
+def test_export_includes_step_refs_and_version_2(tmp_path):
+    recipe = Recipe(
+        slug="t", title="T", cuisine="x", servings=2,
+        ingredients=["30g salt"], ingredient_sections=[None],
+        body="1. Add the salt\n\n2. Serve",
+    )
+    export_recipes(
+        [recipe],
+        normalised_map={"30g salt": "salt"},
+        nutrition_map={"salt": None},
+        quantity_map={"30g salt": 30.0},
+        category_map={"30g salt": "spices-seasonings"},
+        stated_quantity_map={"30g salt": {"amount": 30, "unit": "g"}},
+        step_links_map={"t": [[{"line": 0, "phrase": "salt"}], []]},
+        export_dir=tmp_path,
+    )
+    data = json.loads((tmp_path / "t.json").read_text())
+    assert data["version"] == 2
+    assert data["steps"] == [{"refs": [{"line": 0, "phrase": "salt"}]}, {"refs": []}]
+
+
+def test_export_without_links_emits_empty_refs(tmp_path):
+    recipe = Recipe(
+        slug="t", title="T", cuisine="x", servings=2,
+        ingredients=[], ingredient_sections=[], body="1. Serve",
+    )
+    export_recipes(
+        [recipe], normalised_map={}, nutrition_map={}, quantity_map={},
+        category_map={}, stated_quantity_map={}, export_dir=tmp_path,
+    )
+    data = json.loads((tmp_path / "t.json").read_text())
+    assert data["steps"] == [{"refs": []}]
