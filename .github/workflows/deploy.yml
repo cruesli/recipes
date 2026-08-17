@@ -32,6 +32,13 @@ jobs:
 
       - name: Build with Astro
         run: npm run build
+        env:
+          # Annotate mode (in-page journal writing) → Netlify Identity + git-gateway.
+          # Reuses the same backend Decap /admin uses. Unset would leave it inert.
+          PUBLIC_ANNOTATE_ORIGIN: https://mtrecipes.netlify.app
+          # NL search: stateless FastAPI query service on Google Cloud Run
+          # (project magnus-recipes-nl, europe-north1, scale-to-zero). Check <url>/health if it stalls.
+          PUBLIC_NLP_API_URL: https://recipe-nl-3flwzokcma-lz.a.run.app
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

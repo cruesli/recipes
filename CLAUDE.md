@@ -32,10 +32,11 @@ polish, map reframing, splash rework, repo sweep, assessment fixes, and the **ch
 backdrops** — cuisine pages open on a viewport-fixed faded-sage country the recipes scroll
 over, replacing the area-budget plates). The most recent work is the planned
 **kitchen-features batch** (`recipe-site-update-plan-v4.md`, above) on `feature/update-v4`,
-one reviewable commit per phase. Two of its surfaces ship **gated OFF** in production until
-the maintainer enables the infra: the in-page **annotate mode** (`PUBLIC_ANNOTATE_ORIGIN`
-→ Netlify Identity + git-gateway on `mtrecipes.netlify.app`) and the NL **`ingredient`**
-dimension (needs the Hugging Face Space redeployed; already gated by `PUBLIC_NLP_API_URL`).
+one reviewable commit per phase. Its two runtime-dependent surfaces are now wired on in
+`deploy.yml`: the in-page **annotate mode** (`PUBLIC_ANNOTATE_ORIGIN` → Netlify Identity +
+git-gateway on `mtrecipes.netlify.app`, reusing Decap's backend) and the NL **`ingredient`**
+dimension (`PUBLIC_NLP_API_URL` → the query service on **Google Cloud Run**). Both still
+degrade cleanly if their env var is unset.
 
 These files mirror an external knowledge base the maintainer syncs by hand — keep them
 accurate and self-consistent when you touch them.
@@ -58,7 +59,8 @@ accurate and self-consistent when you touch them.
   USDA matches / pin QIDs; each run writes `reports/ingest-report.json`.
 - **Query service (deployed)**: a **stateless FastAPI** app (`main.py`) — holds no graph. Turns
   a question into a filter object via the LLM + `sentence-transformers` few-shot selection.
-  Deployed on **Hugging Face Spaces** (Docker, free CPU). Gated by `PUBLIC_NLP_API_URL`.
+  Deployed on **Google Cloud Run** (Docker, request-based billing, scale-to-zero; project
+  `magnus-recipes-nl`, europe-north1). Gated by `PUBLIC_NLP_API_URL`.
 
 ## Commands
 
@@ -127,7 +129,7 @@ accurate and self-consistent when you touch them.
 - `ingest.py` — orchestrates the pipeline; serialises `graph.ttl`, JSON export, and the report.
 - `main.py` — **stateless** FastAPI: `GET /health`, `POST /api/v1/query` → `{question, filters}`
   (few-shot LLM → allow-listed filter object, incl. the `ingredient` dimension). No graph.
-  `Dockerfile`/`README.md` are the HF Spaces deploy (CPU torch, port 7860).
+  `Dockerfile` builds the container for **Cloud Run** (CPU torch; honours `$PORT`, default 7860).
 - `models.py` — Pydantic models. `data/` + `reports/` + `.cache/` are committed.
 
 ## Design language (summary — defer to the design-context doc)

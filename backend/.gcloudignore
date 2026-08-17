@@ -1,0 +1,15 @@
+# Keep the Cloud Build source upload lean (mirrors .dockerignore).
+# Only the Dockerfile + service modules need to reach the builder.
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.DS_Store
+# Ingest-time only — the stateless service never reads these.
+.cache/
+reports/
+data/
+tests/
+*.ttl
+uv.lock
+docker-compose.yml

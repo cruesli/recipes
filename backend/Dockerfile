@@ -1,4 +1,4 @@
-# Stateless NL-query service for Hugging Face Spaces (Docker SDK, free CPU tier).
+# Stateless NL-query service — containerised for any Docker host (e.g. Google Cloud Run).
 # Holds no graph — only turns a question into a filter object.
 FROM python:3.11-slim
 
@@ -17,9 +17,10 @@ RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTr
 WORKDIR /app
 COPY . /app/backend/
 
-# HF Spaces runs containers as uid 1000; it needs write access to the model cache.
+# Run as a non-root uid so the baked model cache stays writable.
 RUN useradd -m -u 1000 appuser && chown -R appuser:appuser /app
 USER appuser
 
+# Honour $PORT when the host injects one (Cloud Run sets 8080); default 7860 for local runs.
 EXPOSE 7860
-CMD ["uvicorn", "backend.main:app", "--host", "0.0.0.0", "--port", "7860"]
+CMD ["sh", "-c", "exec uvicorn backend.main:app --host 0.0.0.0 --port ${PORT:-7860}"]
