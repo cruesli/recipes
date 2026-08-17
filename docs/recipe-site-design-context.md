@@ -290,12 +290,14 @@ About, empty states, system copy — is English. (Resolved July 2026.)
 
 ---
 
-## NLP integration (placeholder now, live later)
+## NLP integration (live, static-first)
 
-Static Astro frontend → FastAPI backend (CORS open). `PUBLIC_NLP_API_URL` gates all API features
-with graceful degradation. Header search (returns when the var is set) → `POST /api/v1/query`.
-Nutrition panel → `GET /api/v1/recipes/{slug}` + `/ingredients/{ingredient}/nutrition`. Future
-facets → `GET /api/v1/recipes/filter`.
+Enrichment (nutrition, shopping categories, stated quantities, step→ingredient refs) is baked
+into `src/data/enriched/*.json` at **build time** — no runtime API for recipe data. The one
+runtime dependency is **NL search**: `POST /api/v1/query` on the stateless Cloud Run service
+(CORS open), gated by `PUBLIC_NLP_API_URL`. It returns a filter object (cuisine, time, dietary,
+nutrition bounds, `ingredient`, …) applied client-side over the baked JSON. Unset var ⇒ the
+search line hides and the facets below still work — graceful degradation, one rung.
 
 ---
 
@@ -371,9 +373,9 @@ facets → `GET /api/v1/recipes/filter`.
   **prep/cook/marinade** time fields with a work-back **"start by"** line; tap-to-start **step
   timers** and **inline scaled amounts** woven into the step prose (LLM step-linking, enriched
   export v2); committed **journal marginalia** in the right gutter, an in-page **annotate mode**
-  (Netlify Identity + git-gateway), and the NL **`ingredient`** dimension — the last two ship
-  **gated OFF** in production pending maintainer infra (`PUBLIC_ANNOTATE_ORIGIN` / HF Space
-  redeploy).
+  (Netlify Identity + git-gateway, wired via `PUBLIC_ANNOTATE_ORIGIN`), and the NL **`ingredient`**
+  dimension served by the query service on **Google Cloud Run** (`PUBLIC_NLP_API_URL`). Both
+  runtime surfaces are enabled in `deploy.yml` and degrade cleanly if their env var is unset.
 - **Later:** oxblood-dot audit; paper grain; cross-device week **planner** sync (`nanostores`
   over `localStorage`) — still Later, and distinct from the now-shipped committed kitchen journal,
   which is shared *content*, not planner-state sync; possible split-accent (olive separators +
